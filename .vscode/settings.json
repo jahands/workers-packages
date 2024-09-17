@@ -14,12 +14,6 @@
 	"files.associations": {
 		"**/packages/tools/bin/*": "shellscript"
 	},
-	"files.exclude": {
-		".sentryclirc.lock": true,
-		"**/.turbo": true,
-		"**/.wrangler": true,
-		"**/dist": true
-	},
 	"eslint.workingDirectories": [
 		{
 			"mode": "auto"
