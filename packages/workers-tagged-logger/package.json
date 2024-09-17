@@ -1,0 +1,22 @@
+{
+	"name": "workers-tagged-logger",
+	"version": "0.1.0",
+	"private": false,
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://npmjs.com/packages/workers-tagged-logger"
+	},
+	"sideEffects": false,
+	"main": "src/index.ts",
+	"scripts": {
+		"check:lint": "run-eslint-workers",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "0.4.29",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"vitest": "1.3.0"
+	}
+}

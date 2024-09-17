@@ -1,0 +1,78 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"globalDependencies": ["**/.env.*local"],
+	"globalEnv": ["ALLOW_DUPES"],
+	"globalPassThroughEnv": [
+		"CI",
+		"GITHUB_ACTIONS",
+		"SENTRY_AUTH_TOKEN",
+		"CLOUDFLARE_API_TOKEN",
+		"CLOUDFLARE_ACCOUNT_ID"
+	],
+	"remoteCache": {
+		"enabled": true,
+		"signature": true
+	},
+	"tasks": {
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**"],
+			"outputLogs": "new-only"
+		},
+		"build:wrangler": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**"],
+			"outputLogs": "new-only"
+		},
+		"//#test:all": {
+			"outputLogs": "new-only"
+		},
+		"check": {
+			"dependsOn": ["^build", "^check:types", "^check:lint", "check:types", "check:lint"],
+			"outputLogs": "new-only"
+		},
+		"test": {
+			"outputLogs": "new-only"
+		},
+		"check:ci": {
+			"dependsOn": ["test", "//#check:format", "check:types", "check:lint"],
+			"outputLogs": "new-only"
+		},
+		"test:watch": {},
+		"check:types": {
+			"dependsOn": ["^check:types"],
+			"outputLogs": "new-only"
+		},
+		"check:lint": {
+			"dependsOn": ["^check:lint"],
+			"outputLogs": "new-only",
+			"passThroughEnv": ["FIX_ESLINT"]
+		},
+		"lint": {
+			"dependsOn": ["^check:types", "^check:lint", "check:types", "check:lint"],
+			"outputLogs": "new-only"
+		},
+		"deploy": {
+			"dependsOn": ["deploy:wrangler", "sentry:finalize"],
+			"outputLogs": "new-only"
+		},
+		"deploy:wrangler": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**"],
+			"outputLogs": "new-only"
+		},
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"//#format": {
+			"outputLogs": "new-only"
+		},
+		"//#check:format": {
+			"outputLogs": "new-only"
+		},
+		"//#wrangler:whoami": {
+			"cache": false
+		}
+	}
+}

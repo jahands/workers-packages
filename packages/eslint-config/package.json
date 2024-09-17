@@ -1,0 +1,27 @@
+{
+	"name": "@repo/eslint-config",
+	"version": "0.1.11",
+	"private": true,
+	"sideEffects": false,
+	"files": [
+		"remix.cjs",
+		"workers.cjs"
+	],
+	"devDependencies": {
+		"@repo/tools": "workspace:*",
+		"@typescript-eslint/eslint-plugin": "7.18.0",
+		"@typescript-eslint/parser": "7.18.0",
+		"eslint": "8.57.0",
+		"eslint-config-prettier": "9.1.0",
+		"eslint-config-turbo": "2.1.1",
+		"eslint-import-resolver-typescript": "3.6.3",
+		"eslint-plugin-import": "2.30.0",
+		"eslint-plugin-jsx-a11y": "6.10.0",
+		"eslint-plugin-only-warn": "1.1.0",
+		"eslint-plugin-react": "7.35.2",
+		"eslint-plugin-react-hooks": "4.6.2",
+		"eslint-plugin-unused-imports": "3.2.0",
+		"typescript": "5.5.4",
+		"vitest": "1.3.0"
+	}
+}

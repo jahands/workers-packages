@@ -1,0 +1,17 @@
+name = "{{ slug name }}"
+main = "src/index.ts"
+compatibility_date = "2024-04-03"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = false
+logpush = true
+routes = ["{{ slug name }}.example.com/*"]
+
+[placement]
+mode = "smart"
+
+[vars]
+NAME = "{{ slug name }}"
+ENVIRONMENT = "production"
+AXIOM_DATASET = "workers"
+AXIOM_DATASET_OTEL = "workers-otel"
+

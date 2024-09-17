@@ -1,0 +1,11 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"extends": "./base.json",
+	"compilerOptions": {
+		"module": "es2022",
+		"target": "es2021",
+		"sourceMap": true,
+		"moduleResolution": "Bundler"
+	},
+	"exclude": ["node_modules", "examples", "dist"]
+}
