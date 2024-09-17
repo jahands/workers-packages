@@ -17,7 +17,7 @@ export async function getMD5OfDir(dir: string): Promise<string> {
 	const hashes: string[] = []
 	const queue = new pQueue({ concurrency: 100 })
 	for (const file of files.filter((f) => f.isFile()).map((f) => `${f.path}/${f.name}`)) {
-		queue.add(async () => {
+		void queue.add(async () => {
 			const filePath = `${file}`
 			const md5 = await getMD5OfFile(filePath)
 			hashes.push(md5)

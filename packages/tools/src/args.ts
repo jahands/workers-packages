@@ -14,7 +14,7 @@ import type { ZodTypeAny } from 'zod'
  * @returns The zod type specified
  */
 export function validateArg<T extends ZodTypeAny>(validator: T, cmd?: Command) {
-	return (s: string) => parseArg(s, validator, cmd)
+	return (s: string): ReturnType<T['parse']> => parseArg(s, validator, cmd)
 }
 
 /**
@@ -32,16 +32,16 @@ export function parseArg<T extends ZodTypeAny>(
 ): ReturnType<T['parse']> {
 	try {
 		return validator.parse(s)
-	} catch (e) {
-		if (e instanceof ZodError && e.issues.length > 0) {
-			const messages = e.issues.map((e) => e.message)
+	} catch (err) {
+		if (err instanceof ZodError && err.issues.length > 0) {
+			const messages = err.issues.map((e): string => e.message)
 			let messagesFmt = messages[0]
 			for (const msg of messages.slice(1)) {
 				messagesFmt += `\n       ${msg}`
 			}
 			throw (cmd ?? program).error(`${chalk.redBright('error')}${chalk.grey(':')} ${messagesFmt}`)
 		} else {
-			throw e
+			throw err
 		}
 	}
 }

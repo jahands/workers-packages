@@ -1,5 +1,4 @@
-import { Hono } from 'hono'
-import { useWorkersLogger, withLogTags, WorkersLogger } from 'workers-tagged-logger'
+import { withLogTags, WorkersLogger } from 'workers-tagged-logger'
 
 // Optional type hints for tags
 type Tags = {
