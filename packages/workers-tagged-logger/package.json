@@ -27,7 +27,7 @@
 		"pkgroll": "2.5.0"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.4.29",
+		"@cloudflare/vitest-pool-workers": "0.5.3",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"vitest": "2.0.5"
