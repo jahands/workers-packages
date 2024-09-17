@@ -46,7 +46,6 @@ describe('Hono App', () => {
 			    "level": "info",
 			    "message": "hello, world!",
 			    "tags": {
-			      "environment": undefined,
 			      "foo": "bar",
 			      "handler": "fetch",
 			      "source": "hono-app",
