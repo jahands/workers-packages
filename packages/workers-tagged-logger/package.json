@@ -2,6 +2,7 @@
 	"name": "workers-tagged-logger",
 	"version": "0.1.0",
 	"private": false,
+	"license": "MIT",
 	"author": {
 		"name": "Jacob Hands",
 		"url": "https://npmjs.com/packages/workers-tagged-logger"

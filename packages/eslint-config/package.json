@@ -2,6 +2,7 @@
 	"name": "@repo/eslint-config",
 	"version": "0.1.11",
 	"private": true,
+	"license": "MIT",
 	"sideEffects": false,
 	"files": [
 		"remix.cjs",

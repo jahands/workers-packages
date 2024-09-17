@@ -2,6 +2,7 @@
 	"name": "@repo/tools",
 	"version": "0.6.2",
 	"private": true,
+	"license": "MIT",
 	"sideEffects": false,
 	"directories": {
 		"bin": "bin"
