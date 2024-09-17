@@ -17,6 +17,11 @@ const config = {
 			dependencies: ['vitest', '@vitest/ui'],
 			pinVersion: '2.0.5',
 		},
+		{
+			label: 'pin node types to prevent conflicts with Workers types',
+			dependencies: ['@types/node'],
+			pinVersion: '20.8.3',
+		},
 	],
 	semverGroups: [
 		{
