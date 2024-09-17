@@ -2,6 +2,12 @@
 	"name": "workers-tagged-logger",
 	"version": "0.1.0",
 	"private": false,
+	"description": "A structured logger for Cloudflare Workers",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages",
+		"directory": "packages/workers-tagged-logger"
+	},
 	"license": "MIT",
 	"author": {
 		"name": "Jacob Hands",
