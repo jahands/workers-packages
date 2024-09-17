@@ -1,4 +1,4 @@
-VERSION --raw-output --build-auto-skip 0.8
+VERSION --raw-output 0.8
 PROJECT jahands/docker
 
 prepare-workspace:
