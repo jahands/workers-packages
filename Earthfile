@@ -53,14 +53,17 @@ test:
 		--secret TURBO_REMOTE_CACHE_SIGNATURE_KEY \
 		pnpm turbo check:ci
 
-build-workers:
+build:
 	FROM +install-deps
 	LET TURBO_TEAM=team_jahands
 	LET FORCE_COLOR=1
 	LET DO_NOT_TRACK=1
 	ARG GITHUB_ACTIONS
-	RUN	--raw-output --secret TURBO_TOKEN --secret TURBO_API --secret TURBO_REMOTE_CACHE_SIGNATURE_KEY \
-		pnpm turbo build:wrangler
+	RUN	--raw-output --secret TURBO_TOKEN 
+		--secret TURBO_TOKEN \
+		--secret TURBO_API \
+		--secret TURBO_REMOTE_CACHE_SIGNATURE_KEY \
+		pnpm turbo build
 
 # ==================== #
 # ======= all ======== #
