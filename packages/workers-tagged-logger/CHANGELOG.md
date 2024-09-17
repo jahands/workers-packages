@@ -1,5 +1,13 @@
 # workers-tagged-logger
 
+## 0.2.2
+
+### Patch Changes
+
+- 10b04a0: chore: update readme
+- eefec7d: Update readme
+- 2a9ba5a: chore: add keywords to package.json
+
 ## 0.2.1
 
 ### Patch Changes
