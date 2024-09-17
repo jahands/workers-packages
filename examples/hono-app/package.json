@@ -1,0 +1,25 @@
+{
+	"name": "@repo/hono-app",
+	"version": "0.2.7",
+	"private": true,
+	"sideEffects": false,
+	"scripts": {
+		"build": "runx build wrangler",
+		"check:lint": "run-eslint-workers",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"hono": "4.6.2",
+		"workers-tagged-logger": "workspace:*",
+		"zod": "3.23.8"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "0.5.3",
+		"@cloudflare/workers-types": "4.20240909.0",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"vitest": "2.0.5"
+	}
+}

@@ -1,21 +1,16 @@
 {
-	"name": "workers-example",
+	"name": "@repo/vanilla-worker",
 	"version": "0.2.7",
 	"private": true,
 	"sideEffects": false,
 	"scripts": {
-		"build:wrangler": "runx build wrangler",
+		"build": "runx build wrangler",
 		"check:lint": "run-eslint-workers",
 		"check:types": "run-tsc",
-		"deploy:wrangler": "runx deploy wrangler",
-		"sentry:commits": "runx sentry commits workers-example",
-		"sentry:finalize": "runx sentry finalize workers-example",
-		"sentry:sourcemaps": "runx sentry sourcemaps workers-example",
 		"test": "run-vitest"
 	},
 	"dependencies": {
-		"hono": "4.6.2",
-		"zod": "3.23.8"
+		"workers-tagged-logger": "workspace:*"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "0.5.3",
