@@ -14,12 +14,12 @@
 		"test": "run-vitest"
 	},
 	"dependencies": {
-		"hono": "4.4.13",
+		"hono": "4.6.2",
 		"zod": "3.23.8"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.4.29",
-		"@cloudflare/workers-types": "4.20240903.0",
+		"@cloudflare/vitest-pool-workers": "0.5.3",
+		"@cloudflare/workers-types": "4.20240909.0",
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
