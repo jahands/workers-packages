@@ -32,7 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     concurrency: ${{ github.workflow }}-create-release-pr
-    needs: test
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
