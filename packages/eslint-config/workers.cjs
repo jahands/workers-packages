@@ -1,12 +1,18 @@
+// @ts-check
 const { resolve } = require('node:path')
 
 const project = resolve(process.cwd(), 'tsconfig.json')
 
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-	ignorePatterns: ['.*.{js,cjs}', '**/node_modules/**', '**/dist/**'],
-	plugins: ['@typescript-eslint', 'import', 'unused-imports'],
+	ignorePatterns: [
+		// Ignore dotfiles
+		'.*.{js,cjs}',
+		'**/node_modules/**',
+		'**/dist/**',
+	],
 	extends: ['turbo'],
+	plugins: ['@typescript-eslint', 'import', 'unused-imports'],
 	settings: {
 		'import/resolver': {
 			typescript: {
@@ -17,7 +23,6 @@ module.exports = {
 	overrides: [
 		// TypeScript
 		{
-			// enable the rule specifically for TypeScript files
 			files: ['**/*.{ts,tsx}'],
 			parser: '@typescript-eslint/parser',
 			parserOptions: {
@@ -33,12 +38,13 @@ module.exports = {
 				'prettier', // disable rules that conflict with prettier
 			],
 			rules: {
-				'@typescript-eslint/consistent-type-imports': ['warn', { prefer: 'type-imports' }],
-				'@typescript-eslint/explicit-function-return-type': 'off',
-				'react-hooks/rules-of-hooks': 'off',
+				'no-empty': 'warn',
+				'@typescript-eslint/consistent-type-imports': [
+					'warn',
+					{ prefer: 'type-imports', disallowTypeAnnotations: true },
+				],
+				'@typescript-eslint/explicit-function-return-type': 'warn',
 				'@typescript-eslint/ban-ts-comment': 'off',
-				'unused-imports/no-unused-imports': 'warn',
-				'@typescript-eslint/array-type': ['warn', { default: 'array-simple' }],
 				'@typescript-eslint/no-unused-vars': [
 					'warn',
 					{
@@ -47,8 +53,31 @@ module.exports = {
 						caughtErrorsIgnorePattern: '^_',
 					},
 				],
-				'@typescript-eslint/no-explicit-any': 'off',
+
+				// Prefer Array<T> over T[] syntax for custom types.
+				// This makes custom/complex types more readable.
+				'@typescript-eslint/array-type': [
+					'warn',
+					{
+						default: 'array-simple',
+					},
+				],
+				eqeqeq: ['error', 'always'],
+				'@typescript-eslint/no-explicit-any': 'warn',
 				'prefer-const': 'warn',
+				'@typescript-eslint/strict-boolean-expressions': 'error',
+				'unused-imports/no-unused-imports': 'warn',
+				'@typescript-eslint/naming-convention': [
+					'error',
+					// enforce that all function names are in camelCase
+					{
+						selector: ['function'],
+						format: ['camelCase'],
+					},
+				],
+				'no-shadow': 'off',
+				'@typescript-eslint/no-shadow': 'error',
+				'@typescript-eslint/no-floating-promises': 'warn',
 				'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 			},
 		},
