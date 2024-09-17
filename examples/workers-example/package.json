@@ -1,5 +1,5 @@
 {
-	"name": "actionflare",
+	"name": "workers-example",
 	"version": "0.2.7",
 	"private": true,
 	"sideEffects": false,
@@ -8,9 +8,9 @@
 		"check:lint": "run-eslint-workers",
 		"check:types": "run-tsc",
 		"deploy:wrangler": "runx deploy wrangler",
-		"sentry:commits": "runx sentry commits actionflare",
-		"sentry:finalize": "runx sentry finalize actionflare",
-		"sentry:sourcemaps": "runx sentry sourcemaps actionflare",
+		"sentry:commits": "runx sentry commits workers-example",
+		"sentry:finalize": "runx sentry finalize workers-example",
+		"sentry:sourcemaps": "runx sentry sourcemaps workers-example",
 		"test": "run-vitest"
 	},
 	"dependencies": {
