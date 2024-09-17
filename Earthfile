@@ -70,4 +70,4 @@ build:
 # ==================== #
 test-and-build:
 	BUILD +test
-	BUILD +build-workers
+	BUILD +build
