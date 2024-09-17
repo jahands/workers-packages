@@ -2,23 +2,6 @@
 
 A wrapper around `console.log()` for structured logging in Cloudflare Workers, powered by AsyncLocalStorage.
 
-## Why?
-
-While `console.log()` works great in Workers, it can be frustrating trying to ensure that every log is tagged with information that helps you track down issues.
-
-For example, let's say you want every log to be tagged with the user that sent a request. This might look something like this:
-
-```ts
-console.log({
-  message: 'something happened!'
-  user_id: userId
-})
-```
-
-This means that everywhere you want to log something, you need to make sure `userId` is available, which can be complex in larger applications.
-
-That's where this package comes in: you no longer need your metadata in the same place that you need to record a log. Simply set the metadata as you get it, and each log after that will have that tag!
-
 ## Features
 
 - Add tags to all logs (e.g. user_id) without needing to pass a logger to every function via `setTags()`.
@@ -134,3 +117,20 @@ Note: There is currently no way to set fields for all logs like you can with `se
 ### Additional Examples
 
 We have full Workers examples in the [examples](../../examples/) directory.
+
+## Why?
+
+While `console.log()` works great in Workers, it can be frustrating trying to ensure that every log is tagged with information that helps you track down issues.
+
+For example, let's say you want every log to be tagged with the user that sent a request. This might look something like this:
+
+```ts
+console.log({
+  message: 'something happened!'
+  user_id: userId
+})
+```
+
+This means that everywhere you want to log something, you need to make sure `userId` is available, which can be complex in larger applications.
+
+That's where this package comes in: you no longer need your metadata in the same place that you need to record a log. Simply set the metadata as you get it, and each log after that will have that tag!
