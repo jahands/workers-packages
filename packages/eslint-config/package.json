@@ -5,7 +5,6 @@
 	"license": "MIT",
 	"sideEffects": false,
 	"files": [
-		"remix.cjs",
 		"workers.cjs"
 	],
 	"devDependencies": {
