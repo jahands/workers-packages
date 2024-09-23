@@ -1,5 +1,13 @@
 # workers-tagged-logger
 
+## 0.2.3
+
+### Patch Changes
+
+- 34bfb34: chore: Add top-level module/types to package.json
+
+  This might be needed in some cases: https://stackoverflow.com/a/75097813
+
 ## 0.2.2
 
 ### Patch Changes
