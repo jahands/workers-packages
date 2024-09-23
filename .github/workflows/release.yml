@@ -7,7 +7,7 @@ on:
 env:
   EARTHLY_TOKEN: ${{ secrets.EARTHLY_TOKEN }}
   EARTHLY_ORG: jahands
-  EARTHLY_SATELLITE: mini-sat
+  EARTHLY_SATELLITE: hetz
   FORCE_COLOR: 1
 
 jobs:
