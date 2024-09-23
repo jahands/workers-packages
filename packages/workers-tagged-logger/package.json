@@ -28,7 +28,7 @@
 		}
 	},
 	"scripts": {
-		"build": "pkgroll",
+		"build": "pkgroll --clean-dist",
 		"check:lint": "run-eslint-workers",
 		"check:types": "run-tsc",
 		"test": "run-vitest"
