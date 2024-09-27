@@ -1,8 +1,7 @@
+import { createHash } from 'node:crypto'
 import memoizeOne from 'memoize-one'
 import pQueue from 'p-queue'
 import { z } from 'zod'
-
-import { cliError } from './errors'
 
 export const getRepoRoot = memoizeOne(async () =>
 	z
@@ -33,16 +32,7 @@ export async function getMD5OfFile(path: string): Promise<string> {
 }
 
 export async function getMD5OfString(str: string): Promise<string> {
-	const md5Cmd = (await cmdExists('md5')) ? 'md5' : 'md5sum'
-	if (!(await cmdExists(md5Cmd))) {
-		throw cliError(`md5 or md5sum is required but neither are available`)
-	}
-
-	if (md5Cmd === 'md5') {
-		return (await $({ stdio: 'pipe', input: str })`md5 -q`.text()).trim() // MacOS
-	} else {
-		return (await $({ stdio: 'pipe', input: str })`${md5Cmd} | cut -d' ' -f1`.text()).trim() // Linux
-	}
+	return createHash('md5').update(str).digest('hex')
 }
 
 export async function cmdExists(cmd: string): Promise<boolean> {
