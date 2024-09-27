@@ -4,7 +4,7 @@ set shell := ["zsh", "-c"]
 @help:
   just --list --unsorted
 
-# Build banda
+# Build packages
 [no-cd]
 @build:
   turbo build
