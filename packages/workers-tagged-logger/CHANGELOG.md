@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.3.0
+
+### Minor Changes
+
+- cdb374e: fix: Ensure message field is always logged as a string
+
 ## 0.2.3
 
 ### Patch Changes
