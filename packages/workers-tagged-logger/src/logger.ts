@@ -153,11 +153,12 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			if (msgs.length === 0) {
 				message = undefined
 			} else if (msgs.length === 1) {
-				message = msgs[0]
+				message = stringifyMessage(msgs[0])
 			} else {
-				message = msgs
+				message = stringifyMessages(msgs)
 			}
 		}
+
 		const log: ConsoleLog = {
 			message,
 			level,
@@ -168,6 +169,31 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 		}
 		console.log(Object.assign({}, log, this.getFields()))
 	}
+}
+
+export function stringifyMessages(...msgs: any[]): string {
+	return msgs.map(stringifyMessage).join(' ')
+}
+
+export function stringifyMessage(msg: any): string {
+	if (typeof msg === 'string') {
+		return msg
+	}
+	if (typeof msg === 'number') {
+		return msg.toString()
+	}
+	if (typeof msg === 'boolean') {
+		return `${msg}`
+	}
+	if (typeof msg === 'function') {
+		return `[function: ${msg.name}()]`
+	}
+	if (typeof msg === 'object') {
+		if (msg instanceof Error) {
+			return `${msg.name}: ${msg.message}${msg.stack !== undefined ? `\n${msg.stack}` : ''}`
+		}
+	}
+	return JSON.stringify(msg)
 }
 
 interface WithLogTagsOptions<T extends LogTags> {

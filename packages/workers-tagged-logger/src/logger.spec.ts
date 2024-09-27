@@ -1,7 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, test, vi } from 'vitest'
 import { z } from 'zod'
 
-import { ConsoleLog, withLogTags, WorkersLogger } from './logger'
+import {
+	ConsoleLog,
+	stringifyMessage,
+	stringifyMessages,
+	withLogTags,
+	WorkersLogger,
+} from './logger'
 
 import type { LogTags } from './logger'
 
@@ -93,11 +99,7 @@ describe('WorkersLogger', () => {
 				const h = setupTest()
 				await withLogTags({ source: 'worker-a' }, async () => {
 					h.log.info({ hello: 'world' })
-					expect(h.oneLog().message).toMatchInlineSnapshot(`
-				{
-				  "hello": "world",
-				}
-			`)
+					expect(h.oneLog().message).toMatchInlineSnapshot(`"{"hello":"world"}"`)
 				})
 			})
 
@@ -105,12 +107,7 @@ describe('WorkersLogger', () => {
 				const h = setupTest()
 				await withLogTags({ source: 'worker-a' }, async () => {
 					h.log.info(['hello', 'world'])
-					expect(h.oneLog().message).toMatchInlineSnapshot(`
-					[
-					  "hello",
-					  "world",
-					]
-				`)
+					expect(h.oneLog().message).toMatchInlineSnapshot(`"["hello","world"]"`)
 				})
 			})
 
@@ -118,7 +115,10 @@ describe('WorkersLogger', () => {
 				const h = setupTest()
 				await withLogTags({ source: 'worker-a' }, async () => {
 					h.log.info(new Error('boom!'))
-					expect(h.oneLog().message).toMatchInlineSnapshot(`[Error: boom!]`)
+					expect(h.oneLog().message.split('\n').slice(0, 2).join('\n')).toMatchInlineSnapshot(`
+					"Error: boom!
+					Error: boom!"
+				`)
 				})
 			})
 
@@ -126,7 +126,7 @@ describe('WorkersLogger', () => {
 				const h = setupTest()
 				await withLogTags({ source: 'worker-a' }, async () => {
 					h.log.info(null)
-					expect(h.oneLog().message).toMatchInlineSnapshot(`null`)
+					expect(h.oneLog().message).toMatchInlineSnapshot(`"null"`)
 				})
 			})
 
@@ -134,7 +134,7 @@ describe('WorkersLogger', () => {
 				const h = setupTest()
 				await withLogTags({ source: 'worker-a' }, async () => {
 					h.log.info(123)
-					expect(h.oneLog().message).toMatchInlineSnapshot(`123`)
+					expect(h.oneLog().message).toMatchInlineSnapshot(`"123"`)
 				})
 			})
 
@@ -161,27 +161,9 @@ describe('WorkersLogger', () => {
 				h.log.info('hello', 123, new Error('boom!'), { banda: 'rocks' }, ['a', 'b'], {
 					foo: { bar: { baz: 'abc' } },
 				})
-				expect(h.oneLog().message).toMatchInlineSnapshot(`
-					[
-					  "hello",
-					  123,
-					  [Error: boom!],
-					  {
-					    "banda": "rocks",
-					  },
-					  [
-					    "a",
-					    "b",
-					  ],
-					  {
-					    "foo": {
-					      "bar": {
-					        "baz": "abc",
-					      },
-					    },
-					  },
-					]
-				`)
+				expect(h.oneLog().message).toMatchInlineSnapshot(
+					`"["hello",123,{},{"banda":"rocks"},["a","b"],{"foo":{"bar":{"baz":"abc"}}}]"`
+				)
 			})
 		})
 
@@ -649,26 +631,28 @@ describe('withLogTags', () => {
 			  },
 			}
 		`)
-		expect(getLog(1), `updated source and 'sub' tag is added`).toMatchInlineSnapshot(`
-			  	{
-			  	  "message": "hello from level 2!",
-			  	  "tags": {
-			  	    "banda": "rocks",
-			  	    "source": "subHandler",
-			  	    "sub": "handler",
-			  	  },
-			  	}
-			  `)
-		expect(getLog(2), `does not contain 'sub' tag from lower level and source is unchanged`)
-			.toMatchInlineSnapshot(`
+		expect(getLog(1), `updated source and 'sub' tag is added`).toMatchInlineSnapshot(
+			`
 			{
-			  "message": "hello again from level 1!",
+			  "message": "hello from level 2!",
 			  "tags": {
 			    "banda": "rocks",
-			    "source": "worker-a",
+			    "source": "subHandler",
+			    "sub": "handler",
 			  },
 			}
-		`)
+		`
+		)
+		expect(getLog(2), `does not contain 'sub' tag from lower level and source is unchanged`)
+			.toMatchInlineSnapshot(`
+				{
+				  "message": "hello again from level 1!",
+				  "tags": {
+				    "banda": "rocks",
+				    "source": "worker-a",
+				  },
+				}
+			`)
 	})
 
 	it('adds source to tags when provided', async () => {
@@ -705,5 +689,50 @@ describe('withLogTags', () => {
 				}
 			`)
 		})
+	})
+})
+
+describe('stringifyMessage()', () => {
+	it('stringifies basic types', () => {
+		expect(stringifyMessage('abc')).toMatchInlineSnapshot(`"abc"`)
+		expect(stringifyMessage(123)).toMatchInlineSnapshot(`"123"`)
+		expect(stringifyMessage(true)).toMatchInlineSnapshot(`"true"`)
+	})
+
+	it('stringifies objects', () => {
+		expect(stringifyMessage({ foo: 'bar', a: 1 })).toMatchInlineSnapshot(`"{"foo":"bar","a":1}"`)
+	})
+
+	it('stringifies arrays', () => {
+		expect(stringifyMessage(['a', 1, true])).toMatchInlineSnapshot(`"["a",1,true]"`)
+		expect(stringifyMessage([{ foo: 'bar' }, { a: 1 }, [1, 2]])).toMatchInlineSnapshot(
+			`"[{"foo":"bar"},{"a":1},[1,2]]"`
+		)
+	})
+
+	it('stringifies functions', () => {
+		expect(stringifyMessage(stringifyMessage)).toMatchInlineSnapshot(
+			`"[function: stringifyMessage()]"`
+		)
+	})
+
+	it('stringifies errors', () => {
+		const msg = stringifyMessage(new Error('boom!')).split('\n')
+		expect(msg.length).toBeGreaterThan(1)
+		expect(msg[0]).toMatchInlineSnapshot(`"Error: boom!"`)
+	})
+})
+
+describe('stringifyMessages()', () => {
+	it('stringifies multiple messages', () => {
+		expect(
+			stringifyMessages('a', 1, true, stringifyMessage, { foo: 'bar' }, ['a', 1, true])
+		).toMatchInlineSnapshot(`"a 1 true [function: stringifyMessage()] {"foo":"bar"} ["a",1,true]"`)
+	})
+
+	it('stringifies errors', () => {
+		const msg = stringifyMessages(new Error('boom!')).split('\n')
+		expect(msg.length).toBeGreaterThan(1)
+		expect(msg[0]).toMatchInlineSnapshot(`"Error: boom!"`)
 	})
 })
