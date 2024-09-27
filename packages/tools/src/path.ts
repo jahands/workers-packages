@@ -12,18 +12,16 @@ export const getRepoRoot = memoizeOne(async () =>
 )
 
 export async function getMD5OfDir(dir: string): Promise<string> {
-	const files = await fs.readdir(dir, { recursive: true, withFileTypes: true })
-	const hashes: string[] = []
-	const queue = new pQueue({ concurrency: 100 })
-	for (const file of files.filter((f) => f.isFile()).map((f) => `${f.path}/${f.name}`)) {
-		void queue.add(async () => {
-			const filePath = `${file}`
-			const md5 = await getMD5OfFile(filePath)
-			hashes.push(md5)
-		})
+	const files = await fs
+		.readdir(dir, { recursive: true, withFileTypes: true })
+		.then((fs) => fs.filter((f) => f.isFile()))
+
+	files.sort((a, b) => `${a.path}${a.name}`.localeCompare(`${b.path}${b.name}`))
+	const hash = createHash('md5')
+	for (const file of files.map((f) => `${f.path}/${f.name}`)) {
+		hash.update((await fs.readFile(file)).toString())
 	}
-	await queue.onIdle()
-	return getMD5OfString(hashes.join(''))
+	return hash.digest('hex')
 }
 
 export async function getMD5OfFile(path: string): Promise<string> {

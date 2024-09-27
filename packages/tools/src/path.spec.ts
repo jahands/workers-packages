@@ -25,7 +25,7 @@ describe('getMD5OfString()', () => {
 describe('getMD5OfDir()', () => {
 	it('returns the md5 of a directory', async () => {
 		expect(await getMD5OfDir(`${fixtureDir}/dir-of-files`)).toMatchInlineSnapshot(
-			`"02c5f376a7b5c559b26eadd5e1178806"`
+			`"dd8c6a395b5dd36c56d23275028f526c"`
 		)
 	})
 })
