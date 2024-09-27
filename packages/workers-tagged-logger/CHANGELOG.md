@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.3.1
+
+### Patch Changes
+
+- 74ac1bf: fix: Log error string instead of error object when unable to get log tags from AsyncLocalStorage
+
 ## 0.3.0
 
 ### Minor Changes
