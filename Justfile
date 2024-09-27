@@ -15,7 +15,8 @@ set shell := ["zsh", "-c"]
 
 # Run Vitest tests
 @test *flags:
-	pnpm vitest {{flags}}
+  turbo build -F './packages/*'
+  pnpm vitest {{flags}}
 
 # Update deps via syncpack
 @update:
