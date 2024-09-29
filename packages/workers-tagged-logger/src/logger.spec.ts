@@ -62,7 +62,7 @@ describe('WorkersLogger', () => {
 				[
 				  {
 				    "level": "error",
-				    "message": [Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?],
+				    "message": "Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?",
 				    "time": "2024-10-26T12:30:00.000Z",
 				  },
 				  {
@@ -319,7 +319,7 @@ describe('WorkersLogger', () => {
 				[
 				  {
 				    "level": "error",
-				    "message": [Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?],
+				    "message": "Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?",
 				    "time": "2024-10-26T12:30:00.000Z",
 				  },
 				  {
@@ -334,22 +334,22 @@ describe('WorkersLogger', () => {
 			ctxLogger.info('hello, world!')
 			expect(h.logs.slice(2), 'contains our log from ctxLogger but no global tags')
 				.toMatchInlineSnapshot(`
-				[
-				  {
-				    "level": "error",
-				    "message": [Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?],
-				    "time": "2024-10-26T12:30:00.000Z",
-				  },
-				  {
-				    "level": "info",
-				    "message": "hello, world!",
-				    "tags": {
-				      "banda": "rocks",
-				    },
-				    "time": "2024-10-26T12:30:00.000Z",
-				  },
-				]
-			`)
+					[
+					  {
+					    "level": "error",
+					    "message": "Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?",
+					    "time": "2024-10-26T12:30:00.000Z",
+					  },
+					  {
+					    "level": "info",
+					    "message": "hello, world!",
+					    "tags": {
+					      "banda": "rocks",
+					    },
+					    "time": "2024-10-26T12:30:00.000Z",
+					  },
+					]
+				`)
 		})
 
 		it('cannot delete tags - can only set to undefined / null', async () => {
@@ -506,7 +506,7 @@ describe('WorkersLogger', () => {
 				[
 				  {
 				    "level": "error",
-				    "message": [Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?],
+				    "message": "Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?",
 				    "time": "2024-10-26T12:30:00.000Z",
 				  },
 				]
