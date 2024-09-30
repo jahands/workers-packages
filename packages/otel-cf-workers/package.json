@@ -1,6 +1,6 @@
 {
 	"name": "@jahands/otel-cf-workers",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"private": false,
 	"description": "Re-packaged version of @microlabs/otel-cf-workers bundled with @opentelemetry/api to work around vitest issues",
 	"keywords": [
