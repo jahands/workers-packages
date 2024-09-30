@@ -60,8 +60,5 @@
 		"typescript": "5.5.4",
 		"vitest": "2.1.1",
 		"zx": "8.1.8"
-	},
-	"publishConfig": {
-		"registry": "https://gitea.uuid.rocks/api/packages/jh/npm/"
 	}
 }
