@@ -1,6 +1,5 @@
 import { createHash } from 'node:crypto'
 import memoizeOne from 'memoize-one'
-import pQueue from 'p-queue'
 import { z } from 'zod'
 
 export const getRepoRoot = memoizeOne(async () =>
