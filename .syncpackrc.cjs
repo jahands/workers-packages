@@ -16,7 +16,7 @@ const config = {
 		{
 			label: 'pin vitest compatible with workers-pool-vitest',
 			dependencies: ['vitest', '@vitest/ui'],
-			pinVersion: '2.0.5',
+			pinVersion: '2.1.1',
 		},
 		{
 			label: 'pin typescript to version compatible with eslint',
