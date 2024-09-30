@@ -9,7 +9,7 @@ const config = {
 		{
 			label: 'local packages',
 			packages: ['**'],
-			dependencies: ['@repo/*', 'workers-tagged-logger'],
+			dependencies: ['@repo/*', 'workers-tagged-logger', '@jahands/otel-cf-workers'],
 			dependencyTypes: ['!local'], // Exclude the local package itself
 			pinVersion: 'workspace:*',
 		},

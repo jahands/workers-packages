@@ -1,0 +1,67 @@
+{
+	"name": "@jahands/otel-cf-workers",
+	"version": "0.1.0",
+	"private": true,
+	"description": "Re-packaged version of @microlabs/otel-cf-workers bundled with @opentelemetry/api to work around vitest issues",
+	"keywords": [
+		"cloudflare workers",
+		"opentelemetry",
+		"otel-cf-workers",
+		"cloudflare",
+		"workers"
+	],
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.mts",
+				"default": "./dist/index.mjs"
+			}
+		},
+		"./otel-cf-workers": {
+			"import": {
+				"types": "./dist/otel-cf-workers.d.mts",
+				"default": "./dist/otel-cf-workers.mjs"
+			}
+		},
+		"./opentelemetry-api": {
+			"import": {
+				"types": "./dist/opentelemetry-api.d.mts",
+				"default": "./dist/opentelemetry-api.mjs"
+			}
+		}
+	},
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.mts",
+	"scripts": {
+		"build": "tsx ./scripts/build.ts",
+		"check:lint": "run-eslint-workers",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"@microlabs/otel-cf-workers": "1.0.0-rc.48",
+		"@opentelemetry/api": "1.9.0"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "0.5.12",
+		"@cloudflare/workers-types": "4.20240925.0",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"@types/node": "20.8.3",
+		"esbuild": "0.24.0",
+		"tsx": "4.19.1",
+		"typescript": "5.5.4",
+		"vitest": "2.1.1",
+		"zx": "8.1.8"
+	},
+	"publishConfig": {
+		"registry": "https://gitea.uuid.rocks/api/packages/jh/npm/"
+	}
+}
