@@ -1,5 +1,13 @@
 # @jahands/otel-cf-workers
 
+## 0.1.7
+
+### Patch Changes
+
+- 05820d6: chore: Simplify build scripts
+- 7268a6e: chore: simplify esbuild script
+- 275888f: chore: run esbuild with bun instead of tsx
+
 ## 0.1.6
 
 ### Patch Changes
