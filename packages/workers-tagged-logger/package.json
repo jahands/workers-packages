@@ -11,13 +11,13 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/jahands/workers-packages",
+		"url": "https://github.com/jahands/workers-packages.git",
 		"directory": "packages/workers-tagged-logger"
 	},
 	"license": "MIT",
 	"author": {
 		"name": "Jacob Hands",
-		"url": "https://npmjs.com/packages/workers-tagged-logger"
+		"url": "https://github.com/jahands"
 	},
 	"sideEffects": false,
 	"type": "module",
