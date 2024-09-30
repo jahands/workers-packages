@@ -46,7 +46,7 @@
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.mts",
 	"scripts": {
-		"build": "tsx ./scripts/build.ts",
+		"build": "bun ./scripts/build.ts",
 		"check:lint": "run-eslint-workers",
 		"check:types": "run-tsc",
 		"test": "run-vitest"
@@ -61,8 +61,8 @@
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@types/node": "20.8.3",
+		"bun": "1.1.29",
 		"esbuild": "0.24.0",
-		"tsx": "4.19.1",
 		"typescript": "5.5.4",
 		"vitest": "2.1.1",
 		"zx": "8.1.8"

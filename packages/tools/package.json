@@ -27,6 +27,7 @@
 		"zx": "8.1.8"
 	},
 	"devDependencies": {
-		"@types/luxon": "3.4.2"
+		"@types/luxon": "3.4.2",
+		"bun": "1.1.29"
 	}
 }
