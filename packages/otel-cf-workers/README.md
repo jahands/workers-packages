@@ -11,6 +11,14 @@ Please note that this is primarily intended for my own use. You may want to copy
 
 ## Usage
 
+### Install
+
+```shell
+npm install @jahands/otel-cf-workers
+```
+
+### Example
+
 ```ts
 import { instrument, ResolveConfigFn, trace } from '@jahands/otel-cf-workers'
 
