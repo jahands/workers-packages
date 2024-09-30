@@ -1,5 +1,12 @@
 # workers-tagged-logger
 
+## 0.3.3
+
+### Patch Changes
+
+- 8cda7b1: chore: update deps
+- 1da8fb8: chore: update author url in package.json
+
 ## 0.3.2
 
 ### Patch Changes

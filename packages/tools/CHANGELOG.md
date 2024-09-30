@@ -1,5 +1,12 @@
 # @repo/tools
 
+## 0.6.5
+
+### Patch Changes
+
+- 8cda7b1: chore: update deps
+- f7ae571: chore: remove unused import
+
 ## 0.6.4
 
 ### Patch Changes
