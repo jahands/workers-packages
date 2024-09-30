@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.4
+
+### Patch Changes
+
+- 2260542: chore: add repository to package.json
+
 ## 0.1.3
 
 ### Patch Changes
