@@ -12,7 +12,7 @@ Please note that this is primarily intended for my own use. You may want to copy
 ## Usage
 
 ```ts
-import { trace, instrument, ResolveConfigFn } from '@jahands/otel-cf-workers'
+import { instrument, ResolveConfigFn, trace } from '@jahands/otel-cf-workers'
 
 export interface Env {
 	HONEYCOMB_API_KEY: string

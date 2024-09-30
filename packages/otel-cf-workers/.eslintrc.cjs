@@ -2,5 +2,5 @@
 module.exports = {
 	root: true,
 	ignorePatterns: 'scripts/build.mjs',
-	extends: ['@repo/eslint-config/default.cjs'],
+	extends: ['@repo/eslint-config/workers.cjs'],
 }
