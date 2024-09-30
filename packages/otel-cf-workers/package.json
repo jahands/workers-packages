@@ -10,6 +10,11 @@
 		"cloudflare",
 		"workers"
 	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages.git",
+		"directory": "packages/otel-cf-workers"
+	},
 	"license": "MIT",
 	"author": {
 		"name": "Jacob Hands",
