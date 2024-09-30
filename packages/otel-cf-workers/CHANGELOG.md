@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.6
+
+### Patch Changes
+
+- b2a1bb1: Unset platform (doesn't seem to be needed, and makes bundle slightly smaller)
+
 ## 0.1.5
 
 ### Patch Changes
