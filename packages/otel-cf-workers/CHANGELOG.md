@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.5
+
+### Patch Changes
+
+- aca9d27: chore: add homepage to package.json
+
 ## 0.1.4
 
 ### Patch Changes

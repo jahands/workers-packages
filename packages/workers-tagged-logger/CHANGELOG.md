@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.3.4
+
+### Patch Changes
+
+- aca9d27: chore: add homepage to package.json
+
 ## 0.3.3
 
 ### Patch Changes
