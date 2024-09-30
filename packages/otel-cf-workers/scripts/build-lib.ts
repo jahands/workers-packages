@@ -1,12 +1,9 @@
 import * as esbuild from 'esbuild'
 
+import { entryPoints } from './entrypoints'
+
 await esbuild.build({
-	entryPoints: [
-		// entrypoints
-		'./src/index.ts',
-		'./src/otel-cf-workers.ts',
-		'./src/opentelemetry-api.ts',
-	],
+	entryPoints,
 	outdir: './dist/',
 	logLevel: 'warning',
 	outExtension: {

@@ -3,6 +3,8 @@ import 'zx/globals'
 import { inspect } from 'util'
 import ts from 'typescript'
 
+import { entryPoints } from './entrypoints'
+
 function buildDeclarationFiles(fileNames: string[], options: ts.CompilerOptions): void {
 	options = {
 		...options,
@@ -17,15 +19,7 @@ function buildDeclarationFiles(fileNames: string[], options: ts.CompilerOptions)
 const tsconfig = ts.readConfigFile('./tsconfig.json', ts.sys.readFile)
 if (tsconfig.error) throw new Error(`failed to read tsconfig: ${inspect(tsconfig)}`)
 
-buildDeclarationFiles(
-	[
-		// entrypoints
-		'./src/index.ts',
-		'./src/otel-cf-workers.ts',
-		'./src/opentelemetry-api.ts',
-	],
-	tsconfig.config
-)
+buildDeclarationFiles(entryPoints, tsconfig.config)
 
 const dtsFiles = await glob('./dist/*.d.ts')
 await Promise.all(
