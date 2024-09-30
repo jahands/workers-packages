@@ -243,9 +243,15 @@ importers:
       '@commander-js/extra-typings':
         specifier: 12.1.0
         version: 12.1.0(commander@12.1.0)
+      '@types/luxon':
+        specifier: 3.4.2
+        version: 3.4.2
       '@types/node':
         specifier: 20.8.3
         version: 20.8.3
+      bun:
+        specifier: 1.1.29
+        version: 1.1.29
       cli-table3:
         specifier: 0.6.5
         version: 0.6.5
@@ -279,13 +285,6 @@ importers:
       zx:
         specifier: 8.1.8
         version: 8.1.8
-    devDependencies:
-      '@types/luxon':
-        specifier: 3.4.2
-        version: 3.4.2
-      bun:
-        specifier: 1.1.29
-        version: 1.1.29
 
   packages/typescript-config:
     devDependencies:
@@ -1889,7 +1888,6 @@ packages:
 
   bun@1.1.29:
     resolution: {integrity: sha512-SKhpyKNZtgxrVel9ec9xon3LDv8mgpiuFhARgcJo1YIbggY2PBrKHRNiwQ6Qlb+x3ivmRurfuwWgwGexjpgBRg==}
-    cpu: [arm64, x64]
     os: [darwin, linux, win32]
     hasBin: true
 
