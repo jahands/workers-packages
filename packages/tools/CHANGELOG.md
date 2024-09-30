@@ -1,5 +1,12 @@
 # @repo/tools
 
+## 0.6.6
+
+### Patch Changes
+
+- 275888f: chore: run esbuild with bun instead of tsx
+- a394dc8: fix: move bun to deps instead of devdeps
+
 ## 0.6.5
 
 ### Patch Changes
