@@ -13,7 +13,9 @@
 	},
 	"dependencies": {
 		"@commander-js/extra-typings": "12.1.0",
+		"@types/luxon": "3.4.2",
 		"@types/node": "20.8.3",
+		"bun": "1.1.29",
 		"cli-table3": "0.6.5",
 		"commander": "12.1.0",
 		"empathic": "1.0.0",
@@ -25,9 +27,5 @@
 		"smol-toml": "1.3.0",
 		"zod": "3.23.8",
 		"zx": "8.1.8"
-	},
-	"devDependencies": {
-		"@types/luxon": "3.4.2",
-		"bun": "1.1.29"
 	}
 }
