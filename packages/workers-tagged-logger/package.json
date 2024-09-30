@@ -9,6 +9,7 @@
 		"cloudflare",
 		"workers"
 	],
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/workers-tagged-logger",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
