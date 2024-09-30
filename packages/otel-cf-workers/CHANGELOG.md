@@ -1,5 +1,12 @@
 # @jahands/otel-cf-workers
 
+## 0.1.3
+
+### Patch Changes
+
+- 3866cd1: chore: update readme
+- 951fcba: fix: Switch to public registry
+
 ## 0.1.2
 
 ### Patch Changes
