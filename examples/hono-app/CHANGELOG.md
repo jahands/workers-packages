@@ -1,5 +1,14 @@
 # @repo/hono-app
 
+## 0.2.15
+
+### Patch Changes
+
+- 8cda7b1: chore: update deps
+- Updated dependencies [8cda7b1]
+- Updated dependencies [1da8fb8]
+  - workers-tagged-logger@0.3.3
+
 ## 0.2.14
 
 ### Patch Changes
