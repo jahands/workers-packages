@@ -9,7 +9,7 @@ async function build(entrypoint: string): Promise<void> {
 			'.js': '.mjs',
 		},
 		target: 'es2022',
-		platform: 'browser',
+		// platform: 'browser', // Doesn't seem to be needed?
 		format: 'esm',
 		bundle: true,
 		treeShaking: true,
