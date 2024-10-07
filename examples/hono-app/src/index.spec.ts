@@ -1,4 +1,5 @@
 import { SELF } from 'cloudflare:test'
+import { http } from 'http-codex'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ConsoleLog, WorkersLogger } from 'workers-tagged-logger'
 
@@ -40,6 +41,10 @@ describe('Hono App', () => {
 		const h = setupTest()
 		const res = await SELF.fetch('https://example.com/hello')
 		expect(res.ok).toBe(true)
+		expect(res.status).toBe(http.StatusOK)
+		expect(res.status).toMatchInlineSnapshot(`200`)
+		expect(res.statusText).toBe(http.statusText(http.StatusOK))
+		expect(res.statusText).toMatchInlineSnapshot(`"OK"`)
 		expect(h.logs).toMatchInlineSnapshot(`
 			[
 			  {

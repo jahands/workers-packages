@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
 
-import { http } from './http'
+import { http } from '.'
 
-import type { HttpStatusCodeName } from './http'
+import type { HttpStatusCodeName } from '.'
 
 describe('http', () => {
 	const all = Object.keys(http).filter((key) => key !== 'statusText')
@@ -21,10 +21,10 @@ describe('http', () => {
 		it('returns description of the status code', () => {
 			for (const key of used) {
 				const value = http[key as HttpStatusCodeName]
-				const statusText = http.statusText(value)
+				const text = http.statusText(value)
 				expect(
 					() => z.string().min(1).parse(http.statusText(value)),
-					`${value}: ${key} - "${statusText}"`
+					`${value}: ${key} - "${text}"`
 				).not.toThrow()
 			}
 		})

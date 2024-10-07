@@ -22,15 +22,23 @@
 	"sideEffects": false,
 	"type": "module",
 	"exports": {
-		"import": {
-			"types": "./dist/http.d.mts",
-			"default": "./dist/http.mjs"
+		".": {
+			"import": {
+				"types": "./dist/index.d.mts",
+				"default": "./dist/index.mjs"
+			}
+		},
+		"./status": {
+			"import": {
+				"types": "./dist/status.d.mts",
+				"default": "./dist/status.mjs"
+			}
 		}
 	},
-	"module": "./dist/http.mjs",
-	"types": "./dist/http.d.mts",
+	"main": "./dist/index.mjs",
+	"module": "./dist/index.mjs",
 	"scripts": {
-		"build": "pkgroll --clean-dist",
+		"build": "bun ./scripts/build.ts",
 		"check:lint": "run-eslint-workers",
 		"check:types": "run-tsc",
 		"test": "run-vitest"
@@ -40,10 +48,12 @@
 		"@cloudflare/workers-types": "4.20241004.0",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"pkgroll": "2.5.0",
+		"bun": "1.1.29",
+		"esbuild": "0.24.0",
 		"rimraf": "6.0.1",
 		"typescript": "5.5.4",
 		"vitest": "2.1.1",
-		"zod": "3.23.8"
+		"zod": "3.23.8",
+		"zx": "8.1.9"
 	}
 }

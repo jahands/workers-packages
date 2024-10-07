@@ -25,6 +25,25 @@ const res = new Response('hello world!', {
 })
 ```
 
+If preferred, codes can be imported by themselves to reduce bundle size:
+
+```ts
+import { http } from 'http-codex/status'
+
+const status = http.StatusOK // 200
+```
+
+### Bundle Size
+
+Here are the bundle sizes of each import:
+
+| **Import**          | **Minified** | **Minified, Gzip'd** |
+| ------------------- | ------------ | -------------------- |
+| `http-codex`        | 4.9 KB       | 1.5 KB               |
+| `http-codex/status` | 1.6 KB       | 749 bytes            |
+
+Note: `http-codex/status` is smaller because it excludes the `statusText()` function.
+
 ## Why Another HTTP Library?
 
 Honestly I just love Go and wanted one that was very similar to how Go's http package works.
