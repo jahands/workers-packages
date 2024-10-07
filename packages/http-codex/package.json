@@ -1,0 +1,49 @@
+{
+	"name": "http-codex",
+	"version": "0.1.0",
+	"private": false,
+	"description": "http status codes based on Go's http library",
+	"keywords": [
+		"http status codes",
+		"http",
+		"status codes"
+	],
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/http-codex",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages.git",
+		"directory": "packages/http-codex"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		"import": {
+			"types": "./dist/http.d.mts",
+			"default": "./dist/http.mjs"
+		}
+	},
+	"module": "./dist/http.mjs",
+	"types": "./dist/http.d.mts",
+	"scripts": {
+		"build": "pkgroll --clean-dist",
+		"check:lint": "run-eslint-workers",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "0.5.12",
+		"@cloudflare/workers-types": "4.20240925.0",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"pkgroll": "2.5.0",
+		"rimraf": "6.0.1",
+		"typescript": "5.5.4",
+		"vitest": "2.1.1",
+		"zod": "3.23.8"
+	}
+}
