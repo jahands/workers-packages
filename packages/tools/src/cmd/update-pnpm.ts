@@ -72,5 +72,5 @@ const MiseToml = z.object({
 			pnpm: Semver.describe('pnpm version, e.g. 9.5.0'),
 		})
 		.catchall(z.string()),
-	plugins: z.record(z.string(), z.string()),
+	plugins: z.record(z.string(), z.string()).optional(),
 })
