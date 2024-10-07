@@ -7,13 +7,10 @@ A simple library for http status codes, ported from Go's [http package](https://
 ### Install
 
 ```shell
-# npm
+# Install using your favorite package manager:
 npm install http-codex
-# pnpm
 pnpm add http-codex
-# bun
 bun add http-codex
-# yarn
 yarn add http-codex
 ```
 

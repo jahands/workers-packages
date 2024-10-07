@@ -14,13 +14,10 @@ Please note that this is primarily intended for my own use. You may want to copy
 ### Install
 
 ```shell
-# npm
+# Install using your favorite package manager:
 npm install @jahands/otel-cf-workers
-# pnpm
 pnpm add @jahands/otel-cf-workers
-# bun
 bun add @jahands/otel-cf-workers
-# yarn
 yarn add @jahands/otel-cf-workers
 ```
 
