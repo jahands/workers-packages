@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.2.1
+
+### Patch Changes
+
+- 70592b5: chore: update readme
+
 ## 0.2.0
 
 ### Minor Changes
