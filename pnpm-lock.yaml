@@ -199,10 +199,6 @@ importers:
         version: 5.5.4
 
   packages/http-codex:
-    optionalDependencies:
-      hono:
-        specifier: ^4.4.7
-        version: 4.6.2
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.5.12
