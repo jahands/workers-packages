@@ -43,7 +43,7 @@ install-deps:
 
 test:
 	FROM +install-deps
-	LET TURBO_TEAM=team_jahands
+	LET TURBO_TEAM=team_workers_packages
 	LET FORCE_COLOR=1
 	LET DO_NOT_TRACK=1
 	ARG GITHUB_ACTIONS
