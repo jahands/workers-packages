@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.7.1
+
+### Patch Changes
+
+- d16cd6d: fix: Don't allow eslint warnings in CI
+
 ## 0.7.0
 
 ### Minor Changes
