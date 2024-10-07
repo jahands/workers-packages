@@ -4,6 +4,8 @@ set shell := ["zsh", "-c"]
 @help:
   just --list --unsorted
 
+alias up := update
+
 # Build packages
 [no-cd]
 @build:
