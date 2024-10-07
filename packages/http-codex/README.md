@@ -37,10 +37,10 @@ const status = httpStatus.OK // 200
 
 Here are the bundle sizes of each import:
 
-| **Import**          | **Minified** | **Minified, Gzip'd** |
-| ------------------- | ------------ | -------------------- |
-| `http-codex`        | 4.1 KB       | 1.46 KB              |
-| `http-codex/status` | 1.2 KB       | 728 bytes            |
+| **Import**          | **Minified** | **Minified + Gzip'd** |
+| ------------------- | ------------ | --------------------- |
+| `http-codex`        | 4.1 KB       | 1.46 KB               |
+| `http-codex/status` | 1.2 KB       | 728 bytes             |
 
 Note: `http-codex/status` is smaller because it excludes the `statusText()` function.
 
