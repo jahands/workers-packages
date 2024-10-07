@@ -44,6 +44,6 @@ Here are the bundle sizes of each import:
 
 Note: `http-codex/status` is smaller because it excludes the `statusText()` function.
 
-## Why Another HTTP Library?
+## Why Another HTTP Status Code Library?
 
 Honestly I just love Go and wanted one that was very similar to how Go's http package works.
