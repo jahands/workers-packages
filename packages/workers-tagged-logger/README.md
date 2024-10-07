@@ -16,7 +16,14 @@ A wrapper around `console.log()` for structured logging in Cloudflare Workers, p
 ### Install
 
 ```shell
+# npm
 npm install workers-tagged-logger
+# pnpm
+pnpm add workers-tagged-logger
+# bun
+bun add workers-tagged-logger
+# yarn
+yarn add workers-tagged-logger
 ```
 
 ### Important! Update wrangler.toml Compatibility Flags
