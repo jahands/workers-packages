@@ -1,5 +1,12 @@
 # http-codex
 
+## 0.2.2
+
+### Patch Changes
+
+- 8f1ce67: chore: simplify build scripts
+- 393ebec: fix: Don't rename .d.ts files so that types actually work
+
 ## 0.2.1
 
 ### Patch Changes
