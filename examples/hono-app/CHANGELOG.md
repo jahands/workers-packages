@@ -1,5 +1,17 @@
 # @repo/hono-app
 
+## 0.3.0
+
+### Minor Changes
+
+- e47c2e9: Refactor into multiple entrypoints to allow tree-shaking
+
+### Patch Changes
+
+- e47c2e9: Add assertions for http-codex so that we can test bundled version automatically
+- Updated dependencies [70592b5]
+  - http-codex@0.2.1
+
 ## 0.2.18
 
 ### Patch Changes
