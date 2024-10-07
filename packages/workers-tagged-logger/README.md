@@ -36,7 +36,7 @@ compatibility_flags = ["nodejs_compat"]
 
 ### Create a Logger
 
-The first thing we need is a logger. This can be safely insantiated in the global scope anywhere in your file:
+The first thing we need is a logger. This can be safely instantiated in the global scope anywhere in your file:
 
 ```ts
 import { withLogTags, WorkersLogger } from 'workers-tagged-logger'
