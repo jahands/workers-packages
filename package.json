@@ -23,8 +23,9 @@
 		"fix:lint": "FIX_ESLINT=1 turbo check:lint",
 		"fix:format": "prettier --write --cache --ignore-unknown \"**/*.{ts,tsx,cjs,md,json}\"",
 		"test": "vitest --testTimeout=15000",
-		"release": "run-s build:packages publish",
+		"release": "run-s build:packages release:clean publish",
 		"build:packages": "turbo build -F './packages/*'",
+		"release:clean": "runx release clean",
 		"publish": "changeset publish"
 	},
 	"devDependencies": {

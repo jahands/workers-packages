@@ -6,6 +6,7 @@ import { buildCmd } from '../cmd/build'
 import { deployCmd } from '../cmd/deploy'
 import { parseChangesetCmd } from '../cmd/parse-changeset'
 import { pkgCmd } from '../cmd/pkg/pkg'
+import { releaseCmd } from '../cmd/release'
 import { sentryCmd } from '../cmd/sentry'
 import { updatePnpmCmd } from '../cmd/update-pnpm'
 
@@ -19,6 +20,7 @@ program
 	.addCommand(deployCmd)
 	.addCommand(sentryCmd)
 	.addCommand(pkgCmd)
+	.addCommand(releaseCmd)
 
 	// Don't hang for unresolved promises
 	.hook('postAction', () => process.exit(0))
