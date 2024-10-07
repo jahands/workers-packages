@@ -8,27 +8,26 @@ alias up := update
 
 # Build packages
 [no-cd]
-@build:
+build:
   turbo build
 
 # Fix deps, lint, format, etc.
-@fix:
+fix:
   pnpm fix
 
 # Run Vitest tests
-@test *flags:
+test *flags:
   turbo build -F './packages/*'
   pnpm vitest {{flags}}
 
 # Update deps via syncpack
-@update:
+update:
   pnpm syncpack update
   just -q changes && just fix || true
 
 
 # Check for issues with deps/lint/types/format
-[no-cd]
-@check *flags:
+check *flags:
   pnpm check:ci
 
 # ========================= #
@@ -37,15 +36,15 @@ alias up := update
 
 # Update lockfile (if needed)
 [private]
-@update-lockfile:
+update-lockfile:
   just -q deps-changed && pnpm i --child-concurrency=10 || true
 
 # Check if any file has changed
 [private]
-@changes:
+changes:
   test $(git status --porcelain | wc -l) -gt 0
 
 # Check if package.json has changed
 [private]
-@deps-changed:
+deps-changed:
   git status --porcelain | grep -q 'package.json'
