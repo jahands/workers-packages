@@ -9,7 +9,13 @@ const config = {
 		{
 			label: 'local packages',
 			packages: ['**'],
-			dependencies: ['@repo/*', 'workers-tagged-logger', '@jahands/otel-cf-workers'],
+			dependencies: [
+				'@repo/*',
+				// TODO: maybe find a way to automate getting these package names?
+				'workers-tagged-logger',
+				'@jahands/otel-cf-workers',
+				'http-codex',
+			],
 			dependencyTypes: ['!local'], // Exclude the local package itself
 			pinVersion: 'workspace:*',
 		},
