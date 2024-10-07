@@ -157,7 +157,7 @@ export const http = {
 	StatusNotExtended: 510,
 	/** RFC 6585, 6 */
 	StatusNetworkAuthenticationRequired: 511,
-} as const
+} as const satisfies Record<string, number>
 
 export type HttpStatusCodeName = keyof typeof http
 export type HttpStatusCode = (typeof http)[HttpStatusCodeName]
