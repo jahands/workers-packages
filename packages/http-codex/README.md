@@ -1,6 +1,6 @@
 # http-codex
 
-A simple library for http status codes, ported from Go's [http package](https://go.dev/src/net/http/status.go).
+A simple library for http status codes, adapted from Go's [http package](https://go.dev/src/net/http/status.go).
 
 ## Usage
 

@@ -2,7 +2,6 @@
  * http status codes adapted from https://go.dev/src/net/http/status.go
  * Source: https://github.com/golang/go/blob/master/src/net/http/status.go
  * Commit: 55590f3a2b89f001bcadf0df6eb2dde62618302b
- * This port was last updated on 2024-10-07
  */
 
 /**
