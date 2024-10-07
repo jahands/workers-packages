@@ -69,8 +69,8 @@ importers:
   examples/hono-app:
     dependencies:
       hono:
-        specifier: 4.6.3
-        version: 4.6.3
+        specifier: 4.6.2
+        version: 4.6.2
       workers-tagged-logger:
         specifier: workspace:*
         version: link:../../packages/workers-tagged-logger
@@ -103,8 +103,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/otel-cf-workers
       hono:
-        specifier: 4.6.3
-        version: 4.6.3
+        specifier: 4.6.2
+        version: 4.6.2
       zod:
         specifier: 3.23.8
         version: 3.23.8
@@ -130,6 +130,9 @@ importers:
 
   examples/vanilla-worker:
     dependencies:
+      hono:
+        specifier: 4.6.2
+        version: 4.6.2
       workers-tagged-logger:
         specifier: workspace:*
         version: link:../../packages/workers-tagged-logger
@@ -154,6 +157,10 @@ importers:
         version: 2.1.1(@types/node@20.8.3)
 
   packages/eslint-config:
+    dependencies:
+      hono:
+        specifier: 4.6.2
+        version: 4.6.2
     devDependencies:
       '@repo/tools':
         specifier: workspace:*
@@ -199,6 +206,10 @@ importers:
         version: 5.5.4
 
   packages/http-codex:
+    dependencies:
+      hono:
+        specifier: 4.6.2
+        version: 4.6.2
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.5.14
@@ -236,6 +247,9 @@ importers:
       '@opentelemetry/api':
         specifier: 1.9.0
         version: 1.9.0
+      hono:
+        specifier: 4.6.2
+        version: 4.6.2
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.5.14
@@ -291,6 +305,9 @@ importers:
       empathic:
         specifier: 1.0.0
         version: 1.0.0
+      hono:
+        specifier: 4.6.2
+        version: 4.6.2
       luxon:
         specifier: 3.5.0
         version: 3.5.0
@@ -317,6 +334,10 @@ importers:
         version: 8.1.9
 
   packages/typescript-config:
+    dependencies:
+      hono:
+        specifier: 4.6.2
+        version: 4.6.2
     devDependencies:
       vitest:
         specifier: 2.1.1
@@ -325,7 +346,7 @@ importers:
   packages/workers-tagged-logger:
     optionalDependencies:
       hono:
-        specifier: ^4.4.7
+        specifier: ^4.6.2
         version: 4.6.2
     devDependencies:
       '@cloudflare/vitest-pool-workers':
@@ -2702,10 +2723,6 @@ packages:
 
   hono@4.6.2:
     resolution: {integrity: sha512-v+39817TgAhetmHUEli8O0uHDmxp2Up3DnhS4oUZXOl5IQ9np9tYtldd42e5zgdLVS0wsOoXQNZ6mx+BGmEvCA==}
-    engines: {node: '>=16.9.0'}
-
-  hono@4.6.3:
-    resolution: {integrity: sha512-0LeEuBNFeSHGqZ9sNVVgZjB1V5fmhkBSB0hZrpqStSMLOWgfLy0dHOvrjbJh0H2khsjet6rbHfWTHY0kpYThKQ==}
     engines: {node: '>=16.9.0'}
 
   hosted-git-info@7.0.2:
@@ -6817,10 +6834,7 @@ snapshots:
       no-case: 2.3.2
       upper-case: 1.1.3
 
-  hono@4.6.2:
-    optional: true
-
-  hono@4.6.3: {}
+  hono@4.6.2: {}
 
   hosted-git-info@7.0.2:
     dependencies:

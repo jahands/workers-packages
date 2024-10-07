@@ -9,5 +9,8 @@
 	},
 	"publishConfig": {
 		"access": "public"
+	},
+	"dependencies": {
+		"hono": "4.6.2"
 	}
 }

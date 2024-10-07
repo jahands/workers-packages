@@ -10,6 +10,7 @@
 		"test": "run-vitest"
 	},
 	"dependencies": {
+		"hono": "4.6.2",
 		"workers-tagged-logger": "workspace:*"
 	},
 	"devDependencies": {
