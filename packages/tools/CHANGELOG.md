@@ -1,5 +1,18 @@
 # @repo/tools
 
+## 0.7.0
+
+### Minor Changes
+
+- 8432257: feat: add run-vitest-ci script
+
+### Patch Changes
+
+- bdbe259: fix: remove hono from packages that don't need it
+- 10cd896: chore: update dependencies
+- e89bf36: fix: revert hono version due to breaking change
+- bef7970: fix: make mise.toml plugins optional
+
 ## 0.6.6
 
 ### Patch Changes

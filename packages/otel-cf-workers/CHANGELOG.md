@@ -1,5 +1,14 @@
 # @jahands/otel-cf-workers
 
+## 0.1.8
+
+### Patch Changes
+
+- 9d8540b: chore: Add installation instructions for other package managers
+- bdbe259: fix: remove hono from packages that don't need it
+- 10cd896: chore: update dependencies
+- e89bf36: fix: revert hono version due to breaking change
+
 ## 0.1.7
 
 ### Patch Changes
