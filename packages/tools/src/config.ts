@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { getRepoRoot } from './path'
 
-export async function getConfig() {
+export async function getConfig(): Promise<Config> {
 	const repoRoot = await getRepoRoot()
 	const version = await getReleaseVersion()
 	return Config.parse({ repoRoot, version } satisfies Config)
@@ -17,7 +17,7 @@ export const Config = z.object({
 		.describe('unexpected version format'),
 })
 
-export async function getReleaseVersion() {
+export async function getReleaseVersion(): Promise<string> {
 	return z
 		.string()
 		.trim()

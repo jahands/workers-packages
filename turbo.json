@@ -1,6 +1,6 @@
 {
 	"$schema": "https://turbo.build/schema.json",
-	"globalPassThroughEnv": ["CI", "GITHUB_ACTIONS", "FORCE_COLOR"],
+	"globalEnv": ["CI", "GITHUB_ACTIONS", "FORCE_COLOR"],
 	"remoteCache": {
 		"enabled": true,
 		"signature": true
