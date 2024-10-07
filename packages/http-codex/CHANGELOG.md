@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.1.2
+
+### Patch Changes
+
+- b6447f2: chore: update readme to shorten install instructions
+
 ## 0.1.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.9
+
+### Patch Changes
+
+- b6447f2: chore: update readme to shorten install instructions
+
 ## 0.1.8
 
 ### Patch Changes

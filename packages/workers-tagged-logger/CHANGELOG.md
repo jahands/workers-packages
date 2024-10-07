@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.3.6
+
+### Patch Changes
+
+- b6447f2: chore: update readme to shorten install instructions
+
 ## 0.3.5
 
 ### Patch Changes
