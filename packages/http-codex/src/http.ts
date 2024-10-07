@@ -9,8 +9,20 @@
  *
  * HTTP status codes as registered with IANA.
  * See: https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+ *
+ * Based on Go's http library
+ *
+ * @example
+ * ```ts
+ * import { http } from 'http-codex'
+ *
+ * const res = new Response('hello world!', {
+ * 	status: http.StatusOK
+ * 	statusText: http.statusText(http.StatusOK) // 'OK'
+ * })
+ * ```
  */
-export const HttpStatusCodes = {
+export const http = {
 	/** RFC 9110, 15.2.1 */
 	StatusContinue: 100,
 	/** RFC 9110, 15.2.2 */
@@ -142,167 +154,156 @@ export const HttpStatusCodes = {
 	StatusNotExtended: 510,
 	/** RFC 6585, 6 */
 	StatusNetworkAuthenticationRequired: 511,
-} as const satisfies Record<string, number>
 
-export type HttpStatusCodeName = keyof typeof HttpStatusCodes
-export type HttpStatusCode = (typeof HttpStatusCodes)[HttpStatusCodeName]
+	/**
+	 * StatusText returns a text for the HTTP status code. It returns the empty
+	 * string if the code is unknown.
+	 * @param code A number that may be an http status code.
+	 * @returns description of the status code or empty string if it's unknown.
+	 * @example
+	 * ```ts
+	 * import { http } from 'http-codex'
+	 *	const text = http.statusText(http.StatusOK) // 'OK'
+	 * ```
+	 */
+	statusText,
+} as const
 
-/**
- * StatusText returns a text for the HTTP status code. It returns the empty
- * string if the code is unknown.
- * @param code
- * @returns description of the status code
- */
+export type HttpStatusCodeName = keyof Omit<typeof http, 'statusText'>
+export type HttpStatusCode = (typeof http)[HttpStatusCodeName]
+
 // eslint-disable-next-line @typescript-eslint/ban-types
-export function statusText(code: HttpStatusCode | (number & {})): string {
+function statusText(code: HttpStatusCode | (number & {})): string {
 	if (typeof code !== 'number') {
 		throw new TypeError('code must be a number')
 	}
 
 	switch (code) {
-		case HttpStatusCodes.StatusContinue:
+		case http.StatusContinue:
 			return 'Continue'
-		case HttpStatusCodes.StatusSwitchingProtocols:
+		case http.StatusSwitchingProtocols:
 			return 'Switching Protocols'
-		case HttpStatusCodes.StatusProcessing:
+		case http.StatusProcessing:
 			return 'Processing'
-		case HttpStatusCodes.StatusEarlyHints:
+		case http.StatusEarlyHints:
 			return 'Early Hints'
-		case HttpStatusCodes.StatusOK:
+		case http.StatusOK:
 			return 'OK'
-		case HttpStatusCodes.StatusCreated:
+		case http.StatusCreated:
 			return 'Created'
-		case HttpStatusCodes.StatusAccepted:
+		case http.StatusAccepted:
 			return 'Accepted'
-		case HttpStatusCodes.StatusNonAuthoritativeInfo:
+		case http.StatusNonAuthoritativeInfo:
 			return 'Non-Authoritative Information'
-		case HttpStatusCodes.StatusNoContent:
+		case http.StatusNoContent:
 			return 'No Content'
-		case HttpStatusCodes.StatusResetContent:
+		case http.StatusResetContent:
 			return 'Reset Content'
-		case HttpStatusCodes.StatusPartialContent:
+		case http.StatusPartialContent:
 			return 'Partial Content'
-		case HttpStatusCodes.StatusMultiStatus:
+		case http.StatusMultiStatus:
 			return 'Multi-Status'
-		case HttpStatusCodes.StatusAlreadyReported:
+		case http.StatusAlreadyReported:
 			return 'Already Reported'
-		case HttpStatusCodes.StatusIMUsed:
+		case http.StatusIMUsed:
 			return 'IM Used'
-		case HttpStatusCodes.StatusMultipleChoices:
+		case http.StatusMultipleChoices:
 			return 'Multiple Choices'
-		case HttpStatusCodes.StatusMovedPermanently:
+		case http.StatusMovedPermanently:
 			return 'Moved Permanently'
-		case HttpStatusCodes.StatusFound:
+		case http.StatusFound:
 			return 'Found'
-		case HttpStatusCodes.StatusSeeOther:
+		case http.StatusSeeOther:
 			return 'See Other'
-		case HttpStatusCodes.StatusNotModified:
+		case http.StatusNotModified:
 			return 'Not Modified'
-		case HttpStatusCodes.StatusUseProxy:
+		case http.StatusUseProxy:
 			return 'Use Proxy'
-		case HttpStatusCodes.StatusTemporaryRedirect:
+		case http.StatusTemporaryRedirect:
 			return 'Temporary Redirect'
-		case HttpStatusCodes.StatusPermanentRedirect:
+		case http.StatusPermanentRedirect:
 			return 'Permanent Redirect'
-		case HttpStatusCodes.StatusBadRequest:
+		case http.StatusBadRequest:
 			return 'Bad Request'
-		case HttpStatusCodes.StatusUnauthorized:
+		case http.StatusUnauthorized:
 			return 'Unauthorized'
-		case HttpStatusCodes.StatusPaymentRequired:
+		case http.StatusPaymentRequired:
 			return 'Payment Required'
-		case HttpStatusCodes.StatusForbidden:
+		case http.StatusForbidden:
 			return 'Forbidden'
-		case HttpStatusCodes.StatusNotFound:
+		case http.StatusNotFound:
 			return 'Not Found'
-		case HttpStatusCodes.StatusMethodNotAllowed:
+		case http.StatusMethodNotAllowed:
 			return 'Method Not Allowed'
-		case HttpStatusCodes.StatusNotAcceptable:
+		case http.StatusNotAcceptable:
 			return 'Not Acceptable'
-		case HttpStatusCodes.StatusProxyAuthRequired:
+		case http.StatusProxyAuthRequired:
 			return 'Proxy Authentication Required'
-		case HttpStatusCodes.StatusRequestTimeout:
+		case http.StatusRequestTimeout:
 			return 'Request Timeout'
-		case HttpStatusCodes.StatusConflict:
+		case http.StatusConflict:
 			return 'Conflict'
-		case HttpStatusCodes.StatusGone:
+		case http.StatusGone:
 			return 'Gone'
-		case HttpStatusCodes.StatusLengthRequired:
+		case http.StatusLengthRequired:
 			return 'Length Required'
-		case HttpStatusCodes.StatusPreconditionFailed:
+		case http.StatusPreconditionFailed:
 			return 'Precondition Failed'
-		case HttpStatusCodes.StatusRequestEntityTooLarge:
+		case http.StatusRequestEntityTooLarge:
 			return 'Request Entity Too Large'
-		case HttpStatusCodes.StatusRequestURITooLong:
+		case http.StatusRequestURITooLong:
 			return 'Request URI Too Long'
-		case HttpStatusCodes.StatusUnsupportedMediaType:
+		case http.StatusUnsupportedMediaType:
 			return 'Unsupported Media Type'
-		case HttpStatusCodes.StatusRequestedRangeNotSatisfiable:
+		case http.StatusRequestedRangeNotSatisfiable:
 			return 'Requested Range Not Satisfiable'
-		case HttpStatusCodes.StatusExpectationFailed:
+		case http.StatusExpectationFailed:
 			return 'Expectation Failed'
-		case HttpStatusCodes.StatusTeapot:
+		case http.StatusTeapot:
 			return "I'm a teapot"
-		case HttpStatusCodes.StatusMisdirectedRequest:
+		case http.StatusMisdirectedRequest:
 			return 'Misdirected Request'
-		case HttpStatusCodes.StatusUnprocessableEntity:
+		case http.StatusUnprocessableEntity:
 			return 'Unprocessable Entity'
-		case HttpStatusCodes.StatusLocked:
+		case http.StatusLocked:
 			return 'Locked'
-		case HttpStatusCodes.StatusFailedDependency:
+		case http.StatusFailedDependency:
 			return 'Failed Dependency'
-		case HttpStatusCodes.StatusTooEarly:
+		case http.StatusTooEarly:
 			return 'Too Early'
-		case HttpStatusCodes.StatusUpgradeRequired:
+		case http.StatusUpgradeRequired:
 			return 'Upgrade Required'
-		case HttpStatusCodes.StatusPreconditionRequired:
+		case http.StatusPreconditionRequired:
 			return 'Precondition Required'
-		case HttpStatusCodes.StatusTooManyRequests:
+		case http.StatusTooManyRequests:
 			return 'Too Many Requests'
-		case HttpStatusCodes.StatusRequestHeaderFieldsTooLarge:
+		case http.StatusRequestHeaderFieldsTooLarge:
 			return 'Request Header Fields Too Large'
-		case HttpStatusCodes.StatusUnavailableForLegalReasons:
+		case http.StatusUnavailableForLegalReasons:
 			return 'Unavailable For Legal Reasons'
-		case HttpStatusCodes.StatusInternalServerError:
+		case http.StatusInternalServerError:
 			return 'Internal Server Error'
-		case HttpStatusCodes.StatusNotImplemented:
+		case http.StatusNotImplemented:
 			return 'Not Implemented'
-		case HttpStatusCodes.StatusBadGateway:
+		case http.StatusBadGateway:
 			return 'Bad Gateway'
-		case HttpStatusCodes.StatusServiceUnavailable:
+		case http.StatusServiceUnavailable:
 			return 'Service Unavailable'
-		case HttpStatusCodes.StatusGatewayTimeout:
+		case http.StatusGatewayTimeout:
 			return 'Gateway Timeout'
-		case HttpStatusCodes.StatusHTTPVersionNotSupported:
+		case http.StatusHTTPVersionNotSupported:
 			return 'HTTP Version Not Supported'
-		case HttpStatusCodes.StatusVariantAlsoNegotiates:
+		case http.StatusVariantAlsoNegotiates:
 			return 'Variant Also Negotiates'
-		case HttpStatusCodes.StatusInsufficientStorage:
+		case http.StatusInsufficientStorage:
 			return 'Insufficient Storage'
-		case HttpStatusCodes.StatusLoopDetected:
+		case http.StatusLoopDetected:
 			return 'Loop Detected'
-		case HttpStatusCodes.StatusNotExtended:
+		case http.StatusNotExtended:
 			return 'Not Extended'
-		case HttpStatusCodes.StatusNetworkAuthenticationRequired:
+		case http.StatusNetworkAuthenticationRequired:
 			return 'Network Authentication Required'
 		default:
 			return ''
 	}
 }
-
-/**
- * http status codes package based on Go's http library
- *
- * @example
- * ```ts
- * import { http } from 'http-codex'
- *
- * const res = new Response('hello world!', {
- * 	status: http.StatusOK
- * 	statusText: http.statusText(http.StatusOK)
- * })
- * ```
- */
-export const http = {
-	...HttpStatusCodes,
-	statusText,
-} as const
