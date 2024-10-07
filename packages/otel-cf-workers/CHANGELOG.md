@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.12
+
+### Patch Changes
+
+- 7ec60a9: fix: Stop building lib twice
+
 ## 0.1.11
 
 ### Patch Changes

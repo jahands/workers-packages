@@ -1,5 +1,15 @@
 # @repo/hono-app
 
+## 0.3.2
+
+### Patch Changes
+
+- 5dc4d1c: chore: update tests
+- Updated dependencies [7ec60a9]
+- Updated dependencies [6eda69c]
+- Updated dependencies [5dc4d1c]
+  - http-codex@0.3.0
+
 ## 0.3.1
 
 ### Patch Changes
