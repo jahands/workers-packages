@@ -17,20 +17,20 @@ yarn add http-codex
 ### Example
 
 ```ts
-import { http } from 'http-codex'
+import { httpStatus } from 'http-codex'
 
 const res = new Response('hello world!', {
-	status: http.StatusOK
-	statusText: http.statusText(http.StatusOK)
+	status: httpStatus.OK // 200
+	statusText: httpStatus.text(http.StatusOK) // 'OK'
 })
 ```
 
-If preferred, codes can be imported by themselves to reduce bundle size:
+If preferred, status codes can be imported by themselves to reduce bundle size:
 
 ```ts
-import { http } from 'http-codex/status'
+import { httpStatus } from 'http-codex/status'
 
-const status = http.StatusOK // 200
+const status = httpStatus.OK // 200
 ```
 
 ### Bundle Size
@@ -39,8 +39,8 @@ Here are the bundle sizes of each import:
 
 | **Import**          | **Minified** | **Minified, Gzip'd** |
 | ------------------- | ------------ | -------------------- |
-| `http-codex`        | 4.9 KB       | 1.5 KB               |
-| `http-codex/status` | 1.6 KB       | 749 bytes            |
+| `http-codex`        | 4.1 KB       | 1.46 KB              |
+| `http-codex/status` | 1.2 KB       | 728 bytes            |
 
 Note: `http-codex/status` is smaller because it excludes the `statusText()` function.
 

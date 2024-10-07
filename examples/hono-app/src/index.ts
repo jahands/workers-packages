@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import { http } from 'http-codex'
+import { httpStatus } from 'http-codex'
 import { useWorkersLogger, WorkersLogger } from 'workers-tagged-logger'
 
 // Optional type hints for tags
@@ -24,8 +24,8 @@ const app = new Hono()
 	.get('/hello', async (c) => {
 		logger.withTags({ foo: 'bar' }).info('hello, world!')
 		return c.text('hello, world!', {
-			status: http.StatusOK,
-			statusText: http.statusText(http.StatusOK),
+			status: httpStatus.OK,
+			statusText: httpStatus.text(httpStatus.OK),
 		})
 	})
 

@@ -4,7 +4,7 @@
  * Commit: 55590f3a2b89f001bcadf0df6eb2dde62618302b
  */
 
-import { http } from './status'
+import { httpStatus } from './status'
 
 import type { HttpStatusCode } from './status'
 
@@ -16,149 +16,148 @@ import type { HttpStatusCode } from './status'
  *
  * @example
  * ```ts
- * import { http } from 'http-codex'
+ * import { httpStatus } from 'http-codex'
  *
- * const text = http.statusText(http.StatusOK) // 'OK'
+ * const text = httpStatus.text(httpStatus.OK) // 'OK'
  * ```
  *
- * @example (tree-shakable)
+ * @example Status codes only (smaller bundle size)
  * ```ts
- * import { http } from 'http-codex/status'
- * import { statusText } from 'http-codex/statusText'
+ * import { httpStatus } from 'http-codex/status'
  *
- * const text = statusText(http.StatusOK) // 'OK'
+ * const status = httpStatus.OK // 200
  * ```
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export function statusText(code: HttpStatusCode | (number & {})): string {
+export function text(code: HttpStatusCode | (number & {})): string {
 	if (typeof code !== 'number') {
 		throw new TypeError('code must be a number')
 	}
 
 	switch (code) {
-		case http.StatusContinue:
+		case httpStatus.Continue:
 			return 'Continue'
-		case http.StatusSwitchingProtocols:
+		case httpStatus.SwitchingProtocols:
 			return 'Switching Protocols'
-		case http.StatusProcessing:
+		case httpStatus.Processing:
 			return 'Processing'
-		case http.StatusEarlyHints:
+		case httpStatus.EarlyHints:
 			return 'Early Hints'
-		case http.StatusOK:
+		case httpStatus.OK:
 			return 'OK'
-		case http.StatusCreated:
+		case httpStatus.Created:
 			return 'Created'
-		case http.StatusAccepted:
+		case httpStatus.Accepted:
 			return 'Accepted'
-		case http.StatusNonAuthoritativeInfo:
+		case httpStatus.NonAuthoritativeInfo:
 			return 'Non-Authoritative Information'
-		case http.StatusNoContent:
+		case httpStatus.NoContent:
 			return 'No Content'
-		case http.StatusResetContent:
+		case httpStatus.ResetContent:
 			return 'Reset Content'
-		case http.StatusPartialContent:
+		case httpStatus.PartialContent:
 			return 'Partial Content'
-		case http.StatusMultiStatus:
+		case httpStatus.MultiStatus:
 			return 'Multi-Status'
-		case http.StatusAlreadyReported:
+		case httpStatus.AlreadyReported:
 			return 'Already Reported'
-		case http.StatusIMUsed:
+		case httpStatus.IMUsed:
 			return 'IM Used'
-		case http.StatusMultipleChoices:
+		case httpStatus.MultipleChoices:
 			return 'Multiple Choices'
-		case http.StatusMovedPermanently:
+		case httpStatus.MovedPermanently:
 			return 'Moved Permanently'
-		case http.StatusFound:
+		case httpStatus.Found:
 			return 'Found'
-		case http.StatusSeeOther:
+		case httpStatus.SeeOther:
 			return 'See Other'
-		case http.StatusNotModified:
+		case httpStatus.NotModified:
 			return 'Not Modified'
-		case http.StatusUseProxy:
+		case httpStatus.UseProxy:
 			return 'Use Proxy'
-		case http.StatusTemporaryRedirect:
+		case httpStatus.TemporaryRedirect:
 			return 'Temporary Redirect'
-		case http.StatusPermanentRedirect:
+		case httpStatus.PermanentRedirect:
 			return 'Permanent Redirect'
-		case http.StatusBadRequest:
+		case httpStatus.BadRequest:
 			return 'Bad Request'
-		case http.StatusUnauthorized:
+		case httpStatus.Unauthorized:
 			return 'Unauthorized'
-		case http.StatusPaymentRequired:
+		case httpStatus.PaymentRequired:
 			return 'Payment Required'
-		case http.StatusForbidden:
+		case httpStatus.Forbidden:
 			return 'Forbidden'
-		case http.StatusNotFound:
+		case httpStatus.NotFound:
 			return 'Not Found'
-		case http.StatusMethodNotAllowed:
+		case httpStatus.MethodNotAllowed:
 			return 'Method Not Allowed'
-		case http.StatusNotAcceptable:
+		case httpStatus.NotAcceptable:
 			return 'Not Acceptable'
-		case http.StatusProxyAuthRequired:
+		case httpStatus.ProxyAuthRequired:
 			return 'Proxy Authentication Required'
-		case http.StatusRequestTimeout:
+		case httpStatus.RequestTimeout:
 			return 'Request Timeout'
-		case http.StatusConflict:
+		case httpStatus.Conflict:
 			return 'Conflict'
-		case http.StatusGone:
+		case httpStatus.Gone:
 			return 'Gone'
-		case http.StatusLengthRequired:
+		case httpStatus.LengthRequired:
 			return 'Length Required'
-		case http.StatusPreconditionFailed:
+		case httpStatus.PreconditionFailed:
 			return 'Precondition Failed'
-		case http.StatusRequestEntityTooLarge:
+		case httpStatus.RequestEntityTooLarge:
 			return 'Request Entity Too Large'
-		case http.StatusRequestURITooLong:
+		case httpStatus.RequestURITooLong:
 			return 'Request URI Too Long'
-		case http.StatusUnsupportedMediaType:
+		case httpStatus.UnsupportedMediaType:
 			return 'Unsupported Media Type'
-		case http.StatusRequestedRangeNotSatisfiable:
+		case httpStatus.RequestedRangeNotSatisfiable:
 			return 'Requested Range Not Satisfiable'
-		case http.StatusExpectationFailed:
+		case httpStatus.ExpectationFailed:
 			return 'Expectation Failed'
-		case http.StatusTeapot:
+		case httpStatus.Teapot:
 			return "I'm a teapot"
-		case http.StatusMisdirectedRequest:
+		case httpStatus.MisdirectedRequest:
 			return 'Misdirected Request'
-		case http.StatusUnprocessableEntity:
+		case httpStatus.UnprocessableEntity:
 			return 'Unprocessable Entity'
-		case http.StatusLocked:
+		case httpStatus.Locked:
 			return 'Locked'
-		case http.StatusFailedDependency:
+		case httpStatus.FailedDependency:
 			return 'Failed Dependency'
-		case http.StatusTooEarly:
+		case httpStatus.TooEarly:
 			return 'Too Early'
-		case http.StatusUpgradeRequired:
+		case httpStatus.UpgradeRequired:
 			return 'Upgrade Required'
-		case http.StatusPreconditionRequired:
+		case httpStatus.PreconditionRequired:
 			return 'Precondition Required'
-		case http.StatusTooManyRequests:
+		case httpStatus.TooManyRequests:
 			return 'Too Many Requests'
-		case http.StatusRequestHeaderFieldsTooLarge:
+		case httpStatus.RequestHeaderFieldsTooLarge:
 			return 'Request Header Fields Too Large'
-		case http.StatusUnavailableForLegalReasons:
+		case httpStatus.UnavailableForLegalReasons:
 			return 'Unavailable For Legal Reasons'
-		case http.StatusInternalServerError:
+		case httpStatus.InternalServerError:
 			return 'Internal Server Error'
-		case http.StatusNotImplemented:
+		case httpStatus.NotImplemented:
 			return 'Not Implemented'
-		case http.StatusBadGateway:
+		case httpStatus.BadGateway:
 			return 'Bad Gateway'
-		case http.StatusServiceUnavailable:
+		case httpStatus.ServiceUnavailable:
 			return 'Service Unavailable'
-		case http.StatusGatewayTimeout:
+		case httpStatus.GatewayTimeout:
 			return 'Gateway Timeout'
-		case http.StatusHTTPVersionNotSupported:
+		case httpStatus.HTTPVersionNotSupported:
 			return 'HTTP Version Not Supported'
-		case http.StatusVariantAlsoNegotiates:
+		case httpStatus.VariantAlsoNegotiates:
 			return 'Variant Also Negotiates'
-		case http.StatusInsufficientStorage:
+		case httpStatus.InsufficientStorage:
 			return 'Insufficient Storage'
-		case http.StatusLoopDetected:
+		case httpStatus.LoopDetected:
 			return 'Loop Detected'
-		case http.StatusNotExtended:
+		case httpStatus.NotExtended:
 			return 'Not Extended'
-		case http.StatusNetworkAuthenticationRequired:
+		case httpStatus.NetworkAuthenticationRequired:
 			return 'Network Authentication Required'
 		default:
 			return ''

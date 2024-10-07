@@ -1,5 +1,5 @@
-import { http as statusCodes } from './status'
-import { statusText } from './statusText'
+import { httpStatus as statusCodes } from './status'
+import { text } from './statusText'
 
 export type { HttpStatusCodeName, HttpStatusCode } from './status'
 
@@ -11,19 +11,19 @@ export type { HttpStatusCodeName, HttpStatusCode } from './status'
  *
  * @example
  * ```ts
- * import { http } from 'http-codex'
+ * import { httpStatus } from 'http-codex'
  *
- * const text = http.statusText(http.StatusOK) // 'OK'
+ * const text = httpStatus.text(httpStatus.OK) // 'OK'
  * ```
  *
- * @example Status codes only (tree-shakable)
+ * @example Status codes only (smaller bundle size)
  * ```ts
- * import { http } from 'http-codex/status'
+ * import { httpStatus } from 'http-codex/status'
  *
- * const status = http.StatusOK // 200
+ * const status = httpStatus.OK // 200
  * ```
  */
-export const http = {
+export const httpStatus = {
 	...statusCodes,
-	statusText,
+	text,
 } as const

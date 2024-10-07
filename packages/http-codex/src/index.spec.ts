@@ -1,29 +1,29 @@
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
 
-import { http } from '.'
+import { httpStatus } from '.'
 
 import type { HttpStatusCodeName } from '.'
 
 describe('http', () => {
-	const all = Object.keys(http).filter((key) => key !== 'statusText')
-	const used = all.filter((key) => key !== '_')
+	const all = Object.keys(httpStatus).filter((key) => (key as keyof typeof httpStatus) !== 'text')
+	const used = all.filter((key) => (key as HttpStatusCodeName) !== '_')
 	const unused = all.filter((key) => !used.includes(key))
 
 	it('should contain all status codes', () => {
 		for (const key of all) {
-			expect(http[key as HttpStatusCodeName], key).toBeDefined()
-			expect(typeof http[key as HttpStatusCodeName]).toBe('number')
+			expect(httpStatus[key as HttpStatusCodeName], key).toBeDefined()
+			expect(typeof httpStatus[key as HttpStatusCodeName]).toBe('number')
 		}
 	})
 
 	describe('statusText()', () => {
 		it('returns description of the status code', () => {
 			for (const key of used) {
-				const value = http[key as HttpStatusCodeName]
-				const text = http.statusText(value)
+				const value = httpStatus[key as HttpStatusCodeName]
+				const text = httpStatus.text(value)
 				expect(
-					() => z.string().min(1).parse(http.statusText(value)),
+					() => z.string().min(1).parse(httpStatus.text(value)),
 					`${value}: ${key} - "${text}"`
 				).not.toThrow()
 			}
@@ -31,18 +31,18 @@ describe('http', () => {
 
 		it('returns empty string if the code is unused', () => {
 			for (const key of unused) {
-				const value = http[key as HttpStatusCodeName]
-				expect(http.statusText(value), `${value}: ${key}`).toBe('')
+				const value = httpStatus[key as HttpStatusCodeName]
+				expect(httpStatus.text(value), `${value}: ${key}`).toBe('')
 			}
 		})
 
 		it('returns empty string if the code is unknown', () => {
-			expect(http.statusText(0)).toBe('')
+			expect(httpStatus.text(0)).toBe('')
 		})
 
 		it('throws if the code is not a number', () => {
-			expect(() => http.statusText('foo' as never)).toThrowError(TypeError)
-			expect(() => http.statusText({} as never)).toThrowError(TypeError)
+			expect(() => httpStatus.text('foo' as never)).toThrowError(TypeError)
+			expect(() => httpStatus.text({} as never)).toThrowError(TypeError)
 		})
 	})
 })
