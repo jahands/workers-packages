@@ -26,4 +26,4 @@ export type { HttpStatusCodeName, HttpStatusCode } from './status'
 export const http = {
 	...statusCodes,
 	statusText,
-}
+} as const

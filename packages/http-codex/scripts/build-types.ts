@@ -20,10 +20,3 @@ const tsconfig = ts.readConfigFile('./tsconfig.json', ts.sys.readFile)
 if (tsconfig.error) throw new Error(`failed to read tsconfig: ${inspect(tsconfig)}`)
 
 buildDeclarationFiles(entryPoints, tsconfig.config)
-
-const dtsFiles = await glob('./dist/*.d.ts')
-await Promise.all(
-	dtsFiles.map(async (f) => {
-		await fs.move(f, f.replace('.d.ts', '.d.mts'))
-	})
-)
