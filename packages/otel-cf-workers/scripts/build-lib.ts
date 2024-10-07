@@ -5,7 +5,7 @@ import { entryPoints } from './entrypoints'
 await esbuild.build({
 	entryPoints,
 	outdir: './dist/',
-	logLevel: 'warning',
+	logLevel: 'info',
 	outExtension: {
 		'.js': '.mjs',
 	},
