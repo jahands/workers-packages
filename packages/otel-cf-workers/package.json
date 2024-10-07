@@ -56,8 +56,8 @@
 		"@opentelemetry/api": "1.9.0"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.5.12",
-		"@cloudflare/workers-types": "4.20240925.0",
+		"@cloudflare/vitest-pool-workers": "0.5.14",
+		"@cloudflare/workers-types": "4.20241004.0",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@types/node": "20.8.3",
@@ -65,6 +65,6 @@
 		"esbuild": "0.24.0",
 		"typescript": "5.5.4",
 		"vitest": "2.1.1",
-		"zx": "8.1.8"
+		"zx": "8.1.9"
 	}
 }
