@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.10
+
+### Patch Changes
+
+- 4c80af9: chore: update log level in build-lib.ts
+
 ## 0.1.9
 
 ### Patch Changes

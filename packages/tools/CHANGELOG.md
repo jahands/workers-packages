@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.7.2
+
+### Patch Changes
+
+- 0802957: chore: Add script to remove .turbo cache directories when creating release
+
 ## 0.7.1
 
 ### Patch Changes
