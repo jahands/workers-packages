@@ -1,5 +1,19 @@
 # @repo/hono-app
 
+## 0.2.17
+
+### Patch Changes
+
+- 8432257: chore: rename build script
+- 10cd896: chore: update dependencies
+- e89bf36: fix: revert hono version due to breaking change
+- Updated dependencies [9d8540b]
+- Updated dependencies [7ae8b95]
+- Updated dependencies [10cd896]
+- Updated dependencies [e89bf36]
+- Updated dependencies [fdec52a]
+  - workers-tagged-logger@0.3.5
+
 ## 0.2.16
 
 ### Patch Changes

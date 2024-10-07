@@ -1,5 +1,18 @@
 # @repo/otel-example
 
+## 0.1.8
+
+### Patch Changes
+
+- 8432257: chore: rename build script
+- 10cd896: chore: update dependencies
+- e89bf36: fix: revert hono version due to breaking change
+- Updated dependencies [9d8540b]
+- Updated dependencies [bdbe259]
+- Updated dependencies [10cd896]
+- Updated dependencies [e89bf36]
+  - @jahands/otel-cf-workers@0.1.8
+
 ## 0.1.7
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # workers-tagged-logger
 
+## 0.3.5
+
+### Patch Changes
+
+- 9d8540b: chore: Add installation instructions for other package managers
+- 7ae8b95: chore: update tsconfig
+- 10cd896: chore: update dependencies
+- e89bf36: fix: revert hono version due to breaking change
+- fdec52a: fix: spelling in readme
+
 ## 0.3.4
 
 ### Patch Changes
