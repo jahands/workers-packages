@@ -53,8 +53,7 @@
 	},
 	"dependencies": {
 		"@microlabs/otel-cf-workers": "1.0.0-rc.48",
-		"@opentelemetry/api": "1.9.0",
-		"hono": "4.6.2"
+		"@opentelemetry/api": "1.9.0"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "0.5.14",

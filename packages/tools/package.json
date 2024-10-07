@@ -19,7 +19,6 @@
 		"cli-table3": "0.6.5",
 		"commander": "12.1.0",
 		"empathic": "1.0.0",
-		"hono": "4.6.2",
 		"luxon": "3.5.0",
 		"memoize-one": "6.0.0",
 		"node-fetch": "3.3.2",
