@@ -12,22 +12,33 @@
 			"outputs": ["dist/**"],
 			"outputLogs": "new-only"
 		},
-		"//#test:all": {
+		"build:wrangler": {
+			"dependsOn": ["build"],
+			"outputs": ["dist/**"],
 			"outputLogs": "new-only"
 		},
 		"check": {
 			"dependsOn": ["^build", "^check:types", "^check:lint", "check:types", "check:lint"],
 			"outputLogs": "new-only"
 		},
-		"test": {
-			"dependsOn": ["^build"],
-			"outputLogs": "new-only"
-		},
 		"check:ci": {
-			"dependsOn": ["test", "//#check:format", "check:types", "check:lint"],
+			"dependsOn": [
+				"//#check:format",
+				"//#check:deps",
+				"check:types",
+				"check:lint",
+				"build:wrangler",
+				"//#test:ci",
+				"test:ci"
+			],
 			"outputLogs": "new-only"
 		},
-		"test:watch": {},
+		"//#check:deps": {
+			"outputLogs": "new-only"
+		},
+		"//#check:format": {
+			"outputLogs": "new-only"
+		},
 		"check:types": {
 			"dependsOn": ["^build", "^check:types"],
 			"outputLogs": "new-only"
@@ -37,14 +48,15 @@
 			"outputLogs": "new-only",
 			"passThroughEnv": ["FIX_ESLINT"]
 		},
-		"lint": {
-			"dependsOn": ["^check:types", "^check:lint", "check:types", "check:lint"],
+		"//#test:ci": {
+			"dependsOn": ["build"],
 			"outputLogs": "new-only"
 		},
-		"//#format": {
+		"test:ci": {
+			"dependsOn": ["^build"],
 			"outputLogs": "new-only"
 		},
-		"//#check:format": {
+		"//#build": {
 			"outputLogs": "new-only"
 		}
 	}

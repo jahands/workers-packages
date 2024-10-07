@@ -4,7 +4,7 @@
 	"private": true,
 	"sideEffects": false,
 	"scripts": {
-		"build": "runx build wrangler",
+		"build:wrangler": "runx build wrangler",
 		"check:lint": "run-eslint-workers",
 		"check:types": "run-tsc",
 		"test": "run-vitest"
