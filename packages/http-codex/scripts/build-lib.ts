@@ -1,6 +1,10 @@
 import * as esbuild from 'esbuild'
 
-import { entryPoints } from './entrypoints'
+export const entryPoints = [
+	// entrypoints
+	'./src/index.ts',
+	'./src/status.ts',
+] as const satisfies string[]
 
 await esbuild.build({
 	entryPoints,

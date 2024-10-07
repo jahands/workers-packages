@@ -3,7 +3,7 @@ import 'zx/globals'
 import { inspect } from 'util'
 import ts from 'typescript'
 
-import { entryPoints } from './entrypoints'
+import { entryPoints } from './build-lib'
 
 function buildDeclarationFiles(fileNames: string[], options: ts.CompilerOptions): void {
 	options = {
