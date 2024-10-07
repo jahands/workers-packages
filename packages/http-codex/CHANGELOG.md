@@ -1,5 +1,18 @@
 # http-codex
 
+## 0.3.0
+
+### Minor Changes
+
+- 5dc4d1c: feat: Rename http -> httpStatus for improved readability
+
+  `http` felt like too broad a name given that this package only contains status codes.
+
+### Patch Changes
+
+- 7ec60a9: fix: Stop building lib twice
+- 6eda69c: chore: Make type a bit more narrow
+
 ## 0.2.2
 
 ### Patch Changes
