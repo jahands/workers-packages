@@ -5,7 +5,7 @@ import { httpStatus } from '.'
 
 import type { HttpStatusCodeName } from '.'
 
-describe('http', () => {
+describe('httpStatus', () => {
 	const all = Object.keys(httpStatus).filter((key) => (key as keyof typeof httpStatus) !== 'text')
 	const used = all.filter((key) => (key as HttpStatusCodeName) !== '_')
 	const unused = all.filter((key) => !used.includes(key))

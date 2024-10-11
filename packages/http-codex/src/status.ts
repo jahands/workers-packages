@@ -160,3 +160,36 @@ export const httpStatus = {
 
 export type HttpStatusCodeName = keyof typeof httpStatus
 export type HttpStatusCode = (typeof httpStatus)[HttpStatusCodeName]
+
+/**
+ * Returns whether the status code should have a null http body.
+ * Currently includes:
+ * ```
+ * httpStatus.SwitchingProtocols // 101
+ * httpStatus.NoContent // 204
+ * httpStatus.ResetContent // 205
+ * httpStatus.NotModified // 304
+ * ```
+ *
+ * @example Return null body when needed
+ *
+ * ```ts
+ * import { httpStatus, isNullBodyStatus } from 'http-codex'
+ *
+ * const res = await fetch(url) // Might be 204, 304, etc.
+ * return new Response(isNullBodyStatus(res.status) ? null : res.body, {
+ * 	// Useful for when we need to customize response headers/init/etc.
+ * })
+ * ```
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function isNullBodyStatus(status: HttpStatusCode | (number & {})): boolean {
+	return (nullBodyStatuses as number[]).includes(status)
+}
+
+export const nullBodyStatuses = [
+	httpStatus.SwitchingProtocols, // 101
+	httpStatus.NoContent, // 204
+	httpStatus.ResetContent, // 205
+	httpStatus.NotModified, // 304
+] as const satisfies number[]

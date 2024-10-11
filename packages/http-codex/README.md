@@ -33,6 +33,21 @@ import { httpStatus } from 'http-codex/status'
 const status = httpStatus.OK // 200
 ```
 
+### Additional Helpers
+
+#### isNullBodyStatus
+
+Helper function that returns whether the status should have a null body:
+
+```ts
+import { httpStatus, isNullBodyStatus } from 'http-codex'
+
+const res = await fetch(url) // Might be 204, 304, etc.
+return new Response(isNullBodyStatus(res.status) ? null : res.body, {
+	// Useful for when we need to customize response headers/init/etc.
+})
+```
+
 ### Bundle Size
 
 Here are the bundle sizes of each import:

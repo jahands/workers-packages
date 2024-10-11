@@ -3,6 +3,8 @@ import { text } from './statusText'
 
 export type { HttpStatusCodeName, HttpStatusCode } from './status'
 
+export { isNullBodyStatus } from './status'
+
 /**
  * HTTP status codes as registered with IANA.
  * See: https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
