@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.4.2
+
+### Patch Changes
+
+- 3b5dd29: fix: improve tree-shaking of root import when only importing isNullBodyStatus
+
 ## 0.4.1
 
 ### Patch Changes
