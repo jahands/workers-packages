@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
 
-import { httpStatus } from '.'
+import { httpStatus } from './combined'
 
 import type { HttpStatusCodeName } from '.'
 

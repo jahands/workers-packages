@@ -164,7 +164,8 @@ export type HttpStatusCode = (typeof httpStatus)[HttpStatusCodeName]
 /**
  * Returns whether the status code should have a null http body.
  * Currently includes:
- * ```
+ *
+ * ```ts
  * httpStatus.SwitchingProtocols // 101
  * httpStatus.NoContent // 204
  * httpStatus.ResetContent // 205
@@ -187,6 +188,16 @@ export function isNullBodyStatus(status: HttpStatusCode | (number & {})): boolea
 	return (nullBodyStatuses as number[]).includes(status)
 }
 
+/**
+ * List of null body statuses:
+ *
+ * ```ts
+ * 101 // httpStatus.SwitchingProtocols
+ * 204 // httpStatus.NoContent
+ * 205 // httpStatus.ResetContent
+ * 304 // httpStatus.NotModified
+ * ```
+ */
 export const nullBodyStatuses = [
 	101 satisfies HttpStatusCode, // httpStatus.SwitchingProtocols
 	204 satisfies HttpStatusCode, // httpStatus.NoContent
