@@ -188,8 +188,8 @@ export function isNullBodyStatus(status: HttpStatusCode | (number & {})): boolea
 }
 
 export const nullBodyStatuses = [
-	httpStatus.SwitchingProtocols, // 101
-	httpStatus.NoContent, // 204
-	httpStatus.ResetContent, // 205
-	httpStatus.NotModified, // 304
+	101 satisfies HttpStatusCode, // httpStatus.SwitchingProtocols
+	204 satisfies HttpStatusCode, // httpStatus.NoContent
+	205 satisfies HttpStatusCode, // httpStatus.ResetContent
+	304 satisfies HttpStatusCode, // httpStatus.NotModified
 ] as const satisfies number[]
