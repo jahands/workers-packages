@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.4.1
+
+### Patch Changes
+
+- 24dd518: fix: hardcode null body statuses to improve tree shaking
+
 ## 0.4.0
 
 ### Minor Changes
