@@ -1,5 +1,13 @@
 # @repo/tools
 
+## 0.7.3
+
+### Patch Changes
+
+- 8cd7263: Remove bun from dependencies to speed up pnpm install time
+
+  I originally added bun as a dep here for "correctness", but it made pnpm install time ~tripple. We already have bun in `.mise.toml`, which is good enough for me.
+
 ## 0.7.2
 
 ### Patch Changes
