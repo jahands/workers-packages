@@ -35,6 +35,7 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
       - uses: pnpm/action-setup@v4
       - name: Setup Node.js 22.x
         uses: actions/setup-node@v4
