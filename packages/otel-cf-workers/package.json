@@ -61,7 +61,6 @@
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@types/node": "20.8.3",
-		"bun": "1.1.29",
 		"esbuild": "0.24.0",
 		"typescript": "5.5.4",
 		"vitest": "2.1.1",

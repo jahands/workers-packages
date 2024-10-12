@@ -48,7 +48,6 @@
 		"@cloudflare/workers-types": "4.20241004.0",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"bun": "1.1.29",
 		"esbuild": "0.24.0",
 		"rimraf": "6.0.1",
 		"typescript": "5.5.4",

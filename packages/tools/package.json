@@ -15,7 +15,6 @@
 		"@commander-js/extra-typings": "12.1.0",
 		"@types/luxon": "3.4.2",
 		"@types/node": "20.8.3",
-		"bun": "1.1.29",
 		"cli-table3": "0.6.5",
 		"commander": "12.1.0",
 		"empathic": "1.0.0",
