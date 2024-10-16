@@ -24,7 +24,7 @@ type LogLevelFns = {
 export type ConsoleLog = z.infer<typeof ConsoleLog>
 export const ConsoleLog = z
 	.object({
-		message: z.any().or(z.any().array()),
+		message: z.union([z.string(), z.instanceof(Error), z.undefined()]),
 		level: LogLevel,
 		time: z.string(),
 		tags: LogTags.optional(),
