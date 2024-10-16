@@ -1,5 +1,13 @@
 # workers-tagged-logger
 
+## 0.3.7
+
+### Patch Changes
+
+- a50da50: fix: Update tests to expect string message
+- 61feaf4: chore: Narrow ConsoleLog.message type
+- 77f30ab: chore: Narrow message type
+
 ## 0.3.6
 
 ### Patch Changes
