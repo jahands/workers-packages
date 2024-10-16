@@ -11,28 +11,37 @@ import {
 
 import type { LogTags } from './logger'
 
+type ParsedConsoleLog = z.infer<typeof ParsedConsoleLog>
+const ParsedConsoleLog = ConsoleLog.merge(
+	z.object({
+		message: z.string().optional(),
+	})
+)
+	.passthrough()
+	.describe('same as ConsoleLog but message is converted to a string when logged')
+
 class TestHarness<T extends LogTags> {
-	private _logs: ConsoleLog[] = []
+	private _logs: ParsedConsoleLog[] = []
 	readonly log = new WorkersLogger<T>()
 
 	constructor() {
-		vi.spyOn(console, 'log').mockImplementation((...msgs: ConsoleLog[]) => {
+		vi.spyOn(console, 'log').mockImplementation((...msgs: ParsedConsoleLog[]) => {
 			this._logs.push(...structuredClone(msgs))
 		})
 	}
 
-	get logs(): ConsoleLog[] {
-		return ConsoleLog.array().parse(this._logs)
+	get logs(): ParsedConsoleLog[] {
+		return ParsedConsoleLog.array().parse(this._logs)
 	}
 	/** Get the first log (asserting that there is only one) */
-	oneLog(): ConsoleLog {
-		const log = ConsoleLog.array().min(1).max(1).parse(this._logs)[0]
+	oneLog(): ParsedConsoleLog {
+		const log = ParsedConsoleLog.array().min(1).max(1).parse(this._logs)[0]
 		if (log === undefined) throw new Error('no logs')
 		return log
 	}
 	/** Get log at specific index. Supports negative numbers. */
-	logAt(n: number): ConsoleLog {
-		return ConsoleLog.parse(this.logs.at(n))
+	logAt(n: number): ParsedConsoleLog {
+		return ParsedConsoleLog.parse(this.logs.at(n))
 	}
 }
 
@@ -115,7 +124,7 @@ describe('WorkersLogger', () => {
 				const h = setupTest()
 				await withLogTags({ source: 'worker-a' }, async () => {
 					h.log.info(new Error('boom!'))
-					expect(h.oneLog().message.split('\n').slice(0, 2).join('\n')).toMatchInlineSnapshot(`
+					expect(h.oneLog().message?.split('\n').slice(0, 2).join('\n')).toMatchInlineSnapshot(`
 					"Error: boom!
 					Error: boom!"
 				`)
@@ -617,7 +626,7 @@ describe('withLogTags', () => {
 
 			ctxLogger.info('hello again from level 1!')
 		})
-		const getLog = (n: number): Partial<ConsoleLog> => ({
+		const getLog = (n: number): Partial<ParsedConsoleLog> => ({
 			message: h.logAt(n).message,
 			tags: h.logAt(n).tags,
 		})
