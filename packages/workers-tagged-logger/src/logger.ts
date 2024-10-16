@@ -146,7 +146,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 
 	private write(msgs: any[], level: LogLevel): void {
 		const tags = this.getTags()
-		let message: any | any[]
+		let message: string | undefined
 		if (Array.isArray(msgs)) {
 			if (msgs.length === 0) {
 				message = undefined
