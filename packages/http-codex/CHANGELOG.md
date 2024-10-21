@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.4.4
+
+### Patch Changes
+
+- f15b06c: fix example in README
+
 ## 0.4.3
 
 ### Patch Changes
