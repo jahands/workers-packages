@@ -20,8 +20,8 @@ yarn add http-codex
 import { httpStatus } from 'http-codex'
 
 const res = new Response('hello world!', {
-	status: httpStatus.OK // 200
-	statusText: httpStatus.text(http.StatusOK) // 'OK'
+	status: httpStatus.OK, // 200
+	statusText: httpStatus.text(httpStatus.OK) // 'OK'
 })
 ```
 
