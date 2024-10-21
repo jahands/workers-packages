@@ -21,7 +21,7 @@ import { httpStatus } from 'http-codex'
 
 const res = new Response('hello world!', {
 	status: httpStatus.OK, // 200
-	statusText: httpStatus.text(httpStatus.OK) // 'OK'
+	statusText: httpStatus.text(httpStatus.OK), // 'OK'
 })
 ```
 
