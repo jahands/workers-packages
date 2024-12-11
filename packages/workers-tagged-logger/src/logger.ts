@@ -237,5 +237,5 @@ export async function withLogTags<T extends LogTags, R>(
 		source = { source: sourceOpt }
 	}
 	// Note: existing won't exist when withLogTags() is first called
-	return als.run(structuredClone(Object.assign({}, existing, source, opts.tags)), fn)
+	return await als.run(structuredClone(Object.assign({}, existing, source, opts.tags)), fn)
 }
