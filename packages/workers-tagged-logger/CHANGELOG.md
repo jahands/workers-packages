@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.3.8
+
+### Patch Changes
+
+- 794eb5b: fix: await als.run() for improved stack traces (hopefully)
+
 ## 0.3.7
 
 ### Patch Changes
