@@ -1,5 +1,12 @@
 # @repo/vanilla-worker
 
+## 0.2.20
+
+### Patch Changes
+
+- Updated dependencies [794eb5b]
+  - workers-tagged-logger@0.3.8
+
 ## 0.2.19
 
 ### Patch Changes
