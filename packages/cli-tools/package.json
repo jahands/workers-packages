@@ -34,12 +34,12 @@
 	"devDependencies": {
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"esbuild": "0.24.0",
+		"esbuild": "0.24.2",
 		"vitest": "2.1.1"
 	},
 	"peerDependencies": {
-		"@commander-js/extra-typings": "^12.1.0",
-		"commander": "^12.1.0",
+		"@commander-js/extra-typings": "^13.0.0",
+		"commander": "^13.0.0",
 		"typescript": "^5.5.4",
 		"zod": "^3.23.8",
 		"zx": "^8.1.9"
