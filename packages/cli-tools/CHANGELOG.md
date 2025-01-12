@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.3.0
+
+### Minor Changes
+
+- 2055c58: feat: Add sleep() helper
+
 ## 0.2.0
 
 ### Minor Changes
