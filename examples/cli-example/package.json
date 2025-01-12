@@ -1,0 +1,27 @@
+{
+	"name": "@repo/cli-example",
+	"version": "0.1.0",
+	"private": true,
+	"sideEffects": false,
+	"scripts": {
+		"check:lint": "run-eslint-workers",
+		"check:types": "run-tsc",
+		"cli": "bun ./src/bin/cli.ts",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"@commander-js/extra-typings": "12.1.0",
+		"@jahands/cli-tools": "workspace:*",
+		"commander": "12.1.0",
+		"zod": "3.23.8",
+		"zx": "8.1.9"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "0.5.14",
+		"@cloudflare/workers-types": "4.20241004.0",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"vitest": "2.1.1"
+	}
+}

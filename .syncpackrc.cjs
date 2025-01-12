@@ -15,6 +15,7 @@ const config = {
 				'workers-tagged-logger',
 				'@jahands/otel-cf-workers',
 				'http-codex',
+				'@jahands/cli-tools',
 			],
 			dependencyTypes: ['!local'], // Exclude the local package itself
 			pinVersion: 'workspace:*',
