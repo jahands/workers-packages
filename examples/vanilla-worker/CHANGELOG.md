@@ -1,5 +1,14 @@
 # @repo/vanilla-worker
 
+## 0.2.21
+
+### Patch Changes
+
+- 03df0b2: chore: update dependencies
+- Updated dependencies [cf86b62]
+- Updated dependencies [03df0b2]
+  - workers-tagged-logger@0.4.0
+
 ## 0.2.20
 
 ### Patch Changes

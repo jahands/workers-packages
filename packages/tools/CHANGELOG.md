@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.7.4
+
+### Patch Changes
+
+- 03df0b2: chore: update dependencies
+
 ## 0.7.3
 
 ### Patch Changes

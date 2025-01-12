@@ -1,5 +1,15 @@
 # workers-tagged-logger
 
+## 0.4.0
+
+### Minor Changes
+
+- cf86b62: fix: bump minimum Hono version to 4.6.16 to resolve type issues
+
+### Patch Changes
+
+- 03df0b2: chore: update dependencies
+
 ## 0.3.8
 
 ### Patch Changes
