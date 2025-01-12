@@ -1,6 +1,6 @@
 {
 	"name": "@jahands/cli-tools",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"private": false,
 	"description": "cli tools for commander",
 	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/cli-tools",
