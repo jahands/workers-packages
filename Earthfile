@@ -10,6 +10,7 @@ prepare-workspace:
 	RUN curl -fsSL https://sh.uuid.rocks/install/mise | bash
 	ENV PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH"
 	COPY .mise.toml .
+	RUN mise trust --yes
 	RUN mise install --yes && mise reshim
 
 setup-project:
