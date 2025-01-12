@@ -17,6 +17,8 @@ function buildDeclarationFiles(fileNames: string[], options: ts.CompilerOptions)
 }
 
 const tsconfig = ts.readConfigFile('./tsconfig.json', ts.sys.readFile)
-if (tsconfig.error) throw new Error(`failed to read tsconfig: ${inspect(tsconfig)}`)
+if (tsconfig.error) {
+	throw new Error(`failed to read tsconfig: ${inspect(tsconfig)}`)
+}
 
 buildDeclarationFiles(entryPoints, tsconfig.config)
