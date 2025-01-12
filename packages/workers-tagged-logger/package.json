@@ -52,6 +52,6 @@
 		"zod": "^3.23.8"
 	},
 	"optionalDependencies": {
-		"hono": "^4.6.2"
+		"hono": "^4.6.16"
 	}
 }
