@@ -66,6 +66,43 @@ importers:
         specifier: 3.23.8
         version: 3.23.8
 
+  examples/cli-example:
+    dependencies:
+      '@commander-js/extra-typings':
+        specifier: 12.1.0
+        version: 12.1.0(commander@12.1.0)
+      '@jahands/cli-tools':
+        specifier: workspace:*
+        version: link:../../packages/cli-tools
+      commander:
+        specifier: 12.1.0
+        version: 12.1.0
+      zod:
+        specifier: 3.23.8
+        version: 3.23.8
+      zx:
+        specifier: 8.1.9
+        version: 8.1.9
+    devDependencies:
+      '@cloudflare/vitest-pool-workers':
+        specifier: 0.5.14
+        version: 0.5.14(@cloudflare/workers-types@4.20241004.0)(@vitest/runner@2.1.1)(@vitest/snapshot@2.1.1)(vitest@2.1.1(@types/node@20.8.3))
+      '@cloudflare/workers-types':
+        specifier: 4.20241004.0
+        version: 4.20241004.0
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/tools':
+        specifier: workspace:*
+        version: link:../../packages/tools
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      vitest:
+        specifier: 2.1.1
+        version: 2.1.1(@types/node@20.8.3)
+
   examples/hono-app:
     dependencies:
       hono:
@@ -155,6 +192,37 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
+      vitest:
+        specifier: 2.1.1
+        version: 2.1.1(@types/node@20.8.3)
+
+  packages/cli-tools:
+    dependencies:
+      '@commander-js/extra-typings':
+        specifier: ^12.1.0
+        version: 12.1.0(commander@12.1.0)
+      commander:
+        specifier: ^12.1.0
+        version: 12.1.0
+      typescript:
+        specifier: ^5.5.4
+        version: 5.5.4
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+      zx:
+        specifier: ^8.1.9
+        version: 8.1.9
+    devDependencies:
+      '@repo/tools':
+        specifier: workspace:*
+        version: link:../tools
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      esbuild:
+        specifier: 0.24.0
+        version: 0.24.0
       vitest:
         specifier: 2.1.1
         version: 2.1.1(@types/node@20.8.3)
@@ -2365,6 +2433,7 @@ packages:
   eslint@8.57.0:
     resolution: {integrity: sha512-dZ6+mexnaTIbSBZWgou51U6OmzIhYM2VcNdtiTtI7qPNZm35Akpr0f6vtw3w1Kmn5PYo+tZVfh13WrhpS6oLqQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   espree@9.6.1:

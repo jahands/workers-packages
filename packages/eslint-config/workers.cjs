@@ -65,7 +65,13 @@ module.exports = {
 				eqeqeq: ['error', 'always'],
 				'@typescript-eslint/no-explicit-any': 'warn',
 				'prefer-const': 'warn',
-				'@typescript-eslint/strict-boolean-expressions': 'error',
+				'@typescript-eslint/strict-boolean-expressions': [
+					'error',
+					{
+						allowNullableString: true,
+						allowNullableBoolean: true,
+					},
+				],
 				'unused-imports/no-unused-imports': 'warn',
 				'@typescript-eslint/naming-convention': [
 					'error',
