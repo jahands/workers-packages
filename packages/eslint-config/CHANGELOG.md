@@ -1,5 +1,11 @@
 # @repo/eslint-config
 
+## 0.1.14
+
+### Patch Changes
+
+- 03df0b2: chore: update dependencies
+
 ## 0.1.13
 
 ### Patch Changes
