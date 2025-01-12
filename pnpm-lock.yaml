@@ -208,11 +208,11 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
       zod:
-        specifier: ^3.23.8
-        version: 3.23.8
+        specifier: ^3.24.1
+        version: 3.24.1
       zx:
-        specifier: ^8.1.9
-        version: 8.1.9
+        specifier: ^8.3.0
+        version: 8.3.0
     devDependencies:
       '@repo/tools':
         specifier: workspace:*
@@ -4937,16 +4937,8 @@ packages:
   youch@3.3.3:
     resolution: {integrity: sha512-qSFXUk3UZBLfggAW3dJKg0BMblG5biqSF8M34E06o5CSsZtH92u9Hqmj2RzGiHDi64fhe83+4tENFP2DB6t6ZA==}
 
-  zod@3.23.8:
-    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
-
   zod@3.24.1:
     resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
-
-  zx@8.1.9:
-    resolution: {integrity: sha512-UHuLHphHmsBYKkAchkSrEN4nzDyagafqC9HUxtc1J7eopaScW6H9dsLJ1lmkAntnLtDTGoM8fa+jrJrXiIfKFA==}
-    engines: {node: '>= 12.17.0'}
-    hasBin: true
 
   zx@8.3.0:
     resolution: {integrity: sha512-L8mY3yfJwo3a8ZDD6f9jZzAcRWJZYcV8GauZmBxLB/aSTwaMzMIEVpPp2Kyx+7yF0gdvuxKnMxAZRft9UCawiw==}
@@ -10310,14 +10302,7 @@ snapshots:
       mustache: 4.2.0
       stacktracey: 2.1.8
 
-  zod@3.23.8: {}
-
   zod@3.24.1: {}
-
-  zx@8.1.9:
-    optionalDependencies:
-      '@types/fs-extra': 11.0.4
-      '@types/node': 20.8.3
 
   zx@8.3.0:
     optionalDependencies:
