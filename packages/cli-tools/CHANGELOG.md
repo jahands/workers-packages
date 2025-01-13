@@ -1,5 +1,15 @@
 # @jahands/cli-tools
 
+## 0.4.0
+
+### Minor Changes
+
+- 826afb5: feat: Add dirExistsSync()
+
+### Patch Changes
+
+- 4ada922: fix: explicitly import zx utilities rather than relying on globals
+
 ## 0.3.0
 
 ### Minor Changes
