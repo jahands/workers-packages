@@ -20,3 +20,16 @@ export async function dirExists(path: string): Promise<boolean> {
 		}
 	}
 }
+
+export function dirExistsSync(path: string): boolean {
+	try {
+		const stat = fs.lstatSync(path)
+		return stat.isDirectory()
+	} catch (e) {
+		if (isNotFoundError(e)) {
+			return false
+		} else {
+			throw e
+		}
+	}
+}
