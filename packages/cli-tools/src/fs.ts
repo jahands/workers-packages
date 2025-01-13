@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { fs } from 'zx'
 
 /**
  * Checks if an error (usually from fs) is a not found error
