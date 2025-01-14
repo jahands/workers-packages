@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.5.1
+
+### Patch Changes
+
+- a58a02c: fix: export cmd in package
+
 ## 0.5.0
 
 ### Minor Changes
