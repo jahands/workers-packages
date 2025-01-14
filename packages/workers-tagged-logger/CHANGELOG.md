@@ -1,5 +1,13 @@
 # workers-tagged-logger
 
+## 0.4.1
+
+### Patch Changes
+
+- 117e81d: BANDA-600 chore: Simplify type for withLogTags()
+
+  This function doesn't need to be async because als.run() is not async.
+
 ## 0.4.0
 
 ### Minor Changes
