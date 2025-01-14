@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.4.1
+
+### Patch Changes
+
+- ba71b8e: fix: explicitly import zx dependency (chalk)
+
 ## 0.4.0
 
 ### Minor Changes
