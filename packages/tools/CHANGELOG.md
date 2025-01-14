@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.7.5
+
+### Patch Changes
+
+- 32560f8: chore: remove unused files
+
 ## 0.7.4
 
 ### Patch Changes
