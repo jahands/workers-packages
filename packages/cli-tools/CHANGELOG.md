@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.5.0
+
+### Minor Changes
+
+- f6ed04f: feat: Add cmdExists function
+
 ## 0.4.1
 
 ### Patch Changes
