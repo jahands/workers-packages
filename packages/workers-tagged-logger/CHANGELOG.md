@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.4.3
+
+### Patch Changes
+
+- 40c9aeb: BANDA-601 fix: Add node exports to support node targets
+
 ## 0.4.2
 
 ### Patch Changes
