@@ -2,7 +2,7 @@ VERSION --raw-output 0.8
 PROJECT jahands/docker
 
 prepare-workspace:
-	FROM --platform=linux/amd64 node:22-bookworm-slim
+	FROM --platform=linux/amd64 debian:12-slim
 	WORKDIR /work
 	RUN apt-get update \
 		&& apt-get install -y curl jq git unzip \
