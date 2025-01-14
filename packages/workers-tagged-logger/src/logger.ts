@@ -226,10 +226,10 @@ interface WithLogTagsOptions<T extends LogTags> {
  * })
  * ```
  */
-export async function withLogTags<T extends LogTags, R>(
+export function withLogTags<T extends LogTags, R>(
 	opts: WithLogTagsOptions<Partial<T & LogTags>>,
-	fn: () => Promise<R>
-): Promise<R> {
+	fn: () => R
+): R {
 	const existing = als.getStore()
 	let source: { source: string } | undefined
 	const sourceOpt = opts.source
@@ -237,5 +237,5 @@ export async function withLogTags<T extends LogTags, R>(
 		source = { source: sourceOpt }
 	}
 	// Note: existing won't exist when withLogTags() is first called
-	return await als.run(structuredClone(Object.assign({}, existing, source, opts.tags)), fn)
+	return als.run(structuredClone(Object.assign({}, existing, source, opts.tags)), fn)
 }
