@@ -1,5 +1,6 @@
 import { program } from '@commander-js/extra-typings'
 import { ZodError } from 'zod'
+import { chalk } from 'zx'
 
 import type { Command } from '@commander-js/extra-typings'
 import type { ZodTypeAny } from 'zod'

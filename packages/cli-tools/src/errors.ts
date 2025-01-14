@@ -1,4 +1,5 @@
 import { program } from '@commander-js/extra-typings'
+import { chalk } from 'zx'
 
 import type { Command } from '@commander-js/extra-typings'
 
