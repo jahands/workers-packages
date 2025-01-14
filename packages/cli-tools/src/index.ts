@@ -1,4 +1,5 @@
 export * from './args'
+export * from './cmd'
 export * from './env'
 export * from './errors'
 export * from './fs'
