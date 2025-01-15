@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.15
+
+### Patch Changes
+
+- 5ae7660: chore: Only include dist directory in published package
+
 ## 0.1.14
 
 ### Patch Changes

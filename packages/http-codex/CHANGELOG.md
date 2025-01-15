@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.4.6
+
+### Patch Changes
+
+- 5ae7660: chore: Only include dist directory in published package
+
 ## 0.4.5
 
 ### Patch Changes

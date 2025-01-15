@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.5.2
+
+### Patch Changes
+
+- 5ae7660: chore: Only include dist directory in published package
+
 ## 0.5.1
 
 ### Patch Changes
