@@ -45,6 +45,9 @@
 	},
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"build": "bun ./scripts/build.ts",
 		"check:lint": "run-eslint-workers",
