@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.4.4
+
+### Patch Changes
+
+- 42377e9: fix: Only include dist folder in published package
+
 ## 0.4.3
 
 ### Patch Changes
