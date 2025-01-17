@@ -10,7 +10,10 @@
 	},
 	"editor.tabSize": 2,
 	"editor.detectIndentation": true,
-	"github-actions.workflows.pinned.workflows": [".github/workflows/release.yml"],
+	"github-actions.workflows.pinned.workflows": [
+		".github/workflows/release.yml",
+		".github/workflows/test.yml"
+	],
 	"github-actions.workflows.pinned.refresh.enabled": true,
 	"files.associations": {
 		"**/packages/tools/bin/*": "shellscript"
