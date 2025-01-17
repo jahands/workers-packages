@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.16
+
+### Patch Changes
+
+- 52486bb: chore: include NOTICE in package
+
 ## 0.1.15
 
 ### Patch Changes
