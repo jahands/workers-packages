@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.6.0
+
+### Minor Changes
+
+- 2ad03f1: feat: Add catchProcessError for improved zx error handling with commander
+
 ## 0.5.2
 
 ### Patch Changes
