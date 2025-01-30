@@ -159,3 +159,53 @@ export async function prefixStderr(
 		process.stderr.write(nextLine)
 	}
 }
+
+export interface CatchProcessErrorOptions {
+	/**
+	 * Exit with the same exit code as the `ProcessOutput` error
+	 * (if available) instead of `1`
+	 *
+	 * @default false
+	 */
+	useProcessExitCode?: boolean
+}
+
+/**
+ * Catch zx ProcessOutput errors and exit to prevent showing the stack trace.
+ *
+ * Useful when using zx + commander
+ *
+ * @example Run command and catch process errors
+ * ```ts
+ * import { program } from '@commander-js/extra-typings'
+ *
+ * program
+ *   .name('mycli')
+ *
+ *   // Don't hang for unresolved promises
+ *   .hook('postAction', () => process.exit(0))
+ *   .parseAsync()
+ *   .catch((e) => {
+ *     // Don't show giant stacktrace for process errors
+ *     if (e instanceof ProcessOutput) {
+ *       process.exit(1)
+ *     } else {
+ *       throw e
+ *     }
+ *  })
+ * ```
+ */
+export function catchProcessError({ useProcessExitCode }: CatchProcessErrorOptions = {}) {
+	return (err: unknown): never => {
+		// Don't show giant stacktrace for process errors
+		if (err instanceof ProcessOutput) {
+			if (useProcessExitCode) {
+				process.exit(err.exitCode ?? 1)
+			} else {
+				process.exit(1)
+			}
+		} else {
+			throw err
+		}
+	}
+}
