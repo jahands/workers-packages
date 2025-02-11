@@ -9,7 +9,7 @@ import {
 	WorkersLogger,
 } from './logger'
 
-import type { LogTags } from './logger'
+import type { LogTags, WorkersLoggerOptions } from './logger'
 
 type ParsedConsoleLog = z.infer<typeof ParsedConsoleLog>
 const ParsedConsoleLog = ConsoleLog.merge(
@@ -22,9 +22,10 @@ const ParsedConsoleLog = ConsoleLog.merge(
 
 class TestHarness<T extends LogTags> {
 	private _logs: ParsedConsoleLog[] = []
-	readonly log = new WorkersLogger<T>()
+	readonly log: WorkersLogger<T>
 
-	constructor() {
+	constructor(opts?: WorkersLoggerOptions) {
+		this.log = new WorkersLogger(opts)
 		vi.spyOn(console, 'log').mockImplementation((...msgs: ParsedConsoleLog[]) => {
 			this._logs.push(...structuredClone(msgs))
 		})
@@ -45,8 +46,8 @@ class TestHarness<T extends LogTags> {
 	}
 }
 
-export function setupTest<T extends LogTags>(): TestHarness<T> {
-	return new TestHarness<T>()
+export function setupTest<T extends LogTags>(opts?: WorkersLoggerOptions): TestHarness<T> {
+	return new TestHarness<T>(opts)
 }
 
 beforeEach(() => {
@@ -173,6 +174,32 @@ describe('WorkersLogger', () => {
 				expect(h.oneLog().message).toMatchInlineSnapshot(
 					`"["hello",123,{},{"banda":"rocks"},["a","b"],{"foo":{"bar":{"baz":"abc"}}}]"`
 				)
+			})
+		})
+
+		describe('follow minimum logging levels', () => {
+			test('default should be the debug level', async () => {
+				const h = setupTest()
+				await withLogTags({}, async () => {
+					h.log.debug('something')
+					expect(h.oneLog().message).toMatchInlineSnapshot(`"something"`)
+				})
+			})
+
+			it('should not print if below minimum level', async () => {
+				const h = setupTest({ minimumLogLevel: 'warn' })
+				await withLogTags({}, async () => {
+					h.log.debug('something')
+					expect(h.logs).toHaveLength(0)
+				})
+			})
+
+			it('should print at minimum level', async () => {
+				const h = setupTest({ minimumLogLevel: 'warn' })
+				await withLogTags({}, async () => {
+					h.log.warn('something')
+					expect(h.logs).toHaveLength(1)
+				})
 			})
 		})
 
