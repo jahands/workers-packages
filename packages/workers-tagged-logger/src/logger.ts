@@ -107,7 +107,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 * Get global tags stored in async context. Excludes
 	 * tags set on this instance using withTags())
 	 */
-	private getGlobalTags(): Partial<T & LogTags> | undefined {
+	private getParentTags(): Partial<T & LogTags> | undefined {
 		const tags = als.getStore()
 		if (tags === undefined) {
 			console.log({
@@ -123,17 +123,17 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	/**
 	 * Get all tags (including global + context tags)
 	 */
-	private getTags(): Partial<T & LogTags> {
-		return Object.assign({}, this.getGlobalTags(), this.ctx.tags) as Partial<T & LogTags>
+	getTags(): Partial<T & LogTags> {
+		return Object.assign({}, this.getParentTags(), this.ctx.tags) as Partial<T & LogTags>
 	}
 
 	/** Set tags used for all logs in this async context
 	 * and any child context (unless overridden using withTags) */
 	setTags(tags: Partial<T & LogTags>): void {
-		const globalTags = this.getGlobalTags()
+		const globalTags = this.getParentTags()
 		if (globalTags !== undefined) {
 			// no need to log when we don't have global tags because
-			// getGlobalTags already logs it.
+			// getParentTags already logs it.
 			Object.assign(globalTags, structuredClone(tags))
 		}
 	}
