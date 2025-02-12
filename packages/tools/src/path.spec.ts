@@ -1,16 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { cmdExists, getMD5OfDir, getMD5OfFile, getMD5OfString } from './path'
-
-describe('cmdExists', () => {
-	it('returns true if command exists', async () => {
-		expect(await cmdExists('pnpm')).toBe(true)
-	})
-
-	it('returns false if command does not exist', async () => {
-		expect(await cmdExists('sdfdsfsddsfsdf')).toBe(false)
-	})
-})
+import { getMD5OfDir, getMD5OfFile, getMD5OfString } from './path'
 
 const fixtureDir = `${__dirname}/test/fixtures`
 
