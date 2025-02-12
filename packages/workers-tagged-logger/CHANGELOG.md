@@ -1,5 +1,12 @@
 # workers-tagged-logger
 
+## 0.4.5
+
+### Patch Changes
+
+- ab23181: Add optional minimum logging level
+- 22f52e0: Expose `getTags` as a public method
+
 ## 0.4.4
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @repo/hono-app
 
+## 0.3.18
+
+### Patch Changes
+
+- Updated dependencies [ab23181]
+- Updated dependencies [22f52e0]
+  - workers-tagged-logger@0.4.5
+  - http-codex@0.4.6
+
 ## 0.3.17
 
 ### Patch Changes
