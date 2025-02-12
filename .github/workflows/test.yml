@@ -24,4 +24,4 @@ jobs:
         with:
           fetch-depth: 10
       - name: Test (Earthly)
-        run: earthly --ci --push +test --GITHUB_ACTIONS=1
+        run: earthly --ci +test --GITHUB_ACTIONS=1
