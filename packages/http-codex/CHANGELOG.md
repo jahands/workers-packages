@@ -1,5 +1,12 @@
 # http-codex
 
+## 0.5.0
+
+### Minor Changes
+
+- 3433a68: chore: Switch from esbuild to tsc
+- 204f849: chore: Switch from esbuild to tsc
+
 ## 0.4.6
 
 ### Patch Changes
