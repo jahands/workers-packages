@@ -1,8 +1,8 @@
 import { Hono } from 'hono'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { useWorkersLogger } from './hono'
-import { setupTest } from './logger.spec'
+import { useWorkersLogger } from './hono.js'
+import { setupTest } from './logger.spec.js'
 
 beforeEach(() => {
 	vi.useFakeTimers()

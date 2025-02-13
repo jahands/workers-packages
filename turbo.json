@@ -43,7 +43,7 @@
 			"outputLogs": "new-only"
 		},
 		"check:types": {
-			"dependsOn": ["^build", "^check:types"],
+			"dependsOn": ["^build", "build", "^check:types"],
 			"outputLogs": "new-only"
 		},
 		"check:lint": {
@@ -56,7 +56,7 @@
 			"outputLogs": "new-only"
 		},
 		"test:ci": {
-			"dependsOn": ["build", "^build"],
+			"dependsOn": ["^build", "build"],
 			"outputLogs": "new-only"
 		},
 		"//#build": {

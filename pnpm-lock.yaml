@@ -223,9 +223,6 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
-      esbuild:
-        specifier: 0.24.2
-        version: 0.24.2
       vitest:
         specifier: 2.1.1
         version: 2.1.1(@types/node@20.8.3)

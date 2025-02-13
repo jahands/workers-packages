@@ -41,10 +41,9 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "runx build tsc",
-		"check:exports": "runx check -e",
+		"build": "runx build tsc ./src/index.ts ./src/status.ts",
 		"check:lint": "run-eslint-workers",
-		"check:types": "run-s build check:exports",
+		"check:types": "runx check --exports",
 		"test": "run-vitest"
 	},
 	"devDependencies": {

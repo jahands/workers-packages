@@ -1,7 +1,7 @@
 import { program } from '@commander-js/extra-typings'
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { getEnv } from './env'
+import { getEnv } from './env.js'
 
 const exitErrors: Error[] = []
 beforeAll(() => {

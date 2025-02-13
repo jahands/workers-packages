@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { cmdExists } from './cmd'
+import { cmdExists } from './cmd.js'
 
 describe('cmdExists()', async () => {
 	it('returns true when command exists', async () => {

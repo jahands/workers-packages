@@ -19,25 +19,24 @@
 		".": {
 			"import": {
 				"types": "./dist/index.d.ts",
-				"default": "./dist/index.mjs"
+				"default": "./dist/index.js"
 			}
 		}
 	},
-	"main": "./dist/index.mjs",
-	"module": "./dist/index.mjs",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
 	"files": [
 		"dist"
 	],
 	"scripts": {
-		"build": "bun ./scripts/build.ts",
+		"build": "runx build tsc ./src/index.ts",
 		"check:lint": "run-eslint-workers",
-		"check:types": "run-tsc",
+		"check:types": "runx check --exports",
 		"test": "run-vitest"
 	},
 	"devDependencies": {
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"esbuild": "0.24.2",
 		"vitest": "2.1.1"
 	},
 	"peerDependencies": {

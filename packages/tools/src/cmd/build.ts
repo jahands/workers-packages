@@ -17,8 +17,9 @@ buildCmd
 buildCmd
 	.command('tsc')
 	.description('Build a library with tsc')
+	.argument('<entrypoint...>', 'Entrypoint(s) for the program')
 	.option('-r, --root-dir <string>', 'Root dir for tsc to use (overrides tsconfig.json)', 'src')
-	.action(async ({ rootDir }) => {
+	.action(async (entrypoints, { rootDir }) => {
 		await $`rm -rf ./dist` // Make sure we don't have any previous artifacts
 
 		// Read the parent config so that we don't get
@@ -44,7 +45,7 @@ buildCmd
 			rootDir: rootDir,
 		} satisfies ts.CompilerOptions
 
-		ts.createProgram(['./src/index.ts', './src/status.ts'], config).emit()
+		ts.createProgram(entrypoints, config).emit()
 	})
 
 function getCompilerOptionsJSONFollowExtends(filename: string): { [key: string]: unknown } {

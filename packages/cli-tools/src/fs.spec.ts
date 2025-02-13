@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { isNotFoundError } from './fs'
+import { isNotFoundError } from './fs.js'
 
 describe('isNotFoundError()', () => {
 	it('returns false if not a not-found error', () => {

@@ -7,9 +7,9 @@ import {
 	stringifyMessages,
 	withLogTags,
 	WorkersLogger,
-} from './logger'
+} from './logger.js'
 
-import type { LogTags, WorkersLoggerOptions } from './logger'
+import type { LogTags, WorkersLoggerOptions } from './logger.js'
 
 type ParsedConsoleLog = z.infer<typeof ParsedConsoleLog>
 const ParsedConsoleLog = ConsoleLog.merge(
