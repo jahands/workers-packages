@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.5.0
+
+### Minor Changes
+
+- 204f849: chore: Switch from esbuild to tsc
+
 ## 0.4.5
 
 ### Patch Changes

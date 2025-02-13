@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.7.0
+
+### Minor Changes
+
+- 204f849: chore: Switch from esbuild to tsc
+
 ## 0.6.0
 
 ### Minor Changes

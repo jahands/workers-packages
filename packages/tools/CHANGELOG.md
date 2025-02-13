@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.7.7
+
+### Patch Changes
+
+- 3433a68: Add / improve scripts
+
 ## 0.7.6
 
 ### Patch Changes
