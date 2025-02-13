@@ -5,9 +5,7 @@ const codeImports = [
 	'<BUILTIN_MODULES>',
 	'<THIRD_PARTY_MODULES>',
 	'',
-	// Usually we don't import from other apps, with the exception of
-	// wci-internal-api because wci-external-api binds to it.
-	'^(@repo|wci-internal-api)(/.*)$', // Workspace imports
+	'^(@repo)(/.*)$', // Workspace imports
 	'',
 	// Local (relative) imports
 	'^[.]{2}$', // ..

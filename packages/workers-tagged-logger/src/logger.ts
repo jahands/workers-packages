@@ -16,6 +16,25 @@ export const LogFields = LogTags
 export type LogLevel = z.infer<typeof LogLevel>
 export const LogLevel = z.enum(['info', 'log', 'warn', 'error', 'debug'])
 
+/**
+ * Converts a string based log-level into a number. Useful for filtering out for
+ * configured log levels.
+ */
+function logLevelToNumber(logLevel: LogLevel): number {
+	switch (logLevel) {
+		case 'debug':
+			return 0
+		case 'info':
+			return 1
+		case 'log':
+			return 1
+		case 'warn':
+			return 2
+		case 'error':
+			return 3
+	}
+}
+
 type LogFn = (...msgs: any[]) => void
 type LogLevelFns = {
 	[K in LogLevel]: LogFn
@@ -45,6 +64,12 @@ export interface WorkersLoggerOptions {
 	 * (or child instance) that log.withFields() was called.
 	 */
 	fields?: LogFields
+	/**
+	 * Minimum log level for logger, inclusive. Logging levels below the minimum set are ignored.
+	 *
+	 * Defaults to the lowest level: `debug`.
+	 */
+	minimumLogLevel?: LogLevel
 }
 
 /**
@@ -107,7 +132,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 * Get global tags stored in async context. Excludes
 	 * tags set on this instance using withTags())
 	 */
-	private getGlobalTags(): Partial<T & LogTags> | undefined {
+	private getParentTags(): Partial<T & LogTags> | undefined {
 		const tags = als.getStore()
 		if (tags === undefined) {
 			console.log({
@@ -123,17 +148,17 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	/**
 	 * Get all tags (including global + context tags)
 	 */
-	private getTags(): Partial<T & LogTags> {
-		return Object.assign({}, this.getGlobalTags(), this.ctx.tags) as Partial<T & LogTags>
+	getTags(): Partial<T & LogTags> {
+		return Object.assign({}, this.getParentTags(), this.ctx.tags) as Partial<T & LogTags>
 	}
 
 	/** Set tags used for all logs in this async context
 	 * and any child context (unless overridden using withTags) */
 	setTags(tags: Partial<T & LogTags>): void {
-		const globalTags = this.getGlobalTags()
+		const globalTags = this.getParentTags()
 		if (globalTags !== undefined) {
 			// no need to log when we don't have global tags because
-			// getGlobalTags already logs it.
+			// getParentTags already logs it.
 			Object.assign(globalTags, structuredClone(tags))
 		}
 	}
@@ -145,6 +170,12 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	debug = (...msgs: any[]): void => this.write(msgs, 'debug')
 
 	private write(msgs: any[], level: LogLevel): void {
+		const minimumLogLevel = this.ctx.minimumLogLevel ?? 'debug'
+		// don't do anything if log is below minimum level
+		if (logLevelToNumber(level) < logLevelToNumber(minimumLogLevel)) {
+			return
+		}
+
 		const tags = this.getTags()
 		let message: string | undefined
 		if (Array.isArray(msgs)) {

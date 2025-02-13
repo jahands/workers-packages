@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.7.6
+
+### Patch Changes
+
+- 94e1ff2: chore: Remove unused functions
+
 ## 0.7.5
 
 ### Patch Changes
