@@ -1,4 +1,4 @@
-import { cliError } from './errors.js'
+import { cliError } from './errors'
 
 /**
  * Get an env var, throwing an error if it's not set

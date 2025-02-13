@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
-import { withLogTags, WorkersLogger } from './logger.js'
+import { withLogTags, WorkersLogger } from './logger'
 
 import type { Context as HonoContext, Handler as HonoHandler, Next as HonoNext } from 'hono'
-import type { LogTags } from './logger.js'
+import type { LogTags } from './logger'
 
 export type LoggerHonoBindings = z.infer<typeof LoggerHonoBindings>
 export const LoggerHonoBindings = z.object({ ENVIRONMENT: z.string().min(1).optional() })

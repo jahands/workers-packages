@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
 
-import { httpStatus } from './combined.js'
+import { httpStatus } from './combined'
 
-import type { HttpStatusCodeName } from './index.js'
+import type { HttpStatusCodeName } from './index'
 
 describe('httpStatus', () => {
 	const all = Object.keys(httpStatus).filter((key) => (key as keyof typeof httpStatus) !== 'text')

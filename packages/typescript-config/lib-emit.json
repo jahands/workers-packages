@@ -19,7 +19,8 @@
 		"forceConsistentCasingInFileNames": true,
 
 		// If transpiling with TypeScript:
-		"module": "NodeNext",
+		"module": "ES2022",
+		"moduleResolution": "node",
 		"outDir": "dist",
 		// "rootDir": "src",
 		"sourceMap": true,

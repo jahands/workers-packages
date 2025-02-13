@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { httpStatus, isNullBodyStatus, nullBodyStatuses } from './status.js'
+import { httpStatus, isNullBodyStatus, nullBodyStatuses } from './status'
 
 describe('isNullBodyStatus()', () => {
 	const nonNullBodyStatuses = Object.values(httpStatus).filter(
