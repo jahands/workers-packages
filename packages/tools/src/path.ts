@@ -1,14 +1,17 @@
 import { createHash } from 'node:crypto'
+import * as find from 'empathic/find'
 import memoizeOne from 'memoize-one'
 import { z } from 'zod'
 
-export const getRepoRoot = memoizeOne(async () =>
-	z
+export const getRepoRoot = memoizeOne(() => {
+	const pnpmLock = z
 		.string()
 		.trim()
 		.startsWith('/')
-		.parse(await $`git rev-parse --show-toplevel`.text())
-)
+		.endsWith('/pnpm-lock.yaml')
+		.parse(find.up('pnpm-lock.yaml'))
+	return path.dirname(pnpmLock)
+})
 
 export async function getMD5OfDir(dir: string): Promise<string> {
 	const files = await fs

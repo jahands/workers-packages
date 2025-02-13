@@ -16,7 +16,8 @@
 	],
 	"github-actions.workflows.pinned.refresh.enabled": true,
 	"files.associations": {
-		"**/packages/tools/bin/*": "shellscript"
+		"**/packages/tools/bin/*": "shellscript",
+		"**/packages/typescript-config/*.json": "jsonc"
 	},
 	"eslint.workingDirectories": [
 		{

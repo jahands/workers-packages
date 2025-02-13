@@ -7,7 +7,7 @@ export const parseChangesetCmd = new Command('parse-changeset')
 	.option('--strip-packages', 'Strip packages from changeset')
 	.option('-v, --verbose', 'Verbose output')
 	.action(async (path, { stripPackages, verbose }) => {
-		const repoRoot = await getRepoRoot()
+		const repoRoot = getRepoRoot()
 		cd(repoRoot)
 		verbose && echo(chalk.blue(`Parsing changeset from ${path}`))
 		let changeset = (await fs.readFile(path)).toString()

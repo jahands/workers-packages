@@ -12,7 +12,7 @@
 		"changeset:new": "run-changeset-new",
 		"check:ci": "turbo check:ci --log-order=grouped",
 		"test:ci": "run-vitest-ci",
-		"check:deps": "syncpack lint",
+		"check:deps": "runx check -l",
 		"check:format": "prettier . --check --cache --ignore-unknown",
 		"chore:update:deps": "run-update-deps",
 		"chore:update:tools": "run-s chore:update:tools:* fix:deps",
@@ -29,6 +29,7 @@
 		"publish": "changeset publish"
 	},
 	"devDependencies": {
+		"@arethetypeswrong/cli": "0.17.3",
 		"@changesets/cli": "2.27.11",
 		"@ianvs/prettier-plugin-sort-imports": "4.4.0",
 		"@repo/eslint-config": "workspace:*",

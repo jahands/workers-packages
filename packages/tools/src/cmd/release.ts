@@ -8,7 +8,7 @@ releaseCmd
 	.command('clean')
 	.description(`Remove files we don't want ending up in npm tarballs`)
 	.action(async () => {
-		const repoRoot = await getRepoRoot()
+		const repoRoot = getRepoRoot()
 
 		const turboDirs = await glob('packages/*/.turbo/', { cwd: repoRoot, onlyDirectories: true })
 		await Promise.all(turboDirs.map((d) => fs.remove(d)))

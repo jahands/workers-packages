@@ -3,6 +3,7 @@ import 'zx/globals'
 import { program } from '@commander-js/extra-typings'
 
 import { buildCmd } from '../cmd/build'
+import { checkCmd } from '../cmd/check'
 import { deployCmd } from '../cmd/deploy'
 import { parseChangesetCmd } from '../cmd/parse-changeset'
 import { pkgCmd } from '../cmd/pkg/pkg'
@@ -16,6 +17,7 @@ program
 
 	.addCommand(updatePnpmCmd)
 	.addCommand(parseChangesetCmd)
+	.addCommand(checkCmd)
 	.addCommand(buildCmd)
 	.addCommand(deployCmd)
 	.addCommand(sentryCmd)

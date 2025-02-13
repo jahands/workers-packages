@@ -25,25 +25,26 @@
 		".": {
 			"import": {
 				"types": "./dist/index.d.ts",
-				"default": "./dist/index.mjs"
+				"default": "./dist/index.js"
 			}
 		},
 		"./status": {
 			"import": {
 				"types": "./dist/status.d.ts",
-				"default": "./dist/status.mjs"
+				"default": "./dist/status.js"
 			}
 		}
 	},
-	"main": "./dist/index.mjs",
-	"module": "./dist/index.mjs",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
 	"files": [
 		"dist"
 	],
 	"scripts": {
-		"build": "bun ./scripts/build.ts",
+		"build": "runx build tsc",
+		"check:exports": "runx check -e",
 		"check:lint": "run-eslint-workers",
-		"check:types": "run-tsc",
+		"check:types": "run-s build check:exports",
 		"test": "run-vitest"
 	},
 	"devDependencies": {
@@ -51,7 +52,6 @@
 		"@cloudflare/workers-types": "4.20250109.0",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"esbuild": "0.24.2",
 		"rimraf": "6.0.1",
 		"typescript": "5.5.4",
 		"vitest": "2.1.1",
