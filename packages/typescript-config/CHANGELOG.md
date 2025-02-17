@@ -1,5 +1,11 @@
 # @repo/typescript-config
 
+## 0.3.1
+
+### Patch Changes
+
+- 84e2513: chore: Switch to ES2022
+
 ## 0.3.0
 
 ### Minor Changes

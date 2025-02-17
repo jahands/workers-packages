@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.5.1
+
+### Patch Changes
+
+- 84e2513: chore: Switch to ES2022
+
 ## 0.5.0
 
 ### Minor Changes
