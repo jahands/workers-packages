@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.5.2
+
+### Patch Changes
+
+- 1bd4a22: fix: add missing .js extensions to relative imports
+
 ## 0.5.1
 
 ### Patch Changes
