@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.7.3
+
+### Patch Changes
+
+- 1bd4a22: fix: add missing .js extensions to relative imports
+
 ## 0.7.2
 
 ### Patch Changes

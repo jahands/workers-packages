@@ -1,5 +1,11 @@
 # @repo/eslint-config
 
+## 0.1.15
+
+### Patch Changes
+
+- 1bd4a22: chore: add lib.cjs that requires .js extensions
+
 ## 0.1.14
 
 ### Patch Changes
