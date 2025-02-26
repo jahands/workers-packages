@@ -52,7 +52,7 @@
 			"passThroughEnv": ["FIX_ESLINT"]
 		},
 		"//#test:ci": {
-			"dependsOn": ["build"],
+			"dependsOn": ["^build", "build"],
 			"outputLogs": "new-only"
 		},
 		"test:ci": {
