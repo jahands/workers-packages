@@ -4,9 +4,9 @@
  * Commit: 55590f3a2b89f001bcadf0df6eb2dde62618302b
  */
 
-import { httpStatus } from './status'
+import { httpStatus } from './status.js'
 
-import type { HttpStatusCode } from './status'
+import type { HttpStatusCode } from './status.js'
 
 /**
  * statusText returns a text for the HTTP status code. It returns the empty

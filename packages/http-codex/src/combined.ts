@@ -1,5 +1,5 @@
-import { httpStatus as statusCodes } from './status'
-import { text } from './statusText'
+import { httpStatus as statusCodes } from './status.js'
+import { text } from './statusText.js'
 
 /**
  * HTTP status codes as registered with IANA.
