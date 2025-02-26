@@ -1,5 +1,13 @@
 # @jahands/cli-tools
 
+## 0.7.2
+
+### Patch Changes
+
+- 3f9d245: fix: add .js extensions to imports
+
+  Fixes an issue with Node environments that are unable to resolve without bundling first
+
 ## 0.7.1
 
 ### Patch Changes
