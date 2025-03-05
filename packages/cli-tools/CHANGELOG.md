@@ -1,5 +1,13 @@
 # @jahands/cli-tools
 
+## 0.7.4
+
+### Patch Changes
+
+- 1099c3c: fix: add require export
+
+  fixes an issue I was having with a project that uses tsx
+
 ## 0.7.3
 
 ### Patch Changes
