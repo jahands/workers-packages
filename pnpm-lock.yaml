@@ -392,6 +392,10 @@ importers:
         version: 1.2.4
 
   packages/typeid:
+    dependencies:
+      typeid-js:
+        specifier: 1.2.0
+        version: 1.2.0
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -402,9 +406,6 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
-      typeid-js:
-        specifier: 1.2.0
-        version: 1.2.0
       zod:
         specifier: 3.24.1
         version: 3.24.1

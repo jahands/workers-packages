@@ -38,11 +38,13 @@
 		"check:types": "run-tsc",
 		"test": "run-vitest"
 	},
+	"dependencies": {
+		"typeid-js": "1.2.0"
+	},
 	"devDependencies": {
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"typeid-js": "1.2.0",
 		"zod": "3.24.1"
 	}
 }
