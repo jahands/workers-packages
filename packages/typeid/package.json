@@ -26,6 +26,8 @@
 			"default": "./dist/typeid.mjs"
 		}
 	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
 	"files": [
 		"dist",
 		"NOTICE"
