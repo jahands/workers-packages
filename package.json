@@ -10,7 +10,7 @@
 	"sideEffects": false,
 	"scripts": {
 		"changeset:new": "run-changeset-new",
-		"check:ci": "run-s build:packages && turbo check:ci --log-order=grouped",
+		"check:ci": "turbo check:ci --log-order=grouped",
 		"test:ci": "run-vitest-ci",
 		"check:deps": "runx check -l",
 		"check:format": "prettier . --check --cache --ignore-unknown",
