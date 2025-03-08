@@ -1,7 +1,11 @@
 import { inspect } from 'util'
 import { Command } from '@commander-js/extra-typings'
+import * as esbuild from 'esbuild'
+import { match } from 'ts-pattern'
 import ts from 'typescript'
 import { z } from 'zod'
+
+import { getCompilerOptionsJSONFollowExtends, getTSConfig } from '../tsconfig'
 
 export const buildCmd = new Command('build').description('Build Workers/etc.')
 
@@ -48,15 +52,99 @@ buildCmd
 		ts.createProgram(entrypoints, config).emit()
 	})
 
-function getCompilerOptionsJSONFollowExtends(filename: string): { [key: string]: unknown } {
-	let compopts = {}
-	const config = ts.readConfigFile(filename, ts.sys.readFile).config
-	if (config.extends !== undefined) {
-		const rqrpath = require.resolve(config.extends)
-		compopts = getCompilerOptionsJSONFollowExtends(rqrpath)
-	}
-	return {
-		...compopts,
-		...config.compilerOptions,
-	}
-}
+buildCmd
+	.command('bundle-lib')
+	.description('Bundle library with esbuild (usually to resolve vitest issues)')
+
+	.argument('<entrypoints...>', 'Entrypoint(s) of the app. e.g. src/index.ts')
+	.option('-d, --root-dir <string>', 'Root directory to look for entrypoints')
+	.option('-f, --format <format...>', 'Formats to use (options: esm, cjs)', ['esm'])
+	.option(
+		'--platform <string>',
+		'Optional platform to target (options: browser, node, neutral)',
+		(s) => z.enum(['browser', 'node', 'neutral']).parse(s)
+	)
+
+	.action(async (entryPoints, { format: moduleFormats, platform, rootDir }) => {
+		entryPoints = z
+			.string()
+			.array()
+			.min(1)
+			.parse(entryPoints)
+			.map((d) => path.join(rootDir ?? '.', d))
+
+		type Format = z.infer<typeof Format>
+		const Format = z.enum(['esm', 'cjs'])
+
+		const formats = Format.array().parse(moduleFormats)
+
+		await fs.rm('./dist/', { force: true, recursive: true })
+
+		await Promise.all([
+			$`runx build bundle-lib-build-types ${entryPoints}`,
+
+			...formats.map(async (outFormat) => {
+				type Config = {
+					format: Format
+					outExt: string
+				}
+
+				const { format, outExt } = match<'esm' | 'cjs', Config>(outFormat)
+					.with('esm', () => ({
+						format: 'esm',
+						outExt: '.mjs',
+					}))
+					.with('cjs', () => ({
+						format: 'cjs',
+						outExt: '.cjs',
+					}))
+					.exhaustive()
+
+				const opts: esbuild.BuildOptions = {
+					entryPoints,
+					outdir: './dist/',
+					logLevel: 'warning',
+					outExtension: {
+						'.js': outExt,
+					},
+					target: 'es2022',
+					bundle: true,
+					format,
+					sourcemap: 'both',
+					treeShaking: true,
+					external: ['node:events', 'node:async_hooks', 'node:buffer', 'cloudflare:test'],
+				}
+
+				if (platform) {
+					opts.platform = platform
+				}
+
+				await esbuild.build(opts)
+			}),
+		])
+	})
+
+buildCmd
+	.command('bundle-lib-build-types')
+	.description('Separate command to build types (so that we can run them concurrently)')
+	.argument('<entrypoints...>', 'Entrypoint(s) of the app. e.g. src/index.ts')
+	.action(async (entryPoints) => {
+		z.string().array().min(1).parse(entryPoints)
+
+		const tsconfig = ts.readConfigFile('./tsconfig.json', ts.sys.readFile)
+		if (tsconfig.error) {
+			throw new Error(`failed to read tsconfig: ${Bun.inspect(tsconfig)}`)
+		}
+
+		const tsCompOpts = {
+			...getTSConfig(),
+			declaration: true,
+			declarationMap: true,
+			emitDeclarationOnly: true,
+			noEmit: false,
+			outDir: './dist/',
+		} satisfies ts.CompilerOptions
+
+		const program = ts.createProgram(entryPoints, tsCompOpts)
+		program.emit()
+	})
