@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.17
+
+### Patch Changes
+
+- 277a7ac: chore: switch to shared bundle script
+
 ## 0.1.16
 
 ### Patch Changes
