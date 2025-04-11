@@ -437,14 +437,21 @@ export function WithLogTags<T extends LogTags>(
 			)
 		}
 
-		let source: string | undefined
+		let explicitSource: string | undefined
 		let userTags: LogTags | undefined
 
 		if (typeof optsOrSource === 'string') {
-			source = optsOrSource
+			explicitSource = optsOrSource
 		} else if (optsOrSource) {
-			source = optsOrSource.source
+			explicitSource = optsOrSource.source
 			userTags = optsOrSource.tags
+		}
+
+		let inferredClassName: string | undefined = 'UnknownClass'
+		if (typeof target === 'function') {
+			inferredClassName = target.name || inferredClassName
+		} else if (target && typeof target.constructor === 'function') {
+			inferredClassName = target.constructor.name || inferredClassName
 		}
 
 		// Get original method and wrap it
@@ -454,31 +461,8 @@ export function WithLogTags<T extends LogTags>(
 			const existing = als.getStore()
 			const rootMethodName = existing?.['$logger.rootMethodName'] ?? methodName
 
-			if (!source) {
-				// check if we already have a source in als
-				if (existing && typeof existing.source === 'string') {
-					source = existing.source
-				} else {
-					// fall back to inferring from class name
-					let inferredClassName: string | undefined
-					if (typeof target === 'function') {
-						// Static method: target is the constructor
-						inferredClassName = target.name
-					} else if (target && typeof target.constructor === 'function') {
-						// Instance method: target is the prototype, get constructor
-						inferredClassName = target.constructor.name
-					}
-
-					if (inferredClassName) {
-						source = inferredClassName
-					} else {
-						inferredClassName = 'UnknownClass'
-					}
-				}
-			}
-
-			// Add a source if one was explicitly set or fall back on the inferred name
-			const sourceTag = { source }
+			const finalSource = explicitSource ?? existing?.source ?? inferredClassName
+			const sourceTag = { source: finalSource }
 
 			// Define the logger-specific tags for this context level
 			const loggerTags = {

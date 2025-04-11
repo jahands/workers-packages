@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { stringifyMessage, stringifyMessages, WithLogTags } from '../../logger.js'
+import { withLogTags, WithLogTags } from '../../logger.js'
 import { setupTest, TestHarness } from '../harness.js'
 
 describe('@WithLogTags', () => {
@@ -163,6 +163,40 @@ describe('@WithLogTags', () => {
 		@WithLogTags({ source: 'ExplicitStaticSource' }) // Explicit source for static
 		static explicitSourceStaticMethod(h: TestHarness<TestTags>) {
 			h.log.info('Static method with explicit source')
+		}
+
+		// ========================================== //
+		// === Methods for Inherited Source Tests === //
+		// ========================================== //
+
+		@WithLogTags({ source: 'OuterExplicitSource' }) // Outer sets explicit source
+		async callNestedInferredSource() {
+			this.h.log.info('Entering outer explicit')
+			await this.nestedInferredSource() // Inner has no explicit source
+			this.h.log.info('Exiting outer explicit')
+		}
+
+		@WithLogTags() // Inner has no explicit source, should inherit
+		async nestedInferredSource() {
+			this.h.log.info('Entering nested inferred (should inherit)')
+		}
+
+		@WithLogTags({ source: 'OuterExplicitSource' }) // Outer sets explicit source
+		async callNestedExplicitSource() {
+			this.h.log.info('Entering outer explicit')
+			await this.nestedExplicitSource() // Inner also sets explicit source
+			this.h.log.info('Exiting outer explicit')
+		}
+
+		@WithLogTags({ source: 'InnerExplicitSource' }) // Inner sets explicit source
+		async nestedExplicitSource() {
+			this.h.log.info('Entering nested explicit (should override)')
+		}
+
+		// Method with no explicit source, to be called from different contexts
+		@WithLogTags()
+		genericInferredMethod() {
+			this.h.log.info('Running generic inferred method')
 		}
 	}
 
@@ -492,6 +526,99 @@ describe('@WithLogTags', () => {
 
 			expect(h.oneLog().tags?.source).toBe('ExplicitStaticSource')
 			expect(h.oneLog().tags?.['$logger.methodName']).toBe('explicitSourceStaticMethod')
+		})
+	})
+
+	describe('source inheritance', () => {
+		it('should use inherited source from ALS context if no explicit source is provided', async () => {
+			const h = setupTest<TestTags>()
+			const service = new TestService(h)
+
+			await service.callNestedInferredSource()
+
+			// Log 1: Outer method with its explicit source
+			expect(h.logAt(0).message).toBe('Entering outer explicit')
+			expect(h.logAt(0).tags?.source).toBe('OuterExplicitSource')
+			expect(h.logAt(0).tags?.['$logger.methodName']).toBe('callNestedInferredSource')
+
+			// Log 2: Inner method (@WithLogTags() - no explicit source)
+			// Should inherit 'OuterExplicitSource' from the ALS context
+			expect(h.logAt(1).message).toBe('Entering nested inferred (should inherit)')
+			expect(h.logAt(1).tags?.source).toBe('OuterExplicitSource') // Inherited
+			expect(h.logAt(1).tags?.['$logger.methodName']).toBe('nestedInferredSource') // Own method name
+			expect(h.logAt(1).tags?.['$logger.rootMethodName']).toBe('callNestedInferredSource') // Root is the caller
+
+			// Log 3: Back in outer method
+			expect(h.logAt(2).message).toBe('Exiting outer explicit')
+			expect(h.logAt(2).tags?.source).toBe('OuterExplicitSource') // Context restored
+		})
+
+		it('should use explicit source from decorator even if source exists in ALS context', async () => {
+			const h = setupTest<TestTags>()
+			const service = new TestService(h)
+
+			await service.callNestedExplicitSource()
+
+			// Log 1: Outer method with its explicit source
+			expect(h.logAt(0).message).toBe('Entering outer explicit')
+			expect(h.logAt(0).tags?.source).toBe('OuterExplicitSource')
+
+			// Log 2: Inner method (@WithLogTags({ source: 'InnerExplicitSource' }))
+			// Should use its own explicit source, overriding the inherited one
+			expect(h.logAt(1).message).toBe('Entering nested explicit (should override)')
+			expect(h.logAt(1).tags?.source).toBe('InnerExplicitSource') // Overridden
+			expect(h.logAt(1).tags?.['$logger.methodName']).toBe('nestedExplicitSource')
+
+			// Log 3: Back in outer method
+			expect(h.logAt(2).message).toBe('Exiting outer explicit')
+			expect(h.logAt(2).tags?.source).toBe('OuterExplicitSource') // Context restored
+		})
+
+		it('should infer source from class name if no explicit source and no source in ALS context', async () => {
+			// This is the default top-level behavior, re-verified here
+			const h = setupTest<TestTags>()
+			const service = new TestService(h)
+
+			// Call the generic method directly (no prior ALS context with source)
+			service.genericInferredMethod()
+
+			expect(h.oneLog().message).toBe('Running generic inferred method')
+			expect(h.oneLog().tags?.source).toBe('TestService') // Inferred from class
+			expect(h.oneLog().tags?.['$logger.methodName']).toBe('genericInferredMethod')
+			expect(h.oneLog().tags?.['$logger.rootMethodName']).toBe('genericInferredMethod')
+		})
+
+		it('should inherit source from withLogTags context if decorator has no explicit source', async () => {
+			const h = setupTest<TestTags>()
+			const service = new TestService(h)
+
+			await withLogTags({ source: 'FromWithLogTags' }, async () => {
+				// Now call the decorated method which has @WithLogTags()
+				service.genericInferredMethod()
+			})
+
+			expect(h.oneLog().message).toBe('Running generic inferred method')
+			// Should inherit source from the withLogTags context
+			expect(h.oneLog().tags?.source).toBe('FromWithLogTags')
+			expect(h.oneLog().tags?.['$logger.methodName']).toBe('genericInferredMethod')
+			// Root method name starts when the first decorator runs
+			expect(h.oneLog().tags?.['$logger.rootMethodName']).toBe('genericInferredMethod')
+		})
+
+		it('should use decorator explicit source even when called from withLogTags context', async () => {
+			const h = setupTest<TestTags>()
+			const service = new TestService(h)
+
+			await withLogTags({ source: 'FromWithLogTags' }, async () => {
+				// Call the decorated method which has an explicit source
+				service.explicitSourceViaObject() // Uses @WithLogTags({ source: 'ExplicitSourceFromObject' })
+			})
+
+			expect(h.oneLog().message).toBe('Instance method with explicit source (object)')
+			// Decorator's explicit source should take precedence over withLogTags context
+			expect(h.oneLog().tags?.source).toBe('ExplicitSourceFromObject')
+			expect(h.oneLog().tags?.['$logger.methodName']).toBe('explicitSourceViaObject')
+			expect(h.oneLog().tags?.['$logger.rootMethodName']).toBe('explicitSourceViaObject')
 		})
 	})
 })
