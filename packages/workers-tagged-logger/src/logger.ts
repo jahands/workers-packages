@@ -267,6 +267,12 @@ export function withLogTags<T extends LogTags, R>(
 	return als.run(newTags, fn)
 }
 
+type WrappedFn = (
+	target: any,
+	propertyKey: string | symbol,
+	descriptor: PropertyDescriptor
+) => PropertyDescriptor
+
 /**
  * Decorator to wrap a class method with logging metadata attached to all logs
  * within its execution context using AsyncLocalStorage.
@@ -278,12 +284,9 @@ export function withLogTags<T extends LogTags, R>(
  *   - `$logger.rootMethodName`: The name of the first decorated method entered in the async context.
  * Nested calls will inherit metadata.
  *
- * @param opts Options including source and initial tags.
- * @param opts.source Tag for the source of these logs (e.g., the Worker name or class name).
- * @param opts.tags Additional tags to set for this context. User-provided tags
- *                  will override existing tags but NOT the automatically added logger tags.
+ * @param source Tag for the source of these logs (e.g., the Worker name or class name).
  *
- *  * @example
+ * @example
  *
  * Create class to handle requests with log tags added
  *
@@ -312,7 +315,58 @@ export function withLogTags<T extends LogTags, R>(
  * }
  * ```
  */
-export function WithLogTags<T extends LogTags>(opts: WithLogTagsOptions<Partial<T & LogTags>>) {
+export function WithLogTags<T extends LogTags>(source: string): WrappedFn
+/**
+ * Decorator to wrap a class method with logging metadata attached to all logs
+ * within its execution context using AsyncLocalStorage.
+ *
+ * **IMPORTANT**: Requires `"experimentalDecorators": true` to be added to tsconfig.json
+ *
+ * Automatically adds:
+ *   - `$logger.methodName`: The name of the currently executing decorated method.
+ *   - `$logger.rootMethodName`: The name of the first decorated method entered in the async context.
+ * Nested calls will inherit metadata.
+ *
+ * @param opts Options including source and initial tags.
+ * @param opts.source Tag for the source of these logs (e.g., the Worker name or class name).
+ * @param opts.tags Additional tags to set for this context. User-provided tags
+ *                  will override existing tags but NOT the automatically added logger tags.
+ *
+ * @example
+ *
+ * Create class to handle requests with log tags added
+ *
+ * ```ts
+ * // ... imports and logger setup ...
+ * class MyService {
+ *   // remove the \ before the @ (this is a workaround for VS Code docstring issues)
+ *   \@WithLogTags<MyTags>({ source: 'MyService' }) // $logger.methodName: 'handleRequest' will be added
+ *   async handleRequest(requestId: string, request: Request) {
+ *     logger.setTags({ requestId })
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', '$logger.methodName': 'handleRequest', requestId: '...' }
+ *     await this.processRequest(request)
+ *     logger.info('Request handled')
+ *   }
+ *
+ *   // $logger.methodName: 'processRequest' will be added
+ *   // and $logger.rootMethodName will remain 'handleRequest'
+ *   \@WithLogTags<MyTags>({ source: 'MyServiceHelper' })
+ *   async processRequest(request: Request) {
+ *      // Inherits requestId from handleRequest's context
+ *      // Tags here: { source: 'MyServiceHelper', '$logger.methodName': 'processRequest', '$logger.rootMethodName': 'handleRequest', requestId: '...' }
+ *     logger.debug('Processing request...')
+ *     // ...
+ *     logger.debug('Request processed')
+ *   }
+ * }
+ * ```
+ */
+export function WithLogTags<T extends LogTags>(
+	opts: WithLogTagsOptions<Partial<T & LogTags>>
+): WrappedFn
+export function WithLogTags<T extends LogTags>(
+	optsOrSource: WithLogTagsOptions<Partial<T & LogTags>> | string
+): WrappedFn {
 	return function (
 		_target: any,
 		propertyKey: string | symbol, // The name of the method
@@ -340,8 +394,16 @@ export function WithLogTags<T extends LogTags>(opts: WithLogTagsOptions<Partial<
 
 			// Prepare source tag if provided
 			let sourceTag: { source: string } | undefined
-			if (opts.source !== undefined) {
-				sourceTag = { source: opts.source }
+			let userTags: LogTags | undefined
+			if (typeof optsOrSource === 'string') {
+				sourceTag = { source: optsOrSource }
+			} else {
+				if (optsOrSource.source !== undefined) {
+					sourceTag = { source: optsOrSource.source }
+				}
+				if (optsOrSource.tags !== undefined) {
+					userTags = optsOrSource.tags
+				}
 			}
 
 			// Define the logger-specific tags for this context level
@@ -352,7 +414,7 @@ export function WithLogTags<T extends LogTags>(opts: WithLogTagsOptions<Partial<
 
 			// Create the new tags object for the ALS context
 			// Merge order: existing -> source -> user opts -> logger tags (logger tags take precedence)
-			const newTags = structuredClone(Object.assign({}, existing, sourceTag, opts.tags, loggerTags))
+			const newTags = structuredClone(Object.assign({}, existing, sourceTag, userTags, loggerTags))
 
 			// Run the original method within the AsyncLocalStorage context
 			return als.run(newTags, () => {

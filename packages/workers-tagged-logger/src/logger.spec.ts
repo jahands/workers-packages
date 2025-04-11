@@ -771,6 +771,8 @@ describe('@WithLogTags', () => {
 			return `Finished ${requestId}`
 		}
 
+		// Adding tag hints is not required. It's only
+		// helpful if tags are specified
 		@WithLogTags<TestTags>({ tags: { customTag: 'nestedValue' } })
 		async nestedMethod(userId: number) {
 			this.h.log.setTags({ userId })
@@ -781,9 +783,8 @@ describe('@WithLogTags', () => {
 			this.h.log.info('Exiting nestedMethod')
 		}
 
-		// Adding tag hints is not required. It's only
-		// helpful if tags are specified
-		@WithLogTags({ source: 'DeepNestedSource' })
+		// Source can also be passed in as a string
+		@WithLogTags('DeepNestedSource')
 		async deeplyNestedMethod() {
 			this.h.log.info('Entering deeplyNestedMethod')
 			// Test using logger instance methods within decorator context
