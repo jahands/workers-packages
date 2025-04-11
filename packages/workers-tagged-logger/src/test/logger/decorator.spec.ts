@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { describe, expect, it } from 'vitest'
 
 import { withLogTags, WithLogTags } from '../../logger.js'
@@ -271,7 +272,7 @@ describe('@WithLogTags', () => {
 		// 5. Log with extra field from deeplyNestedMethod
 		expect(h.logAt(4).tags).toEqual(h.logAt(3).tags) // Same ALS tags
 		expect(h.logAt(4).message).toBe('Log with extra field')
-		expect((h.logAt(4) as any).extraField).toBe(true) // Check the field
+		expect(h.logAt(4).extraField).toBe(true) // Check the field
 
 		// 6. Log with instance tag from deeplyNestedMethod
 		expect(h.logAt(5).tags).toEqual({

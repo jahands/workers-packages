@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { z } from 'zod'
 
@@ -218,6 +219,7 @@ export function stringifyMessage(msg: any): string {
 		return msg.toString()
 	}
 	if (typeof msg === 'function') {
+		// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 		return `[function${msg.name ? `: ${msg.name}` : ''}()]`
 	}
 	if (msg instanceof Error) {
@@ -326,7 +328,7 @@ type MethodDecoratorFn = (
  * }
  * ```
  */
-export function WithLogTags<T extends LogTags>(): MethodDecoratorFn
+export function WithLogTags(): MethodDecoratorFn
 /**
  * Decorator: Wraps a class method with logging context.
  * Uses the provided string as the log source.
@@ -369,7 +371,7 @@ export function WithLogTags<T extends LogTags>(): MethodDecoratorFn
  * }
  * ```
  */
-export function WithLogTags<T extends LogTags>(source: string): MethodDecoratorFn
+export function WithLogTags(source: string): MethodDecoratorFn
 /**
  * Decorator: Wraps a class method with logging context.
  * Uses options to configure source (falls back to Class Name) and initial tags.
@@ -449,15 +451,17 @@ export function WithLogTags<T extends LogTags>(
 
 		let inferredClassName: string | undefined = 'UnknownClass'
 		if (typeof target === 'function') {
+			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 			inferredClassName = target.name || inferredClassName
-		} else if (target && typeof target.constructor === 'function') {
+		} else if (target !== undefined && typeof target.constructor === 'function') {
+			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 			inferredClassName = target.constructor.name || inferredClassName
 		}
 
 		// Get original method and wrap it
 		const originalMethod = descriptor.value
 
-		descriptor.value = function (...args: any[]) {
+		descriptor.value = function (...args: any[]): MethodDecoratorFn {
 			const existing = als.getStore()
 			const rootMethodName = existing?.['$logger.rootMethodName'] ?? methodName
 

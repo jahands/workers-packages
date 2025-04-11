@@ -12,7 +12,7 @@
 			"outputLogs": "new-only"
 		},
 		"build:wrangler": {
-			"dependsOn": ["build"],
+			"dependsOn": ["^build", "build"],
 			"outputs": ["dist/**"],
 			"outputLogs": "new-only"
 		},
@@ -47,7 +47,7 @@
 			"outputLogs": "new-only"
 		},
 		"check:lint": {
-			"dependsOn": ["^build", "^check:lint"],
+			"dependsOn": ["^build", "build", "^check:lint"],
 			"outputLogs": "new-only",
 			"passThroughEnv": ["FIX_ESLINT"]
 		},
