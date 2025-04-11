@@ -238,6 +238,7 @@ describe('@WithLogTags', () => {
 		expect(h.oneLog().tags).toEqual({
 			'$logger.methodName': 'methodAccessingThis',
 			'$logger.rootMethodName': 'methodAccessingThis',
+			source: 'TestService', // inferred
 		})
 	})
 
@@ -294,6 +295,7 @@ describe('@WithLogTags', () => {
 			'$logger.rootMethodName': 'methodWithTagOverrides',
 			// setTags takes precedence over decorator opts.tags
 			overrideMe: 'setTagsValue',
+			source: 'TestService', // inferred
 		})
 	})
 
@@ -384,6 +386,7 @@ describe('@WithLogTags', () => {
 		expect(h.oneLog().tags).toEqual({
 			'$logger.methodName': 'syncMethodAccessingThis',
 			'$logger.rootMethodName': 'syncMethodAccessingThis',
+			source: 'TestService', // inferred
 		})
 	})
 })
