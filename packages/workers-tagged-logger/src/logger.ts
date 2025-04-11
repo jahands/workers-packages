@@ -311,44 +311,47 @@ export function withLogTags<T extends LogTags, R>(
  *
  * @example
  *
+ * Create class to handle requests with log tags added
+ *
  * ```ts
- * import { WithLogTags, WorkersLogger } from './workers-logger';
+ * import { WithLogTags, WorkersLogger } from './workers-logger'
  *
  * interface MyTags {
- *   requestId: string;
- *   userId?: number;
+ *   requestId: string
+ *   userId?: number
  * }
  *
- * const logger = new WorkersLogger<MyTags>(); // Can be instantiated anywhere
+ * const logger = new WorkersLogger<MyTags>() // Can be instantiated anywhere
  *
  * class MyService {
- *   @WithLogTags<MyTags>({ source: 'MyService' })
+ *   // remove the \ before the @ (this is a workaround for VS Code docstring issues)
+ *   \@WithLogTags<MyTags>({ source: 'MyService' })
  *   async handleRequest(requestId: string, data: any) {
- *     logger.setTags({ requestId }); // Set tags for this specific request
+ *     logger.setTags({ requestId }) // Set tags for this specific request
  *     logger.info('Handling request', data);
  *
  *     if (data.userId) {
- *       logger.setTags({ userId: data.userId });
+ *       logger.setTags({ userId: data.userId })
  *     }
  *
- *     await this.processData(data);
+ *     await this.processData(data)
  *
- *     logger.info('Request handled successfully');
+ *     logger.info('Request handled successfully')
  *   }
  *
  *   // Logs inside this method will inherit requestId and potentially userId
  *   async processData(data: any) {
- *     logger.debug('Processing data...', data);
+ *     logger.debug('Processing data...', data)
  *     // ... processing logic ...
- *     logger.debug('Data processed');
+ *     logger.debug('Data processed')
  *   }
  * }
  *
- * const service = new MyService();
+ * const service = new MyService()
  * // When handleRequest is called, logs within it and subsequent calls
  * // like processData will have { source: 'MyService', requestId: '...' } tags.
- * await service.handleRequest('req-123', { some: 'payload', userId: 456 });
- * await service.handleRequest('req-456', { other: 'stuff' });
+ * await service.handleRequest('req-123', { some: 'payload', userId: 456 })
+ * await service.handleRequest('req-456', { other: 'stuff' })
  * ```
  */
 export function WithLogTags<T extends LogTags>(opts: WithLogTagsOptions<Partial<T & LogTags>>) {
