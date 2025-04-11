@@ -293,8 +293,8 @@ type WithLogTagsDecoratorTags<T extends LogTags> = {
  * **IMPORTANT**: Requires `"experimentalDecorators": true` to be added to tsconfig.json
  *
  * Automatically adds:
- *   - `$logger.methodName`: The name of the currently executing decorated method.
- *   - `$logger.rootMethodName`: The name of the first decorated method entered in the async context.
+ *   - `$logger.method`: The name of the currently executing decorated method.
+ *   - `$logger.rootMethod`: The name of the first decorated method entered in the async context.
  * Nested calls will inherit metadata.
  *
  * @example
@@ -305,20 +305,20 @@ type WithLogTagsDecoratorTags<T extends LogTags> = {
  * // ... imports and logger setup ...
  * class MyService {
  *   // remove the \ before the @ (this is a workaround for VS Code docstring issues)
- *   \@WithLogTags() // $logger.methodName: 'handleRequest' will be added
+ *   \@WithLogTags() // $logger.method: 'handleRequest' will be added
  *   async handleRequest(requestId: string, request: Request) {
  *     logger.setTags({ requestId })
- *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger: { methodName: 'handleRequest', rootMethodName: 'handleRequest' }, requestId: '...' }
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger: { method: 'handleRequest', rootMethod: 'handleRequest' }, requestId: '...' }
  *     await this.processRequest(request)
  *     logger.info('Request handled')
  *   }
  *
- *   // $logger.methodName: 'processRequest' will be added
- *   // and $logger.rootMethodName will remain 'handleRequest'
+ *   // $logger.method: 'processRequest' will be added
+ *   // and $logger.rootMethod will remain 'handleRequest'
  *   \@WithLogTags()
  *   async processRequest(request: Request) {
  *     // Inherits requestId from handleRequest's context
- *     // Tags here: { source: 'MyService', $logger: { methodName: 'processRequest', rootMethodName: 'handleRequest' }, requestId: '...' }
+ *     // Tags here: { source: 'MyService', $logger: { method: 'processRequest', rootMethod: 'handleRequest' }, requestId: '...' }
  *     logger.debug('Processing request...')
  *     // ...
  *     logger.debug('Request processed')
@@ -334,8 +334,8 @@ export function WithLogTags(): MethodDecoratorFn
  * **IMPORTANT**: Requires `"experimentalDecorators": true` to be added to tsconfig.json
  *
  * Automatically adds:
- *   - `$logger.methodName`: The name of the currently executing decorated method.
- *   - `$logger.rootMethodName`: The name of the first decorated method entered in the async context.
+ *   - `$logger.method`: The name of the currently executing decorated method.
+ *   - `$logger.rootMethod`: The name of the first decorated method entered in the async context.
  * Nested calls will inherit metadata.
  *
  * @param source Explicit source for logs.
@@ -348,20 +348,20 @@ export function WithLogTags(): MethodDecoratorFn
  * // ... imports and logger setup ...
  * class MyService {
  *   // remove the \ before the @ (this is a workaround for VS Code docstring issues)
- *   \@WithLogTags<MyTags>('MyService') // $logger.methodName: 'handleRequest' will be added
+ *   \@WithLogTags<MyTags>('MyService') // $logger.method: 'handleRequest' will be added
  *   async handleRequest(requestId: string, request: Request) {
  *     logger.setTags({ requestId })
- *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger: { methodName: 'handleRequest', rootMethodName: 'handleRequest' }, requestId: '...' }
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger: { method: 'handleRequest', rootMethod: 'handleRequest' }, requestId: '...' }
  *     await this.processRequest(request)
  *     logger.info('Request handled')
  *   }
  *
- *   // $logger.methodName: 'processRequest' will be added
- *   // and $logger.rootMethodName will remain 'handleRequest'
+ *   // $logger.method: 'processRequest' will be added
+ *   // and $logger.rootMethod will remain 'handleRequest'
  *   \@WithLogTags<MyTags>('MyServiceHelper')
  *   async processRequest(request: Request) {
  *      // Inherits requestId from handleRequest's context
- *       Tags here: { source: 'MyServiceHelper', $logger: { methodName: 'processRequest', rootMethodName: 'handleRequest' }, requestId: '...' }
+ *       Tags here: { source: 'MyServiceHelper', $logger: { method: 'processRequest', rootMethod: 'handleRequest' }, requestId: '...' }
  *     logger.debug('Processing request...')
  *     // ...
  *     logger.debug('Request processed')
@@ -377,8 +377,8 @@ export function WithLogTags(source: string): MethodDecoratorFn
  * **IMPORTANT**: Requires `"experimentalDecorators": true` to be added to tsconfig.json
  *
  * Automatically adds:
- *   - `$logger.methodName`: The name of the currently executing decorated method.
- *   - `$logger.rootMethodName`: The name of the first decorated method entered in the async context.
+ *   - `$logger.method`: The name of the currently executing decorated method.
+ *   - `$logger.rootMethod`: The name of the first decorated method entered in the async context.
  * Nested calls will inherit metadata.
  *
  * @param tags Additional tags to set for this context. User-provided tags
@@ -393,20 +393,20 @@ export function WithLogTags(source: string): MethodDecoratorFn
  * // ... imports and logger setup ...
  * class MyService {
  *   // remove the \ before the @ (this is a workaround for VS Code docstring issues)
- *   \@WithLogTags<MyTags>({ source: 'MyService' }) // $logger.methodName: 'handleRequest' will be added
+ *   \@WithLogTags<MyTags>({ source: 'MyService' }) // $logger.method: 'handleRequest' will be added
  *   async handleRequest(requestId: string, request: Request) {
  *     logger.setTags({ requestId })
- *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger.methodName: 'handleRequest', requestId: '...' }
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger.method: 'handleRequest', requestId: '...' }
  *     await this.processRequest(request)
  *     logger.info('Request handled')
  *   }
  *
- *   // $logger.methodName: 'processRequest' will be added
- *   // and $logger.rootMethodName will remain 'handleRequest'
+ *   // $logger.method: 'processRequest' will be added
+ *   // and $logger.rootMethod will remain 'handleRequest'
  *   \@WithLogTags<MyTags>({ foo: 'bar' })
  *   async processRequest(request: Request) {
  *      // Inherits requestId from handleRequest's context
- *      // Tags here: { source: 'MyService', foo: 'bar', $logger.methodName: 'processRequest', $logger.rootMethodName: 'handleRequest', requestId: '...' }
+ *      // Tags here: { source: 'MyService', foo: 'bar', $logger.method: 'processRequest', $logger.rootMethod: 'handleRequest', requestId: '...' }
  *     logger.debug('Processing request...')
  *     // ...
  *     logger.debug('Request processed')
@@ -427,12 +427,12 @@ export function WithLogTags<T extends LogTags>(
 		propertyKey: string | symbol,
 		descriptor: PropertyDescriptor
 	): PropertyDescriptor {
-		const methodName = String(propertyKey)
+		const method = String(propertyKey)
 
 		// Validate descriptor (ensure it's a method)
 		if (descriptor === undefined || typeof descriptor.value !== 'function') {
 			throw new Error(
-				`@WithLogTags decorator can only be applied to methods, not properties like ${methodName}.`
+				`@WithLogTags decorator can only be applied to methods, not properties like ${method}.`
 			)
 		}
 
@@ -460,7 +460,7 @@ export function WithLogTags<T extends LogTags>(
 
 		descriptor.value = function (...args: any[]): MethodDecoratorFn {
 			const existing = als.getStore()
-			let rootMethodName = methodName
+			let rootMethod = method
 			if (
 				// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 				existing &&
@@ -468,9 +468,9 @@ export function WithLogTags<T extends LogTags>(
 				existing.$logger &&
 				typeof existing.$logger === 'object' &&
 				!Array.isArray(existing.$logger) &&
-				typeof existing.$logger.rootMethodName === 'string'
+				typeof existing.$logger.rootMethod === 'string'
 			) {
-				rootMethodName = existing.$logger.rootMethodName
+				rootMethod = existing.$logger.rootMethod
 			}
 
 			const finalSource = explicitSource ?? existing?.source ?? inferredClassName
@@ -479,8 +479,8 @@ export function WithLogTags<T extends LogTags>(
 			// Define the logger-specific tags for this context level
 			const loggerTags = {
 				$logger: {
-					methodName: methodName, // Always the current method
-					rootMethodName: rootMethodName, // Inherited or current
+					method: method, // Always the current method
+					rootMethod: rootMethod, // Inherited or current
 				},
 			}
 
