@@ -307,13 +307,13 @@ export function withLogTags<T extends LogTags, R>(
 /**
  * Decorator to wrap a class method with logging metadata attached to all logs
  * within its execution context using AsyncLocalStorage.
- * Automatically adds the decorated method's name as the `_methodName` tag.
+ * Automatically adds the decorated method's name as the `$logger.methodName` tag.
  * Nested calls will inherit metadata.
  *
  * @param opts Options including source and initial tags.
  * @param opts.source Tag for the source of these logs (e.g., the Worker name or class name).
  * @param opts.tags Additional tags to set for this context. User-provided tags
- *                  will override existing tags but NOT the automatically added `_methodName`.
+ *                  will override existing tags but NOT the automatically added `$logger.methodName`.
  *
  * @example
  *
@@ -323,18 +323,18 @@ export function withLogTags<T extends LogTags, R>(
  * // ... imports and logger setup ...
  * class MyService {
  *   // remove the \ before the @ (this is a workaround for VS Code docstring issues)
- *   \@WithLogTags<MyTags>({ source: 'MyService' }) // _methodName: 'handleRequest' will be added
+ *   \@WithLogTags<MyTags>({ source: 'MyService' }) // $logger.methodName: 'handleRequest' will be added
  *   async handleRequest(requestId: string, request: Request) {
  *     logger.setTags({ requestId })
- *     logger.info('Handling request') // -> tags: { source: 'MyService', _methodName: 'handleRequest', requestId: '...' }
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger.methodName: 'handleRequest', requestId: '...' }
  *     await this.processRequest(request)
  *     logger.info('Request handled')
  *   }
  *
- *   @WithLogTags<MyTags>({ source: 'MyServiceHelper' }) // _methodName: 'processRequest' will be added
+ *   @WithLogTags<MyTags>({ source: 'MyServiceHelper' }) // $logger.methodName: 'processRequest' will be added
  *   async processRequest(request: Request) {
  *      // Inherits requestId from handleRequest's context
- *      // Tags here: { source: 'MyServiceHelper', _methodName: 'processRequest', requestId: '...' }
+ *      // Tags here: { source: 'MyServiceHelper', $logger.methodName: 'processRequest', requestId: '...' }
  *     logger.debug('Processing request...')
  *     // ...
  *     logger.debug('Request processed')
@@ -366,7 +366,7 @@ export function WithLogTags<T extends LogTags>(opts: WithLogTagsOptions<Partial<
 			}
 
 			// Define the method name tag
-			const methodTag = { _methodName: methodName } satisfies Record<string, string>
+			const methodTag = { '$logger.methodName': methodName } satisfies Record<string, string>
 
 			// Create the new tags object for the ALS context
 			// Merge order: existing -> source -> user opts -> method name (method name takes precedence)
