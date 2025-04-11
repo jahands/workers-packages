@@ -138,7 +138,12 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	private getParentTags(): Partial<T & LogTags> | undefined {
 		const tags = als.getStore()
 		if (tags === undefined) {
-			return undefined
+			console.log({
+				message: `Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?`,
+				level: 'error',
+				time: new Date().toISOString(),
+			} satisfies ConsoleLog)
+			return
 		}
 		return tags as Partial<T & LogTags>
 	}
@@ -147,29 +152,18 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 * Get all tags (including global + context tags)
 	 */
 	getTags(): Partial<T & LogTags> {
-		const parentTags = this.getParentTags()
-		if (parentTags === undefined) {
-			console.log({
-				message: `Error: unable to get log tags from async local storage. Did you forget to wrap the entry point with @WithLogTags() or withLogTags()?`,
-				level: 'error',
-				time: new Date().toISOString(),
-			} satisfies ConsoleLog)
-			return (this.ctx.tags ?? {}) as Partial<T & LogTags>
-		}
-		return Object.assign({}, parentTags, this.ctx.tags) as Partial<T & LogTags>
+		return Object.assign({}, this.getParentTags(), this.ctx.tags) as Partial<T & LogTags>
 	}
 
+	/** Set tags used for all logs in this async context
+	 * and any child context (unless overridden using withTags) */
 	setTags(tags: Partial<T & LogTags>): void {
-		const globalTags = als.getStore()
-		if (globalTags === undefined) {
-			console.log({
-				message: `Error: unable to set log tags in async local storage. Did you forget to wrap the entry point with @WithLogTags() or withLogTags()?`,
-				level: 'error',
-				time: new Date().toISOString(),
-			} satisfies ConsoleLog)
-			return
+		const globalTags = this.getParentTags()
+		if (globalTags !== undefined) {
+			// no need to log when we don't have global tags because
+			// getParentTags already logs it.
+			Object.assign(globalTags, structuredClone(tags))
 		}
-		Object.assign(globalTags, structuredClone(tags))
 	}
 
 	info = (...msgs: any[]): void => this.write(msgs, 'info')
