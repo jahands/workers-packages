@@ -1,20 +1,29 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { describe, expect, it } from 'vitest'
+import { z } from 'zod'
 
 import { withLogTags, WithLogTags } from '../../logger.js'
 import { setupTest } from '../harness.js'
 
+import type { LogTags } from '../../logger.js'
 import type { TestHarness } from '../harness.js'
 
 describe('@WithLogTags', () => {
-	type TestTags = {
-		requestId?: string
-		userId?: number
-		source?: string
-		'$logger.methodName'?: string
-		'$logger.rootMethodName'?: string
-		customTag?: string
-		overrideMe?: string
+	type TestTags = z.infer<typeof TestTags>
+	const TestTags = z.object({
+		requestId: z.string().optional(),
+		userId: z.number().optional(),
+		source: z.string().optional(),
+		$logger: z.object({
+			methodName: z.string().optional(),
+			rootMethodName: z.string().optional(),
+		}),
+		customTag: z.string().optional(),
+		overrideMe: z.string().optional(),
+	})
+
+	function toTags(tags: LogTags | undefined): TestTags | undefined {
+		return TestTags.passthrough().parse(tags)
 	}
 
 	class TestService {
@@ -37,7 +46,7 @@ describe('@WithLogTags', () => {
 
 		// Adding tag hints is not required. It's only
 		// helpful if tags are specified
-		@WithLogTags<TestTags>({ tags: { customTag: 'nestedValue' } })
+		@WithLogTags<TestTags>({ customTag: 'nestedValue' })
 		async nestedMethod(userId: number) {
 			this.h.log.setTags({ userId })
 			this.h.log.info('Entering nestedMethod')
@@ -91,19 +100,19 @@ describe('@WithLogTags', () => {
 		}
 
 		// Method to test tag override precedence
-		@WithLogTags({
-			tags: {
-				'$logger.methodName': 'userAttempt', // Should be overridden
-				'$logger.rootMethodName': 'userAttemptRoot', // Should be overridden
-				overrideMe: 'decoratorValue',
+		@WithLogTags<TestTags>({
+			$logger: {
+				methodName: 'userAttempt', // Should be overridden
+				rootMethodName: 'userAttemptRoot', // Should be overridden
 			},
+			overrideMe: 'decoratorValue',
 		})
 		async methodWithTagOverrides() {
 			this.h.log.setTags({ overrideMe: 'setTagsValue' }) // setTags overrides decorator opts.tags
 			this.h.log.info('Testing tag overrides')
 		}
 
-		@WithLogTags({ source: 'SyncSource', tags: { syncTag: true } })
+		@WithLogTags({ source: 'SyncSource', syncTag: true })
 		synchronousMethod(value: number): string {
 			this.h.log.info(`Entering synchronousMethod with value: ${value}`)
 			const result = `Sync result: ${value * 2}`
@@ -148,7 +157,7 @@ describe('@WithLogTags', () => {
 			this.h.log.info('Instance method with inferred source (empty options)')
 		}
 
-		@WithLogTags({ tags: { only: 'tags' } }) // Only tags, source should be inferred
+		@WithLogTags({ only: 'tags' }) // Only tags, source should be inferred
 		inferredSourceOnlyTags() {
 			this.h.log.info('Instance method with inferred source (only tags)')
 		}
@@ -211,8 +220,10 @@ describe('@WithLogTags', () => {
 
 		expect(h.logAt(0).tags).toEqual({
 			source: 'TestServiceEntry',
-			'$logger.methodName': 'entryPoint',
-			'$logger.rootMethodName': 'entryPoint',
+			$logger: {
+				methodName: 'entryPoint',
+				rootMethodName: 'entryPoint',
+			},
 			requestId: 'req-1',
 		})
 		expect(h.logAt(0).message).toBe('Entering entryPoint')
@@ -237,8 +248,10 @@ describe('@WithLogTags', () => {
 		// 1. First log in entryPoint
 		expect(h.logAt(0).tags).toEqual({
 			source: 'TestServiceEntry',
-			'$logger.methodName': 'entryPoint',
-			'$logger.rootMethodName': 'entryPoint',
+			$logger: {
+				methodName: 'entryPoint',
+				rootMethodName: 'entryPoint',
+			},
 			requestId: 'req-2',
 		})
 		expect(h.logAt(0).message).toBe('Entering entryPoint')
@@ -246,8 +259,10 @@ describe('@WithLogTags', () => {
 		// 2. First log in nestedMethod
 		expect(h.logAt(1).tags).toEqual({
 			source: 'TestServiceEntry', // Inherited source
-			'$logger.methodName': 'nestedMethod', // Current method
-			'$logger.rootMethodName': 'entryPoint', // Root method
+			$logger: {
+				methodName: 'nestedMethod',
+				rootMethodName: 'entryPoint',
+			},
 			requestId: 'req-2', // Inherited from entryPoint context
 			customTag: 'nestedValue', // From decorator options
 			userId: 123, // Set in nestedMethod
@@ -261,8 +276,10 @@ describe('@WithLogTags', () => {
 		// 4. First log in deeplyNestedMethod
 		expect(h.logAt(3).tags).toEqual({
 			source: 'DeepNestedSource', // Overridden source
-			'$logger.methodName': 'deeplyNestedMethod', // Current method
-			'$logger.rootMethodName': 'entryPoint', // Root method
+			$logger: {
+				methodName: 'deeplyNestedMethod',
+				rootMethodName: 'entryPoint',
+			},
 			requestId: 'req-2', // Inherited
 			customTag: 'nestedValue', // Inherited
 			userId: 123, // Inherited
@@ -293,8 +310,10 @@ describe('@WithLogTags', () => {
 		expect(h.logAt(8).tags).toEqual({
 			// Should not include tags set in nested contexts
 			source: 'TestServiceEntry',
-			'$logger.methodName': 'entryPoint',
-			'$logger.rootMethodName': 'entryPoint',
+			$logger: {
+				methodName: 'entryPoint',
+				rootMethodName: 'entryPoint',
+			},
 			requestId: 'req-2',
 			// no customTag or userId that were set in nested call
 		})
@@ -312,8 +331,10 @@ describe('@WithLogTags', () => {
 
 		expect(h.oneLog().message).toBe('this.instanceValue is now: modified')
 		expect(h.oneLog().tags).toEqual({
-			'$logger.methodName': 'methodAccessingThis',
-			'$logger.rootMethodName': 'methodAccessingThis',
+			$logger: {
+				methodName: 'methodAccessingThis',
+				rootMethodName: 'methodAccessingThis',
+			},
 			source: 'TestService', // inferred
 		})
 	})
@@ -337,8 +358,10 @@ describe('@WithLogTags', () => {
 		expect(h.logAt(0).message).toBe('Entering staticMethod with value: test-val')
 		expect(h.logAt(0).tags).toEqual({
 			source: 'StaticContext',
-			'$logger.methodName': 'staticMethod',
-			'$logger.rootMethodName': 'staticMethod',
+			$logger: {
+				methodName: 'staticMethod',
+				rootMethodName: 'staticMethod',
+			},
 		})
 		expect(h.logAt(1).message).toBe('Exiting staticMethod')
 		expect(h.logAt(1).tags).toEqual(h.logAt(0).tags)
@@ -354,8 +377,10 @@ describe('@WithLogTags', () => {
 		expect(h.oneLog().message).toBe('About to throw error')
 		expect(h.oneLog().tags).toEqual({
 			source: 'ErrorSource',
-			'$logger.methodName': 'methodWithError',
-			'$logger.rootMethodName': 'methodWithError',
+			$logger: {
+				methodName: 'methodWithError',
+				rootMethodName: 'methodWithError',
+			},
 		})
 	})
 
@@ -367,8 +392,10 @@ describe('@WithLogTags', () => {
 
 		expect(h.oneLog().tags).toEqual({
 			// $logger tags take precedence over decorator opts.tags
-			'$logger.methodName': 'methodWithTagOverrides',
-			'$logger.rootMethodName': 'methodWithTagOverrides',
+			$logger: {
+				methodName: 'methodWithTagOverrides',
+				rootMethodName: 'methodWithTagOverrides',
+			},
 			// setTags takes precedence over decorator opts.tags
 			overrideMe: 'setTagsValue',
 			source: 'TestService', // inferred
@@ -398,8 +425,10 @@ describe('@WithLogTags', () => {
 		// Check logs have correct context
 		const expectedTags = {
 			source: 'SyncSource',
-			'$logger.methodName': 'synchronousMethod',
-			'$logger.rootMethodName': 'synchronousMethod',
+			$logger: {
+				methodName: 'synchronousMethod',
+				rootMethodName: 'synchronousMethod',
+			},
 			syncTag: true,
 		}
 		expect(h.logAt(0).message).toBe('Entering synchronousMethod with value: 10')
@@ -421,16 +450,20 @@ describe('@WithLogTags', () => {
 		expect(h.logAt(0).message).toBe('Entering synchronousCaller with value: 5')
 		expect(h.logAt(0).tags).toEqual({
 			source: 'SyncCaller',
-			'$logger.methodName': 'synchronousCaller',
-			'$logger.rootMethodName': 'synchronousCaller',
+			$logger: {
+				methodName: 'synchronousCaller',
+				rootMethodName: 'synchronousCaller',
+			},
 		})
 
 		// Log 2: Entry to synchronousMethod (called from synchronousCaller)
 		expect(h.logAt(1).message).toBe('Entering synchronousMethod with value: 6')
 		expect(h.logAt(1).tags).toEqual({
 			source: 'SyncSource', // Overrides caller's source
-			'$logger.methodName': 'synchronousMethod', // Current method
-			'$logger.rootMethodName': 'synchronousCaller', // Root is the caller
+			$logger: {
+				methodName: 'synchronousMethod', // Current method
+				rootMethodName: 'synchronousCaller', // Root is the caller
+			},
 			syncTag: true, // Added by synchronousMethod decorator
 		})
 
@@ -444,8 +477,10 @@ describe('@WithLogTags', () => {
 			// Context restored to synchronousCaller's context
 			// excluding tags added by the nested call's decorator
 			source: 'SyncCaller',
-			'$logger.methodName': 'synchronousCaller',
-			'$logger.rootMethodName': 'synchronousCaller',
+			$logger: {
+				methodName: 'synchronousCaller',
+				rootMethodName: 'synchronousCaller',
+			},
 		})
 	})
 
@@ -460,8 +495,10 @@ describe('@WithLogTags', () => {
 
 		expect(h.oneLog().message).toBe('this.syncInstanceValue is now: sync modified')
 		expect(h.oneLog().tags).toEqual({
-			'$logger.methodName': 'syncMethodAccessingThis',
-			'$logger.rootMethodName': 'syncMethodAccessingThis',
+			$logger: {
+				methodName: 'syncMethodAccessingThis',
+				rootMethodName: 'syncMethodAccessingThis',
+			},
 			source: 'TestService', // inferred
 		})
 	})
@@ -473,8 +510,8 @@ describe('@WithLogTags', () => {
 			service.inferredSourceInstanceMethod()
 
 			expect(h.oneLog().tags?.source).toBe('TestService')
-			expect(h.oneLog().tags?.['$logger.methodName']).toBe('inferredSourceInstanceMethod')
-			expect(h.oneLog().tags?.['$logger.rootMethodName']).toBe('inferredSourceInstanceMethod')
+			expect(toTags(h.oneLog().tags)?.$logger.methodName).toBe('inferredSourceInstanceMethod')
+			expect(toTags(h.oneLog().tags)?.$logger.rootMethodName).toBe('inferredSourceInstanceMethod')
 		})
 
 		it('should infer source from class name for static method when no options provided', () => {
@@ -482,8 +519,8 @@ describe('@WithLogTags', () => {
 			TestService.inferredSourceStaticMethod(h)
 
 			expect(h.oneLog().tags?.source).toBe('TestService')
-			expect(h.oneLog().tags?.['$logger.methodName']).toBe('inferredSourceStaticMethod')
-			expect(h.oneLog().tags?.['$logger.rootMethodName']).toBe('inferredSourceStaticMethod')
+			expect(toTags(h.oneLog().tags)?.$logger.methodName).toBe('inferredSourceStaticMethod')
+			expect(toTags(h.oneLog().tags)?.$logger.rootMethodName).toBe('inferredSourceStaticMethod')
 		})
 
 		it('should infer source from class name when empty options object provided', () => {
@@ -492,7 +529,7 @@ describe('@WithLogTags', () => {
 			service.inferredSourceEmptyOptions()
 
 			expect(h.oneLog().tags?.source).toBe('TestService')
-			expect(h.oneLog().tags?.['$logger.methodName']).toBe('inferredSourceEmptyOptions')
+			expect(toTags(h.oneLog().tags)?.$logger.methodName).toBe('inferredSourceEmptyOptions')
 		})
 
 		it('should infer source from class name when only tags option provided', () => {
@@ -502,7 +539,7 @@ describe('@WithLogTags', () => {
 
 			expect(h.oneLog().tags?.source).toBe('TestService')
 			expect(h.oneLog().tags?.only).toBe('tags') // Verify tag is also present
-			expect(h.oneLog().tags?.['$logger.methodName']).toBe('inferredSourceOnlyTags')
+			expect(toTags(h.oneLog().tags)?.$logger.methodName).toBe('inferredSourceOnlyTags')
 		})
 
 		it('should use explicit source from options object over inferred class name', () => {
@@ -511,7 +548,7 @@ describe('@WithLogTags', () => {
 			service.explicitSourceViaObject()
 
 			expect(h.oneLog().tags?.source).toBe('ExplicitSourceFromObject')
-			expect(h.oneLog().tags?.['$logger.methodName']).toBe('explicitSourceViaObject')
+			expect(toTags(h.oneLog().tags)?.$logger.methodName).toBe('explicitSourceViaObject')
 		})
 
 		it('should use explicit source from string argument over inferred class name', () => {
@@ -520,7 +557,7 @@ describe('@WithLogTags', () => {
 			service.explicitSourceViaString()
 
 			expect(h.oneLog().tags?.source).toBe('ExplicitSourceFromString')
-			expect(h.oneLog().tags?.['$logger.methodName']).toBe('explicitSourceViaString')
+			expect(toTags(h.oneLog().tags)?.$logger.methodName).toBe('explicitSourceViaString')
 		})
 
 		it('should use explicit source for static method when provided', () => {
@@ -528,7 +565,7 @@ describe('@WithLogTags', () => {
 			TestService.explicitSourceStaticMethod(h)
 
 			expect(h.oneLog().tags?.source).toBe('ExplicitStaticSource')
-			expect(h.oneLog().tags?.['$logger.methodName']).toBe('explicitSourceStaticMethod')
+			expect(toTags(h.oneLog().tags)?.$logger.methodName).toBe('explicitSourceStaticMethod')
 		})
 	})
 
@@ -542,14 +579,14 @@ describe('@WithLogTags', () => {
 			// Log 1: Outer method with its explicit source
 			expect(h.logAt(0).message).toBe('Entering outer explicit')
 			expect(h.logAt(0).tags?.source).toBe('OuterExplicitSource')
-			expect(h.logAt(0).tags?.['$logger.methodName']).toBe('callNestedInferredSource')
+			expect(toTags(h.logAt(0).tags)?.$logger.methodName).toBe('callNestedInferredSource')
 
 			// Log 2: Inner method (@WithLogTags() - no explicit source)
 			// Should inherit 'OuterExplicitSource' from the ALS context
 			expect(h.logAt(1).message).toBe('Entering nested inferred (should inherit)')
 			expect(h.logAt(1).tags?.source).toBe('OuterExplicitSource') // Inherited
-			expect(h.logAt(1).tags?.['$logger.methodName']).toBe('nestedInferredSource') // Own method name
-			expect(h.logAt(1).tags?.['$logger.rootMethodName']).toBe('callNestedInferredSource') // Root is the caller
+			expect(toTags(h.logAt(1).tags)?.$logger.methodName).toBe('nestedInferredSource') // Own method name
+			expect(toTags(h.logAt(1).tags)?.$logger.rootMethodName).toBe('callNestedInferredSource') // Root is the caller
 
 			// Log 3: Back in outer method
 			expect(h.logAt(2).message).toBe('Exiting outer explicit')
@@ -570,7 +607,7 @@ describe('@WithLogTags', () => {
 			// Should use its own explicit source, overriding the inherited one
 			expect(h.logAt(1).message).toBe('Entering nested explicit (should override)')
 			expect(h.logAt(1).tags?.source).toBe('InnerExplicitSource') // Overridden
-			expect(h.logAt(1).tags?.['$logger.methodName']).toBe('nestedExplicitSource')
+			expect(toTags(h.logAt(1).tags)?.$logger.methodName).toBe('nestedExplicitSource')
 
 			// Log 3: Back in outer method
 			expect(h.logAt(2).message).toBe('Exiting outer explicit')
@@ -587,8 +624,8 @@ describe('@WithLogTags', () => {
 
 			expect(h.oneLog().message).toBe('Running generic inferred method')
 			expect(h.oneLog().tags?.source).toBe('TestService') // Inferred from class
-			expect(h.oneLog().tags?.['$logger.methodName']).toBe('genericInferredMethod')
-			expect(h.oneLog().tags?.['$logger.rootMethodName']).toBe('genericInferredMethod')
+			expect(toTags(h.oneLog().tags)?.$logger.methodName).toBe('genericInferredMethod')
+			expect(toTags(h.oneLog().tags)?.$logger.rootMethodName).toBe('genericInferredMethod')
 		})
 
 		it('should inherit source from withLogTags context if decorator has no explicit source', async () => {
@@ -603,9 +640,9 @@ describe('@WithLogTags', () => {
 			expect(h.oneLog().message).toBe('Running generic inferred method')
 			// Should inherit source from the withLogTags context
 			expect(h.oneLog().tags?.source).toBe('FromWithLogTags')
-			expect(h.oneLog().tags?.['$logger.methodName']).toBe('genericInferredMethod')
+			expect(toTags(h.oneLog().tags)?.$logger.methodName).toBe('genericInferredMethod')
 			// Root method name starts when the first decorator runs
-			expect(h.oneLog().tags?.['$logger.rootMethodName']).toBe('genericInferredMethod')
+			expect(toTags(h.oneLog().tags)?.$logger.rootMethodName).toBe('genericInferredMethod')
 		})
 
 		it('should use decorator explicit source even when called from withLogTags context', async () => {
@@ -620,8 +657,8 @@ describe('@WithLogTags', () => {
 			expect(h.oneLog().message).toBe('Instance method with explicit source (object)')
 			// Decorator's explicit source should take precedence over withLogTags context
 			expect(h.oneLog().tags?.source).toBe('ExplicitSourceFromObject')
-			expect(h.oneLog().tags?.['$logger.methodName']).toBe('explicitSourceViaObject')
-			expect(h.oneLog().tags?.['$logger.rootMethodName']).toBe('explicitSourceViaObject')
+			expect(toTags(h.oneLog().tags)?.$logger.methodName).toBe('explicitSourceViaObject')
+			expect(toTags(h.oneLog().tags)?.$logger.rootMethodName).toBe('explicitSourceViaObject')
 		})
 	})
 })

@@ -146,7 +146,7 @@ class MyRequestHandler {
 
 	// Decorator can also be used on nested methods
 	// Explicit source overrides inference. Inherits user_id from handle's context.
-	@WithLogTags({ source: 'DataProcessor', tags: { stage: 'processing' } })
+	@WithLogTags({ source: 'DataProcessor', stage: 'processing' })
 	async processData(url: string) {
 		// Logs here get { source: "DataProcessor", $logger..., user_id, stage: "processing" }
 		logger.debug(`Processing data for URL: ${url}`)
@@ -184,7 +184,7 @@ class MyRequestHandler {
     1.  Explicit source provided via `@WithLogTags("MySource")` or `@WithLogTags({ source: "MySource" })`.
     2.  Source inherited from an existing `AsyncLocalStorage` context (e.g., from an outer `withLogTags` or `@WithLogTags` call).
     3.  Inferred from the class name (e.g., `MyRequestHandler`).
-  - `tags`: You can provide additional tags via `@WithLogTags({ tags: {...} })` that will be set for the duration of that method's execution.
+  - `tags`: You can provide additional tags via `@WithLogTags({ source: 'MySource', ... })` that will be set for the duration of that method's execution.
 - **Usage:** Ideal for adding context to specific stages of processing within your classes without manual `withLogTags` wrapping around method calls.
 
 ### Hono Middleware (optional)

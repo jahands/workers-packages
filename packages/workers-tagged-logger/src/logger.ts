@@ -269,24 +269,22 @@ export function withLogTags<T extends LogTags, R>(
 	return als.run(newTags, fn)
 }
 
-/** Options for the WithLogTags decorator */
-interface WithLogTagsOptions<T extends LogTags> {
+/** Type alias for the actual decorator function returned */
+type MethodDecoratorFn = (
+	target: any,
+	propertyKey: string | symbol,
+	descriptor: PropertyDescriptor
+) => PropertyDescriptor | void
+
+/** Tags for the WithLogTags decorator */
+type WithLogTagsDecoratorTags<T extends LogTags> = {
 	/**
 	 * Explicit source for logs. If omitted, the class name containing the
 	 * decorated method will automatically be used as the source.
 	 * @default Class name
 	 */
 	source?: string
-	/** Additional tags to set for the duration of the decorated method's execution */
-	tags?: Partial<T & LogTags>
-}
-
-// Type alias for the actual decorator function returned
-type MethodDecoratorFn = (
-	target: any,
-	propertyKey: string | symbol,
-	descriptor: PropertyDescriptor
-) => PropertyDescriptor | void
+} & Partial<T & LogTags>
 
 /**
  * Decorator: Wraps a class method with logging context.
@@ -310,7 +308,7 @@ type MethodDecoratorFn = (
  *   \@WithLogTags() // $logger.methodName: 'handleRequest' will be added
  *   async handleRequest(requestId: string, request: Request) {
  *     logger.setTags({ requestId })
- *     logger.info('Handling request') // -> tags: { source: 'MyService', '$logger.methodName': 'handleRequest', requestId: '...' }
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger: { methodName: 'handleRequest', rootMethodName: 'handleRequest' }, requestId: '...' }
  *     await this.processRequest(request)
  *     logger.info('Request handled')
  *   }
@@ -319,8 +317,8 @@ type MethodDecoratorFn = (
  *   // and $logger.rootMethodName will remain 'handleRequest'
  *   \@WithLogTags()
  *   async processRequest(request: Request) {
- *      // Inherits requestId from handleRequest's context
- *      // Tags here: { source: 'MyService', '$logger.methodName': 'processRequest', '$logger.rootMethodName': 'handleRequest', requestId: '...' }
+ *     // Inherits requestId from handleRequest's context
+ *     // Tags here: { source: 'MyService', $logger: { methodName: 'processRequest', rootMethodName: 'handleRequest' }, requestId: '...' }
  *     logger.debug('Processing request...')
  *     // ...
  *     logger.debug('Request processed')
@@ -353,7 +351,7 @@ export function WithLogTags(): MethodDecoratorFn
  *   \@WithLogTags<MyTags>('MyService') // $logger.methodName: 'handleRequest' will be added
  *   async handleRequest(requestId: string, request: Request) {
  *     logger.setTags({ requestId })
- *     logger.info('Handling request') // -> tags: { source: 'MyService', '$logger.methodName': 'handleRequest', requestId: '...' }
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger: { methodName: 'handleRequest', rootMethodName: 'handleRequest' }, requestId: '...' }
  *     await this.processRequest(request)
  *     logger.info('Request handled')
  *   }
@@ -363,7 +361,7 @@ export function WithLogTags(): MethodDecoratorFn
  *   \@WithLogTags<MyTags>('MyServiceHelper')
  *   async processRequest(request: Request) {
  *      // Inherits requestId from handleRequest's context
- *      // Tags here: { source: 'MyServiceHelper', '$logger.methodName': 'processRequest', '$logger.rootMethodName': 'handleRequest', requestId: '...' }
+ *       Tags here: { source: 'MyServiceHelper', $logger: { methodName: 'processRequest', rootMethodName: 'handleRequest' }, requestId: '...' }
  *     logger.debug('Processing request...')
  *     // ...
  *     logger.debug('Request processed')
@@ -383,10 +381,9 @@ export function WithLogTags(source: string): MethodDecoratorFn
  *   - `$logger.rootMethodName`: The name of the first decorated method entered in the async context.
  * Nested calls will inherit metadata.
  *
- * @param opts Options including source and initial tags.
- * @param opts.source Tag for the source of these logs (e.g., the Worker name or class name). Falls back to Class Name
- * @param opts.tags Additional tags to set for this context. User-provided tags
- *                  will override existing tags but NOT the automatically added logger tags.
+ * @param tags Additional tags to set for this context. User-provided tags
+ *             will override existing tags but NOT the automatically added logger tags.
+ * @param tags.source Tag for the source of these logs (e.g., the Worker name or class name). Falls back to Class Name
  *
  * @example
  *
@@ -399,17 +396,17 @@ export function WithLogTags(source: string): MethodDecoratorFn
  *   \@WithLogTags<MyTags>({ source: 'MyService' }) // $logger.methodName: 'handleRequest' will be added
  *   async handleRequest(requestId: string, request: Request) {
  *     logger.setTags({ requestId })
- *     logger.info('Handling request') // -> tags: { source: 'MyService', '$logger.methodName': 'handleRequest', requestId: '...' }
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger.methodName: 'handleRequest', requestId: '...' }
  *     await this.processRequest(request)
  *     logger.info('Request handled')
  *   }
  *
  *   // $logger.methodName: 'processRequest' will be added
  *   // and $logger.rootMethodName will remain 'handleRequest'
- *   \@WithLogTags<MyTags>({ tags: { foo: 'bar' } })
+ *   \@WithLogTags<MyTags>({ foo: 'bar' })
  *   async processRequest(request: Request) {
  *      // Inherits requestId from handleRequest's context
- *      // Tags here: { source: 'MyService', foo: 'bar', '$logger.methodName': 'processRequest', '$logger.rootMethodName': 'handleRequest', requestId: '...' }
+ *      // Tags here: { source: 'MyService', foo: 'bar', $logger.methodName: 'processRequest', $logger.rootMethodName: 'handleRequest', requestId: '...' }
  *     logger.debug('Processing request...')
  *     // ...
  *     logger.debug('Request processed')
@@ -418,11 +415,11 @@ export function WithLogTags(source: string): MethodDecoratorFn
  * ```
  */
 export function WithLogTags<T extends LogTags>(
-	opts: WithLogTagsOptions<Partial<T & LogTags>>
+	tags: WithLogTagsDecoratorTags<Partial<T & LogTags>>
 ): MethodDecoratorFn
 export function WithLogTags<T extends LogTags>(
 	/** Optional configuration: string is explicit source, object allows source/tags, undefined uses class name */
-	optsOrSource?: string | WithLogTagsOptions<Partial<T & LogTags>>
+	sourceOrTags?: string | WithLogTagsDecoratorTags<Partial<T & LogTags>>
 ): MethodDecoratorFn {
 	// This is the function returned that acts as the decorator
 	return function (
@@ -442,11 +439,11 @@ export function WithLogTags<T extends LogTags>(
 		let explicitSource: string | undefined
 		let userTags: LogTags | undefined
 
-		if (typeof optsOrSource === 'string') {
-			explicitSource = optsOrSource
-		} else if (optsOrSource) {
-			explicitSource = optsOrSource.source
-			userTags = optsOrSource.tags
+		if (typeof sourceOrTags === 'string') {
+			explicitSource = sourceOrTags
+		} else if (sourceOrTags) {
+			explicitSource = sourceOrTags.source
+			userTags = sourceOrTags
 		}
 
 		let inferredClassName: string | undefined = 'UnknownClass'
@@ -463,15 +460,28 @@ export function WithLogTags<T extends LogTags>(
 
 		descriptor.value = function (...args: any[]): MethodDecoratorFn {
 			const existing = als.getStore()
-			const rootMethodName = existing?.['$logger.rootMethodName'] ?? methodName
+			let rootMethodName = methodName
+			if (
+				// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+				existing &&
+				// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+				existing.$logger &&
+				typeof existing.$logger === 'object' &&
+				!Array.isArray(existing.$logger) &&
+				typeof existing.$logger.rootMethodName === 'string'
+			) {
+				rootMethodName = existing.$logger.rootMethodName
+			}
 
 			const finalSource = explicitSource ?? existing?.source ?? inferredClassName
 			const sourceTag = { source: finalSource }
 
 			// Define the logger-specific tags for this context level
 			const loggerTags = {
-				'$logger.methodName': methodName, // Always the current method
-				'$logger.rootMethodName': rootMethodName, // Inherited or current
+				$logger: {
+					methodName: methodName, // Always the current method
+					rootMethodName: rootMethodName, // Inherited or current
+				},
 			}
 
 			// Create the new tags object for the ALS context
