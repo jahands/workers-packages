@@ -16,8 +16,8 @@
 		"zod": "3.24.1"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.6.0",
-		"@cloudflare/workers-types": "4.20250109.0",
+		"@cloudflare/vitest-pool-workers": "0.8.15",
+		"@cloudflare/workers-types": "4.20250410.0",
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",

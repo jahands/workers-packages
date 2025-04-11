@@ -45,7 +45,7 @@
 		"turbo": "2.3.3",
 		"typescript": "5.5.4",
 		"vitest": "2.1.1",
-		"wrangler": "3.101.0",
+		"wrangler": "4.10.0",
 		"yaml": "2.7.0",
 		"zod": "3.24.1"
 	},
