@@ -125,6 +125,45 @@ describe('@WithLogTags', () => {
 			this.h.log.info(`this.syncInstanceValue is now: ${this.syncInstanceValue}`)
 			return this.syncInstanceValue
 		}
+
+		// ========================================== //
+		// === Methods for source inference tests === //
+		// ========================================== //
+
+		@WithLogTags() // No options, source should be inferred
+		inferredSourceInstanceMethod() {
+			this.h.log.info('Instance method with inferred source')
+		}
+
+		@WithLogTags() // No options, source should be inferred
+		static inferredSourceStaticMethod(h: TestHarness<TestTags>) {
+			h.log.info('Static method with inferred source')
+		}
+
+		@WithLogTags({}) // Empty options, source should be inferred
+		inferredSourceEmptyOptions() {
+			this.h.log.info('Instance method with inferred source (empty options)')
+		}
+
+		@WithLogTags({ tags: { only: 'tags' } }) // Only tags, source should be inferred
+		inferredSourceOnlyTags() {
+			this.h.log.info('Instance method with inferred source (only tags)')
+		}
+
+		@WithLogTags({ source: 'ExplicitSourceFromObject' }) // Explicit source in object
+		explicitSourceViaObject() {
+			this.h.log.info('Instance method with explicit source (object)')
+		}
+
+		@WithLogTags('ExplicitSourceFromString') // Explicit source as string
+		explicitSourceViaString() {
+			this.h.log.info('Instance method with explicit source (string)')
+		}
+
+		@WithLogTags({ source: 'ExplicitStaticSource' }) // Explicit source for static
+		static explicitSourceStaticMethod(h: TestHarness<TestTags>) {
+			h.log.info('Static method with explicit source')
+		}
 	}
 
 	it('should add basic tags ($logger.methodName, $logger.rootMethodName, source)', async () => {
@@ -389,49 +428,70 @@ describe('@WithLogTags', () => {
 			source: 'TestService', // inferred
 		})
 	})
-})
 
-describe('stringifyMessage()', () => {
-	it('stringifies basic types', () => {
-		expect(stringifyMessage('abc')).toMatchInlineSnapshot(`"abc"`)
-		expect(stringifyMessage(123)).toMatchInlineSnapshot(`"123"`)
-		expect(stringifyMessage(true)).toMatchInlineSnapshot(`"true"`)
-	})
+	describe('source inference', () => {
+		it('should infer source from class name for instance method when no options provided', () => {
+			const h = setupTest<TestTags>()
+			const service = new TestService(h)
+			service.inferredSourceInstanceMethod()
 
-	it('stringifies objects', () => {
-		expect(stringifyMessage({ foo: 'bar', a: 1 })).toMatchInlineSnapshot(`"{"foo":"bar","a":1}"`)
-	})
+			expect(h.oneLog().tags?.source).toBe('TestService')
+			expect(h.oneLog().tags?.['$logger.methodName']).toBe('inferredSourceInstanceMethod')
+			expect(h.oneLog().tags?.['$logger.rootMethodName']).toBe('inferredSourceInstanceMethod')
+		})
 
-	it('stringifies arrays', () => {
-		expect(stringifyMessage(['a', 1, true])).toMatchInlineSnapshot(`"["a",1,true]"`)
-		expect(stringifyMessage([{ foo: 'bar' }, { a: 1 }, [1, 2]])).toMatchInlineSnapshot(
-			`"[{"foo":"bar"},{"a":1},[1,2]]"`
-		)
-	})
+		it('should infer source from class name for static method when no options provided', () => {
+			const h = setupTest<TestTags>()
+			TestService.inferredSourceStaticMethod(h)
 
-	it('stringifies functions', () => {
-		expect(stringifyMessage(stringifyMessage)).toMatchInlineSnapshot(
-			`"[function: stringifyMessage()]"`
-		)
-	})
+			expect(h.oneLog().tags?.source).toBe('TestService')
+			expect(h.oneLog().tags?.['$logger.methodName']).toBe('inferredSourceStaticMethod')
+			expect(h.oneLog().tags?.['$logger.rootMethodName']).toBe('inferredSourceStaticMethod')
+		})
 
-	it('stringifies errors', () => {
-		const msg = stringifyMessage(new Error('boom!')).split('\n')
-		expect(msg.length).toBe(1)
-		expect(msg[0]).toMatchInlineSnapshot(`"Error: boom!"`)
-	})
-})
+		it('should infer source from class name when empty options object provided', () => {
+			const h = setupTest<TestTags>()
+			const service = new TestService(h)
+			service.inferredSourceEmptyOptions()
 
-describe('stringifyMessages()', () => {
-	it('stringifies multiple messages', () => {
-		expect(
-			stringifyMessages('a', 1, true, stringifyMessage, { foo: 'bar' }, ['a', 1, true])
-		).toMatchInlineSnapshot(`"a 1 true [function: stringifyMessage()] {"foo":"bar"} ["a",1,true]"`)
-	})
+			expect(h.oneLog().tags?.source).toBe('TestService')
+			expect(h.oneLog().tags?.['$logger.methodName']).toBe('inferredSourceEmptyOptions')
+		})
 
-	it('stringifies errors', () => {
-		const msg = stringifyMessages(new Error('boom!')).split('\n')
-		expect(msg.length).toBe(1)
-		expect(msg[0]).toMatchInlineSnapshot(`"Error: boom!"`)
+		it('should infer source from class name when only tags option provided', () => {
+			const h = setupTest<TestTags>()
+			const service = new TestService(h)
+			service.inferredSourceOnlyTags()
+
+			expect(h.oneLog().tags?.source).toBe('TestService')
+			expect(h.oneLog().tags?.only).toBe('tags') // Verify tag is also present
+			expect(h.oneLog().tags?.['$logger.methodName']).toBe('inferredSourceOnlyTags')
+		})
+
+		it('should use explicit source from options object over inferred class name', () => {
+			const h = setupTest<TestTags>()
+			const service = new TestService(h)
+			service.explicitSourceViaObject()
+
+			expect(h.oneLog().tags?.source).toBe('ExplicitSourceFromObject')
+			expect(h.oneLog().tags?.['$logger.methodName']).toBe('explicitSourceViaObject')
+		})
+
+		it('should use explicit source from string argument over inferred class name', () => {
+			const h = setupTest<TestTags>()
+			const service = new TestService(h)
+			service.explicitSourceViaString()
+
+			expect(h.oneLog().tags?.source).toBe('ExplicitSourceFromString')
+			expect(h.oneLog().tags?.['$logger.methodName']).toBe('explicitSourceViaString')
+		})
+
+		it('should use explicit source for static method when provided', () => {
+			const h = setupTest<TestTags>()
+			TestService.explicitSourceStaticMethod(h)
+
+			expect(h.oneLog().tags?.source).toBe('ExplicitStaticSource')
+			expect(h.oneLog().tags?.['$logger.methodName']).toBe('explicitSourceStaticMethod')
+		})
 	})
 })
