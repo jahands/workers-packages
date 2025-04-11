@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { z } from 'zod'
 
@@ -61,7 +62,7 @@ export interface WorkersLoggerOptions {
 	/**
 	 * Fields to apply to all logs in the current WorkersLogger.
 	 * Does not apply globally - only the logger instance
-	 * (or child instance) that log.withFields() was called.
+	 * (or child instance) that logger.withFields() was called.
 	 */
 	fields?: LogFields
 	/**
@@ -77,14 +78,17 @@ export interface WorkersLoggerOptions {
  * metadata for the returned logger instance rather
  * than applying globally.
  *
- * @example Create a typed logger:
+ * @example
+ *
+ * Create a typed logger
+ *
  * ```ts
- * type CustomTagHints = {
+ * type MyTags = {
  *   build_id: number
  *   build_uuid: string
  * }
- * const log = new WorkersLogger<CustomTagHints>()
- * log.setTags({
+ * const logger = new WorkersLogger<MyTags>()
+ * logger.setTags({
  *   build_id: 123 // auto-completes!
  * })
  * ```
@@ -113,7 +117,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 * fields added (overwriting conflicting fields.) Only this instance
 	 * (or sub-instances) will contain these fields.
 	 *
-	 * Fields are similar to tags, but are set at the top-level of the log.
+	 * Fields are similar to tags, but are set at the top-level of the logger.
 	 * Most of the time, tags are preferred. But there are cases where
 	 * setting top-level fields is preferred (such as setting `timestamp`.)
 	 */
@@ -205,24 +209,28 @@ export function stringifyMessages(...msgs: any[]): string {
 }
 
 export function stringifyMessage(msg: any): string {
+	if (msg === undefined || msg === null) {
+		return `${msg}`
+	}
 	if (typeof msg === 'string') {
 		return msg
 	}
-	if (typeof msg === 'number') {
+	if (typeof msg === 'number' || typeof msg === 'boolean') {
 		return msg.toString()
 	}
-	if (typeof msg === 'boolean') {
-		return `${msg}`
-	}
 	if (typeof msg === 'function') {
-		return `[function: ${msg.name}()]`
+		// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+		return `[function${msg.name ? `: ${msg.name}` : ''}()]`
 	}
-	if (typeof msg === 'object') {
-		if (msg instanceof Error) {
-			return `${msg.name}: ${msg.message}${msg.stack !== undefined ? `\n${msg.stack}` : ''}`
-		}
+	if (msg instanceof Error) {
+		return `${msg.name}: ${msg.message}`
 	}
-	return JSON.stringify(msg)
+	try {
+		return JSON.stringify(msg)
+	} catch (e) {
+		// may throw error if there are circular references
+		return '[unserializable object]'
+	}
 }
 
 interface WithLogTagsOptions<T extends LogTags> {
@@ -237,36 +245,253 @@ interface WithLogTagsOptions<T extends LogTags> {
  * Nested calls will inherit all metadata on the parent at the
  * time it was created. Future updates to the parent will not be
  * propagated to the child.
+ *
  * @param opts.source Tag for source of these logs (e.g. the Worker name.)
  * @param opts.tags Additional tags to set
  * @param fn Function to run within the async context that
  * will allow using the WorkersLogger
  *
- * @example
- * ```
- * import { withLogTags, WorkersLogger } from './workers-logger'
- * const log = new WorkersLogger<TagHints>() // put this anywhere!
- * const res = await withLogTags({ source: 'wci-internal-api' }, async () => {
- *   log.setTags({ cf_account_id: 123 })
- *   log.info('hello world!') // ->
- *   // {
- *   //   message: 'hello world!',
- *   //   { tags: { source: 'wci-internal-api', cf_account_id: 123 } }
- *   // }
- * 	 return new Response('hello world!')
- * })
- * ```
+ * @see WithLogTags decorator for simpler use in classes
  */
 export function withLogTags<T extends LogTags, R>(
 	opts: WithLogTagsOptions<Partial<T & LogTags>>,
 	fn: () => R
 ): R {
 	const existing = als.getStore()
-	let source: { source: string } | undefined
+	let sourceTag: { source: string } | undefined
 	const sourceOpt = opts.source
 	if (sourceOpt !== undefined) {
-		source = { source: sourceOpt }
+		sourceTag = { source: sourceOpt }
 	}
 	// Note: existing won't exist when withLogTags() is first called
-	return als.run(structuredClone(Object.assign({}, existing, source, opts.tags)), fn)
+	// Create a new object for the store, inheriting from existing
+	const newTags = structuredClone(Object.assign({}, existing, sourceTag, opts.tags))
+	return als.run(newTags, fn)
+}
+
+/** Options for the WithLogTags decorator */
+interface WithLogTagsOptions<T extends LogTags> {
+	/**
+	 * Explicit source for logs. If omitted, the class name containing the
+	 * decorated method will automatically be used as the source.
+	 * @default Class name
+	 */
+	source?: string
+	/** Additional tags to set for the duration of the decorated method's execution */
+	tags?: Partial<T & LogTags>
+}
+
+// Type alias for the actual decorator function returned
+type MethodDecoratorFn = (
+	target: any,
+	propertyKey: string | symbol,
+	descriptor: PropertyDescriptor
+) => PropertyDescriptor | void
+
+/**
+ * Decorator: Wraps a class method with logging context.
+ * Automatically uses the Class Name as the log source.
+ *
+ * **IMPORTANT**: Requires `"experimentalDecorators": true` to be added to tsconfig.json
+ *
+ * Automatically adds:
+ *   - `$logger.methodName`: The name of the currently executing decorated method.
+ *   - `$logger.rootMethodName`: The name of the first decorated method entered in the async context.
+ * Nested calls will inherit metadata.
+ *
+ * @example
+ *
+ * Create class to handle requests with log tags added
+ *
+ * ```ts
+ * // ... imports and logger setup ...
+ * class MyService {
+ *   // remove the \ before the @ (this is a workaround for VS Code docstring issues)
+ *   \@WithLogTags() // $logger.methodName: 'handleRequest' will be added
+ *   async handleRequest(requestId: string, request: Request) {
+ *     logger.setTags({ requestId })
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', '$logger.methodName': 'handleRequest', requestId: '...' }
+ *     await this.processRequest(request)
+ *     logger.info('Request handled')
+ *   }
+ *
+ *   // $logger.methodName: 'processRequest' will be added
+ *   // and $logger.rootMethodName will remain 'handleRequest'
+ *   \@WithLogTags()
+ *   async processRequest(request: Request) {
+ *      // Inherits requestId from handleRequest's context
+ *      // Tags here: { source: 'MyService', '$logger.methodName': 'processRequest', '$logger.rootMethodName': 'handleRequest', requestId: '...' }
+ *     logger.debug('Processing request...')
+ *     // ...
+ *     logger.debug('Request processed')
+ *   }
+ * }
+ * ```
+ */
+export function WithLogTags(): MethodDecoratorFn
+/**
+ * Decorator: Wraps a class method with logging context.
+ * Uses the provided string as the log source.
+ *
+ * **IMPORTANT**: Requires `"experimentalDecorators": true` to be added to tsconfig.json
+ *
+ * Automatically adds:
+ *   - `$logger.methodName`: The name of the currently executing decorated method.
+ *   - `$logger.rootMethodName`: The name of the first decorated method entered in the async context.
+ * Nested calls will inherit metadata.
+ *
+ * @param source Explicit source for logs.
+ *
+ * @example
+ *
+ * Create class to handle requests with log tags added
+ *
+ * ```ts
+ * // ... imports and logger setup ...
+ * class MyService {
+ *   // remove the \ before the @ (this is a workaround for VS Code docstring issues)
+ *   \@WithLogTags<MyTags>('MyService') // $logger.methodName: 'handleRequest' will be added
+ *   async handleRequest(requestId: string, request: Request) {
+ *     logger.setTags({ requestId })
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', '$logger.methodName': 'handleRequest', requestId: '...' }
+ *     await this.processRequest(request)
+ *     logger.info('Request handled')
+ *   }
+ *
+ *   // $logger.methodName: 'processRequest' will be added
+ *   // and $logger.rootMethodName will remain 'handleRequest'
+ *   \@WithLogTags<MyTags>('MyServiceHelper')
+ *   async processRequest(request: Request) {
+ *      // Inherits requestId from handleRequest's context
+ *      // Tags here: { source: 'MyServiceHelper', '$logger.methodName': 'processRequest', '$logger.rootMethodName': 'handleRequest', requestId: '...' }
+ *     logger.debug('Processing request...')
+ *     // ...
+ *     logger.debug('Request processed')
+ *   }
+ * }
+ * ```
+ */
+export function WithLogTags(source: string): MethodDecoratorFn
+/**
+ * Decorator: Wraps a class method with logging context.
+ * Uses options to configure source (falls back to Class Name) and initial tags.
+ *
+ * **IMPORTANT**: Requires `"experimentalDecorators": true` to be added to tsconfig.json
+ *
+ * Automatically adds:
+ *   - `$logger.methodName`: The name of the currently executing decorated method.
+ *   - `$logger.rootMethodName`: The name of the first decorated method entered in the async context.
+ * Nested calls will inherit metadata.
+ *
+ * @param opts Options including source and initial tags.
+ * @param opts.source Tag for the source of these logs (e.g., the Worker name or class name). Falls back to Class Name
+ * @param opts.tags Additional tags to set for this context. User-provided tags
+ *                  will override existing tags but NOT the automatically added logger tags.
+ *
+ * @example
+ *
+ * Create class to handle requests with log tags added
+ *
+ * ```ts
+ * // ... imports and logger setup ...
+ * class MyService {
+ *   // remove the \ before the @ (this is a workaround for VS Code docstring issues)
+ *   \@WithLogTags<MyTags>({ source: 'MyService' }) // $logger.methodName: 'handleRequest' will be added
+ *   async handleRequest(requestId: string, request: Request) {
+ *     logger.setTags({ requestId })
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', '$logger.methodName': 'handleRequest', requestId: '...' }
+ *     await this.processRequest(request)
+ *     logger.info('Request handled')
+ *   }
+ *
+ *   // $logger.methodName: 'processRequest' will be added
+ *   // and $logger.rootMethodName will remain 'handleRequest'
+ *   \@WithLogTags<MyTags>({ tags: { foo: 'bar' } })
+ *   async processRequest(request: Request) {
+ *      // Inherits requestId from handleRequest's context
+ *      // Tags here: { source: 'MyService', foo: 'bar', '$logger.methodName': 'processRequest', '$logger.rootMethodName': 'handleRequest', requestId: '...' }
+ *     logger.debug('Processing request...')
+ *     // ...
+ *     logger.debug('Request processed')
+ *   }
+ * }
+ * ```
+ */
+export function WithLogTags<T extends LogTags>(
+	opts: WithLogTagsOptions<Partial<T & LogTags>>
+): MethodDecoratorFn
+export function WithLogTags<T extends LogTags>(
+	/** Optional configuration: string is explicit source, object allows source/tags, undefined uses class name */
+	optsOrSource?: string | WithLogTagsOptions<Partial<T & LogTags>>
+): MethodDecoratorFn {
+	// This is the function returned that acts as the decorator
+	return function (
+		target: any, // Class prototype (instance) or constructor (static)
+		propertyKey: string | symbol,
+		descriptor: PropertyDescriptor
+	): PropertyDescriptor {
+		const methodName = String(propertyKey)
+
+		// Validate descriptor (ensure it's a method)
+		if (descriptor === undefined || typeof descriptor.value !== 'function') {
+			throw new Error(
+				`@WithLogTags decorator can only be applied to methods, not properties like ${methodName}.`
+			)
+		}
+
+		let explicitSource: string | undefined
+		let userTags: LogTags | undefined
+
+		if (typeof optsOrSource === 'string') {
+			explicitSource = optsOrSource
+		} else if (optsOrSource) {
+			explicitSource = optsOrSource.source
+			userTags = optsOrSource.tags
+		}
+
+		let inferredClassName: string | undefined = 'UnknownClass'
+		if (typeof target === 'function') {
+			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+			inferredClassName = target.name || inferredClassName
+		} else if (target !== undefined && typeof target.constructor === 'function') {
+			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+			inferredClassName = target.constructor.name || inferredClassName
+		}
+
+		// Get original method and wrap it
+		const originalMethod = descriptor.value
+
+		descriptor.value = function (...args: any[]): MethodDecoratorFn {
+			const existing = als.getStore()
+			const rootMethodName = existing?.['$logger.rootMethodName'] ?? methodName
+
+			const finalSource = explicitSource ?? existing?.source ?? inferredClassName
+			const sourceTag = { source: finalSource }
+
+			// Define the logger-specific tags for this context level
+			const loggerTags = {
+				'$logger.methodName': methodName, // Always the current method
+				'$logger.rootMethodName': rootMethodName, // Inherited or current
+			}
+
+			// Create the new tags object for the ALS context
+			// Merge order: existing -> final source -> user tags -> logger tags
+			const newTags = structuredClone(
+				Object.assign(
+					{},
+					existing,
+					sourceTag, // Use the determined source tag
+					userTags, // Add user tags if provided
+					loggerTags // Logger tags take precedence
+				)
+			)
+
+			// Run the original method within the AsyncLocalStorage context
+			return als.run(newTags, () => {
+				return originalMethod.apply(this, args)
+			})
+		}
+
+		return descriptor
+	}
 }

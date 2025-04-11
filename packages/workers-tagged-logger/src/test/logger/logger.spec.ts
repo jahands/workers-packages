@@ -1,54 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, test, vi } from 'vitest'
 import { z } from 'zod'
 
-import {
-	ConsoleLog,
-	stringifyMessage,
-	stringifyMessages,
-	withLogTags,
-	WorkersLogger,
-} from './logger.js'
+import { stringifyMessage, stringifyMessages, withLogTags, WorkersLogger } from '../../logger.js'
+import { setupTest } from '../harness.js'
 
-import type { LogTags, WorkersLoggerOptions } from './logger.js'
-
-type ParsedConsoleLog = z.infer<typeof ParsedConsoleLog>
-const ParsedConsoleLog = ConsoleLog.merge(
-	z.object({
-		message: z.string().optional(),
-	})
-)
-	.passthrough()
-	.describe('same as ConsoleLog but message is converted to a string when logged')
-
-class TestHarness<T extends LogTags> {
-	private _logs: ParsedConsoleLog[] = []
-	readonly log: WorkersLogger<T>
-
-	constructor(opts?: WorkersLoggerOptions) {
-		this.log = new WorkersLogger(opts)
-		vi.spyOn(console, 'log').mockImplementation((...msgs: ParsedConsoleLog[]) => {
-			this._logs.push(...structuredClone(msgs))
-		})
-	}
-
-	get logs(): ParsedConsoleLog[] {
-		return ParsedConsoleLog.array().parse(this._logs)
-	}
-	/** Get the first log (asserting that there is only one) */
-	oneLog(): ParsedConsoleLog {
-		const log = ParsedConsoleLog.array().min(1).max(1).parse(this._logs)[0]
-		if (log === undefined) throw new Error('no logs')
-		return log
-	}
-	/** Get log at specific index. Supports negative numbers. */
-	logAt(n: number): ParsedConsoleLog {
-		return ParsedConsoleLog.parse(this.logs.at(n))
-	}
-}
-
-export function setupTest<T extends LogTags>(opts?: WorkersLoggerOptions): TestHarness<T> {
-	return new TestHarness<T>(opts)
-}
+import type { ParsedConsoleLog } from '../harness.js'
 
 beforeEach(() => {
 	vi.useFakeTimers()
@@ -125,10 +81,9 @@ describe('WorkersLogger', () => {
 				const h = setupTest()
 				await withLogTags({ source: 'worker-a' }, async () => {
 					h.log.info(new Error('boom!'))
-					expect(h.oneLog().message?.split('\n').slice(0, 2).join('\n')).toMatchInlineSnapshot(`
-					"Error: boom!
-					Error: boom!"
-				`)
+					expect(h.oneLog().message?.split('\n').slice(0, 2).join('\n')).toMatchInlineSnapshot(
+						`"Error: boom!"`
+					)
 				})
 			})
 
@@ -152,7 +107,7 @@ describe('WorkersLogger', () => {
 				const h = setupTest()
 				await withLogTags({ source: 'worker-a' }, async () => {
 					h.log.info(undefined)
-					expect(h.oneLog().message).toMatchInlineSnapshot(`undefined`)
+					expect(h.oneLog().message).toMatchInlineSnapshot(`"undefined"`)
 				})
 			})
 
@@ -370,22 +325,22 @@ describe('WorkersLogger', () => {
 			ctxLogger.info('hello, world!')
 			expect(h.logs.slice(2), 'contains our log from ctxLogger but no global tags')
 				.toMatchInlineSnapshot(`
-					[
-					  {
-					    "level": "error",
-					    "message": "Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?",
-					    "time": "2024-10-26T12:30:00.000Z",
-					  },
-					  {
-					    "level": "info",
-					    "message": "hello, world!",
-					    "tags": {
-					      "banda": "rocks",
-					    },
-					    "time": "2024-10-26T12:30:00.000Z",
-					  },
-					]
-				`)
+				[
+				  {
+				    "level": "error",
+				    "message": "Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?",
+				    "time": "2024-10-26T12:30:00.000Z",
+				  },
+				  {
+				    "level": "info",
+				    "message": "hello, world!",
+				    "tags": {
+				      "banda": "rocks",
+				    },
+				    "time": "2024-10-26T12:30:00.000Z",
+				  },
+				]
+			`)
 		})
 
 		it('cannot delete tags - can only set to undefined / null', async () => {
@@ -754,7 +709,7 @@ describe('stringifyMessage()', () => {
 
 	it('stringifies errors', () => {
 		const msg = stringifyMessage(new Error('boom!')).split('\n')
-		expect(msg.length).toBeGreaterThan(1)
+		expect(msg.length).toBe(1)
 		expect(msg[0]).toMatchInlineSnapshot(`"Error: boom!"`)
 	})
 })
@@ -768,7 +723,7 @@ describe('stringifyMessages()', () => {
 
 	it('stringifies errors', () => {
 		const msg = stringifyMessages(new Error('boom!')).split('\n')
-		expect(msg.length).toBeGreaterThan(1)
+		expect(msg.length).toBe(1)
 		expect(msg[0]).toMatchInlineSnapshot(`"Error: boom!"`)
 	})
 })

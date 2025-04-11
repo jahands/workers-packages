@@ -12,7 +12,7 @@
 			"outputLogs": "new-only"
 		},
 		"build:wrangler": {
-			"dependsOn": ["build"],
+			"dependsOn": ["^build", "build"],
 			"outputs": ["dist/**"],
 			"outputLogs": "new-only"
 		},
@@ -47,12 +47,12 @@
 			"outputLogs": "new-only"
 		},
 		"check:lint": {
-			"dependsOn": ["^build", "^check:lint"],
+			"dependsOn": ["^build", "build", "^check:lint"],
 			"outputLogs": "new-only",
 			"passThroughEnv": ["FIX_ESLINT"]
 		},
 		"//#test:ci": {
-			"dependsOn": ["^build", "build"],
+			"dependsOn": ["^build", "build", "http-codex#build", "workers-tagged-logger#build"],
 			"outputLogs": "new-only"
 		},
 		"test:ci": {
