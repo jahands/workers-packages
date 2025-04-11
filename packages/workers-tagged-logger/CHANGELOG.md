@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.6.1
+
+### Patch Changes
+
+- 81ef759: fix: add stack back into error messages
+
 ## 0.6.0
 
 ### Minor Changes
