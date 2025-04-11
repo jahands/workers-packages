@@ -1,5 +1,15 @@
 # @repo/hono-app
 
+## 0.3.22
+
+### Patch Changes
+
+- 976c2cf: chore: update dependencies
+- Updated dependencies [976c2cf]
+- Updated dependencies [976c2cf]
+  - workers-tagged-logger@0.6.0
+  - http-codex@0.5.3
+
 ## 0.3.21
 
 ### Patch Changes
