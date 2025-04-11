@@ -61,7 +61,7 @@ export interface WorkersLoggerOptions {
 	/**
 	 * Fields to apply to all logs in the current WorkersLogger.
 	 * Does not apply globally - only the logger instance
-	 * (or child instance) that log.withFields() was called.
+	 * (or child instance) that logger.withFields() was called.
 	 */
 	fields?: LogFields
 	/**
@@ -115,7 +115,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 * fields added (overwriting conflicting fields.) Only this instance
 	 * (or sub-instances) will contain these fields.
 	 *
-	 * Fields are similar to tags, but are set at the top-level of the log.
+	 * Fields are similar to tags, but are set at the top-level of the logger.
 	 * Most of the time, tags are preferred. But there are cases where
 	 * setting top-level fields is preferred (such as setting `timestamp`.)
 	 */
