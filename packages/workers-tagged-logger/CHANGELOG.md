@@ -1,5 +1,13 @@
 # workers-tagged-logger
 
+## 0.8.0
+
+### Minor Changes
+
+- 0b92313: chore: rename methodName -> method and rootMethodName -> rootMethod
+
+  this will save a lot of bytes in the long run
+
 ## 0.7.0
 
 ### Minor Changes
