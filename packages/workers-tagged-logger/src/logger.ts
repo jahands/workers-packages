@@ -462,7 +462,9 @@ export function WithLogTags<T extends LogTags>(
 			const existing = als.getStore()
 			let rootMethodName = methodName
 			if (
+				// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 				existing &&
+				// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 				existing.$logger &&
 				typeof existing.$logger === 'object' &&
 				!Array.isArray(existing.$logger) &&
