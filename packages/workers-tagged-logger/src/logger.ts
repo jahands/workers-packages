@@ -77,14 +77,16 @@ export interface WorkersLoggerOptions {
  * metadata for the returned logger instance rather
  * than applying globally.
  *
- * @example Create a typed logger:
+ * @example
+ * Create a typed logger
+ *
  * ```ts
- * type CustomTagHints = {
+ * type MyTags = {
  *   build_id: number
  *   build_uuid: string
  * }
- * const log = new WorkersLogger<CustomTagHints>()
- * log.setTags({
+ * const logger = new WorkersLogger<MyTags>()
+ * logger.setTags({
  *   build_id: 123 // auto-completes!
  * })
  * ```
@@ -135,12 +137,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	private getParentTags(): Partial<T & LogTags> | undefined {
 		const tags = als.getStore()
 		if (tags === undefined) {
-			console.log({
-				message: `Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?`,
-				level: 'error',
-				time: new Date().toISOString(),
-			} satisfies ConsoleLog)
-			return
+			return undefined
 		}
 		return tags as Partial<T & LogTags>
 	}
@@ -149,18 +146,33 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 * Get all tags (including global + context tags)
 	 */
 	getTags(): Partial<T & LogTags> {
-		return Object.assign({}, this.getParentTags(), this.ctx.tags) as Partial<T & LogTags>
+		const parentTags = this.getParentTags()
+		if (parentTags === undefined) {
+			// Log error specifically when trying to get tags for logging but context is missing
+			console.log({
+				message: `Error: unable to get log tags from async local storage. Did you forget to wrap the entry point with @WithLogTags() or withLogTags()?`,
+				level: 'error',
+				time: new Date().toISOString(),
+			} satisfies ConsoleLog)
+			// Return instance tags only if context is missing
+			return (this.ctx.tags ?? {}) as Partial<T & LogTags>
+		}
+		return Object.assign({}, parentTags, this.ctx.tags) as Partial<T & LogTags>
 	}
 
 	/** Set tags used for all logs in this async context
 	 * and any child context (unless overridden using withTags) */
 	setTags(tags: Partial<T & LogTags>): void {
-		const globalTags = this.getParentTags()
-		if (globalTags !== undefined) {
-			// no need to log when we don't have global tags because
-			// getParentTags already logs it.
-			Object.assign(globalTags, structuredClone(tags))
+		const globalTags = als.getStore()
+		if (globalTags === undefined) {
+			console.log({
+				message: `Error: unable to set log tags in async local storage. Did you forget to wrap the entry point with @WithLogTags() or withLogTags()?`,
+				level: 'error',
+				time: new Date().toISOString(),
+			} satisfies ConsoleLog)
+			return
 		}
+		Object.assign(globalTags, structuredClone(tags))
 	}
 
 	info = (...msgs: any[]): void => this.write(msgs, 'info')
@@ -176,27 +188,54 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			return
 		}
 
-		const tags = this.getTags()
-		let message: string | undefined
+		const tags = this.getTags() // This now handles the error logging if context is missing
+		let message: string | Error | undefined // Allow Error type for better handling
+		let extraData: Record<string, any> | undefined
+
 		if (Array.isArray(msgs)) {
 			if (msgs.length === 0) {
 				message = undefined
-			} else if (msgs.length === 1) {
-				message = stringifyMessage(msgs[0])
 			} else {
-				message = stringifyMessages(msgs)
+				const firstArg = msgs[0]
+				if (firstArg instanceof Error) {
+					message = firstArg // Keep the Error object
+					if (msgs.length > 1) {
+						// Treat remaining args as extra data if the first is an Error
+						extraData = { details: msgs.slice(1) }
+					}
+				} else if (typeof firstArg === 'string') {
+					message = stringifyMessages(...msgs) // Original behavior for strings/multiple args
+				} else if (msgs.length === 1) {
+					// Handle single non-string, non-error arg
+					message = stringifyMessage(firstArg)
+				} else {
+					// Handle multiple non-string args (treat first as message, rest as extra)
+					message = stringifyMessage(firstArg)
+					extraData = { details: msgs.slice(1) }
+				}
 			}
 		}
 
-		const log: ConsoleLog = {
-			message,
+		const logEntry: ConsoleLog & Record<string, any> = {
+			// Use Record<string, any> for passthrough fields
+			message: message instanceof Error ? message.message : message, // Log error message string
 			level,
 			time: new Date().toISOString(),
+			...(message instanceof Error && {
+				error: {
+					name: message.name,
+					message: message.message,
+					stack: message.stack,
+				},
+			}), // Add structured error info
+			...(Object.keys(tags).length > 0 && { tags }),
+			...this.getFields(), // Add top-level fields from withFields
+			...(extraData && { data: extraData }), // Add extra data if present
 		}
-		if (Object.keys(tags).length > 0) {
-			log.tags = tags
-		}
-		console.log(Object.assign({}, log, this.getFields()))
+
+		// Use console[level] for better integration with some log collectors
+		const consoleFn = console[level] ?? console.log
+		consoleFn(logEntry)
 	}
 }
 
@@ -205,24 +244,27 @@ export function stringifyMessages(...msgs: any[]): string {
 }
 
 export function stringifyMessage(msg: any): string {
+	if (msg === undefined || msg === null) {
+		return `${msg}`
+	}
 	if (typeof msg === 'string') {
 		return msg
 	}
-	if (typeof msg === 'number') {
+	if (typeof msg === 'number' || typeof msg === 'boolean') {
 		return msg.toString()
 	}
-	if (typeof msg === 'boolean') {
-		return `${msg}`
-	}
 	if (typeof msg === 'function') {
-		return `[function: ${msg.name}()]`
+		return `[function${msg.name ? `: ${msg.name}` : ''}()]`
 	}
-	if (typeof msg === 'object') {
-		if (msg instanceof Error) {
-			return `${msg.name}: ${msg.message}${msg.stack !== undefined ? `\n${msg.stack}` : ''}`
-		}
+	if (msg instanceof Error) {
+		return `${msg.name}: ${msg.message}`
 	}
-	return JSON.stringify(msg)
+	try {
+		return JSON.stringify(msg)
+	} catch (e) {
+		// may throw error if there are circular references
+		return '[unserializable object]'
+	}
 }
 
 interface WithLogTagsOptions<T extends LogTags> {
@@ -241,32 +283,112 @@ interface WithLogTagsOptions<T extends LogTags> {
  * @param opts.tags Additional tags to set
  * @param fn Function to run within the async context that
  * will allow using the WorkersLogger
- *
- * @example
- * ```
- * import { withLogTags, WorkersLogger } from './workers-logger'
- * const log = new WorkersLogger<TagHints>() // put this anywhere!
- * const res = await withLogTags({ source: 'wci-internal-api' }, async () => {
- *   log.setTags({ cf_account_id: 123 })
- *   log.info('hello world!') // ->
- *   // {
- *   //   message: 'hello world!',
- *   //   { tags: { source: 'wci-internal-api', cf_account_id: 123 } }
- *   // }
- * 	 return new Response('hello world!')
- * })
- * ```
  */
 export function withLogTags<T extends LogTags, R>(
 	opts: WithLogTagsOptions<Partial<T & LogTags>>,
 	fn: () => R
 ): R {
 	const existing = als.getStore()
-	let source: { source: string } | undefined
+	let sourceTag: { source: string } | undefined
 	const sourceOpt = opts.source
 	if (sourceOpt !== undefined) {
-		source = { source: sourceOpt }
+		sourceTag = { source: sourceOpt }
 	}
 	// Note: existing won't exist when withLogTags() is first called
-	return als.run(structuredClone(Object.assign({}, existing, source, opts.tags)), fn)
+	// Create a new object for the store, inheriting from existing
+	const newTags = structuredClone(Object.assign({}, existing, sourceTag, opts.tags))
+	return als.run(newTags, fn)
+}
+
+/**
+ * Decorator to wrap a function or class method with logging metadata attached to all logs
+ * within its execution context using AsyncLocalStorage.
+ * Nested calls will inherit metadata.
+ *
+ * @param opts Options including source and initial tags.
+ * @param opts.source Tag for the source of these logs (e.g., the Worker name or class name).
+ * @param opts.tags Additional tags to set for this context.
+ *
+ * @example
+ *
+ * ```ts
+ * import { WithLogTags, WorkersLogger } from './workers-logger';
+ *
+ * interface MyTags {
+ *   requestId: string;
+ *   userId?: number;
+ * }
+ *
+ * const logger = new WorkersLogger<MyTags>(); // Can be instantiated anywhere
+ *
+ * class MyService {
+ *   @WithLogTags<MyTags>({ source: 'MyService' })
+ *   async handleRequest(requestId: string, data: any) {
+ *     logger.setTags({ requestId }); // Set tags for this specific request
+ *     logger.info('Handling request', data);
+ *
+ *     if (data.userId) {
+ *       logger.setTags({ userId: data.userId });
+ *     }
+ *
+ *     await this.processData(data);
+ *
+ *     logger.info('Request handled successfully');
+ *   }
+ *
+ *   // Logs inside this method will inherit requestId and potentially userId
+ *   async processData(data: any) {
+ *     logger.debug('Processing data...', data);
+ *     // ... processing logic ...
+ *     logger.debug('Data processed');
+ *   }
+ * }
+ *
+ * const service = new MyService();
+ * // When handleRequest is called, logs within it and subsequent calls
+ * // like processData will have { source: 'MyService', requestId: '...' } tags.
+ * await service.handleRequest('req-123', { some: 'payload', userId: 456 });
+ * await service.handleRequest('req-456', { other: 'stuff' });
+ * ```
+ */
+export function WithLogTags<T extends LogTags>(opts: WithLogTagsOptions<Partial<T & LogTags>>) {
+	return function (
+		target: any, // The prototype of the class for instance methods, or the constructor for static methods
+		propertyKey: string | symbol, // The name of the method
+		descriptor: PropertyDescriptor // Property Descriptor of the method
+	): PropertyDescriptor {
+		const originalMethod = descriptor.value // Get the original method
+
+		// Ensure it's decorating a method
+		if (typeof originalMethod !== 'function') {
+			throw new Error(
+				`@WithLogTags decorator can only be applied to methods, not properties like ${String(propertyKey)}.`
+			)
+		}
+
+		// Replace the original method with a new function
+		descriptor.value = function (...args: any[]) {
+			// 'this' context here refers to the instance of the class the method is called on
+
+			const existing = als.getStore()
+			let sourceTag: { source: string } | undefined
+			const sourceOpt = opts.source
+			if (sourceOpt !== undefined) {
+				sourceTag = { source: sourceOpt }
+			}
+
+			// Create a *new* object for the store, inheriting from existing
+			// Use structuredClone to prevent modifications in nested contexts
+			// from affecting parent contexts after the nested call returns.
+			const newTags = structuredClone(Object.assign({}, existing, sourceTag, opts.tags))
+
+			// Run the original method within the AsyncLocalStorage context
+			// Use .apply() to correctly set the 'this' context and pass arguments
+			return als.run(newTags, () => {
+				return originalMethod.apply(this, args)
+			})
+		}
+
+		return descriptor
+	}
 }
