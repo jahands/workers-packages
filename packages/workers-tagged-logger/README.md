@@ -178,8 +178,8 @@ class MyRequestHandler {
 
 - **Context:** Automatically wraps the method execution in `als.run`.
 - **Tags:**
-  - `$logger.methodName`: Automatically added, showing the name of the decorated method.
-  - `$logger.rootMethodName`: Automatically added, showing the name of the _first_ decorated method entered in the current async call chain.
+  - `$logger.method`: Automatically added, showing the name of the decorated method.
+  - `$logger.rootMethod`: Automatically added, showing the name of the _first_ decorated method entered in the current async call chain.
   - `source`: Automatically added. Precedence:
     1.  Explicit source provided via `@WithLogTags("MySource")` or `@WithLogTags({ source: "MySource" })`.
     2.  Source inherited from an existing `AsyncLocalStorage` context (e.g., from an outer `withLogTags` or `@WithLogTags` call).
