@@ -78,6 +78,7 @@ export interface WorkersLoggerOptions {
  * than applying globally.
  *
  * @example
+ *
  * Create a typed logger
  *
  * ```ts
@@ -279,10 +280,13 @@ interface WithLogTagsOptions<T extends LogTags> {
  * Nested calls will inherit all metadata on the parent at the
  * time it was created. Future updates to the parent will not be
  * propagated to the child.
+ *
  * @param opts.source Tag for source of these logs (e.g. the Worker name.)
  * @param opts.tags Additional tags to set
  * @param fn Function to run within the async context that
  * will allow using the WorkersLogger
+ *
+ * @see WithLogTags decorator for simpler use in classes
  */
 export function withLogTags<T extends LogTags, R>(
 	opts: WithLogTagsOptions<Partial<T & LogTags>>,
@@ -301,78 +305,59 @@ export function withLogTags<T extends LogTags, R>(
 }
 
 /**
- * Decorator to wrap a function or class method with logging metadata attached to all logs
+ * Decorator to wrap a class method with logging metadata attached to all logs
  * within its execution context using AsyncLocalStorage.
+ * Automatically adds the decorated method's name as the `_methodName` tag.
  * Nested calls will inherit metadata.
  *
  * @param opts Options including source and initial tags.
  * @param opts.source Tag for the source of these logs (e.g., the Worker name or class name).
- * @param opts.tags Additional tags to set for this context.
+ * @param opts.tags Additional tags to set for this context. User-provided tags
+ *                  will override existing tags but NOT the automatically added `_methodName`.
  *
  * @example
  *
  * Create class to handle requests with log tags added
  *
  * ```ts
- * import { WithLogTags, WorkersLogger } from './workers-logger'
- *
- * interface MyTags {
- *   requestId: string
- *   userId?: number
- * }
- *
- * const logger = new WorkersLogger<MyTags>() // Can be instantiated anywhere
- *
+ * // ... imports and logger setup ...
  * class MyService {
  *   // remove the \ before the @ (this is a workaround for VS Code docstring issues)
- *   \@WithLogTags<MyTags>({ source: 'MyService' })
- *   async handleRequest(requestId: string, data: any) {
- *     logger.setTags({ requestId }) // Set tags for this specific request
- *     logger.info('Handling request', data);
- *
- *     if (data.userId) {
- *       logger.setTags({ userId: data.userId })
- *     }
- *
- *     await this.processData(data)
- *
- *     logger.info('Request handled successfully')
+ *   \@WithLogTags<MyTags>({ source: 'MyService' }) // _methodName: 'handleRequest' will be added
+ *   async handleRequest(requestId: string, request: Request) {
+ *     logger.setTags({ requestId })
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', _methodName: 'handleRequest', requestId: '...' }
+ *     await this.processRequest(request)
+ *     logger.info('Request handled')
  *   }
  *
- *   // Logs inside this method will inherit requestId and potentially userId
- *   async processData(data: any) {
- *     logger.debug('Processing data...', data)
- *     // ... processing logic ...
- *     logger.debug('Data processed')
+ *   @WithLogTags<MyTags>({ source: 'MyServiceHelper' }) // _methodName: 'processRequest' will be added
+ *   async processRequest(request: Request) {
+ *      // Inherits requestId from handleRequest's context
+ *      // Tags here: { source: 'MyServiceHelper', _methodName: 'processRequest', requestId: '...' }
+ *     logger.debug('Processing request...')
+ *     // ...
+ *     logger.debug('Request processed')
  *   }
  * }
- *
- * const service = new MyService()
- * // When handleRequest is called, logs within it and subsequent calls
- * // like processData will have { source: 'MyService', requestId: '...' } tags.
- * await service.handleRequest('req-123', { some: 'payload', userId: 456 })
- * await service.handleRequest('req-456', { other: 'stuff' })
  * ```
  */
 export function WithLogTags<T extends LogTags>(opts: WithLogTagsOptions<Partial<T & LogTags>>) {
 	return function (
-		target: any, // The prototype of the class for instance methods, or the constructor for static methods
+		_target: any,
 		propertyKey: string | symbol, // The name of the method
-		descriptor: PropertyDescriptor // Property Descriptor of the method
+		descriptor: PropertyDescriptor
 	): PropertyDescriptor {
-		const originalMethod = descriptor.value // Get the original method
+		const originalMethod = descriptor.value
+		const methodName = String(propertyKey) // Get the method name as a string
 
-		// Ensure it's decorating a method
 		if (typeof originalMethod !== 'function') {
 			throw new Error(
-				`@WithLogTags decorator can only be applied to methods, not properties like ${String(propertyKey)}.`
+				`@WithLogTags decorator can only be applied to methods, not properties like ${methodName}.`
 			)
 		}
 
-		// Replace the original method with a new function
 		descriptor.value = function (...args: any[]) {
-			// 'this' context here refers to the instance of the class the method is called on
-
 			const existing = als.getStore()
 			let sourceTag: { source: string } | undefined
 			const sourceOpt = opts.source
@@ -380,13 +365,14 @@ export function WithLogTags<T extends LogTags>(opts: WithLogTagsOptions<Partial<
 				sourceTag = { source: sourceOpt }
 			}
 
-			// Create a *new* object for the store, inheriting from existing
-			// Use structuredClone to prevent modifications in nested contexts
-			// from affecting parent contexts after the nested call returns.
-			const newTags = structuredClone(Object.assign({}, existing, sourceTag, opts.tags))
+			// Define the method name tag
+			const methodTag = { _methodName: methodName } satisfies Record<string, string>
+
+			// Create the new tags object for the ALS context
+			// Merge order: existing -> source -> user opts -> method name (method name takes precedence)
+			const newTags = structuredClone(Object.assign({}, existing, sourceTag, opts.tags, methodTag))
 
 			// Run the original method within the AsyncLocalStorage context
-			// Use .apply() to correctly set the 'this' context and pass arguments
 			return als.run(newTags, () => {
 				return originalMethod.apply(this, args)
 			})
