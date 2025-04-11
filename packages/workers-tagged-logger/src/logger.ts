@@ -270,6 +270,9 @@ export function withLogTags<T extends LogTags, R>(
 /**
  * Decorator to wrap a class method with logging metadata attached to all logs
  * within its execution context using AsyncLocalStorage.
+ *
+ * **IMPORTANT**: Requires `"experimentalDecorators": true` to be added to tsconfig.json
+ *
  * Automatically adds:
  *   - `$logger.methodName`: The name of the currently executing decorated method.
  *   - `$logger.rootMethodName`: The name of the first decorated method entered in the async context.
