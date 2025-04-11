@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
 import { withLogTags, WithLogTags } from '../../logger.js'
-import { setupTest, TestHarness } from '../harness.js'
+import { setupTest } from '../harness.js'
+
+import type { TestHarness } from '../harness.js'
 
 describe('@WithLogTags', () => {
 	type TestTags = {

@@ -51,12 +51,12 @@
 	},
 	"packageManager": "pnpm@10.7.0",
 	"pnpm": {
-		"overrides": {
-			"@types/node": "20.8.3"
-		},
 		"onlyBuiltDependencies": [
 			"sharp",
 			"workerd"
-		]
+		],
+		"overrides": {
+			"@types/node": "20.8.3"
+		}
 	}
 }

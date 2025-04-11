@@ -1,18 +1,10 @@
-import { afterAll, afterEach, beforeEach, describe, expect, it, test, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, test, vi } from 'vitest'
 import { z } from 'zod'
 
-import {
-	ConsoleLog,
-	LogTags,
-	stringifyMessage,
-	stringifyMessages,
-	WithLogTags,
-	withLogTags,
-	WorkersLogger,
-} from '../../logger.js'
-import { ParsedConsoleLog, setupTest, TestHarness } from '../harness.js'
+import { stringifyMessage, stringifyMessages, withLogTags, WorkersLogger } from '../../logger.js'
+import { setupTest } from '../harness.js'
 
-import type { WorkersLoggerOptions } from '../../logger.js'
+import type { ParsedConsoleLog } from '../harness.js'
 
 beforeEach(() => {
 	vi.useFakeTimers()

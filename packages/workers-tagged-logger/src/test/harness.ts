@@ -1,9 +1,9 @@
 import { vi } from 'vitest'
 import { z } from 'zod'
 
-import { ConsoleLog, LogTags, WorkersLogger } from '../logger'
+import { ConsoleLog, LogTags, WorkersLogger } from '../logger.js'
 
-import type { WorkersLoggerOptions } from '../logger'
+import type { WorkersLoggerOptions } from '../logger.js'
 
 export type ParsedConsoleLog = z.infer<typeof ParsedConsoleLog>
 export const ParsedConsoleLog = ConsoleLog.merge(
