@@ -7,7 +7,7 @@ export default defineWorkersConfig({
 				isolatedStorage: true,
 				singleWorker: true,
 				miniflare: {
-					compatibilityDate: '2025-04-11',
+					compatibilityDate: '2025-04-09',
 					compatibilityFlags: ['nodejs_compat'],
 				},
 			},
