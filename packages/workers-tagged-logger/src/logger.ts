@@ -179,52 +179,27 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			return
 		}
 
-		const tags = this.getTags() // This now handles the error logging if context is missing
-		let message: string | Error | undefined // Allow Error type for better handling
-		let extraData: Record<string, any> | undefined
-
+		const tags = this.getTags()
+		let message: string | undefined
 		if (Array.isArray(msgs)) {
 			if (msgs.length === 0) {
 				message = undefined
+			} else if (msgs.length === 1) {
+				message = stringifyMessage(msgs[0])
 			} else {
-				const firstArg = msgs[0]
-				if (firstArg instanceof Error) {
-					message = firstArg // Keep the Error object
-					if (msgs.length > 1) {
-						// Treat remaining args as extra data if the first is an Error
-						extraData = { details: msgs.slice(1) }
-					}
-				} else if (typeof firstArg === 'string') {
-					message = stringifyMessages(...msgs) // Original behavior for strings/multiple args
-				} else if (msgs.length === 1) {
-					// Handle single non-string, non-error arg
-					message = stringifyMessage(firstArg)
-				} else {
-					// Handle multiple non-string args (treat first as message, rest as extra)
-					message = stringifyMessage(firstArg)
-					extraData = { details: msgs.slice(1) }
-				}
+				message = stringifyMessages(msgs)
 			}
 		}
 
-		const logEntry: ConsoleLog & Record<string, any> = {
-			// Use Record<string, any> for passthrough fields
-			message: message instanceof Error ? message.message : message, // Log error message string
+		const log: ConsoleLog = {
+			message,
 			level,
 			time: new Date().toISOString(),
-			...(message instanceof Error && {
-				error: {
-					name: message.name,
-					message: message.message,
-					stack: message.stack,
-				},
-			}), // Add structured error info
-			...(Object.keys(tags).length > 0 && { tags }),
-			...this.getFields(), // Add top-level fields from withFields
-			...(extraData && { data: extraData }), // Add extra data if present
 		}
-
-		console.log(logEntry)
+		if (Object.keys(tags).length > 0) {
+			log.tags = tags
+		}
+		console.log(Object.assign({}, log, this.getFields()))
 	}
 }
 
