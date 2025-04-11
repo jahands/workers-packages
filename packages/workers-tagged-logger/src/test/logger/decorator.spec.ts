@@ -1,28 +1,29 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { describe, expect, it } from 'vitest'
-
-import { withLogTags, WithLogTags, type LogTags } from '../../logger.js'
-import { setupTest } from '../harness.js'
-
-import type { TestHarness } from '../harness.js'
 import { z } from 'zod'
 
+import { withLogTags, WithLogTags } from '../../logger.js'
+import { setupTest } from '../harness.js'
+
+import type { LogTags } from '../../logger.js'
+import type { TestHarness } from '../harness.js'
+
 describe('@WithLogTags', () => {
-	type TestTags =  z.infer<typeof TestTags>
+	type TestTags = z.infer<typeof TestTags>
 	const TestTags = z.object({
 		requestId: z.string().optional(),
 		userId: z.number().optional(),
 		source: z.string().optional(),
 		$logger: z.object({
 			methodName: z.string().optional(),
-			rootMethodName: z.string().optional()
+			rootMethodName: z.string().optional(),
 		}),
 		customTag: z.string().optional(),
-		overrideMe: z.string().optional()
+		overrideMe: z.string().optional(),
 	})
 
 	function toTags(tags: LogTags | undefined): TestTags | undefined {
-			return TestTags.passthrough().parse(tags)
+		return TestTags.passthrough().parse(tags)
 	}
 
 	class TestService {
@@ -156,7 +157,7 @@ describe('@WithLogTags', () => {
 			this.h.log.info('Instance method with inferred source (empty options)')
 		}
 
-		@WithLogTags({  only: 'tags'  }) // Only tags, source should be inferred
+		@WithLogTags({ only: 'tags' }) // Only tags, source should be inferred
 		inferredSourceOnlyTags() {
 			this.h.log.info('Instance method with inferred source (only tags)')
 		}
@@ -460,8 +461,8 @@ describe('@WithLogTags', () => {
 		expect(h.logAt(1).tags).toEqual({
 			source: 'SyncSource', // Overrides caller's source
 			$logger: {
-				methodName: 'synchronousMethod',// Current method
-				rootMethodName: 'synchronousCaller',// Root is the caller
+				methodName: 'synchronousMethod', // Current method
+				rootMethodName: 'synchronousCaller', // Root is the caller
 			},
 			syncTag: true, // Added by synchronousMethod decorator
 		})
