@@ -318,14 +318,17 @@ export function WithLogTags<T extends LogTags>(opts: WithLogTagsOptions<Partial<
 		propertyKey: string | symbol, // The name of the method
 		descriptor: PropertyDescriptor
 	): PropertyDescriptor {
-		const originalMethod = descriptor.value
 		const methodName = String(propertyKey) // Get the current method name
 
-		if (typeof originalMethod !== 'function') {
+		if (descriptor === undefined || typeof descriptor.value !== 'function') {
+			// Throw the custom error if descriptor is missing (like for a property)
+			// or if descriptor.value isn't a function (e.g., getter/setter)
 			throw new Error(
 				`@WithLogTags decorator can only be applied to methods, not properties like ${methodName}.`
 			)
 		}
+
+		const originalMethod = descriptor.value
 
 		descriptor.value = function (...args: any[]) {
 			const existing = als.getStore()

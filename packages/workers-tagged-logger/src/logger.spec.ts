@@ -55,17 +55,17 @@ export function setupTest<T extends LogTags>(opts?: WorkersLoggerOptions): TestH
 	return new TestHarness<T>(opts)
 }
 
-beforeEach(() => {
-	vi.useFakeTimers()
-	const date = Date.UTC(2024, 9, 26, 12, 30)
-	vi.setSystemTime(date)
-})
-afterEach(() => {
-	vi.useRealTimers()
-	vi.clearAllMocks()
-})
-
 describe('WorkersLogger', () => {
+	beforeEach(() => {
+		vi.useFakeTimers()
+		const date = Date.UTC(2024, 9, 26, 12, 30)
+		vi.setSystemTime(date)
+	})
+	afterEach(() => {
+		vi.useRealTimers()
+		vi.clearAllMocks()
+	})
+
 	describe('writing logs', () => {
 		it(`logs error when not wrapped in withLogTags() (ALS context missing)`, () => {
 			const h = setupTest()
@@ -639,6 +639,16 @@ describe('WorkersLogger', () => {
 })
 
 describe('withLogTags', () => {
+	beforeEach(() => {
+		vi.useFakeTimers()
+		const date = Date.UTC(2024, 9, 26, 12, 30)
+		vi.setSystemTime(date)
+	})
+	afterEach(() => {
+		vi.useRealTimers()
+		vi.clearAllMocks()
+	})
+
 	it('inherits context but does not leak setTags from lower context to upper', async () => {
 		const h = setupTest()
 		const ctxLogger = h.log.withTags({})
@@ -765,13 +775,15 @@ describe('@WithLogTags', () => {
 		async nestedMethod(userId: number) {
 			this.h.log.setTags({ userId })
 			this.h.log.info('Entering nestedMethod')
-			await new Promise((r) => setTimeout(r, 10)) // Simulate async work
+			await new Promise((r) => setTimeout(r, 1)) // Simulate async work
 			this.h.log.debug('Async work done in nestedMethod')
 			await this.deeplyNestedMethod()
 			this.h.log.info('Exiting nestedMethod')
 		}
 
-		@WithLogTags<TestTags>({ source: 'DeepNestedSource' })
+		// Adding tag hints is not required. It's only
+		// helpful if tags are specified
+		@WithLogTags({ source: 'DeepNestedSource' })
 		async deeplyNestedMethod() {
 			this.h.log.info('Entering deeplyNestedMethod')
 			// Test using logger instance methods within decorator context
@@ -785,21 +797,21 @@ describe('@WithLogTags', () => {
 		async undecoratedMethod() {
 			this.h.log.info('Entering undecoratedMethod')
 			// Logs here should inherit context from the caller (entryPoint)
-			await new Promise((r) => setTimeout(r, 5))
+			await new Promise((r) => setTimeout(r, 1))
 			this.h.log.info('Exiting undecoratedMethod')
 		}
 
-		@WithLogTags<TestTags>({ source: 'StaticContext' })
+		@WithLogTags({ source: 'StaticContext' })
 		static async staticMethod(h: TestHarness<TestTags>, value: string) {
 			h.log.info(`Entering staticMethod with value: ${value}`)
-			await new Promise((r) => setTimeout(r, 5))
+			await new Promise((r) => setTimeout(r, 1))
 			h.log.info('Exiting staticMethod')
 			return `Static ${value}`
 		}
 
 		// Method to test `this` context
 		instanceValue = 'initial'
-		@WithLogTags<TestTags>({})
+		@WithLogTags({})
 		async methodAccessingThis() {
 			this.instanceValue = 'modified'
 			this.h.log.info(`this.instanceValue is now: ${this.instanceValue}`)
@@ -807,14 +819,14 @@ describe('@WithLogTags', () => {
 		}
 
 		// Method to test error handling
-		@WithLogTags<TestTags>({ source: 'ErrorSource' })
+		@WithLogTags({ source: 'ErrorSource' })
 		async methodWithError() {
 			this.h.log.warn('About to throw error')
 			throw new Error('Test error inside decorated method')
 		}
 
 		// Method to test tag override precedence
-		@WithLogTags<TestTags>({
+		@WithLogTags({
 			tags: {
 				'$logger.methodName': 'userAttempt', // Should be overridden
 				'$logger.rootMethodName': 'userAttemptRoot', // Should be overridden
@@ -826,7 +838,7 @@ describe('@WithLogTags', () => {
 			this.h.log.info('Testing tag overrides')
 		}
 
-		@WithLogTags<TestTags>({ source: 'SyncSource', tags: { syncTag: true } })
+		@WithLogTags({ source: 'SyncSource', tags: { syncTag: true } })
 		synchronousMethod(value: number): string {
 			this.h.log.info(`Entering synchronousMethod with value: ${value}`)
 			const result = `Sync result: ${value * 2}`
@@ -835,7 +847,7 @@ describe('@WithLogTags', () => {
 		}
 
 		// Synchronous method calling another synchronous decorated method
-		@WithLogTags<TestTags>({ source: 'SyncCaller' })
+		@WithLogTags({ source: 'SyncCaller' })
 		synchronousCaller(startValue: number): string {
 			this.h.log.info(`Entering synchronousCaller with value: ${startValue}`)
 			const intermediateResult = this.synchronousMethod(startValue + 1) // Call sync decorated method
@@ -845,7 +857,7 @@ describe('@WithLogTags', () => {
 
 		// Synchronous method accessing 'this'
 		syncInstanceValue = 'sync initial'
-		@WithLogTags<TestTags>({})
+		@WithLogTags({})
 		syncMethodAccessingThis(): string {
 			this.syncInstanceValue = 'sync modified'
 			this.h.log.info(`this.syncInstanceValue is now: ${this.syncInstanceValue}`)
@@ -941,13 +953,12 @@ describe('@WithLogTags', () => {
 
 		// 9. Final log in entryPoint (context restored)
 		expect(h.logAt(8).tags).toEqual({
-			// Should include tags set in nested contexts
+			// Should not include tags set in nested contexts
 			source: 'TestServiceEntry',
 			'$logger.methodName': 'entryPoint',
 			'$logger.rootMethodName': 'entryPoint',
 			requestId: 'req-2',
-			customTag: 'nestedValue', // Inherited from nested call!
-			userId: 123, // Inherited from nested call!
+			// no customTag or userId that were set in nested call
 		})
 		expect(h.logAt(8).message).toBe('Exiting entryPoint')
 	})
@@ -1091,11 +1102,10 @@ describe('@WithLogTags', () => {
 		expect(h.logAt(3).message).toBe('Returned from synchronousMethod: Sync result: 12')
 		expect(h.logAt(3).tags).toEqual({
 			// Context restored to synchronousCaller's context
-			// *Including* tags added by the nested call's decorator
+			// excluding tags added by the nested call's decorator
 			source: 'SyncCaller',
 			'$logger.methodName': 'synchronousCaller',
 			'$logger.rootMethodName': 'synchronousCaller',
-			syncTag: true, // Inherited from nested decorator!
 		})
 	})
 
