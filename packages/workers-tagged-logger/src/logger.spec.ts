@@ -125,10 +125,7 @@ describe('WorkersLogger', () => {
 				const h = setupTest()
 				await withLogTags({ source: 'worker-a' }, async () => {
 					h.log.info(new Error('boom!'))
-					expect(h.oneLog().message?.split('\n').slice(0, 2).join('\n')).toMatchInlineSnapshot(`
-					"Error: boom!
-					Error: boom!"
-				`)
+					expect(h.oneLog().message?.split('\n').slice(0, 2).join('\n')).toMatchInlineSnapshot(`"Error: boom!"`)
 				})
 			})
 
@@ -152,7 +149,7 @@ describe('WorkersLogger', () => {
 				const h = setupTest()
 				await withLogTags({ source: 'worker-a' }, async () => {
 					h.log.info(undefined)
-					expect(h.oneLog().message).toMatchInlineSnapshot(`undefined`)
+					expect(h.oneLog().message).toMatchInlineSnapshot(`"undefined"`)
 				})
 			})
 
@@ -370,22 +367,22 @@ describe('WorkersLogger', () => {
 			ctxLogger.info('hello, world!')
 			expect(h.logs.slice(2), 'contains our log from ctxLogger but no global tags')
 				.toMatchInlineSnapshot(`
-					[
-					  {
-					    "level": "error",
-					    "message": "Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?",
-					    "time": "2024-10-26T12:30:00.000Z",
-					  },
-					  {
-					    "level": "info",
-					    "message": "hello, world!",
-					    "tags": {
-					      "banda": "rocks",
-					    },
-					    "time": "2024-10-26T12:30:00.000Z",
-					  },
-					]
-				`)
+				[
+				  {
+				    "level": "error",
+				    "message": "Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?",
+				    "time": "2024-10-26T12:30:00.000Z",
+				  },
+				  {
+				    "level": "info",
+				    "message": "hello, world!",
+				    "tags": {
+				      "banda": "rocks",
+				    },
+				    "time": "2024-10-26T12:30:00.000Z",
+				  },
+				]
+			`)
 		})
 
 		it('cannot delete tags - can only set to undefined / null', async () => {
