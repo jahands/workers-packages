@@ -81,9 +81,10 @@ describe('WorkersLogger', () => {
 				const h = setupTest()
 				await withLogTags({ source: 'worker-a' }, async () => {
 					h.log.info(new Error('boom!'))
-					expect(h.oneLog().message?.split('\n').slice(0, 2).join('\n')).toMatchInlineSnapshot(
-						`"Error: boom!"`
-					)
+					expect(h.oneLog().message?.split('\n').slice(0, 2).join('\n')).toMatchInlineSnapshot(`
+						"Error: boom!
+						Error: boom!"
+					`)
 				})
 			})
 
@@ -709,7 +710,7 @@ describe('stringifyMessage()', () => {
 
 	it('stringifies errors', () => {
 		const msg = stringifyMessage(new Error('boom!')).split('\n')
-		expect(msg.length).toBe(1)
+		expect(msg.length).toBeGreaterThan(1)
 		expect(msg[0]).toMatchInlineSnapshot(`"Error: boom!"`)
 	})
 })
@@ -723,7 +724,7 @@ describe('stringifyMessages()', () => {
 
 	it('stringifies errors', () => {
 		const msg = stringifyMessages(new Error('boom!')).split('\n')
-		expect(msg.length).toBe(1)
+		expect(msg.length).toBeGreaterThan(1)
 		expect(msg[0]).toMatchInlineSnapshot(`"Error: boom!"`)
 	})
 })

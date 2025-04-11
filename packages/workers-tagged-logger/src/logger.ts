@@ -223,7 +223,7 @@ export function stringifyMessage(msg: any): string {
 		return `[function${msg.name ? `: ${msg.name}` : ''}()]`
 	}
 	if (msg instanceof Error) {
-		return `${msg.name}: ${msg.message}`
+		return `${msg.name}: ${msg.message}${msg.stack !== undefined ? `\n${msg.stack}` : ''}`
 	}
 	try {
 		return JSON.stringify(msg)
