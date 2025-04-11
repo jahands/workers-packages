@@ -230,9 +230,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			...(extraData && { data: extraData }), // Add extra data if present
 		}
 
-		// Use console[level] for better integration with some log collectors
-		const consoleFn = console[level] ?? console.log
-		consoleFn(logEntry)
+		console.log(logEntry)
 	}
 }
 
