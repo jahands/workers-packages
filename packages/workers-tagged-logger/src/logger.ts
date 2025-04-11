@@ -277,7 +277,7 @@ type MethodDecoratorFn = (
 ) => PropertyDescriptor | void
 
 /** Tags for the WithLogTags decorator */
-type WithLogTagsDecoratorOptions<T extends LogTags> = {
+type WithLogTagsDecoratorTags<T extends LogTags> = {
 	/**
 	 * Explicit source for logs. If omitted, the class name containing the
 	 * decorated method will automatically be used as the source.
@@ -415,11 +415,11 @@ export function WithLogTags(source: string): MethodDecoratorFn
  * ```
  */
 export function WithLogTags<T extends LogTags>(
-	tags: WithLogTagsDecoratorOptions<Partial<T & LogTags>>
+	tags: WithLogTagsDecoratorTags<Partial<T & LogTags>>
 ): MethodDecoratorFn
 export function WithLogTags<T extends LogTags>(
 	/** Optional configuration: string is explicit source, object allows source/tags, undefined uses class name */
-	sourceOrTags?: string | WithLogTagsDecoratorOptions<Partial<T & LogTags>>
+	sourceOrTags?: string | WithLogTagsDecoratorTags<Partial<T & LogTags>>
 ): MethodDecoratorFn {
 	// This is the function returned that acts as the decorator
 	return function (
