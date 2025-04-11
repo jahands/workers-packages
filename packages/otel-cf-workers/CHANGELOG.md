@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.18
+
+### Patch Changes
+
+- 976c2cf: chore: update dependencies
+
 ## 0.1.17
 
 ### Patch Changes

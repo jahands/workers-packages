@@ -1,5 +1,14 @@
 # @repo/vanilla-worker
 
+## 0.2.30
+
+### Patch Changes
+
+- 976c2cf: chore: update dependencies
+- Updated dependencies [976c2cf]
+- Updated dependencies [976c2cf]
+  - workers-tagged-logger@0.6.0
+
 ## 0.2.29
 
 ### Patch Changes

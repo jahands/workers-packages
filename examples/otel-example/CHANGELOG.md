@@ -1,5 +1,13 @@
 # @repo/otel-example
 
+## 0.1.18
+
+### Patch Changes
+
+- 976c2cf: chore: update dependencies
+- Updated dependencies [976c2cf]
+  - @jahands/otel-cf-workers@0.1.18
+
 ## 0.1.17
 
 ### Patch Changes

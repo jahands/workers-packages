@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.5.3
+
+### Patch Changes
+
+- 976c2cf: chore: update dependencies
+
 ## 0.5.2
 
 ### Patch Changes
