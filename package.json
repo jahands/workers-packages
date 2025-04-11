@@ -53,6 +53,10 @@
 	"pnpm": {
 		"overrides": {
 			"@types/node": "20.8.3"
-		}
+		},
+		"onlyBuiltDependencies": [
+			"sharp",
+			"workerd"
+		]
 	}
 }
