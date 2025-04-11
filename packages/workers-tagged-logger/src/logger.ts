@@ -149,20 +149,16 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	getTags(): Partial<T & LogTags> {
 		const parentTags = this.getParentTags()
 		if (parentTags === undefined) {
-			// Log error specifically when trying to get tags for logging but context is missing
 			console.log({
 				message: `Error: unable to get log tags from async local storage. Did you forget to wrap the entry point with @WithLogTags() or withLogTags()?`,
 				level: 'error',
 				time: new Date().toISOString(),
 			} satisfies ConsoleLog)
-			// Return instance tags only if context is missing
 			return (this.ctx.tags ?? {}) as Partial<T & LogTags>
 		}
 		return Object.assign({}, parentTags, this.ctx.tags) as Partial<T & LogTags>
 	}
 
-	/** Set tags used for all logs in this async context
-	 * and any child context (unless overridden using withTags) */
 	setTags(tags: Partial<T & LogTags>): void {
 		const globalTags = als.getStore()
 		if (globalTags === undefined) {
@@ -307,15 +303,17 @@ export function withLogTags<T extends LogTags, R>(
 /**
  * Decorator to wrap a class method with logging metadata attached to all logs
  * within its execution context using AsyncLocalStorage.
- * Automatically adds the decorated method's name as the `$logger.methodName` tag.
+ * Automatically adds:
+ *   - `$logger.methodName`: The name of the currently executing decorated method.
+ *   - `$logger.rootMethodName`: The name of the first decorated method entered in the async context.
  * Nested calls will inherit metadata.
  *
  * @param opts Options including source and initial tags.
  * @param opts.source Tag for the source of these logs (e.g., the Worker name or class name).
  * @param opts.tags Additional tags to set for this context. User-provided tags
- *                  will override existing tags but NOT the automatically added `$logger.methodName`.
+ *                  will override existing tags but NOT the automatically added logger tags.
  *
- * @example
+ *  * @example
  *
  * Create class to handle requests with log tags added
  *
@@ -326,15 +324,17 @@ export function withLogTags<T extends LogTags, R>(
  *   \@WithLogTags<MyTags>({ source: 'MyService' }) // $logger.methodName: 'handleRequest' will be added
  *   async handleRequest(requestId: string, request: Request) {
  *     logger.setTags({ requestId })
- *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger.methodName: 'handleRequest', requestId: '...' }
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', '$logger.methodName': 'handleRequest', requestId: '...' }
  *     await this.processRequest(request)
  *     logger.info('Request handled')
  *   }
  *
- *   @WithLogTags<MyTags>({ source: 'MyServiceHelper' }) // $logger.methodName: 'processRequest' will be added
+ *   // $logger.methodName: 'processRequest' will be added
+ *   // and $logger.rootMethodName will remain 'handleRequest'
+ *   \@WithLogTags<MyTags>({ source: 'MyServiceHelper' })
  *   async processRequest(request: Request) {
  *      // Inherits requestId from handleRequest's context
- *      // Tags here: { source: 'MyServiceHelper', $logger.methodName: 'processRequest', requestId: '...' }
+ *      // Tags here: { source: 'MyServiceHelper', '$logger.methodName': 'processRequest', '$logger.rootMethodName': 'handleRequest', requestId: '...' }
  *     logger.debug('Processing request...')
  *     // ...
  *     logger.debug('Request processed')
@@ -349,7 +349,7 @@ export function WithLogTags<T extends LogTags>(opts: WithLogTagsOptions<Partial<
 		descriptor: PropertyDescriptor
 	): PropertyDescriptor {
 		const originalMethod = descriptor.value
-		const methodName = String(propertyKey) // Get the method name as a string
+		const methodName = String(propertyKey) // Get the current method name
 
 		if (typeof originalMethod !== 'function') {
 			throw new Error(
@@ -359,18 +359,27 @@ export function WithLogTags<T extends LogTags>(opts: WithLogTagsOptions<Partial<
 
 		descriptor.value = function (...args: any[]) {
 			const existing = als.getStore()
+
+			// Determine the root method name
+			// If rootMethodName already exists in the context, use it.
+			// Otherwise, this is the root call, so use the current method name.
+			const rootMethodName = existing?.['$logger.rootMethodName'] ?? methodName
+
+			// Prepare source tag if provided
 			let sourceTag: { source: string } | undefined
-			const sourceOpt = opts.source
-			if (sourceOpt !== undefined) {
-				sourceTag = { source: sourceOpt }
+			if (opts.source !== undefined) {
+				sourceTag = { source: opts.source }
 			}
 
-			// Define the method name tag
-			const methodTag = { '$logger.methodName': methodName } satisfies Record<string, string>
+			// Define the logger-specific tags for this context level
+			const loggerTags = {
+				'$logger.methodName': methodName, // Always the current method
+				'$logger.rootMethodName': rootMethodName, // Inherited or current
+			}
 
 			// Create the new tags object for the ALS context
-			// Merge order: existing -> source -> user opts -> method name (method name takes precedence)
-			const newTags = structuredClone(Object.assign({}, existing, sourceTag, opts.tags, methodTag))
+			// Merge order: existing -> source -> user opts -> logger tags (logger tags take precedence)
+			const newTags = structuredClone(Object.assign({}, existing, sourceTag, opts.tags, loggerTags))
 
 			// Run the original method within the AsyncLocalStorage context
 			return als.run(newTags, () => {
