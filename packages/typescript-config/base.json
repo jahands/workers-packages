@@ -15,7 +15,8 @@
 		"preserveWatchOutput": true,
 		"skipLibCheck": true,
 		"strict": true,
-		"noEmit": true
+		"noEmit": true,
+		"experimentalDecorators": true
 	},
 	"exclude": ["node_modules"]
 }

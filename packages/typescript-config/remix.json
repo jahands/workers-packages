@@ -18,6 +18,7 @@
 			"~/*": ["./app/*"]
 		},
 
-		"noEmit": true
+		"noEmit": true,
+		"experimentalDecorators": true
 	}
 }

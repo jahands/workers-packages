@@ -11,6 +11,7 @@
 		"moduleDetection": "force",
 		"isolatedModules": true,
 		"verbatimModuleSyntax": true,
+		"experimentalDecorators": true,
 
 		// Strictness
 		"strict": true,
