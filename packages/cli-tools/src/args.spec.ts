@@ -33,7 +33,7 @@ describe('parseArg()', () => {
 				throw e
 			})
 			.action(() => {
-				const schema = z.coerce.number({ description: 'a number' })
+				const schema = z.coerce.number().describe('a number')
 				parseArg('a', schema, cli)
 			})
 		expect(() => cli.parse([])).toThrowErrorMatchingInlineSnapshot(
@@ -44,14 +44,14 @@ describe('parseArg()', () => {
 
 	it(`throws program.error() if no command is passed in`, () => {
 		expect(exitErrors.length).toBe(0)
-		const schema = z.string().regex(/^foo$/, 'should have been foo!')
+		const schema = z.string().regex(/^foo$/)
 		expect(() => parseArg('bar', schema)).toThrowErrorMatchingInlineSnapshot(
-			`[CommanderError: [91merror[39m[90m:[39m should have been foo!]`
+			`[CommanderError: [91merror[39m[90m:[39m Invalid]`
 		)
 		expect(exitErrors.length).toBe(1)
 		expect(exitErrors).toMatchInlineSnapshot(`
 			[
-			  [CommanderError: [91merror[39m[90m:[39m should have been foo!],
+			  [CommanderError: [91merror[39m[90m:[39m Invalid],
 			]
 		`)
 	})
