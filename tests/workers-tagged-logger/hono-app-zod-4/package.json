@@ -1,6 +1,6 @@
 {
 	"name": "@repo/tests__workers-tagged-logger__hono-app-zod-4",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"private": true,
 	"sideEffects": false,
 	"scripts": {

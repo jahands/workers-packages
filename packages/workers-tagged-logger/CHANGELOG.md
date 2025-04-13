@@ -1,5 +1,13 @@
 # workers-tagged-logger
 
+## 0.8.1
+
+### Patch Changes
+
+- d605239: fix: update LogTags schema to be compatible with both Zod 3 and Zod 4
+
+  workers-tagged-logger should now be compatible with Zod 4
+
 ## 0.8.0
 
 ### Minor Changes

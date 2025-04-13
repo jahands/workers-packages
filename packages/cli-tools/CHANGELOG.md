@@ -1,5 +1,14 @@
 # @jahands/cli-tools
 
+## 0.7.5
+
+### Patch Changes
+
+- d605239: fix: force color in cli-tools tests
+- d605239: fix: Don't use zod to parse not found errors
+
+  Fixes issue introduced by Zod 4
+
 ## 0.7.4
 
 ### Patch Changes
