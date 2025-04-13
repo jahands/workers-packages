@@ -30,6 +30,9 @@ update:
 check *flags:
   pnpm check:ci
 
+check-deps:
+  pnpm syncpack lint
+
 # ========================= #
 # ======== HELPERS ======== #
 # ========================= #
