@@ -211,9 +211,6 @@ importers:
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
-      zod:
-        specifier: ^3.24.1
-        version: 3.24.1
       zx:
         specifier: ^8.3.0
         version: 8.3.0
@@ -227,6 +224,9 @@ importers:
       vitest:
         specifier: 2.1.1
         version: 2.1.1(@types/node@20.8.3)
+      zod:
+        specifier: 3.24.1
+        version: 3.24.1
 
   packages/eslint-config:
     devDependencies:
@@ -1458,7 +1458,7 @@ packages:
       '@commander-js/extra-typings': ^13.0.0
       commander: ^13.0.0
       typescript: ^5.5.4
-      zod: ^3.24.1
+      zod: ^3.24.1 || ^4
       zx: ^8.3.0
 
   '@jridgewell/gen-mapping@0.3.5':
