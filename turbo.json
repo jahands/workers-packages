@@ -70,7 +70,8 @@
 		},
 		"//#build-tests": {
 			"outputLogs": "new-only",
-			"outputs": ["dist/tests/**", "http-codex#build", "workers-tagged-logger#build"]
+			"dependsOn": [ "http-codex#build", "workers-tagged-logger#build"],
+			"outputs": ["dist/tests/**"]
 		}
 	}
 }
