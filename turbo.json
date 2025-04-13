@@ -52,7 +52,13 @@
 			"passThroughEnv": ["FIX_ESLINT"]
 		},
 		"//#test:ci": {
-			"dependsOn": ["^build", "build", "http-codex#build", "workers-tagged-logger#build", "//#build-tests"],
+			"dependsOn": [
+				"^build",
+				"build",
+				"http-codex#build",
+				"workers-tagged-logger#build",
+				"//#build-tests"
+			],
 			"outputLogs": "new-only"
 		},
 		"test:ci": {
