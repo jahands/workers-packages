@@ -1,5 +1,11 @@
 # @repo/typescript-config
 
+## 0.3.4
+
+### Patch Changes
+
+- d605239: fix: add experimentalDecorators to workers.json
+
 ## 0.3.3
 
 ### Patch Changes
