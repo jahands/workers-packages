@@ -8,10 +8,7 @@ const LogValue = z.union([z.string(), z.number(), z.boolean(), z.null(), z.undef
 
 /** Log tags to attach to logs */
 export type LogTags = z.infer<typeof LogTags>
-export const LogTags = z.record(
-	z.string(),
-	LogValue.or(z.record(z.string(), LogValue).or(LogValue.array()))
-)
+export const LogTags = z.record(LogValue.or(z.record(LogValue).or(LogValue.array())))
 
 /** Top-level fields to add to the log */
 export type LogFields = LogTags

@@ -3,6 +3,7 @@ lockfileVersion: '9.0'
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
+  injectWorkspacePackages: true
 
 overrides:
   '@types/node': 20.8.3
@@ -76,7 +77,7 @@ importers:
         version: 13.0.0(commander@13.0.0)
       '@jahands/cli-tools':
         specifier: workspace:*
-        version: link:../../packages/cli-tools
+        version: file:packages/cli-tools(@commander-js/extra-typings@13.0.0(commander@13.0.0))(commander@13.0.0)(typescript@5.6.1-rc)(zod@3.24.1)(zx@8.3.0)
       commander:
         specifier: 13.0.0
         version: 13.0.0
@@ -178,7 +179,7 @@ importers:
         version: 4.6.16
       workers-tagged-logger:
         specifier: workspace:*
-        version: link:../../packages/workers-tagged-logger
+        version: file:packages/workers-tagged-logger(zod@4.0.0-beta.20250412T085909)
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.8.15
@@ -460,7 +461,7 @@ importers:
         version: 4.6.16
       workers-tagged-logger:
         specifier: workspace:*
-        version: link:../../../packages/workers-tagged-logger
+        version: file:packages/workers-tagged-logger(zod@3.24.2)
       zod:
         specifier: 3.24.2
         version: 3.24.2
@@ -491,7 +492,7 @@ importers:
         version: 4.6.16
       workers-tagged-logger:
         specifier: workspace:*
-        version: link:../../../packages/workers-tagged-logger
+        version: file:packages/workers-tagged-logger(zod@4.0.0-beta.20250412T085909)
       zod:
         specifier: 4.0.0-beta.20250412T085909
         version: 4.0.0-beta.20250412T085909
@@ -1450,6 +1451,15 @@ packages:
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
+
+  '@jahands/cli-tools@file:packages/cli-tools':
+    resolution: {directory: packages/cli-tools, type: directory}
+    peerDependencies:
+      '@commander-js/extra-typings': ^13.0.0
+      commander: ^13.0.0
+      typescript: ^5.5.4
+      zod: ^3.24.1
+      zx: ^8.3.0
 
   '@jridgewell/gen-mapping@0.3.5':
     resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}
@@ -4864,6 +4874,11 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
+  workers-tagged-logger@file:packages/workers-tagged-logger:
+    resolution: {directory: packages/workers-tagged-logger, type: directory}
+    peerDependencies:
+      zod: ^3.23.8 || ^4
+
   wrangler@4.10.0:
     resolution: {integrity: sha512-fTE4hZ79msEUt8+HEjl/8Q72haCyzPLu4PgrU3L81ysmjrMEdiYfUPqnvCkBUVtJvrDNdctTEimkufT1Y0ipNg==}
     engines: {node: '>=18.0.0'}
@@ -5669,6 +5684,14 @@ snapshots:
       strip-ansi-cjs: strip-ansi@6.0.1
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
+
+  '@jahands/cli-tools@file:packages/cli-tools(@commander-js/extra-typings@13.0.0(commander@13.0.0))(commander@13.0.0)(typescript@5.6.1-rc)(zod@3.24.1)(zx@8.3.0)':
+    dependencies:
+      '@commander-js/extra-typings': 13.0.0(commander@13.0.0)
+      commander: 13.0.0
+      typescript: 5.6.1-rc
+      zod: 3.24.1
+      zx: 8.3.0
 
   '@jridgewell/gen-mapping@0.3.5':
     dependencies:
@@ -9635,6 +9658,18 @@ snapshots:
       '@cloudflare/workerd-linux-64': 1.20250409.0
       '@cloudflare/workerd-linux-arm64': 1.20250409.0
       '@cloudflare/workerd-windows-64': 1.20250409.0
+
+  workers-tagged-logger@file:packages/workers-tagged-logger(zod@3.24.2):
+    dependencies:
+      zod: 3.24.2
+    optionalDependencies:
+      hono: 4.6.16
+
+  workers-tagged-logger@file:packages/workers-tagged-logger(zod@4.0.0-beta.20250412T085909):
+    dependencies:
+      zod: 4.0.0-beta.20250412T085909
+    optionalDependencies:
+      hono: 4.6.16
 
   wrangler@4.10.0(@cloudflare/workers-types@4.20250410.0):
     dependencies:
