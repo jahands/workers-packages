@@ -1,5 +1,5 @@
 {
-	"name": "@repo/tests_workers-tagged-logger_hono-app-zod-3",
+	"name": "@repo/tests__workers-tagged-logger__hono-app-zod-3",
 	"version": "0.1.0",
 	"private": true,
 	"sideEffects": false,
