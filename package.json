@@ -9,6 +9,7 @@
 	},
 	"sideEffects": false,
 	"scripts": {
+		"build-tests": "bun runx build tests",
 		"changeset:new": "run-changeset-new",
 		"check:ci": "turbo check:ci --log-order=grouped",
 		"test:ci": "run-vitest-ci",
