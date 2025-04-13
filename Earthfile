@@ -18,6 +18,7 @@ setup-project:
 	COPY --dir \
 		examples \
 		packages \
+		tests \
 		.
 
 	COPY \
