@@ -29,7 +29,7 @@ export function parseArg<T extends ZodTypeAny>(
 	s: string,
 	validator: T,
 	cmd?: Command
-): ReturnType<T['parse']> {
+): T['_output'] {
 	try {
 		return validator.parse(s)
 	} catch (err) {

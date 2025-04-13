@@ -12,7 +12,7 @@
 			"outputLogs": "new-only"
 		},
 		"build:wrangler": {
-			"dependsOn": ["^build", "build"],
+			"dependsOn": ["^build", "build", "//#install-deps"],
 			"outputs": ["dist/**"],
 			"outputLogs": "new-only"
 		},
@@ -52,7 +52,13 @@
 			"passThroughEnv": ["FIX_ESLINT"]
 		},
 		"//#test:ci": {
-			"dependsOn": ["^build", "build", "http-codex#build", "workers-tagged-logger#build"],
+			"dependsOn": [
+				"^build",
+				"build",
+				"http-codex#build",
+				"workers-tagged-logger#build",
+				"//#build-tests"
+			],
 			"outputLogs": "new-only"
 		},
 		"test:ci": {
@@ -61,6 +67,15 @@
 		},
 		"//#build": {
 			"outputLogs": "new-only"
+		},
+		"//#build-tests": {
+			"outputLogs": "new-only",
+			"dependsOn": ["http-codex#build", "workers-tagged-logger#build"],
+			"outputs": ["dist/tests/**"]
+		},
+		"//#install-deps": {
+			"dependsOn": ["http-codex#build", "workers-tagged-logger#build"],
+			"cache": false
 		}
 	}
 }

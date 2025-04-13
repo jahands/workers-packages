@@ -9,7 +9,9 @@
 	},
 	"sideEffects": false,
 	"scripts": {
+		"build-tests": "bun runx build tests",
 		"changeset:new": "run-changeset-new",
+		"install-deps": "pnpm install --frozen-lockfile --child-concurrency=10",
 		"check:ci": "turbo check:ci --log-order=grouped",
 		"test:ci": "run-vitest-ci",
 		"check:deps": "runx check -l",
@@ -42,14 +44,14 @@
 		"slugify": "1.6.6",
 		"syncpack": "13.0.0",
 		"tsx": "4.19.2",
-		"turbo": "2.3.3",
+		"turbo": "2.5.0",
 		"typescript": "5.5.4",
 		"vitest": "2.1.1",
 		"wrangler": "4.10.0",
 		"yaml": "2.7.0",
 		"zod": "3.24.1"
 	},
-	"packageManager": "pnpm@10.7.0",
+	"packageManager": "pnpm@10.4.1",
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"sharp",

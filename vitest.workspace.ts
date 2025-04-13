@@ -1,5 +1,6 @@
-import fs from 'node:fs'
-import { parse } from 'yaml'
+import { defineWorkspace } from 'vitest/config'
 
-const pnpmWorkspace = parse(fs.readFileSync('./pnpm-workspace.yaml').toString()).packages
-export default pnpmWorkspace
+export default defineWorkspace([
+	'{examples,packages}/*/vitest.config{,.node}.ts',
+	'dist/tests/*/*/vitest.config{,.node}.ts',
+])

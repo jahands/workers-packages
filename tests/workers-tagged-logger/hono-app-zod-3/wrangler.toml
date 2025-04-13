@@ -1,0 +1,4 @@
+name = "hono-app-zod-3"
+main = "src/index.ts"
+compatibility_date = "2024-09-02"
+compatibility_flags = ["nodejs_compat"]
