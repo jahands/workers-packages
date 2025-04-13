@@ -38,7 +38,7 @@ afterEach(() => {
 describe('Hono App', () => {
 	it('logs to console.log()', async () => {
 		const h = setupTest()
-		const res = await SELF.fetch('https://example.com/hello')
+		const res = await SELF.fetch('https://app/hello')
 		expect(res.ok).toBe(true)
 		expect(res.status).toBe(200)
 		expect(h.logs).toMatchInlineSnapshot(`
@@ -60,7 +60,7 @@ describe('Hono App', () => {
 
 	it('adds $logger tags when using decorator', async () => {
 		const h = setupTest()
-		const res = await SELF.fetch('https://example.com/decorator')
+		const res = await SELF.fetch('https://app/decorator')
 		expect(res.ok).toBe(true)
 		expect(res.status).toBe(200)
 		expect(h.logs).toMatchInlineSnapshot(`
