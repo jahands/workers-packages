@@ -1,9 +1,9 @@
 import { SELF } from 'cloudflare:test'
 import { httpStatus } from 'http-codex'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ConsoleLog, WorkersLogger } from 'workers-tagged-logger'
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from 'vitest'
+import { WorkersLogger } from 'workers-tagged-logger'
 
-import type { LogTags } from 'workers-tagged-logger'
+import type { ConsoleLog, LogTags } from 'workers-tagged-logger'
 
 class TestHarness<T extends LogTags> {
 	private _logs: ConsoleLog[] = []
@@ -14,11 +14,13 @@ class TestHarness<T extends LogTags> {
 		})
 	}
 	get logs(): ConsoleLog[] {
-		return ConsoleLog.array().parse(this._logs)
+		return this._logs
 	}
 	/** Get log at specific index. Supports negative numbers. */
 	logAt(n: number): ConsoleLog {
-		return ConsoleLog.parse(this.logs.at(n))
+		const log = this.logs.at(n)
+		assert(log !== undefined)
+		return log
 	}
 }
 function setupTest<T extends LogTags>(): TestHarness<T> {
