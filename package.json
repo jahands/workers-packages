@@ -12,7 +12,7 @@
 		"changeset:new": "run-changeset-new",
 		"check:ci": "turbo check:ci --log-order=grouped",
 		"test:ci": "run-vitest-ci",
-		"check:deps": "runx check -l",
+		"check:deps": "syncpack lint",
 		"check:format": "prettier . --check --cache --ignore-unknown",
 		"chore:update:deps": "run-update-deps",
 		"chore:update:tools": "run-s chore:update:tools:* fix:deps",
