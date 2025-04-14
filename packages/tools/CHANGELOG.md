@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.8.1
+
+### Patch Changes
+
+- 020c037: chore: remove unused build tests command
+
 ## 0.8.0
 
 ### Minor Changes

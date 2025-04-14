@@ -1,5 +1,16 @@
 # @repo/vanilla-worker
 
+## 0.2.35
+
+### Patch Changes
+
+- 020c037: chore: remove Zod schema imports in tests
+
+  workers-tagged-logger no longer exports Zod schemas, so we had to change to type imports in these tests
+
+- Updated dependencies [020c037]
+  - workers-tagged-logger@0.9.0
+
 ## 0.2.34
 
 ### Patch Changes

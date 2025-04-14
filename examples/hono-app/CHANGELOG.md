@@ -1,5 +1,17 @@
 # @repo/hono-app
 
+## 0.3.27
+
+### Patch Changes
+
+- 020c037: chore: remove Zod schema imports in tests
+
+  workers-tagged-logger no longer exports Zod schemas, so we had to change to type imports in these tests
+
+- Updated dependencies [020c037]
+  - workers-tagged-logger@0.9.0
+  - http-codex@0.5.3
+
 ## 0.3.26
 
 ### Patch Changes
