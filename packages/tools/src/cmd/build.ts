@@ -149,16 +149,3 @@ buildCmd
 		const program = ts.createProgram(entryPoints, tsCompOpts)
 		program.emit()
 	})
-
-buildCmd
-	.command('tests')
-	.description('Builds tests packages into dist directory for improved isolation of tests')
-	.action(async () => {
-		const repoRoot = getRepoRoot()
-		await fs.rm(`${repoRoot}/dist/tests`, { recursive: true, force: true })
-		echo(chalk.blue('deploying tests to dist/tests'))
-		await Promise.all([
-			$`pnpm deploy -F @repo/tests__workers-tagged-logger__hono-app-zod-3 dist/tests/workers-tagged-logger/hono-app-zod-3`,
-			$`pnpm deploy -F @repo/tests__workers-tagged-logger__hono-app-zod-4 dist/tests/workers-tagged-logger/hono-app-zod-4`,
-		])
-	})
