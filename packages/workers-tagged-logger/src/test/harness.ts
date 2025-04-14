@@ -1,7 +1,8 @@
 import { vi } from 'vitest'
 import { z } from 'zod'
 
-import { ConsoleLog, LogTags, WorkersLogger } from '../logger.js'
+import { WorkersLogger } from '../logger.js'
+import { ConsoleLog, LogTags } from './logger/types.js'
 
 import type { WorkersLoggerOptions } from '../logger.js'
 

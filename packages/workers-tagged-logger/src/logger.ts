@@ -1,24 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { AsyncLocalStorage } from 'node:async_hooks'
-import { z } from 'zod'
 
-type LogValue = z.infer<typeof LogValue>
-const LogValue = z.union([z.string(), z.number(), z.boolean(), z.null(), z.undefined()])
+export type LogValue = string | number | boolean | null | undefined
 
 /** Log tags to attach to logs */
-export type LogTags = z.infer<typeof LogTags>
-export const LogTags = z.record(
-	z.string(),
-	LogValue.or(z.record(z.string(), LogValue).or(LogValue.array()))
-)
+export type LogTags = {
+	[x: string]: LogValue | Record<string, LogValue> | LogValue[]
+}
 
 /** Top-level fields to add to the log */
 export type LogFields = LogTags
-export const LogFields = LogTags
 
-export type LogLevel = z.infer<typeof LogLevel>
-export const LogLevel = z.enum(['info', 'log', 'warn', 'error', 'debug'])
+export type LogLevel = 'info' | 'log' | 'warn' | 'error' | 'debug'
+
+export type ConsoleLog = {
+	message?: string | Error | undefined
+	level: LogLevel
+	time: string
+	tags?: LogTags
+}
 
 /**
  * Converts a string based log-level into a number. Useful for filtering out for
@@ -43,16 +44,6 @@ type LogFn = (...msgs: any[]) => void
 type LogLevelFns = {
 	[K in LogLevel]: LogFn
 }
-
-export type ConsoleLog = z.infer<typeof ConsoleLog>
-export const ConsoleLog = z
-	.object({
-		message: z.union([z.string(), z.instanceof(Error), z.undefined()]),
-		level: LogLevel,
-		time: z.string(),
-		tags: LogTags.optional(),
-	})
-	.passthrough()
 
 const als = new AsyncLocalStorage<LogTags>()
 
