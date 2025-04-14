@@ -12,7 +12,7 @@
 			"outputLogs": "new-only"
 		},
 		"build:wrangler": {
-			"dependsOn": ["^build", "build", "//#install-deps"],
+			"dependsOn": ["^build", "build"],
 			"outputs": ["dist/**"],
 			"outputLogs": "new-only"
 		},
@@ -61,10 +61,6 @@
 		},
 		"//#build": {
 			"outputLogs": "new-only"
-		},
-		"//#install-deps": {
-			"dependsOn": ["http-codex#build", "workers-tagged-logger#build"],
-			"cache": false
 		}
 	}
 }

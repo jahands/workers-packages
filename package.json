@@ -10,7 +10,6 @@
 	"sideEffects": false,
 	"scripts": {
 		"changeset:new": "run-changeset-new",
-		"install-deps": "pnpm install --frozen-lockfile --child-concurrency=10",
 		"check:ci": "turbo check:ci --log-order=grouped",
 		"test:ci": "run-vitest-ci",
 		"check:deps": "runx check -l",
