@@ -3,7 +3,6 @@ lockfileVersion: '9.0'
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
-  injectWorkspacePackages: true
 
 overrides:
   '@types/node': 20.8.3
@@ -77,7 +76,7 @@ importers:
         version: 13.0.0(commander@13.0.0)
       '@jahands/cli-tools':
         specifier: workspace:*
-        version: file:packages/cli-tools(@commander-js/extra-typings@13.0.0(commander@13.0.0))(commander@13.0.0)(typescript@5.6.1-rc)(zod@3.24.1)(zx@8.3.0)
+        version: link:../../packages/cli-tools
       commander:
         specifier: 13.0.0
         version: 13.0.0
@@ -1389,15 +1388,6 @@ packages:
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
-
-  '@jahands/cli-tools@file:packages/cli-tools':
-    resolution: {directory: packages/cli-tools, type: directory}
-    peerDependencies:
-      '@commander-js/extra-typings': ^13.0.0
-      commander: ^13.0.0
-      typescript: ^5.5.4
-      zod: ^3.24.1 || ^4
-      zx: ^8.3.0
 
   '@jridgewell/gen-mapping@0.3.5':
     resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}
@@ -5608,14 +5598,6 @@ snapshots:
       strip-ansi-cjs: strip-ansi@6.0.1
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
-
-  '@jahands/cli-tools@file:packages/cli-tools(@commander-js/extra-typings@13.0.0(commander@13.0.0))(commander@13.0.0)(typescript@5.6.1-rc)(zod@3.24.1)(zx@8.3.0)':
-    dependencies:
-      '@commander-js/extra-typings': 13.0.0(commander@13.0.0)
-      commander: 13.0.0
-      typescript: 5.6.1-rc
-      zod: 3.24.1
-      zx: 8.3.0
 
   '@jridgewell/gen-mapping@0.3.5':
     dependencies:
