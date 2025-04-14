@@ -9,12 +9,10 @@
 	},
 	"sideEffects": false,
 	"scripts": {
-		"build-tests": "bun runx build tests",
 		"changeset:new": "run-changeset-new",
-		"install-deps": "pnpm install --frozen-lockfile --child-concurrency=10",
 		"check:ci": "turbo check:ci --log-order=grouped",
 		"test:ci": "run-vitest-ci",
-		"check:deps": "runx check -l",
+		"check:deps": "syncpack lint",
 		"check:format": "prettier . --check --cache --ignore-unknown",
 		"chore:update:deps": "run-update-deps",
 		"chore:update:tools": "run-s chore:update:tools:* fix:deps",
@@ -51,7 +49,7 @@
 		"yaml": "2.7.0",
 		"zod": "3.24.1"
 	},
-	"packageManager": "pnpm@10.4.1",
+	"packageManager": "pnpm@10.8.1",
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"sharp",

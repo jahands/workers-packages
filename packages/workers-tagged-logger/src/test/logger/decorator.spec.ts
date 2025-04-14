@@ -5,8 +5,8 @@ import { z } from 'zod'
 import { withLogTags, WithLogTags } from '../../logger.js'
 import { setupTest } from '../harness.js'
 
-import type { LogTags } from '../../logger.js'
 import type { TestHarness } from '../harness.js'
+import type { LogTags } from './types.js'
 
 describe('@WithLogTags', () => {
 	type TestTags = z.infer<typeof TestTags>

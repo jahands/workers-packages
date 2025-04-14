@@ -1,3 +1,3 @@
-export { WorkersLogger, withLogTags, WithLogTags, ConsoleLog, LogTags } from './logger.js'
-export type { WorkersLoggerOptions } from './logger.js'
+export { WorkersLogger, withLogTags, WithLogTags } from './logger.js'
+export type { WorkersLoggerOptions, ConsoleLog, LogTags } from './logger.js'
 export { useWorkersLogger, LoggerHonoBindings } from './hono.js'
