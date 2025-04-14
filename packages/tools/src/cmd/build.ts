@@ -5,7 +5,6 @@ import { match } from 'ts-pattern'
 import ts from 'typescript'
 import { z } from 'zod'
 
-import { getRepoRoot } from '../path'
 import { getCompilerOptionsJSONFollowExtends, getTSConfig } from '../tsconfig'
 
 export const buildCmd = new Command('build').description('Build Workers/etc.')

@@ -35,18 +35,6 @@ const config = {
 			dependencies: ['@types/node'],
 			pinVersion: '20.8.3',
 		},
-		{
-			label: 'use zod 4 for testing',
-			packages: ['@repo/tests__workers-tagged-logger__hono-app-zod-3'],
-			dependencies: ['zod'],
-			pinVersion: '3.24.2',
-		},
-		{
-			label: 'use zod 3 for testing',
-			packages: ['@repo/tests__workers-tagged-logger__hono-app-zod-4'],
-			dependencies: ['zod'],
-			pinVersion: '4.0.0-beta.20250412T085909',
-		},
 	],
 	semverGroups: [
 		{

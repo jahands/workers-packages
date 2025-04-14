@@ -18,16 +18,12 @@ fix:
 # Run Vitest tests
 test *flags:
   turbo build -F './packages/*'
-  turbo build-tests
   pnpm vitest {{flags}}
 
 # Update deps via syncpack
 update:
   pnpm syncpack update
   just -q changes && just fix || true
-
-build-tests:
-  bun runx build tests
 
 # Check for issues with deps/lint/types/format
 check *flags:
