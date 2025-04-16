@@ -134,8 +134,8 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 		const tags = als.getStore()
 		if (tags === undefined) {
 			console.log({
-				message: `Error: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?`,
-				level: 'error',
+				message: `Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?`,
+				level: 'warn',
 				time: new Date().toISOString(),
 			} satisfies ConsoleLog)
 			return
