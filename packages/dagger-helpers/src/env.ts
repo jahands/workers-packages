@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AsyncLocalStorage } from 'node:async_hooks'
-import { Secret } from '@dagger.io/dagger'
+
+import type { Secret } from '@dagger.io/dagger'
 
 /**
  * Structure stored in AsyncLocalStorage, containing both the fully merged
@@ -21,6 +23,7 @@ export const envStorage = new AsyncLocalStorage<EnvContext>()
  * Note: This approach using Function.toString() can be fragile and might
  * break with code minification or complex function definitions.
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function extractParamNames(func: Function): string[] {
 	const funcStr = func.toString().replace(/(\r\n|\n|\r)/gm, '')
 	// Regex to find parameter list within parentheses, handles various function definition styles
@@ -48,7 +51,7 @@ export function extractParamNames(func: Function): string[] {
 		.map((param) => {
 			// Remove type annotations (e.g., ": Secret") and default initializers (e.g., "= 'default'")
 			const namePart = param.split(/[:=]/)[0]
-			return namePart.trim()
+			return namePart?.trim() ?? ''
 		})
 		.filter((name) => name.length > 0) // Filter out empty strings from trailing commas etc.
 }
@@ -57,9 +60,10 @@ export function extractParamNames(func: Function): string[] {
  * Decorator factory that wraps a method to capture its arguments based on
  * extracted parameter names and store them in AsyncLocalStorage.
  */
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export function ParamsToEnv(): MethodDecorator {
 	return function (_target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
-		if (!descriptor || typeof descriptor.value !== 'function') {
+		if (typeof descriptor === 'undefined' || typeof descriptor.value !== 'function') {
 			throw new Error(
 				`@ParamsToEnv decorator can only be applied to methods, not: ${String(propertyKey)}`
 			)
@@ -68,7 +72,7 @@ export function ParamsToEnv(): MethodDecorator {
 
 		let paramNames: string[] | null = null // Cache parameter names lazily
 
-		descriptor.value = function (...args: any[]) {
+		descriptor.value = function (...args: any[]): any {
 			const parentContext = envStorage.getStore()
 
 			if (paramNames === null) {
