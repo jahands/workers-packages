@@ -1,6 +1,6 @@
 {
 	"name": "@jahands/dagger-helpers",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"private": false,
 	"description": "dagger.io helpers for my own projects - not meant for public use",
 	"keywords": [

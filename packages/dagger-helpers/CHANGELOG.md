@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.3.0
+
+### Minor Changes
+
+- e916230: feat: add sh() helper
+
 ## 0.2.0
 
 ### Minor Changes
