@@ -1,15 +1,16 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
-import { ignore } from './constants.js'
+import { constants } from './constants.js'
 
-describe('ignore', () => {
-	describe('contains no duplicates', () => {
-		for (const [key, list] of Object.entries(ignore)) {
-			test(key, () => {
+describe('constants', () => {
+	describe('workersMonorepo', () => {
+		describe('ignore', () => {
+			it('contains no duplicates', () => {
+				const list = constants.workersMonorepo.ignore
 				list.sort()
 				const unique = Array.from(new Set(list))
 				expect(unique).toStrictEqual(list)
 			})
-		}
+		})
 	})
 })
