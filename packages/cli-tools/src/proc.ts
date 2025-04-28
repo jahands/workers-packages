@@ -61,45 +61,46 @@ export async function prefixStdout(
 	opts?: PrefixOptions
 ): Promise<void> {
 	proc.stdout.setEncoding('utf-8')
-	let isNewline = true
-	let nextLine = ''
-	const lines: string[] = []
+	let buffer = ''
+	const outputLines: string[] = []
+	let lastChunkEndedWithNewline = false
+
 	for await (const chunk of proc.stdout) {
-		if (typeof chunk === 'string') {
-			if (isNewline) {
-				if (opts?.groupOutput) {
-					lines.push(nextLine)
-				} else {
-					process.stdout.write(nextLine)
-				}
-				nextLine = prefix
-				isNewline = false
+		const chunkStr = chunk.toString()
+		buffer += chunkStr
+		lastChunkEndedWithNewline = chunkStr.endsWith('\n')
+		let newlineIndex
+		while ((newlineIndex = buffer.indexOf('\n')) !== -1) {
+			const line = buffer.substring(0, newlineIndex)
+			const prefixedLine = prefix + line
+			if (opts?.groupOutput) {
+				outputLines.push(prefixedLine)
+			} else {
+				process.stdout.write(prefixedLine + '\n')
 			}
-			const c = chunk
-				.split('\n')
-				.map((l) => {
-					if (l.trim() === '') {
-						return ''
-					} else {
-						return `${prefix}${l}`
-					}
-				})
-				.join('\n')
-			if (c.endsWith('\n')) {
-				isNewline = true
-			}
-			nextLine += c.slice(prefix.length)
-		} else {
-			nextLine += chunk
+			buffer = buffer.substring(newlineIndex + 1)
 		}
 	}
-	if (opts?.groupOutput) {
-		if (nextLine !== '' && nextLine !== prefix) {
-			lines.push(nextLine)
+
+	// Handle final fragment
+	if (buffer.length > 0) {
+		const prefixedLine = prefix + buffer
+		if (opts?.groupOutput) {
+			outputLines.push(prefixedLine)
+		} else {
+			process.stdout.write(prefixedLine)
 		}
-		process.stdout.write(lines.join(''))
-	} else if (nextLine !== '' && nextLine !== prefix) {
-		process.stdout.write(nextLine)
+		// If buffer had content, the stream didn't end with \n
+		lastChunkEndedWithNewline = false
+	}
+
+	// Write grouped output
+	if (opts?.groupOutput) {
+		process.stdout.write(outputLines.join('\n'))
+		// Add trailing newline only if grouping and original stream ended with \n
+		if (lastChunkEndedWithNewline && outputLines.length > 0) {
+			process.stdout.write('\n')
+		}
 	}
 }
 
@@ -118,45 +119,46 @@ export async function prefixStderr(
 	opts?: PrefixOptions
 ): Promise<void> {
 	proc.stderr.setEncoding('utf-8')
-	let isNewline = true
-	let nextLine = ''
-	const lines: string[] = []
+	let buffer = ''
+	const outputLines: string[] = []
+	let lastChunkEndedWithNewline = false
+
 	for await (const chunk of proc.stderr) {
-		if (typeof chunk === 'string') {
-			if (isNewline) {
-				if (opts?.groupOutput) {
-					lines.push(nextLine)
-				} else {
-					process.stderr.write(nextLine)
-				}
-				nextLine = prefix
-				isNewline = false
+		const chunkStr = chunk.toString()
+		buffer += chunkStr
+		lastChunkEndedWithNewline = chunkStr.endsWith('\n')
+		let newlineIndex
+		while ((newlineIndex = buffer.indexOf('\n')) !== -1) {
+			const line = buffer.substring(0, newlineIndex)
+			const prefixedLine = prefix + line
+			if (opts?.groupOutput) {
+				outputLines.push(prefixedLine)
+			} else {
+				process.stderr.write(prefixedLine + '\n')
 			}
-			const c = chunk
-				.split('\n')
-				.map((l) => {
-					if (l.trim() === '') {
-						return ''
-					} else {
-						return `${prefix}${l}`
-					}
-				})
-				.join('\n')
-			if (c.endsWith('\n')) {
-				isNewline = true
-			}
-			nextLine += c.slice(prefix.length)
-		} else {
-			nextLine += chunk
+			buffer = buffer.substring(newlineIndex + 1)
 		}
 	}
-	if (opts?.groupOutput) {
-		if (nextLine !== '' && nextLine !== prefix) {
-			lines.push(nextLine)
+
+	// Handle final fragment
+	if (buffer.length > 0) {
+		const prefixedLine = prefix + buffer
+		if (opts?.groupOutput) {
+			outputLines.push(prefixedLine)
+		} else {
+			process.stderr.write(prefixedLine)
 		}
-		process.stderr.write(lines.join(''))
-	} else if (nextLine !== '' && nextLine !== prefix) {
-		process.stderr.write(nextLine)
+		// If buffer had content, the stream didn't end with \n
+		lastChunkEndedWithNewline = false
+	}
+
+	// Write grouped output
+	if (opts?.groupOutput) {
+		process.stderr.write(outputLines.join('\n'))
+		// Add trailing newline only if grouping and original stream ended with \n
+		if (lastChunkEndedWithNewline && outputLines.length > 0) {
+			process.stderr.write('\n')
+		}
 	}
 }
 
