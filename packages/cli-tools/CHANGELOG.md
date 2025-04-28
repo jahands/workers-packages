@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.8.2
+
+### Patch Changes
+
+- 254b7ea: chore: auto add newlines to start and end of groupPrefix/groupSuffix
+
 ## 0.8.1
 
 ### Patch Changes
