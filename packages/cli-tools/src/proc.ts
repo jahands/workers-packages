@@ -37,15 +37,17 @@ export type PrefixOptions =
 			 */
 			prefix: string
 			/**
-			 * Wait for all chunks before writing output
+			 * Wait for all chunks before writing output.
+			 *
+			 * @default false
 			 */
 			groupOutput: true
 			/**
-			 * Output prefix before group
+			 * Output prefix before group. Automatically adds newlines to start and end.
 			 */
 			groupPrefix?: string
 			/**
-			 * Output suffix after group
+			 * Output suffix after group. Automatically adds newlines to start and end.
 			 */
 			groupSuffix?: string
 	  }
@@ -61,12 +63,34 @@ function validatePrefixOptions(opts?: PrefixOptions): void {
 	}
 }
 
+function addNewlinesToStartAndEnd(str: string): string {
+	if (!str.startsWith('\n')) {
+		str = `\n${str}`
+	}
+	if (!str.endsWith('\n')) {
+		str += '\n'
+	}
+	return str
+}
+
+/**
+ * Get normalized prefix options
+ */
 function getPrefixOptions(prefixOrOpts: string | PrefixOptions): PrefixOptions {
 	if (typeof prefixOrOpts === 'string') {
 		return { prefix: prefixOrOpts }
 	}
 	validatePrefixOptions(prefixOrOpts)
-	return prefixOrOpts
+	const opts = structuredClone(prefixOrOpts)
+	if (opts.groupOutput) {
+		if (opts.groupPrefix) {
+			opts.groupPrefix = addNewlinesToStartAndEnd(opts.groupPrefix)
+		}
+		if (opts.groupSuffix) {
+			opts.groupSuffix = addNewlinesToStartAndEnd(opts.groupSuffix)
+		}
+	}
+	return opts
 }
 
 /**
@@ -83,7 +107,6 @@ export async function prefixOutput(
 	proc: ProcessPromise
 ): Promise<void> {
 	const opts = getPrefixOptions(prefixOrOpts)
-	validatePrefixOptions(opts)
 	if (opts.groupOutput) {
 		const stdoutOpts: PrefixOptions = {
 			...opts,
