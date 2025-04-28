@@ -1,5 +1,13 @@
 # @repo/cli-example
 
+## 0.1.23
+
+### Patch Changes
+
+- 41ea14b: chore: update examples
+- Updated dependencies [41ea14b]
+  - @jahands/cli-tools@0.9.0
+
 ## 0.1.22
 
 ### Patch Changes
