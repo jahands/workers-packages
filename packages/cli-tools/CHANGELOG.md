@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.8.0
+
+### Minor Changes
+
+- 45a7abc: feat: enforce PrefixOptions at the type level
+
 ## 0.7.7
 
 ### Patch Changes
