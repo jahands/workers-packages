@@ -195,27 +195,23 @@ export async function prefixOutput(
 
 	// Write grouped output
 	if (opts.groupOutput) {
-		let hasContent = outputLines.length > 0 // Track if there was any actual line content
-
 		if (opts.groupPrefix !== undefined) {
 			outputLines.unshift(opts.groupPrefix)
-			hasContent = true
 		}
 
-		let suffix = opts.groupSuffix
-		if (suffix !== undefined) {
+		if (opts.groupSuffix !== undefined || opts.includeDuration) {
+			let suffix = opts.groupSuffix ?? ''
 			if (opts.includeDuration) {
 				const duration = Date.now() - start
 				const durationStr = duration < 1000 ? `${duration}ms` : `${(duration / 1000).toFixed(3)}s`
-				// Add space only if suffix is not empty
+
 				const space = suffix.length > 0 ? ' ' : ''
 				suffix = `${chalk.gray(`[${durationStr}]`)}${space}${suffix}`
 			}
 			outputLines.push(suffix)
-			hasContent = true
 		}
 
-		if (hasContent) {
+		if (outputLines.length > 0) {
 			process.stdout.write(outputLines.join('\n'))
 		}
 	}
@@ -271,16 +267,19 @@ export async function prefixStdout(
 		if (opts.groupPrefix !== undefined) {
 			outputLines.unshift(opts.groupPrefix)
 		}
-		if (opts.groupSuffix !== undefined) {
-			let suffix = opts.groupSuffix
+
+		if (opts.groupSuffix !== undefined || opts.includeDuration) {
+			let suffix = opts.groupSuffix ?? ''
 			if (opts.includeDuration) {
 				const duration = Date.now() - start
 				const durationStr = duration < 1000 ? `${duration}ms` : `${(duration / 1000).toFixed(3)}s`
 
-				suffix = `${chalk.gray(`[${durationStr}]`)} ${opts.groupSuffix}`
+				const space = suffix.length > 0 ? ' ' : ''
+				suffix = `${chalk.gray(`[${durationStr}]`)}${space}${suffix}`
 			}
 			outputLines.push(suffix)
 		}
+
 		process.stdout.write(outputLines.join('\n'))
 	}
 }
@@ -335,16 +334,19 @@ export async function prefixStderr(
 		if (opts.groupPrefix !== undefined) {
 			outputLines.unshift(opts.groupPrefix)
 		}
-		if (opts.groupSuffix !== undefined) {
-			let suffix = opts.groupSuffix
+
+		if (opts.groupSuffix !== undefined || opts.includeDuration) {
+			let suffix = opts.groupSuffix ?? ''
 			if (opts.includeDuration) {
 				const duration = Date.now() - start
 				const durationStr = duration < 1000 ? `${duration}ms` : `${(duration / 1000).toFixed(3)}s`
 
-				suffix = `${chalk.gray(`[${durationStr}]`)} ${opts.groupSuffix}`
+				const space = suffix.length > 0 ? ' ' : ''
+				suffix = `${chalk.gray(`[${durationStr}]`)}${space}${suffix}`
 			}
 			outputLines.push(suffix)
 		}
+
 		process.stderr.write(outputLines.join('\n'))
 	}
 }
