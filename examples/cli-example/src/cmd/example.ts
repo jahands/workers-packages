@@ -63,7 +63,7 @@ exampleCmd.command('prefix-output-opts-group-prefix-suffix-duration').action(asy
 			groupOutput: true,
 			groupPrefix: 'GROUP: ',
 			groupSuffix: chalk.green('GROUP: '),
-			measureDuration: true,
+			includeDuration: true,
 		},
 		proc
 	)
