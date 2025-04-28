@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.7.6
+
+### Patch Changes
+
+- 974ecfb: fix: improve reliability of prefixStdout and prefixStderr
+
 ## 0.7.5
 
 ### Patch Changes
