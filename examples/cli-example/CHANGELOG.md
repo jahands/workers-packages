@@ -1,5 +1,13 @@
 # @repo/cli-example
 
+## 0.1.24
+
+### Patch Changes
+
+- 7a453d8: fix: update param name
+- Updated dependencies [3386bdd]
+  - @jahands/cli-tools@0.9.1
+
 ## 0.1.23
 
 ### Patch Changes
