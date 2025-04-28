@@ -239,12 +239,10 @@ export async function prefixStdout(
 	proc.stdout.setEncoding('utf-8')
 	let buffer = ''
 	const outputLines: string[] = []
-	let lastChunkEndedWithNewline = false
 
 	for await (const chunk of proc.stdout) {
 		const chunkStr = chunk.toString()
 		buffer += chunkStr
-		lastChunkEndedWithNewline = chunkStr.endsWith('\n')
 		let newlineIndex
 		while ((newlineIndex = buffer.indexOf('\n')) !== -1) {
 			const line = buffer.substring(0, newlineIndex)
@@ -266,8 +264,6 @@ export async function prefixStdout(
 		} else {
 			process.stdout.write(prefixedLine)
 		}
-		// If buffer had content, the stream didn't end with \n
-		lastChunkEndedWithNewline = false
 	}
 
 	// Write grouped output
@@ -286,10 +282,6 @@ export async function prefixStdout(
 			outputLines.push(suffix)
 		}
 		process.stdout.write(outputLines.join('\n'))
-		// Add trailing newline only if grouping and original stream ended with \n
-		if (lastChunkEndedWithNewline && outputLines.length > 0) {
-			process.stdout.write('\n')
-		}
 	}
 }
 
@@ -311,12 +303,10 @@ export async function prefixStderr(
 	proc.stderr.setEncoding('utf-8')
 	let buffer = ''
 	const outputLines: string[] = []
-	let lastChunkEndedWithNewline = false
 
 	for await (const chunk of proc.stderr) {
 		const chunkStr = chunk.toString()
 		buffer += chunkStr
-		lastChunkEndedWithNewline = chunkStr.endsWith('\n')
 		let newlineIndex
 		while ((newlineIndex = buffer.indexOf('\n')) !== -1) {
 			const line = buffer.substring(0, newlineIndex)
@@ -338,8 +328,6 @@ export async function prefixStderr(
 		} else {
 			process.stderr.write(prefixedLine)
 		}
-		// If buffer had content, the stream didn't end with \n
-		lastChunkEndedWithNewline = false
 	}
 
 	// Write grouped output
@@ -358,10 +346,6 @@ export async function prefixStderr(
 			outputLines.push(suffix)
 		}
 		process.stderr.write(outputLines.join('\n'))
-		// Add trailing newline only if grouping and original stream ended with \n
-		if (lastChunkEndedWithNewline && outputLines.length > 0) {
-			process.stderr.write('\n')
-		}
 	}
 }
 
