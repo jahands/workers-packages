@@ -194,23 +194,23 @@ export async function prefixStdout(
 	// Write grouped output
 	if (opts?.groupOutput) {
 		if (opts.groupPrefix !== undefined) {
-			process.stdout.write(opts.groupPrefix)
-		}
-		process.stdout.write(outputLines.join('\n'))
-		// Add trailing newline only if grouping and original stream ended with \n
-		if (lastChunkEndedWithNewline && outputLines.length > 0) {
-			process.stdout.write('\n')
+			outputLines.unshift(opts.groupPrefix)
 		}
 		if (opts.groupSuffix !== undefined) {
+			let suffix = opts.groupSuffix
 			if (opts.includeDuration) {
 				const duration = Date.now() - start
 				const durationStr =
 					duration < 1000 ? `${duration.toFixed(2)}ms` : `${(duration / 1000).toFixed(3)}s`
 
-				process.stderr.write(`${chalk.gray(`[${durationStr}]`)} ${opts.groupSuffix}`)
-			} else {
-				process.stderr.write(opts.groupSuffix)
+				suffix = `${chalk.gray(`[${durationStr}]`)} ${opts.groupSuffix}`
 			}
+			outputLines.push(suffix)
+		}
+		process.stdout.write(outputLines.join('\n'))
+		// Add trailing newline only if grouping and original stream ended with \n
+		if (lastChunkEndedWithNewline && outputLines.length > 0) {
+			process.stdout.write('\n')
 		}
 	}
 }
@@ -267,23 +267,23 @@ export async function prefixStderr(
 	// Write grouped output
 	if (opts?.groupOutput) {
 		if (opts.groupPrefix !== undefined) {
-			process.stderr.write(opts.groupPrefix)
-		}
-		process.stderr.write(outputLines.join('\n'))
-		// Add trailing newline only if grouping and original stream ended with \n
-		if (lastChunkEndedWithNewline && outputLines.length > 0) {
-			process.stderr.write('\n')
+			outputLines.unshift(opts.groupPrefix)
 		}
 		if (opts.groupSuffix !== undefined) {
+			let suffix = opts.groupSuffix
 			if (opts.includeDuration) {
 				const duration = Date.now() - start
 				const durationStr =
 					duration < 1000 ? `${duration.toFixed(2)}ms` : `${(duration / 1000).toFixed(3)}s`
 
-				process.stderr.write(`${chalk.gray(`[${durationStr}]`)} ${opts.groupSuffix}`)
-			} else {
-				process.stderr.write(opts.groupSuffix)
+				suffix = `${chalk.gray(`[${durationStr}]`)} ${opts.groupSuffix}`
 			}
+			outputLines.push(suffix)
+		}
+		process.stderr.write(outputLines.join('\n'))
+		// Add trailing newline only if grouping and original stream ended with \n
+		if (lastChunkEndedWithNewline && outputLines.length > 0) {
+			process.stderr.write('\n')
 		}
 	}
 }
