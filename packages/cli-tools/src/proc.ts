@@ -206,8 +206,7 @@ export async function prefixOutput(
 		if (suffix !== undefined) {
 			if (opts.includeDuration) {
 				const duration = Date.now() - start
-				const durationStr =
-					duration < 1000 ? `${duration.toLocaleString()}ms` : `${(duration / 1000).toFixed(3)}s`
+				const durationStr = duration < 1000 ? `${duration}ms` : `${(duration / 1000).toFixed(3)}s`
 				// Add space only if suffix is not empty
 				const space = suffix.length > 0 ? ' ' : ''
 				suffix = `${chalk.gray(`[${durationStr}]`)}${space}${suffix}`
@@ -280,8 +279,7 @@ export async function prefixStdout(
 			let suffix = opts.groupSuffix
 			if (opts.includeDuration) {
 				const duration = Date.now() - start
-				const durationStr =
-					duration < 1000 ? `${duration.toFixed(2)}ms` : `${(duration / 1000).toFixed(3)}s`
+				const durationStr = duration < 1000 ? `${duration}ms` : `${(duration / 1000).toFixed(3)}s`
 
 				suffix = `${chalk.gray(`[${durationStr}]`)} ${opts.groupSuffix}`
 			}
@@ -353,8 +351,7 @@ export async function prefixStderr(
 			let suffix = opts.groupSuffix
 			if (opts.includeDuration) {
 				const duration = Date.now() - start
-				const durationStr =
-					duration < 1000 ? `${duration.toFixed(2)}ms` : `${(duration / 1000).toFixed(3)}s`
+				const durationStr = duration < 1000 ? `${duration}ms` : `${(duration / 1000).toFixed(3)}s`
 
 				suffix = `${chalk.gray(`[${durationStr}]`)} ${opts.groupSuffix}`
 			}
