@@ -23,6 +23,25 @@ export interface PrefixOptions {
 	 * Wait for all chunks before writing output
 	 */
 	groupOutput?: boolean
+	/**
+	 * Output prefix before group. Requires `groupOutput: true`
+	 */
+	groupPrefix?: string
+	/**
+	 * Output suffix after group. Requires `groupOutput: true`
+	 */
+	groupSuffix?: string
+}
+
+function validatePrefixOptions(opts?: PrefixOptions): void {
+	if (opts) {
+		if (opts.groupPrefix && !opts.groupOutput) {
+			throw new Error('groupPrefix requires groupOutput to be true')
+		}
+		if (opts.groupSuffix && !opts.groupOutput) {
+			throw new Error('groupSuffix requires groupOutput to be true')
+		}
+	}
 }
 
 /**
@@ -60,6 +79,7 @@ export async function prefixStdout(
 	prefix: string,
 	opts?: PrefixOptions
 ): Promise<void> {
+	validatePrefixOptions(opts)
 	proc.stdout.setEncoding('utf-8')
 	let buffer = ''
 	const outputLines: string[] = []
@@ -96,10 +116,16 @@ export async function prefixStdout(
 
 	// Write grouped output
 	if (opts?.groupOutput) {
+		if (opts.groupPrefix) {
+			process.stdout.write(opts.groupPrefix)
+		}
 		process.stdout.write(outputLines.join('\n'))
 		// Add trailing newline only if grouping and original stream ended with \n
 		if (lastChunkEndedWithNewline && outputLines.length > 0) {
 			process.stdout.write('\n')
+		}
+		if (opts.groupSuffix) {
+			process.stdout.write(opts.groupSuffix)
 		}
 	}
 }
@@ -118,6 +144,7 @@ export async function prefixStderr(
 	prefix: string,
 	opts?: PrefixOptions
 ): Promise<void> {
+	validatePrefixOptions(opts)
 	proc.stderr.setEncoding('utf-8')
 	let buffer = ''
 	const outputLines: string[] = []
@@ -154,10 +181,16 @@ export async function prefixStderr(
 
 	// Write grouped output
 	if (opts?.groupOutput) {
+		if (opts.groupPrefix) {
+			process.stderr.write(opts.groupPrefix)
+		}
 		process.stderr.write(outputLines.join('\n'))
 		// Add trailing newline only if grouping and original stream ended with \n
 		if (lastChunkEndedWithNewline && outputLines.length > 0) {
 			process.stderr.write('\n')
+		}
+		if (opts.groupSuffix) {
+			process.stderr.write(opts.groupSuffix)
 		}
 	}
 }
