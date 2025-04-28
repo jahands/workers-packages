@@ -1,5 +1,12 @@
 # @jahands/cli-tools
 
+## 0.7.7
+
+### Patch Changes
+
+- 747615f: feat: add groupPrefix and groupSuffix options
+- 2617c8b: chore(BREAKING): improve order of arguments in prefix functions
+
 ## 0.7.6
 
 ### Patch Changes
