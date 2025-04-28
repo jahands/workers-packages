@@ -1,3 +1,5 @@
+import type { Writable } from 'node:stream'
+
 /**
  * Logs ProcessOutput error and then throws it. Useful
  * when you want to only log stderr when a program is
@@ -71,17 +73,55 @@ function getPrefixOptions(prefixOrOpts: string | PrefixOptions): PrefixOptions {
 			if (!opts.groupPrefix.startsWith('\n')) {
 				opts.groupPrefix = `\n${opts.groupPrefix}`
 			}
-			if (!opts.groupPrefix.endsWith('\n')) {
-				opts.groupPrefix += '\n'
-			}
-		}
-		if (opts.groupSuffix !== undefined) {
-			if (!opts.groupSuffix.endsWith('\n')) {
-				opts.groupSuffix += '\n'
-			}
 		}
 	}
 	return opts
+}
+
+/**
+ * Helper to process a chunk and write/buffer lines
+ */
+function processChunk(
+	chunk: Buffer | string,
+	bufferObj: { buffer: string }, // Pass buffer by reference
+	outputLines: string[],
+	opts: PrefixOptions,
+	streamToWrite: Writable,
+	lastChunkEndedWithNewlineObj: { value: boolean } // Pass by reference
+): void {
+	const chunkStr = chunk.toString()
+	bufferObj.buffer += chunkStr
+	lastChunkEndedWithNewlineObj.value = chunkStr.endsWith('\n')
+	let newlineIndex
+	while ((newlineIndex = bufferObj.buffer.indexOf('\n')) !== -1) {
+		const line = bufferObj.buffer.substring(0, newlineIndex)
+		const prefixedLine = opts.prefix + line
+		if (opts.groupOutput) {
+			outputLines.push(prefixedLine)
+		} else {
+			streamToWrite.write(prefixedLine + '\n')
+		}
+		bufferObj.buffer = bufferObj.buffer.substring(newlineIndex + 1)
+	}
+}
+
+// Helper to handle the final fragment of a buffer
+function handleFinalFragment(
+	bufferObj: { buffer: string },
+	outputLines: string[],
+	opts: PrefixOptions,
+	streamToWrite: Writable
+): void {
+	// Returns true if fragment existed and was processed
+	if (bufferObj.buffer.length > 0) {
+		const prefixedLine = opts.prefix + bufferObj.buffer
+		if (opts.groupOutput) {
+			outputLines.push(prefixedLine)
+		} else {
+			streamToWrite.write(prefixedLine)
+		}
+		bufferObj.buffer = '' // Clear buffer after handling fragment
+	}
 }
 
 /**
@@ -99,46 +139,86 @@ export async function prefixOutput(
 ): Promise<void> {
 	const opts = getPrefixOptions(prefixOrOpts)
 	const start = Date.now()
-	if (opts.groupOutput) {
-		await Promise.all([
-			prefixStdout(
-				{
-					...opts,
-					// don't output either in stdout
-					groupPrefix: undefined,
-					groupSuffix: undefined,
-				},
-				proc
-			),
-			prefixStderr(
-				{
-					...opts,
-					// output groupPrefix in stderr, but wait for
-					// all output before writing groupSuffix
-					groupSuffix: undefined,
-				},
-				proc
-			),
-		])
+	proc.stdout.setEncoding('utf-8')
+	proc.stderr.setEncoding('utf-8')
 
-		// now we can write groupSuffix
-		if (opts.groupSuffix !== undefined) {
+	// Use objects to pass buffer/boolean by reference
+	const stdoutBuffer = { buffer: '' }
+	const stderrBuffer = { buffer: '' }
+	const lastStdoutEndedNewline = { value: true }
+	const lastStderrEndedNewline = { value: true }
+	const outputLines: string[] = []
+
+	const stdoutPromise = new Promise<void>((resolve, reject) => {
+		proc.stdout.on('data', (chunk) => {
+			try {
+				processChunk(chunk, stdoutBuffer, outputLines, opts, process.stdout, lastStdoutEndedNewline)
+			} catch (error) {
+				reject(error) // Propagate errors
+			}
+		})
+		proc.stdout.on('end', resolve)
+		proc.stdout.on('error', reject) // Handle stream errors
+	})
+
+	const stderrPromise = new Promise<void>((resolve, reject) => {
+		proc.stderr.on('data', (chunk) => {
+			try {
+				// Write stderr chunks to process.stderr when not grouping
+				processChunk(chunk, stderrBuffer, outputLines, opts, process.stderr, lastStderrEndedNewline)
+			} catch (error) {
+				reject(error) // Propagate errors
+			}
+		})
+		proc.stderr.on('end', resolve)
+		proc.stderr.on('error', reject) // Handle stream errors
+	})
+
+	// Wait for the process to exit *and* both streams to end
+	// Catch potential process errors during the wait
+	try {
+		await Promise.all([stdoutPromise, stderrPromise, proc])
+	} catch (error) {
+		// If the error is a ProcessOutput from zx, logAndThrow will handle it if called later.
+		// If it's a stream error or other error, rethrow it.
+		if (!(error instanceof ProcessOutput)) {
+			throw error
+		}
+		// Allow ProcessOutput errors to be potentially handled later (e.g., by .catch(logAndThrow))
+		// We still need to potentially process remaining buffer contents below.
+	}
+
+	// Handle final fragments only after both streams ended
+	handleFinalFragment(stdoutBuffer, outputLines, opts, process.stdout)
+	// Write final stderr fragment to process.stderr when not grouping
+	handleFinalFragment(stderrBuffer, outputLines, opts, process.stderr)
+
+	// Write grouped output
+	if (opts.groupOutput) {
+		let hasContent = outputLines.length > 0 // Track if there was any actual line content
+
+		if (opts.groupPrefix !== undefined) {
+			outputLines.unshift(opts.groupPrefix)
+			hasContent = true
+		}
+
+		let suffix = opts.groupSuffix
+		if (suffix !== undefined) {
 			if (opts.includeDuration) {
 				const duration = Date.now() - start
 				const durationStr =
-					duration < 1000 ? `${duration.toFixed(2)}ms` : `${(duration / 1000).toFixed(3)}s`
-
-				process.stderr.write(`${chalk.gray(`[${durationStr}]`)} ${opts.groupSuffix}`)
-			} else {
-				process.stderr.write(opts.groupSuffix)
+					duration < 1000 ? `${duration.toLocaleString()}ms` : `${(duration / 1000).toFixed(3)}s`
+				// Add space only if suffix is not empty
+				const space = suffix.length > 0 ? ' ' : ''
+				suffix = `${chalk.gray(`[${durationStr}]`)}${space}${suffix}`
 			}
+			outputLines.push(suffix)
+			hasContent = true
 		}
-	} else {
-		await Promise.all([
-			// prefix both stdout and stderr
-			prefixStdout(opts, proc),
-			prefixStderr(opts, proc),
-		])
+
+		if (hasContent) {
+			process.stdout.write(outputLines.join('\n'))
+		}
 	}
 }
 
