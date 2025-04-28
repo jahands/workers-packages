@@ -63,16 +63,6 @@ function validatePrefixOptions(opts?: PrefixOptions): void {
 	}
 }
 
-function addNewlinesToStartAndEnd(str: string): string {
-	if (!str.startsWith('\n')) {
-		str = `\n${str}`
-	}
-	if (!str.endsWith('\n')) {
-		str += '\n'
-	}
-	return str
-}
-
 /**
  * Get normalized prefix options
  */
@@ -84,10 +74,17 @@ function getPrefixOptions(prefixOrOpts: string | PrefixOptions): PrefixOptions {
 	const opts = structuredClone(prefixOrOpts)
 	if (opts.groupOutput) {
 		if (opts.groupPrefix) {
-			opts.groupPrefix = addNewlinesToStartAndEnd(opts.groupPrefix)
+			if (!opts.groupPrefix.startsWith('\n')) {
+				opts.groupPrefix = `\n${opts.groupPrefix}`
+			}
+			if (!opts.groupPrefix.endsWith('\n')) {
+				opts.groupPrefix += '\n'
+			}
 		}
 		if (opts.groupSuffix) {
-			opts.groupSuffix = addNewlinesToStartAndEnd(opts.groupSuffix)
+			if (!opts.groupSuffix.endsWith('\n')) {
+				opts.groupSuffix += '\n'
+			}
 		}
 	}
 	return opts
