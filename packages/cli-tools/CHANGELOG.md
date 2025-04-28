@@ -1,5 +1,15 @@
 # @jahands/cli-tools
 
+## 0.9.2
+
+### Patch Changes
+
+- 1107eb2: fix: add suffix if includeDuration is specified without groupSuffix
+- 8bfbb3e: fix: output prefix/suffix at the same time as other lines (fixes race condition)
+- 46c7dce: chore: remove unnecessary final newline logic
+- 9e0e973: fix: properly combined stderr and stdout streams in prefixOutput
+- 80f35b2: fix: consistently format duration
+
 ## 0.9.1
 
 ### Patch Changes
