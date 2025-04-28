@@ -105,17 +105,31 @@ export async function prefixOutput(
 ): Promise<void> {
 	const opts = getPrefixOptions(prefixOrOpts)
 	if (opts.groupOutput) {
-		const stdoutOpts: PrefixOptions = {
-			...opts,
-			// only output groupPrefix and groupSuffix in stderr to prevent duplicate output
-			groupPrefix: undefined,
-			groupSuffix: undefined,
-		}
 		await Promise.all([
-			// prefix both stdout and stderr
-			prefixStdout(stdoutOpts, proc),
-			prefixStderr(opts, proc),
+			prefixStdout(
+				{
+					...opts,
+					// don't output either in stdout
+					groupPrefix: undefined,
+					groupSuffix: undefined,
+				},
+				proc
+			),
+			prefixStderr(
+				{
+					...opts,
+					// output groupPrefix in stderr, but wait for
+					// all output before writing groupSuffix
+					groupSuffix: undefined,
+				},
+				proc
+			),
 		])
+
+		if (opts.groupSuffix) {
+			// now we can write groupSuffix
+			process.stderr.write(opts.groupSuffix)
+		}
 	} else {
 		await Promise.all([
 			// prefix both stdout and stderr
