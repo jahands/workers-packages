@@ -18,24 +18,37 @@ export function ignoreSIGINT(): void {
 	process.on('SIGINT', () => {})
 }
 
-export interface PrefixOptions {
-	/**
-	 * Prefix to add to all lines of output
-	 */
-	prefix: string
-	/**
-	 * Wait for all chunks before writing output
-	 */
-	groupOutput?: boolean
-	/**
-	 * Output prefix before group. Requires `groupOutput: true`
-	 */
-	groupPrefix?: string
-	/**
-	 * Output suffix after group. Requires `groupOutput: true`
-	 */
-	groupSuffix?: string
-}
+export type PrefixOptions =
+	| {
+			/**
+			 * Prefix to add to all lines of output
+			 */
+			prefix: string
+			/**
+			 * Wait for all chunks before writing output
+			 */
+			groupOutput?: false
+			groupPrefix?: never
+			groupSuffix?: never
+	  }
+	| {
+			/**
+			 * Prefix to add to all lines of output
+			 */
+			prefix: string
+			/**
+			 * Wait for all chunks before writing output
+			 */
+			groupOutput: true
+			/**
+			 * Output prefix before group
+			 */
+			groupPrefix?: string
+			/**
+			 * Output suffix after group
+			 */
+			groupSuffix?: string
+	  }
 
 function validatePrefixOptions(opts?: PrefixOptions): void {
 	if (opts) {
