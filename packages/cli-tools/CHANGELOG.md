@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.9.0
+
+### Minor Changes
+
+- 41ea14b: feat: add includeDuration option to PrefixOptions
+
 ## 0.8.3
 
 ### Patch Changes
