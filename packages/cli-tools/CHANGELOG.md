@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.8.1
+
+### Patch Changes
+
+- 5e40b78: fix: only output groupPrefix and groupSuffix in stderr to prevent duplicate output
+
 ## 0.8.0
 
 ### Minor Changes
