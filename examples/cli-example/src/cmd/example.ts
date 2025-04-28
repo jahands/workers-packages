@@ -24,5 +24,33 @@ exampleCmd
 
 exampleCmd.command('prefix-output').action(async () => {
 	const proc = $`jctl`
-	await prefixOutput(proc, 'OUTPUT:')
+	await prefixOutput('OUTPUT:', proc)
+})
+
+exampleCmd.command('prefix-output-opts').action(async () => {
+	const proc = $`jctl`
+	await prefixOutput({ prefix: 'OUTPUT:' }, proc)
+})
+
+exampleCmd.command('prefix-output-opts-group').action(async () => {
+	const proc = $`jctl`
+	await prefixOutput({ prefix: 'OUTPUT:', groupOutput: true }, proc)
+})
+
+exampleCmd.command('prefix-output-opts-group-prefix').action(async () => {
+	const proc = $`jctl`
+	await prefixOutput({ prefix: 'OUTPUT:', groupOutput: true, groupPrefix: 'GROUP: ' }, proc)
+})
+
+exampleCmd.command('prefix-output-opts-group-suffix').action(async () => {
+	const proc = $`jctl`
+	await prefixOutput({ prefix: 'OUTPUT:', groupOutput: true, groupSuffix: 'GROUP: ' }, proc)
+})
+
+exampleCmd.command('prefix-output-opts-group-prefix-suffix').action(async () => {
+	const proc = $`jctl`
+	await prefixOutput(
+		{ prefix: 'OUTPUT:', groupOutput: true, groupPrefix: 'GROUP: ', groupSuffix: 'GROUP: ' },
+		proc
+	)
 })

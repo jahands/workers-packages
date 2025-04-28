@@ -20,6 +20,10 @@ export function ignoreSIGINT(): void {
 
 export interface PrefixOptions {
 	/**
+	 * Prefix to add to all lines of output
+	 */
+	prefix: string
+	/**
 	 * Wait for all chunks before writing output
 	 */
 	groupOutput?: boolean
@@ -44,24 +48,31 @@ function validatePrefixOptions(opts?: PrefixOptions): void {
 	}
 }
 
+function getPrefixOptions(prefixOrOpts: string | PrefixOptions): PrefixOptions {
+	if (typeof prefixOrOpts === 'string') {
+		return { prefix: prefixOrOpts }
+	}
+	validatePrefixOptions(prefixOrOpts)
+	return prefixOrOpts
+}
+
 /**
  * Adds prefix to all stdout and stderr from process. Requires using `stdio: pipe` and .quiet()
  *
  * @example
  * ```ts
  * const proc = $`ls -lh`
- * await prefixOutput(proc, 'OUTPUT:')
+ * await prefixOutput('OUTPUT:', proc)
  * ```
  */
 export async function prefixOutput(
-	proc: ProcessPromise,
-	prefix: string,
-	opts?: PrefixOptions
+	prefixOrOpts: string | PrefixOptions,
+	proc: ProcessPromise
 ): Promise<void> {
 	await Promise.all([
 		// Prefix both stdout and stderr
-		prefixStdout(proc, prefix, opts),
-		prefixStderr(proc, prefix, opts),
+		prefixStdout(prefixOrOpts, proc),
+		prefixStderr(prefixOrOpts, proc),
 	])
 }
 
@@ -71,15 +82,14 @@ export async function prefixOutput(
  * @example
  * ```ts
  * const proc = $`ls -lh`
- * await prefixStdout(proc, 'OUTPUT:')
+ * await prefixStdout('OUTPUT:', proc)
  * ```
  */
 export async function prefixStdout(
-	proc: ProcessPromise,
-	prefix: string,
-	opts?: PrefixOptions
+	prefixOrOpts: string | PrefixOptions,
+	proc: ProcessPromise
 ): Promise<void> {
-	validatePrefixOptions(opts)
+	const opts = getPrefixOptions(prefixOrOpts)
 	proc.stdout.setEncoding('utf-8')
 	let buffer = ''
 	const outputLines: string[] = []
@@ -92,7 +102,7 @@ export async function prefixStdout(
 		let newlineIndex
 		while ((newlineIndex = buffer.indexOf('\n')) !== -1) {
 			const line = buffer.substring(0, newlineIndex)
-			const prefixedLine = prefix + line
+			const prefixedLine = opts.prefix + line
 			if (opts?.groupOutput) {
 				outputLines.push(prefixedLine)
 			} else {
@@ -104,7 +114,7 @@ export async function prefixStdout(
 
 	// Handle final fragment
 	if (buffer.length > 0) {
-		const prefixedLine = prefix + buffer
+		const prefixedLine = opts.prefix + buffer
 		if (opts?.groupOutput) {
 			outputLines.push(prefixedLine)
 		} else {
@@ -136,15 +146,14 @@ export async function prefixStdout(
  * @example
  * ```ts
  * const proc = $`ls -lh`
- * await prefixStderr(proc, 'OUTPUT:')
+ * await prefixStderr('OUTPUT:', proc)
  * ```
  */
 export async function prefixStderr(
-	proc: ProcessPromise,
-	prefix: string,
-	opts?: PrefixOptions
+	prefixOrOpts: string | PrefixOptions,
+	proc: ProcessPromise
 ): Promise<void> {
-	validatePrefixOptions(opts)
+	const opts = getPrefixOptions(prefixOrOpts)
 	proc.stderr.setEncoding('utf-8')
 	let buffer = ''
 	const outputLines: string[] = []
@@ -157,7 +166,7 @@ export async function prefixStderr(
 		let newlineIndex
 		while ((newlineIndex = buffer.indexOf('\n')) !== -1) {
 			const line = buffer.substring(0, newlineIndex)
-			const prefixedLine = prefix + line
+			const prefixedLine = opts.prefix + line
 			if (opts?.groupOutput) {
 				outputLines.push(prefixedLine)
 			} else {
@@ -169,7 +178,7 @@ export async function prefixStderr(
 
 	// Handle final fragment
 	if (buffer.length > 0) {
-		const prefixedLine = prefix + buffer
+		const prefixedLine = opts.prefix + buffer
 		if (opts?.groupOutput) {
 			outputLines.push(prefixedLine)
 		} else {
