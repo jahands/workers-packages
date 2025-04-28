@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.9.1
+
+### Patch Changes
+
+- 3386bdd: fix: add includeDuration support to prefixStdout and prefixStderr
+
 ## 0.9.0
 
 ### Minor Changes
