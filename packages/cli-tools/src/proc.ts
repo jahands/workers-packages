@@ -67,7 +67,7 @@ function getPrefixOptions(prefixOrOpts: string | PrefixOptions): PrefixOptions {
 
 	const opts = structuredClone(prefixOrOpts)
 	if (opts.groupOutput) {
-		if (opts.groupPrefix) {
+		if (opts.groupPrefix !== undefined) {
 			if (!opts.groupPrefix.startsWith('\n')) {
 				opts.groupPrefix = `\n${opts.groupPrefix}`
 			}
@@ -75,7 +75,7 @@ function getPrefixOptions(prefixOrOpts: string | PrefixOptions): PrefixOptions {
 				opts.groupPrefix += '\n'
 			}
 		}
-		if (opts.groupSuffix) {
+		if (opts.groupSuffix !== undefined) {
 			if (!opts.groupSuffix.endsWith('\n')) {
 				opts.groupSuffix += '\n'
 			}
@@ -122,7 +122,7 @@ export async function prefixOutput(
 		])
 
 		// now we can write groupSuffix
-		if (opts.groupSuffix) {
+		if (opts.groupSuffix !== undefined) {
 			if (opts.includeDuration) {
 				const duration = Date.now() - start
 				const durationStr =
@@ -156,6 +156,7 @@ export async function prefixStdout(
 	proc: ProcessPromise
 ): Promise<void> {
 	const opts = getPrefixOptions(prefixOrOpts)
+	const start = Date.now()
 	proc.stdout.setEncoding('utf-8')
 	let buffer = ''
 	const outputLines: string[] = []
@@ -192,7 +193,7 @@ export async function prefixStdout(
 
 	// Write grouped output
 	if (opts?.groupOutput) {
-		if (opts.groupPrefix) {
+		if (opts.groupPrefix !== undefined) {
 			process.stdout.write(opts.groupPrefix)
 		}
 		process.stdout.write(outputLines.join('\n'))
@@ -200,8 +201,16 @@ export async function prefixStdout(
 		if (lastChunkEndedWithNewline && outputLines.length > 0) {
 			process.stdout.write('\n')
 		}
-		if (opts.groupSuffix) {
-			process.stdout.write(opts.groupSuffix)
+		if (opts.groupSuffix !== undefined) {
+			if (opts.includeDuration) {
+				const duration = Date.now() - start
+				const durationStr =
+					duration < 1000 ? `${duration.toFixed(2)}ms` : `${(duration / 1000).toFixed(3)}s`
+
+				process.stderr.write(`${chalk.gray(`[${durationStr}]`)} ${opts.groupSuffix}`)
+			} else {
+				process.stderr.write(opts.groupSuffix)
+			}
 		}
 	}
 }
@@ -220,6 +229,7 @@ export async function prefixStderr(
 	proc: ProcessPromise
 ): Promise<void> {
 	const opts = getPrefixOptions(prefixOrOpts)
+	const start = Date.now()
 	proc.stderr.setEncoding('utf-8')
 	let buffer = ''
 	const outputLines: string[] = []
@@ -256,7 +266,7 @@ export async function prefixStderr(
 
 	// Write grouped output
 	if (opts?.groupOutput) {
-		if (opts.groupPrefix) {
+		if (opts.groupPrefix !== undefined) {
 			process.stderr.write(opts.groupPrefix)
 		}
 		process.stderr.write(outputLines.join('\n'))
@@ -264,8 +274,16 @@ export async function prefixStderr(
 		if (lastChunkEndedWithNewline && outputLines.length > 0) {
 			process.stderr.write('\n')
 		}
-		if (opts.groupSuffix) {
-			process.stderr.write(opts.groupSuffix)
+		if (opts.groupSuffix !== undefined) {
+			if (opts.includeDuration) {
+				const duration = Date.now() - start
+				const durationStr =
+					duration < 1000 ? `${duration.toFixed(2)}ms` : `${(duration / 1000).toFixed(3)}s`
+
+				process.stderr.write(`${chalk.gray(`[${durationStr}]`)} ${opts.groupSuffix}`)
+			} else {
+				process.stderr.write(opts.groupSuffix)
+			}
 		}
 	}
 }
