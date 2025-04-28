@@ -82,11 +82,27 @@ export async function prefixOutput(
 	prefixOrOpts: string | PrefixOptions,
 	proc: ProcessPromise
 ): Promise<void> {
-	await Promise.all([
-		// Prefix both stdout and stderr
-		prefixStdout(prefixOrOpts, proc),
-		prefixStderr(prefixOrOpts, proc),
-	])
+	const opts = getPrefixOptions(prefixOrOpts)
+	validatePrefixOptions(opts)
+	if (opts.groupOutput) {
+		const stdoutOpts: PrefixOptions = {
+			...opts,
+			// only output groupPrefix and groupSuffix in stderr to prevent duplicate output
+			groupPrefix: undefined,
+			groupSuffix: undefined,
+		}
+		await Promise.all([
+			// prefix both stdout and stderr
+			prefixStdout(stdoutOpts, proc),
+			prefixStderr(opts, proc),
+		])
+	} else {
+		await Promise.all([
+			// prefix both stdout and stderr
+			prefixStdout(opts, proc),
+			prefixStderr(opts, proc),
+		])
+	}
 }
 
 /**
