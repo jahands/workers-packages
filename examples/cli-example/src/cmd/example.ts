@@ -23,34 +23,48 @@ exampleCmd
 	})
 
 exampleCmd.command('prefix-output').action(async () => {
-	const proc = $`jctl`
+	const proc = $`ls -lh`
 	await prefixOutput('OUTPUT:', proc)
 })
 
 exampleCmd.command('prefix-output-opts').action(async () => {
-	const proc = $`jctl`
+	const proc = $`ls -lh`
 	await prefixOutput({ prefix: 'OUTPUT:' }, proc)
 })
 
 exampleCmd.command('prefix-output-opts-group').action(async () => {
-	const proc = $`jctl`
+	const proc = $`ls -lh`
 	await prefixOutput({ prefix: 'OUTPUT:', groupOutput: true }, proc)
 })
 
 exampleCmd.command('prefix-output-opts-group-prefix').action(async () => {
-	const proc = $`jctl`
+	const proc = $`ls -lh`
 	await prefixOutput({ prefix: 'OUTPUT:', groupOutput: true, groupPrefix: 'GROUP: ' }, proc)
 })
 
 exampleCmd.command('prefix-output-opts-group-suffix').action(async () => {
-	const proc = $`jctl`
+	const proc = $`ls -lh`
 	await prefixOutput({ prefix: 'OUTPUT:', groupOutput: true, groupSuffix: 'GROUP: ' }, proc)
 })
 
 exampleCmd.command('prefix-output-opts-group-prefix-suffix').action(async () => {
-	const proc = $`jctl`
+	const proc = $`ls -lh`
 	await prefixOutput(
 		{ prefix: 'OUTPUT:', groupOutput: true, groupPrefix: 'GROUP: ', groupSuffix: 'GROUP: ' },
+		proc
+	)
+})
+
+exampleCmd.command('prefix-output-opts-group-prefix-suffix-duration').action(async () => {
+	const proc = $`ls -lh`
+	await prefixOutput(
+		{
+			prefix: 'OUTPUT:',
+			groupOutput: true,
+			groupPrefix: 'GROUP: ',
+			groupSuffix: chalk.green('GROUP: '),
+			measureDuration: true,
+		},
 		proc
 	)
 })

@@ -30,6 +30,7 @@ export type PrefixOptions =
 			groupOutput?: false
 			groupPrefix?: never
 			groupSuffix?: never
+			includeDuration?: never
 	  }
 	| {
 			/**
@@ -50,18 +51,11 @@ export type PrefixOptions =
 			 * Output suffix after group. Automatically adds newlines to start and end.
 			 */
 			groupSuffix?: string
+			/**
+			 * Measure how long the group takes to execute and add it as a prefix to groupSuffix
+			 */
+			includeDuration?: boolean
 	  }
-
-function validatePrefixOptions(opts?: PrefixOptions): void {
-	if (opts) {
-		if (opts.groupPrefix && !opts.groupOutput) {
-			throw new Error('groupPrefix requires groupOutput to be true')
-		}
-		if (opts.groupSuffix && !opts.groupOutput) {
-			throw new Error('groupSuffix requires groupOutput to be true')
-		}
-	}
-}
 
 /**
  * Get normalized prefix options
@@ -70,7 +64,7 @@ function getPrefixOptions(prefixOrOpts: string | PrefixOptions): PrefixOptions {
 	if (typeof prefixOrOpts === 'string') {
 		return { prefix: prefixOrOpts }
 	}
-	validatePrefixOptions(prefixOrOpts)
+
 	const opts = structuredClone(prefixOrOpts)
 	if (opts.groupOutput) {
 		if (opts.groupPrefix) {
@@ -104,6 +98,7 @@ export async function prefixOutput(
 	proc: ProcessPromise
 ): Promise<void> {
 	const opts = getPrefixOptions(prefixOrOpts)
+	const start = Date.now()
 	if (opts.groupOutput) {
 		await Promise.all([
 			prefixStdout(
@@ -126,9 +121,17 @@ export async function prefixOutput(
 			),
 		])
 
+		// now we can write groupSuffix
 		if (opts.groupSuffix) {
-			// now we can write groupSuffix
-			process.stderr.write(opts.groupSuffix)
+			if (opts.includeDuration) {
+				const duration = Date.now() - start
+				const durationStr =
+					duration < 1000 ? `${duration.toFixed(2)}ms` : `${(duration / 1000).toFixed(3)}s`
+
+				process.stderr.write(`${chalk.gray(`[${durationStr}]`)} ${opts.groupSuffix}`)
+			} else {
+				process.stderr.write(opts.groupSuffix)
+			}
 		}
 	} else {
 		await Promise.all([
