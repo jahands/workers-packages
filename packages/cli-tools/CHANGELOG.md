@@ -1,5 +1,12 @@
 # @jahands/cli-tools
 
+## 0.8.3
+
+### Patch Changes
+
+- a345a8b: fix: don't add newline to start of suffix
+- a143009: fix: wait for all output before writing groupSuffix
+
 ## 0.8.2
 
 ### Patch Changes
