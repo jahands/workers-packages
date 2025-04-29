@@ -39,6 +39,9 @@
 		"check:types": "runx check --exports",
 		"test": "run-vitest"
 	},
+	"dependencies": {
+		"empathic": "1.0.0"
+	},
 	"devDependencies": {
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
@@ -48,8 +51,5 @@
 	},
 	"peerDependencies": {
 		"@dagger.io/dagger": "^0.18.4"
-	},
-	"dependencies": {
-		"empathic": "1.0.0"
 	}
 }
