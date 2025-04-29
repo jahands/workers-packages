@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.4.0
+
+### Minor Changes
+
+- b4d70c5: feat: add shell() and getModulePath() helpers
+
 ## 0.3.0
 
 ### Minor Changes
