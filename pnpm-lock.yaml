@@ -232,6 +232,9 @@ importers:
       '@dagger.io/dagger':
         specifier: ^0.18.4
         version: 0.18.4
+      empathic:
+        specifier: 1.0.0
+        version: 1.0.0
     devDependencies:
       '@repo/tools':
         specifier: workspace:*
@@ -239,6 +242,9 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      '@types/node':
+        specifier: 20.8.3
+        version: 20.8.3
       typescript:
         specifier: 5.5.4
         version: 5.5.4

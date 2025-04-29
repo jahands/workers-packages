@@ -42,10 +42,14 @@
 	"devDependencies": {
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
+		"@types/node": "20.8.3",
 		"typescript": "5.5.4",
 		"vitest": "2.1.1"
 	},
 	"peerDependencies": {
 		"@dagger.io/dagger": "^0.18.4"
+	},
+	"dependencies": {
+		"empathic": "1.0.0"
 	}
 }
