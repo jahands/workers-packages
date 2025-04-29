@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.5.0
+
+### Minor Changes
+
+- e2cb529: feat: add helpers to convert between SNAKE_CASE and camelCase
+
 ## 0.4.0
 
 ### Minor Changes
