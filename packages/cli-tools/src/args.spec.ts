@@ -37,7 +37,7 @@ describe('parseArg()', () => {
 				parseArg('a', schema, cli)
 			})
 		expect(() => cli.parse([])).toThrowErrorMatchingInlineSnapshot(
-			`[CommanderError: [91merror[39m[90m:[39m Expected number, received nan]`
+			`[CommanderError: [91merror[39m[90m:[39m ✖ Invalid input: expected number, received NaN]`
 		)
 		expect(exited).toBe(true)
 	})
@@ -46,12 +46,12 @@ describe('parseArg()', () => {
 		expect(exitErrors.length).toBe(0)
 		const schema = z.string().regex(/^foo$/)
 		expect(() => parseArg('bar', schema)).toThrowErrorMatchingInlineSnapshot(
-			`[CommanderError: [91merror[39m[90m:[39m Invalid]`
+			`[CommanderError: [91merror[39m[90m:[39m ✖ Invalid string: must match pattern /^foo$/]`
 		)
 		expect(exitErrors.length).toBe(1)
 		expect(exitErrors).toMatchInlineSnapshot(`
 			[
-			  [CommanderError: [91merror[39m[90m:[39m Invalid],
+			  [CommanderError: [91merror[39m[90m:[39m ✖ Invalid string: must match pattern /^foo$/],
 			]
 		`)
 	})
