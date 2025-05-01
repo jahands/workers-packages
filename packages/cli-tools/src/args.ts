@@ -1,5 +1,5 @@
 import { program } from '@commander-js/extra-typings'
-import { ZodError } from 'zod'
+import z, { ZodError } from 'zod'
 import { chalk } from 'zx'
 
 import type { Command } from '@commander-js/extra-typings'
@@ -34,12 +34,9 @@ export function parseArg<T extends ZodTypeAny>(
 		return validator.parse(s)
 	} catch (err) {
 		if (err instanceof ZodError && err.issues.length > 0) {
-			const messages = err.issues.map((e) => e.message)
-			let messagesFmt = messages[0]
-			for (const msg of messages.slice(1)) {
-				messagesFmt += `\n       ${msg}`
-			}
-			throw (cmd ?? program).error(`${chalk.redBright('error')}${chalk.grey(':')} ${messagesFmt}`)
+			throw (cmd ?? program).error(
+				`${chalk.redBright('error')}${chalk.grey(':')} ${z.prettifyError(err)}`
+			)
 		} else {
 			throw err
 		}
