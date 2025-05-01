@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.5.4
+
+### Patch Changes
+
+- cff3263: chore: update deps (zod 4)
+
 ## 0.5.3
 
 ### Patch Changes

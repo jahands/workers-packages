@@ -1,5 +1,12 @@
 # workers-tagged-logger
 
+## 0.10.0
+
+### Minor Changes
+
+- cf2fc4e: feat: Allow nested log tags and fields
+- 721ead9: feat: allow logging dates
+
 ## 0.9.1
 
 ### Patch Changes
