@@ -1,5 +1,16 @@
 # @repo/hono-app
 
+## 0.3.29
+
+### Patch Changes
+
+- cff3263: chore: update deps (zod 4)
+- Updated dependencies [cf2fc4e]
+- Updated dependencies [721ead9]
+- Updated dependencies [cff3263]
+  - workers-tagged-logger@0.10.0
+  - http-codex@0.5.4
+
 ## 0.3.28
 
 ### Patch Changes

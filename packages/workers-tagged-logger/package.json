@@ -1,6 +1,6 @@
 {
 	"name": "workers-tagged-logger",
-	"version": "0.9.1",
+	"version": "0.10.0",
 	"private": false,
 	"description": "A structured logger for Cloudflare Workers",
 	"keywords": [

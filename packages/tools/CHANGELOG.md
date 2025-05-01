@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.8.2
+
+### Patch Changes
+
+- cff3263: chore: update deps (zod 4)
+
 ## 0.8.1
 
 ### Patch Changes
