@@ -2,11 +2,18 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { AsyncLocalStorage } from 'node:async_hooks'
 
-export type LogValue = string | number | boolean | null | undefined
+export type LogValue =
+	| string
+	| number
+	| boolean
+	| null
+	| undefined
+	| { [key: string]: LogValue }
+	| LogValue[]
 
 /** Log tags to attach to logs */
 export type LogTags = {
-	[x: string]: LogValue | Record<string, LogValue> | LogValue[]
+	[key: string]: LogValue
 }
 
 /** Top-level fields to add to the log */

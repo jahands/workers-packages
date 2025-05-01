@@ -10,15 +10,30 @@ import type {
 
 // Zod version of types for improved testing. Keep in sync with src/logger.ts
 
-export type LogValue = z.infer<typeof LogValue>
-export const LogValue = z.union([z.string(), z.number(), z.boolean(), z.null(), z.undefined()])
+export type LogValue =
+	| string
+	| number
+	| boolean
+	| null
+	| undefined
+	| { [key: string]: LogValue }
+	| LogValue[]
+
+const logValueSchema: z.ZodType<LogValue> = z.lazy(() =>
+	z.union([
+		z.string(),
+		z.number(),
+		z.boolean(),
+		z.null(),
+		z.undefined(),
+		z.record(z.string(), logValueSchema), // Recursive object definition
+		z.array(logValueSchema), // Recursive array definition
+	])
+)
 
 /** Log tags to attach to logs */
 export type LogTags = z.infer<typeof LogTags>
-export const LogTags = z.record(
-	z.string(),
-	LogValue.or(z.record(z.string(), LogValue).or(LogValue.array()))
-)
+export const LogTags = z.record(z.string(), logValueSchema)
 
 /** Top-level fields to add to the log */
 export type LogFields = LogTags
@@ -30,12 +45,12 @@ export const LogLevel = z.enum(['info', 'log', 'warn', 'error', 'debug'])
 export type ConsoleLog = z.infer<typeof ConsoleLog>
 export const ConsoleLog = z
 	.object({
-		message: z.union([z.string(), z.instanceof(Error), z.undefined()]),
+		message: z.union([z.string(), z.instanceof(Error), z.undefined()]).optional(),
 		level: LogLevel,
 		time: z.string(),
 		tags: LogTags.optional(),
 	})
-	.passthrough()
+	.loose()
 
 // assertions to ensure the schemas match the real types
 
