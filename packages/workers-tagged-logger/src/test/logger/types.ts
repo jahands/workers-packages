@@ -14,6 +14,7 @@ export type LogValue =
 	| string
 	| number
 	| boolean
+	| Date
 	| null
 	| undefined
 	| { [key: string]: LogValue }
@@ -24,6 +25,7 @@ const logValueSchema: z.ZodType<LogValue> = z.lazy(() =>
 		z.string(),
 		z.number(),
 		z.boolean(),
+		z.date(),
 		z.null(),
 		z.undefined(),
 		z.record(z.string(), logValueSchema), // Recursive object definition

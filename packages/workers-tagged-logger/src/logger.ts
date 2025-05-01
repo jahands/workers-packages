@@ -6,6 +6,7 @@ export type LogValue =
 	| string
 	| number
 	| boolean
+	| Date // Workers Logs allow logging Date objects
 	| null
 	| undefined
 	| { [key: string]: LogValue }
@@ -469,6 +470,7 @@ export function WithLogTags<T extends LogTags>(
 				existing.$logger &&
 				typeof existing.$logger === 'object' &&
 				!Array.isArray(existing.$logger) &&
+				!(existing.$logger instanceof Date) &&
 				typeof existing.$logger.rootMethod === 'string'
 			) {
 				rootMethod = existing.$logger.rootMethod
