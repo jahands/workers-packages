@@ -25,6 +25,76 @@
 				"types": "./dist/index.d.ts",
 				"default": "./dist/index.js"
 			}
+		},
+		"./args": {
+			"import": {
+				"types": "./dist/args.d.ts",
+				"default": "./dist/args.js"
+			},
+			"require": {
+				"types": "./dist/args.d.ts",
+				"default": "./dist/args.js"
+			}
+		},
+		"./cmd": {
+			"import": {
+				"types": "./dist/cmd.d.ts",
+				"default": "./dist/cmd.js"
+			},
+			"require": {
+				"types": "./dist/cmd.d.ts",
+				"default": "./dist/cmd.js"
+			}
+		},
+		"./env": {
+			"import": {
+				"types": "./dist/env.d.ts",
+				"default": "./dist/env.js"
+			},
+			"require": {
+				"types": "./dist/env.d.ts",
+				"default": "./dist/env.js"
+			}
+		},
+		"./errors": {
+			"import": {
+				"types": "./dist/errors.d.ts",
+				"default": "./dist/errors.js"
+			},
+			"require": {
+				"types": "./dist/errors.d.ts",
+				"default": "./dist/errors.js"
+			}
+		},
+		"./fs": {
+			"import": {
+				"types": "./dist/fs.d.ts",
+				"default": "./dist/fs.js"
+			},
+			"require": {
+				"types": "./dist/fs.d.ts",
+				"default": "./dist/fs.js"
+			}
+		},
+		"./proc": {
+			"import": {
+				"types": "./dist/proc.d.ts",
+				"default": "./dist/proc.js"
+			},
+			"require": {
+				"types": "./dist/proc.d.ts",
+				"default": "./dist/proc.js"
+			}
+		},
+		"./promise": {
+			"import": {
+				"types": "./dist/promise.d.ts",
+				"default": "./dist/promise.js"
+			},
+			"require": {
+				"types": "./dist/promise.d.ts",
+				"default": "./dist/promise.js"
+			}
 		}
 	},
 	"main": "./dist/index.js",
