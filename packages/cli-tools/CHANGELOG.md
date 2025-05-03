@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.10.0
+
+### Minor Changes
+
+- 86c47d0: feat: add tree-shakable exports
+
 ## 0.9.3
 
 ### Patch Changes
