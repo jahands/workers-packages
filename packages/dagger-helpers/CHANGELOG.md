@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.5.1
+
+### Patch Changes
+
+- 2bf6a4a: chore: disable warning
+
 ## 0.5.0
 
 ### Minor Changes
