@@ -163,16 +163,17 @@ describe('@ParamsToEnv Decorator', () => {
 			const instance = new TestClass()
 			instance.myMethod('req')
 			// Check warning message (depends on extractParamNames identifying optional params correctly)
-			expect(consoleWarnMessages.some((msg) => msg.includes('mismatch'))).toBe(true)
-			expect(
-				consoleWarnMessages.some((msg) =>
-					msg.includes(
-						'Extracted 3 names (REQUIRED_VAR, OPTIONAL_VAR, ANOTHER_OPTIONAL), received 1 args'
-					)
-				)
-			).toBe(true)
+			// EDIT: We removed this warning
+			// expect(consoleWarnMessages.some((msg) => msg.includes('mismatch'))).toBe(true)
+			// expect(
+			// 	consoleWarnMessages.some((msg) =>
+			// 		msg.includes(
+			// 			'Extracted 3 names (REQUIRED_VAR, OPTIONAL_VAR, ANOTHER_OPTIONAL), received 1 args'
+			// 		)
+			// 	)
+			// ).toBe(true)
 			expect(envStorage.getStore()).toBeUndefined() // Context gone after call
-			expect(consoleWarnMessages.length).toBe(1)
+			expect(consoleWarnMessages.length).toBe(0)
 		})
 
 		it('should provide undefined context outside the decorated method scope', () => {
