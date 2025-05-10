@@ -81,11 +81,12 @@ export function ParamsToEnv(): MethodDecorator {
 				// This might be inaccurate if optional parameters aren't passed.
 				if (paramNames.length !== args.length && typeof propertyKey === 'string') {
 					// Log a warning but attempt to proceed. The context might be incomplete.
-					console.warn(
-						`Parameter name extraction/argument count mismatch for ${propertyKey}: ` +
-							`Extracted ${paramNames.length} names (${paramNames.join(', ')}), received ${args.length} args. ` +
-							`Context in AsyncLocalStorage may be incomplete or incorrect.`
-					)
+					// Note: Disabling this for now because optional parameters trigger this warning.
+					// console.warn(
+					// 	`Parameter name extraction/argument count mismatch for ${propertyKey}: ` +
+					// 		`Extracted ${paramNames.length} names (${paramNames.join(', ')}), received ${args.length} args. ` +
+					// 		`Context in AsyncLocalStorage may be incomplete or incorrect.`
+					// )
 					// Optionally, you could try to pad paramNames or truncate args, but it's risky.
 				}
 			}
