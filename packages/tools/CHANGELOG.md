@@ -1,5 +1,15 @@
 # @repo/tools
 
+## 0.10.0
+
+### Minor Changes
+
+- 759d89b: feat: add daggerx commands for managing dagger modules
+
+### Patch Changes
+
+- 29bd530: fix: use correct format command
+
 ## 0.9.3
 
 ### Patch Changes
