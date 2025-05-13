@@ -34,11 +34,11 @@ dagger-test *flags:
   #!/bin/bash
   set -euo pipefail
   SECRETS='op://xxcrgwtyu2wmeh2jdcnee2eqda/dzxntwosd46ykwyz7qjdijfr2m'
-  op run --no-masking -- DAGGER_TOKEN="$SECRETS/DAGGER_TOKEN" \
-    dagger call test \
-      --TURBO_TOKEN="$SECRETS/TURBO_TOKEN" \
-      --TURBO_REMOTE_CACHE_SIGNATURE_KEY="$SECRETS/TURBO_REMOTE_CACHE_SIGNATURE_KEY" \
-      {{flags}}
+  export DAGGER_CLOUD_TOKEN="$SECRETS/DAGGER_CLOUD_TOKEN"
+  op run --no-masking -- dagger call test \
+    --TURBO_TOKEN="$SECRETS/TURBO_TOKEN" \
+    --TURBO_REMOTE_CACHE_SIGNATURE_KEY="$SECRETS/TURBO_REMOTE_CACHE_SIGNATURE_KEY" \
+    {{flags}}
 
 # ========================= #
 # ======== HELPERS ======== #
