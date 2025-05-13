@@ -5,35 +5,26 @@ const sh = shell('bash')
 
 const projectIncludes: string[] = [
 	// dirs
-	'1projects/',
-	'apps/',
-	'apps2/',
-	'bunapps/',
-	'docker/',
+	'examples/',
 	'packages/',
-	'patches/',
-	'tools/',
 
 	// files
+	'.eslintrc.cjs',
 	'.gitignore',
 	'.npmrc',
 	'.prettierignore',
 	'.prettierrc.cjs',
-	'.sentryclirc',
 	'.syncpackrc.cjs',
-	'eslint.config.ts',
-	'biome.jsonc',
 	'package.json',
 	'pnpm-lock.yaml',
 	'pnpm-workspace.yaml',
-	'Justfile',
 	'tsconfig.json',
 	'turbo.json',
 	'vitest.workspace.ts',
 ]
 
 @object()
-export class DaggerCommon {
+export class WorkersPackages {
 	source: Directory
 
 	constructor(
@@ -42,17 +33,15 @@ export class DaggerCommon {
 			ignore: [
 				'**/node_modules/',
 				'**/.env',
+				'**/*.env',
 				'**/.secret',
-				'**/Earthfile',
 				'**/.wrangler',
 				'**/.dev.vars',
 				'**/.turbo/',
 				'**/dist/',
-				'**/dist2/',
 				'**/.DS_Store',
-				'**/.astro/',
-				'**/.next/',
-				'*.env',
+				'**/dagger/sdk/',
+				'**/.dagger/sdk/',
 			],
 		})
 		source: Directory
@@ -99,7 +88,6 @@ export class DaggerCommon {
 			// copy over minimal files needed for installing tools/deps
 			.withDirectory('/work', this.source.directory('/'), {
 				include: [
-					'patches/',
 					'pnpm-lock.yaml',
 					'pnpm-workspace.yaml',
 					'package.json',
@@ -107,7 +95,6 @@ export class DaggerCommon {
 					'.npmrc',
 					'packages/tools/bin',
 				],
-				exclude: ['tools/**'],
 			})
 
 			// install pnpm deps

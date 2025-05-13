@@ -1,5 +1,5 @@
 {
-	"name": "dagger-main",
+	"name": "dagger-workers-packages",
 	"type": "module",
 	"main": "src/main.dagger.ts",
 	"dependencies": {
