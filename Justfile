@@ -41,6 +41,7 @@ dagger-test *flags:
     {{flags}}
 
 # Helpers for managing dagger modules
+[no-cd]
 daggerx *flags:
   @bun runx daggerx {{flags}}
 alias dagx := daggerx
