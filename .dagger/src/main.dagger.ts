@@ -107,30 +107,6 @@ export class WorkersPackages {
 
 			// git dir is used for turbox summary reporting and sentry during deploys
 			.withDirectory('.git', this.source.directory('/.git'))
-
-		const ghaEnvExists = await this.source
-			.directory('/')
-			.entries()
-			.then((e) => e.includes('.github_actions.tmp'))
-
-		if (ghaEnvExists) {
-			con = con
-				// mount .github_actions.tmp if it exists (used in turbox)
-				.withMountedFile('.github_actions.tmp', this.source.file('.github_actions.tmp'))
-		}
-		return con
-	}
-
-	@func()
-	@ParamsToEnv()
-	async buildPackages(
-		TURBO_TOKEN?: Secret,
-		TURBO_REMOTE_CACHE_SIGNATURE_KEY?: Secret,
-		GITHUB_ACTIONS?: string
-	): Promise<Container> {
-		const con = this.withEnv(await this.installDeps())
-			.withExec(sh(`bun turbox build -- -F './packages/*' --log-order=grouped`))
-			.sync()
 		return con
 	}
 
@@ -140,53 +116,15 @@ export class WorkersPackages {
 		TURBO_TOKEN?: Secret,
 		TURBO_REMOTE_CACHE_SIGNATURE_KEY?: Secret,
 		GITHUB_ACTIONS?: string
-	): Promise<Container> {
-		const con = this.withEnv(await this.buildPackages())
+	): Promise<void> {
+		const con = this.withEnv(await this.installDeps())
 
-		const [checks, _lint] = await Promise.all([
-			con.withExec(sh('bun turbo check:ci -- --log-order=grouped')).sync(),
-			// Run check:lint:all in separate container to hopefully prevent the
-			// current race condition we're seeing from causing failures
-			con.withExec(sh('bun turbo check:lint:all -- --log-order=grouped')).sync(),
-		])
-		return checks
-	}
-
-	@func()
-	async getVersion(pkgPath: string): Promise<string> {
-		const dep = await (await this.installDeps()).sync()
-		const con = await dep
-			.withWorkdir(`/work/${pkgPath}`)
-			.withExec(sh('bun get-docker-version'), { noInit: true })
-			.sync()
-		return (await con.stdout()).trim()
+		await con.withExec(sh('bun check:ci')).sync()
 	}
 
 	// =============================== //
 	// =========== Helpers =========== //
 	// =============================== //
-
-	/**
-	 * Get the env vars from the AsyncLocalStorage store
-	 */
-	private getEnv({ exclude }: { exclude?: string[] } = {}): Record<
-		string,
-		string | Secret | undefined
-	> {
-		const store = envStorage.getStore()
-		if (!store) return {}
-		const { currentParams, mergedEnv } = store
-		return Object.fromEntries(
-			Object.entries(mergedEnv).filter(
-				([key, value]) =>
-					currentParams.has(key) &&
-					// only include uppercase vars - others may not be vars
-					key.toUpperCase() === key &&
-					value !== undefined &&
-					!exclude?.includes(key)
-			)
-		)
-	}
 
 	/**
 	 * Calculate derived environment variables based on variables present in the env object.
@@ -215,10 +153,6 @@ export class WorkersPackages {
 	 * Add env vars / secrets to a container based on AsyncLocalStorage context
 	 */
 	private withEnv(
-		// TODO: Make this accept a promise or something so that we
-		// don't have to await the container when using this. Or
-		// something like that. Just want to stop calling sync()
-		// wherever we can to improve tracing.
 		con: Container,
 		{
 			color = true,
