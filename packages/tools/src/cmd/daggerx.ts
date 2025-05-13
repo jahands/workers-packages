@@ -69,7 +69,7 @@ daggerxCmd
 		)
 
 		echo(chalk.blue('fixing formatting...'))
-		await $`just fix --format`.quiet()
+		await $`bun fix:format`.quiet()
 
 		echo(chalk.green(`\nSuccessfully initialized ${chalk.white(modules.length)} dagger modules`))
 	})
