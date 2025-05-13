@@ -9,7 +9,9 @@ import { match } from 'ts-pattern'
  *
  * ```ts
  * const sh = shell('bash')
- * .withExec(sh('echo hello world!'))
+ *
+ * const con = dag.container()
+ *   .withExec(sh('echo hello world!'))
  * ```
  */
 export function shell(shellName: 'sh' | 'bash' | 'zsh') {
