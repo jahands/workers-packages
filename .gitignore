@@ -40,3 +40,8 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+
+# Dagger
+**/.dagger/sdk
+**/dagger/sdk

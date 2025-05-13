@@ -6,7 +6,7 @@
 		"*.jsx": "$(capture).js",
 		"*.tsx": "$(capture).ts",
 		"tsconfig.json": "tsconfig.*.json",
-		"package.json": "NOTICE, drizzle.config.ts, Justfile, .mise.toml, .prettierignore, .syncpackrc.cjs, CHANGELOG.md, .dev.vars.example, vitest.config.ts, vitest.workspace.ts, .dev.vars, postcss.config.mjs, .eslintrc.cjs, vite.config.ts, worker-configuration.d.ts, .editorconfig, .eslintignore, .earthlyignore, .git-blame-ignore-revs, Earthfile, README.md, package-lock.json, .sentryclirc, .npmrc, yarn.lock, .yarnrc, .nvmrc, .node-version, .eslintrc, .eslintcache, postcss.config.js, remix.config.js, remix.env.d.ts, tailwind.config.js, tsconfig.json, .prettierrc.cjs, .env, .gitignore, server.ts, .eslintrc.js, tailwind.config.ts, turbo.json, LICENSE, wrangler.toml, pnpm-lock.yaml, pnpm-workspace.yaml"
+		"package.json": "dagger.json, bun.lock, NOTICE, drizzle.config.ts, Justfile, .mise.toml, .prettierignore, .syncpackrc.cjs, CHANGELOG.md, .dev.vars.example, vitest.config.ts, vitest.workspace.ts, .dev.vars, postcss.config.mjs, .eslintrc.cjs, vite.config.ts, worker-configuration.d.ts, .editorconfig, .eslintignore, .earthlyignore, .git-blame-ignore-revs, Earthfile, README.md, package-lock.json, .sentryclirc, .npmrc, yarn.lock, .yarnrc, .nvmrc, .node-version, .eslintrc, .eslintcache, postcss.config.js, remix.config.js, remix.env.d.ts, tailwind.config.js, tsconfig.json, .prettierrc.cjs, .env, .gitignore, server.ts, .eslintrc.js, tailwind.config.ts, turbo.json, LICENSE, wrangler.toml, pnpm-lock.yaml, pnpm-workspace.yaml"
 	},
 	"editor.tabSize": 2,
 	"editor.detectIndentation": true,
