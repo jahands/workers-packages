@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.6.4
+
+### Patch Changes
+
+- dbc0981: fix: udpate output extension
+
 ## 0.6.3
 
 ### Patch Changes
