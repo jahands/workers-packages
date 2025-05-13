@@ -40,6 +40,11 @@ dagger-test *flags:
     --TURBO_REMOTE_CACHE_SIGNATURE_KEY="$SECRETS/TURBO_REMOTE_CACHE_SIGNATURE_KEY" \
     {{flags}}
 
+# Helpers for managing dagger modules
+daggerx *flags:
+  @bun runx daggerx {{flags}}
+alias dagx := daggerx
+
 # ========================= #
 # ======== HELPERS ======== #
 # ========================= #

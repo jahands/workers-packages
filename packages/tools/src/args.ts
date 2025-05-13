@@ -1,4 +1,7 @@
-// Copied from @repo/cli-tools to prevent circular deps
+// ============================= //
+// === Copied from cli-tools === //
+// ============================= //
+
 import { program } from '@commander-js/extra-typings'
 import z, { ZodError } from 'zod'
 import { chalk } from 'zx'

@@ -3,6 +3,8 @@ import * as find from 'empathic/find'
 import memoizeOne from 'memoize-one'
 import { z } from 'zod'
 
+import { isNotFoundError } from './fs'
+
 export const getRepoRoot = memoizeOne(() => {
 	const pnpmLock = z
 		.string()
@@ -33,4 +35,15 @@ export async function getMD5OfFile(path: string): Promise<string> {
 
 export async function getMD5OfString(str: string): Promise<string> {
 	return createHash('md5').update(str).digest('hex')
+}
+
+export function ignoreNotFound(e: unknown): void {
+	if (!isNotFoundError(e)) {
+		throw e
+	}
+}
+
+export async function deleteIfExists(filePath: string | string[]): Promise<void> {
+	const filePaths = Array.isArray(filePath) ? filePath : [filePath]
+	await Promise.all(filePaths.map((p) => Bun.file(p).delete().catch(ignoreNotFound)))
 }

@@ -4,6 +4,7 @@ import { program } from '@commander-js/extra-typings'
 
 import { buildCmd } from '../cmd/build'
 import { checkCmd } from '../cmd/check'
+import { daggerxCmd } from '../cmd/daggerx'
 import { deployCmd } from '../cmd/deploy'
 import { parseChangesetCmd } from '../cmd/parse-changeset'
 import { pkgCmd } from '../cmd/pkg/pkg'
@@ -23,6 +24,7 @@ program
 	.addCommand(sentryCmd)
 	.addCommand(pkgCmd)
 	.addCommand(releaseCmd)
+	.addCommand(daggerxCmd)
 
 	// Don't hang for unresolved promises
 	.hook('postAction', () => process.exit(0))
