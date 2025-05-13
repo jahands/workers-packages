@@ -51,5 +51,8 @@
 			"task": "changeset: new",
 			"tooltip": "Create changeset and commit all changes"
 		}
-	]
+	],
+	"[github-actions-workflow]": {
+		"gitlens.codeLens.scopes": ["document"]
+	}
 }
