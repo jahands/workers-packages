@@ -66,8 +66,8 @@ importers:
         specifier: 2.7.0
         version: 2.7.0
       zod:
-        specifier: 4.0.0-beta.20250430T185432
-        version: 4.0.0-beta.20250430T185432
+        specifier: 4.0.0-beta.20250505T195954
+        version: 4.0.0-beta.20250505T195954
 
   examples/cli-example:
     dependencies:
@@ -81,8 +81,8 @@ importers:
         specifier: 13.0.0
         version: 13.0.0
       zod:
-        specifier: 4.0.0-beta.20250430T185432
-        version: 4.0.0-beta.20250430T185432
+        specifier: 4.0.0-beta.20250505T195954
+        version: 4.0.0-beta.20250505T195954
       zx:
         specifier: 8.3.0
         version: 8.3.0
@@ -118,8 +118,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/workers-tagged-logger
       zod:
-        specifier: 4.0.0-beta.20250430T185432
-        version: 4.0.0-beta.20250430T185432
+        specifier: 4.0.0-beta.20250505T195954
+        version: 4.0.0-beta.20250505T195954
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.8.15
@@ -149,8 +149,8 @@ importers:
         specifier: 4.6.16
         version: 4.6.16
       zod:
-        specifier: 4.0.0-beta.20250430T185432
-        version: 4.0.0-beta.20250430T185432
+        specifier: 4.0.0-beta.20250505T195954
+        version: 4.0.0-beta.20250505T195954
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.8.15
@@ -224,8 +224,8 @@ importers:
         specifier: 2.1.1
         version: 2.1.1(@types/node@20.8.3)
       zod:
-        specifier: 4.0.0-beta.20250430T185432
-        version: 4.0.0-beta.20250430T185432
+        specifier: 4.0.0-beta.20250505T195954
+        version: 4.0.0-beta.20250505T195954
 
   packages/dagger-helpers:
     dependencies:
@@ -327,8 +327,8 @@ importers:
         specifier: 2.1.1
         version: 2.1.1(@types/node@20.8.3)
       zod:
-        specifier: 4.0.0-beta.20250430T185432
-        version: 4.0.0-beta.20250430T185432
+        specifier: 4.0.0-beta.20250505T195954
+        version: 4.0.0-beta.20250505T195954
       zx:
         specifier: 8.3.0
         version: 8.3.0
@@ -371,7 +371,7 @@ importers:
         version: 13.0.0(commander@13.0.0)
       '@jahands/cli-tools':
         specifier: 0.10.1
-        version: 0.10.1(@commander-js/extra-typings@13.0.0(commander@13.0.0))(commander@13.0.0)(typescript@5.8.3)(zod@4.0.0-beta.20250430T185432)(zx@8.3.0)
+        version: 0.10.1(@commander-js/extra-typings@13.0.0(commander@13.0.0))(commander@13.0.0)(typescript@5.8.3)(zod@4.0.0-beta.20250505T195954)(zx@8.3.0)
       '@types/luxon':
         specifier: 3.4.2
         version: 3.4.2
@@ -412,8 +412,8 @@ importers:
         specifier: 5.6.2
         version: 5.6.2
       zod:
-        specifier: 4.0.0-beta.20250430T185432
-        version: 4.0.0-beta.20250430T185432
+        specifier: 4.0.0-beta.20250505T195954
+        version: 4.0.0-beta.20250505T195954
       zx:
         specifier: 8.3.0
         version: 8.3.0
@@ -438,8 +438,8 @@ importers:
         specifier: workspace:*
         version: link:../typescript-config
       zod:
-        specifier: 4.0.0-beta.20250430T185432
-        version: 4.0.0-beta.20250430T185432
+        specifier: 4.0.0-beta.20250505T195954
+        version: 4.0.0-beta.20250505T195954
 
   packages/typescript-config:
     devDependencies:
@@ -477,8 +477,8 @@ importers:
         specifier: 2.1.1
         version: 2.1.1(@types/node@20.8.3)
       zod:
-        specifier: 4.0.0-beta.20250430T185432
-        version: 4.0.0-beta.20250430T185432
+        specifier: 4.0.0-beta.20250505T195954
+        version: 4.0.0-beta.20250505T195954
     optionalDependencies:
       hono:
         specifier: ^4.6.16
@@ -2212,8 +2212,8 @@ packages:
   '@vitest/utils@2.1.1':
     resolution: {integrity: sha512-Y6Q9TsI+qJ2CC0ZKj6VBb+T8UPz593N113nnUykqwANqhgf3QkZeHFlusgKLTqrnVHbj/XDKZcDHol+dxVT+rQ==}
 
-  '@zod/core@0.10.0':
-    resolution: {integrity: sha512-iMITRygme3v9jPsITJjvRMw60+MQq7MWnNpJleRkfjeSCjBm3c1/tiw3NUS4re/M2CBXVP5kAjI7sQrf22twXA==}
+  '@zod/core@0.11.6':
+    resolution: {integrity: sha512-03Bv82fFSfjDAvMfdHHdGSS6SOJs0iCcJlWJv1kJHRtoTT02hZpyip/2Lk6oo4l4FtjuwTrsEQTwg/LD8I7dJA==}
 
   acorn-import-attributes@1.9.5:
     resolution: {integrity: sha512-n02Vykv5uA3eHGM/Z2dQrcD56kL8TyDb2p1+0P83PClMnC/nc+anbQRhIOWnSq4Ke/KvDPrY3C9hDtC/A3eHnQ==}
@@ -5272,11 +5272,11 @@ packages:
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
 
-  zod@3.24.1:
-    resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
+  zod@3.24.4:
+    resolution: {integrity: sha512-OdqJE9UDRPwWsrHjLN2F8bPxvwJBK22EHLWtanu0LSYr5YqzsaaW3RMgmjwr8Rypg5k+meEJdSPXJZXE/yqOMg==}
 
-  zod@4.0.0-beta.20250430T185432:
-    resolution: {integrity: sha512-vslrh3wNLK14cpJwzcuU/uphPR0K/nf4G+/rDpp7TTl4d9h5Rgk1PNcr+2zftZJ4o+sKRUvlFV+FmAVfhu7ZqA==}
+  zod@4.0.0-beta.20250505T195954:
+    resolution: {integrity: sha512-iB8WvxkobVIXMARvQu20fKvbS7mUTiYRpcD8OQV1xjRhxO0EEpYIRJBk6yfBzHAHEdOSDh3SxDITr5Eajr2vtg==}
 
   zx@8.3.0:
     resolution: {integrity: sha512-L8mY3yfJwo3a8ZDD6f9jZzAcRWJZYcV8GauZmBxLB/aSTwaMzMIEVpPp2Kyx+7yF0gdvuxKnMxAZRft9UCawiw==}
@@ -5527,7 +5527,7 @@ snapshots:
       semver: 7.7.1
       vitest: 2.1.1(@types/node@20.8.3)
       wrangler: 4.10.0(@cloudflare/workers-types@4.20250410.0)
-      zod: 3.24.1
+      zod: 3.24.4
     transitivePeerDependencies:
       - '@cloudflare/workers-types'
       - bufferutil
@@ -6038,12 +6038,12 @@ snapshots:
     dependencies:
       minipass: 7.1.2
 
-  '@jahands/cli-tools@0.10.1(@commander-js/extra-typings@13.0.0(commander@13.0.0))(commander@13.0.0)(typescript@5.8.3)(zod@4.0.0-beta.20250430T185432)(zx@8.3.0)':
+  '@jahands/cli-tools@0.10.1(@commander-js/extra-typings@13.0.0(commander@13.0.0))(commander@13.0.0)(typescript@5.8.3)(zod@4.0.0-beta.20250505T195954)(zx@8.3.0)':
     dependencies:
       '@commander-js/extra-typings': 13.0.0(commander@13.0.0)
       commander: 13.0.0
       typescript: 5.8.3
-      zod: 4.0.0-beta.20250430T185432
+      zod: 4.0.0-beta.20250505T195954
       zx: 8.3.0
 
   '@jridgewell/gen-mapping@0.3.5':
@@ -6860,7 +6860,7 @@ snapshots:
       loupe: 3.1.3
       tinyrainbow: 1.2.0
 
-  '@zod/core@0.10.0': {}
+  '@zod/core@0.11.6': {}
 
   acorn-import-attributes@1.9.5(acorn@8.14.0):
     dependencies:
@@ -10495,11 +10495,11 @@ snapshots:
 
   zod@3.22.3: {}
 
-  zod@3.24.1: {}
+  zod@3.24.4: {}
 
-  zod@4.0.0-beta.20250430T185432:
+  zod@4.0.0-beta.20250505T195954:
     dependencies:
-      '@zod/core': 0.10.0
+      '@zod/core': 0.11.6
 
   zx@8.3.0:
     optionalDependencies:
