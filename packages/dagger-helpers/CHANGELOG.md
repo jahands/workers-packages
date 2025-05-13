@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.6.0
+
+### Minor Changes
+
+- 8768f1b: feat: add set -eu and set -euo pipefail to shell() for sh and bash/zsh respectively
+
 ## 0.5.1
 
 ### Patch Changes
