@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.6.1
+
+### Patch Changes
+
+- c7503d3: chore: switch to bundling dagger-helpers to hopefully fix issues
+
 ## 0.6.0
 
 ### Minor Changes

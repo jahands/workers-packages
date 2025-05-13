@@ -1,5 +1,15 @@
 # @repo/tools
 
+## 0.9.0
+
+### Minor Changes
+
+- f2a5b99: feat: only import typescript when needed to speed up other commands
+
+### Patch Changes
+
+- 7f18c93: chore: update build commands based on workers-monorepo-template
+
 ## 0.8.2
 
 ### Patch Changes
