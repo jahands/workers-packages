@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.10.1
+
+### Patch Changes
+
+- 1620010: fix: actually run typechecks
+
 ## 0.10.0
 
 ### Minor Changes

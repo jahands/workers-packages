@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.5.5
+
+### Patch Changes
+
+- 1620010: fix: actually run typechecks
+
 ## 0.5.4
 
 ### Patch Changes
