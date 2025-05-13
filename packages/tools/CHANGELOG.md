@@ -1,5 +1,12 @@
 # @repo/tools
 
+## 0.9.1
+
+### Patch Changes
+
+- Updated dependencies [1620010]
+  - @jahands/cli-tools@0.10.1
+
 ## 0.9.0
 
 ### Minor Changes

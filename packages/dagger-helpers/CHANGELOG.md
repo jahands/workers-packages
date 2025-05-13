@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.6.2
+
+### Patch Changes
+
+- 1620010: fix: actually run typechecks
+
 ## 0.6.1
 
 ### Patch Changes
