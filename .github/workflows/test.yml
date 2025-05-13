@@ -31,3 +31,5 @@ jobs:
           version: '0.18.6'
       - name: Test (Dagger)
         run: just dagger-test --GITHUB_ACTIONS=1
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
