@@ -15,9 +15,15 @@ const config = {
 				'workers-tagged-logger',
 				'@jahands/otel-cf-workers',
 				'http-codex',
-				'@jahands/cli-tools',
+				// '@jahands/cli-tools', // use published version
 			],
 			dependencyTypes: ['!local'], // Exclude the local package itself
+			pinVersion: 'workspace:*',
+		},
+		{
+			label: 'use local verison of cli-tools in cli-example for integration tests',
+			packages: ['@repo/cli-example'],
+			dependencies: ['@jahands/cli-tools'],
 			pinVersion: 'workspace:*',
 		},
 		{

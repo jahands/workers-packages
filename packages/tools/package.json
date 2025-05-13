@@ -13,6 +13,7 @@
 	},
 	"dependencies": {
 		"@commander-js/extra-typings": "13.0.0",
+		"@jahands/cli-tools": "0.10.0",
 		"@types/luxon": "3.4.2",
 		"@types/node": "20.8.3",
 		"cli-table3": "0.6.5",
