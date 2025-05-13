@@ -34,19 +34,17 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "runx build tsc ./src/index.ts",
+		"build": "runx build bundle-lib ./src/index.ts --format esm --platform node",
 		"check:lint": "run-eslint-workers",
 		"check:types": "runx check --exports",
 		"test": "run-vitest"
-	},
-	"dependencies": {
-		"empathic": "1.0.0",
-		"ts-pattern": "5.6.2"
 	},
 	"devDependencies": {
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@types/node": "20.8.3",
+		"empathic": "1.0.0",
+		"ts-pattern": "5.6.2",
 		"typescript": "5.5.4",
 		"vitest": "2.1.1"
 	},

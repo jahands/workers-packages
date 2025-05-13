@@ -232,12 +232,6 @@ importers:
       '@dagger.io/dagger':
         specifier: ^0.18.4
         version: 0.18.4
-      empathic:
-        specifier: 1.0.0
-        version: 1.0.0
-      ts-pattern:
-        specifier: 5.6.2
-        version: 5.6.2
     devDependencies:
       '@repo/tools':
         specifier: workspace:*
@@ -248,6 +242,12 @@ importers:
       '@types/node':
         specifier: 20.8.3
         version: 20.8.3
+      empathic:
+        specifier: 1.0.0
+        version: 1.0.0
+      ts-pattern:
+        specifier: 5.6.2
+        version: 5.6.2
       typescript:
         specifier: 5.5.4
         version: 5.5.4
