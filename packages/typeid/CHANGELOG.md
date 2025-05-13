@@ -1,5 +1,11 @@
 # @jahands/typeid
 
+## 0.2.3
+
+### Patch Changes
+
+- 0afdbb3: chore: update deps (zod)
+
 ## 0.2.2
 
 ### Patch Changes

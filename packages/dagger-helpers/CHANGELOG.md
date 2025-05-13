@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.6.3
+
+### Patch Changes
+
+- 15b3b6f: chore: update example
+
 ## 0.6.2
 
 ### Patch Changes
