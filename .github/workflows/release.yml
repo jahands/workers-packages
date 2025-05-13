@@ -9,6 +9,10 @@ jobs:
     # Release PRs are for changelogs only - we auto publish on main every time regardless.
     name: Create Release PR
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
     timeout-minutes: 5
     concurrency: ${{ github.workflow }}-create-release-pr
     steps:
@@ -32,3 +36,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Update Lockfile
+        run: pnpm install --lockfile-only --child-concurrency=10
+      - name: Commit Lockfile
+        id: auto-commit-action
+        uses: stefanzweifel/git-auto-commit-action@af302a9c635adb759442b1ffd153700cc7729cc4
+        with:
+          commit_message: "chore: update pnpm-lock.yaml"
+          branch: changeset-release/main
+      - name: Trigger Test Workflow
+        if: steps.auto-commit-action.outputs.changes_detected == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run test.yml --ref ${{ steps.auto-commit-action.outputs.commit_hash }}
