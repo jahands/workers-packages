@@ -32,8 +32,8 @@ const config = {
 	printWidth: 100,
 	plugins: ['@ianvs/prettier-plugin-sort-imports', 'prettier-plugin-packagejson'],
 	importOrder: [...codeImports, ...typeImports],
-	importOrderParserPlugins: ['typescript', 'jsx', 'decorators'],
-	importOrderTypeScriptVersion: '5.5.3',
+	importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
+	importOrderTypeScriptVersion: '5.5.4',
 }
 
 module.exports = config
