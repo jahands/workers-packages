@@ -1,5 +1,14 @@
 # @repo/tools
 
+## 0.9.2
+
+### Patch Changes
+
+- 00147c2: chore: update deps
+- 0afdbb3: chore: update deps (zod)
+- Updated dependencies [0afdbb3]
+  - @jahands/cli-tools@0.10.2
+
 ## 0.9.1
 
 ### Patch Changes

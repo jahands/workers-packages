@@ -1,5 +1,12 @@
 # @repo/otel-example
 
+## 0.1.20
+
+### Patch Changes
+
+- 0afdbb3: chore: update deps (zod)
+  - @jahands/otel-cf-workers@0.1.18
+
 ## 0.1.19
 
 ### Patch Changes

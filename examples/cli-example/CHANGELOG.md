@@ -1,5 +1,13 @@
 # @repo/cli-example
 
+## 0.1.29
+
+### Patch Changes
+
+- 0afdbb3: chore: update deps (zod)
+- Updated dependencies [0afdbb3]
+  - @jahands/cli-tools@0.10.2
+
 ## 0.1.28
 
 ### Patch Changes
