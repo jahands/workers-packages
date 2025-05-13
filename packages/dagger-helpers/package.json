@@ -24,12 +24,12 @@
 		".": {
 			"import": {
 				"types": "./dist/index.d.ts",
-				"default": "./dist/index.js"
+				"default": "./dist/index.mjs"
 			}
 		}
 	},
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
+	"main": "./dist/index.mjs",
+	"module": "./dist/index.mjs",
 	"files": [
 		"dist"
 	],
