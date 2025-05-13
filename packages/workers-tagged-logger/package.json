@@ -39,8 +39,9 @@
 	],
 	"scripts": {
 		"build": "runx build tsc ./src/index.ts",
+		"check:exports": "runx check --exports",
 		"check:lint": "run-eslint-workers",
-		"check:types": "runx check --exports",
+		"check:types": "run-tsc",
 		"test": "run-vitest"
 	},
 	"devDependencies": {
