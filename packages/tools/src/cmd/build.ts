@@ -2,10 +2,11 @@ import { inspect } from 'util'
 import { Command } from '@commander-js/extra-typings'
 import * as esbuild from 'esbuild'
 import { match } from 'ts-pattern'
-import ts from 'typescript'
 import { z } from 'zod'
 
-import { getCompilerOptionsJSONFollowExtends, getTSConfig } from '../tsconfig'
+import { TSHelpers } from '../tsconfig'
+
+import type { CompilerOptions as TSCompilerOptions } from 'typescript'
 
 export const buildCmd = new Command('build').description('Build Workers/etc.')
 
@@ -24,6 +25,8 @@ buildCmd
 	.argument('<entrypoint...>', 'Entrypoint(s) for the program')
 	.option('-r, --root-dir <string>', 'Root dir for tsc to use (overrides tsconfig.json)', 'src')
 	.action(async (entrypoints, { rootDir }) => {
+		const ts = await import('typescript')
+		const tsHelpers = new TSHelpers(ts)
 		await $`rm -rf ./dist` // Make sure we don't have any previous artifacts
 
 		// Read the parent config so that we don't get
@@ -37,17 +40,17 @@ buildCmd
 			throw new Error(`failed to read tsconfig: ${inspect(tsconfig)}`)
 		}
 
-		const jsonCompopts = getCompilerOptionsJSONFollowExtends('tsconfig.json')
+		const jsonCompopts = tsHelpers.getCompilerOptionsJSONFollowExtends('tsconfig.json')
 		const tmp = ts.convertCompilerOptionsFromJson(jsonCompopts, '')
 		if (tmp.errors.length > 0) {
 			throw new Error(`failed parse config: ${inspect(tmp)}`)
 		}
-		const tsCompopts: ts.CompilerOptions = tmp.options
+		const tsCompopts: TSCompilerOptions = tmp.options
 
 		const config = {
 			...tsCompopts,
 			rootDir: rootDir,
-		} satisfies ts.CompilerOptions
+		} satisfies TSCompilerOptions
 
 		ts.createProgram(entrypoints, config).emit()
 	})
@@ -129,6 +132,8 @@ buildCmd
 	.description('Separate command to build types (so that we can run them concurrently)')
 	.argument('<entrypoints...>', 'Entrypoint(s) of the app. e.g. src/index.ts')
 	.action(async (entryPoints) => {
+		const ts = await import('typescript')
+		const tsHelpers = new TSHelpers(ts)
 		z.string().array().min(1).parse(entryPoints)
 
 		const tsconfig = ts.readConfigFile('./tsconfig.json', ts.sys.readFile)
@@ -137,13 +142,13 @@ buildCmd
 		}
 
 		const tsCompOpts = {
-			...getTSConfig(),
+			...tsHelpers.getTSConfig(),
 			declaration: true,
 			declarationMap: true,
 			emitDeclarationOnly: true,
 			noEmit: false,
 			outDir: './dist/',
-		} satisfies ts.CompilerOptions
+		} satisfies TSCompilerOptions
 
 		const program = ts.createProgram(entryPoints, tsCompOpts)
 		program.emit()
