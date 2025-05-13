@@ -1,0 +1,10 @@
+{
+	"$schema": "https://docs.dagger.io/reference/dagger.schema.json",
+	"name": "workers-packages",
+	"engineVersion": "v0.18.6",
+	"sdk": {
+		"source": "typescript"
+	},
+	"include": ["!**/node_modules/", "!**/.turbo/"],
+	"source": ".dagger"
+}

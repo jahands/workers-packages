@@ -7,7 +7,6 @@ export const constants = {
 			'**/node_modules/',
 			'**/.env',
 			'**/.secret',
-			'**/Earthfile',
 			'**/.wrangler',
 			'**/.dev.vars',
 			'**/.turbo/',
