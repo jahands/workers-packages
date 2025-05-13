@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.9.3
+
+### Patch Changes
+
+- ce26648: fix: inline args.ts to prevent circular deps
+
 ## 0.9.2
 
 ### Patch Changes
