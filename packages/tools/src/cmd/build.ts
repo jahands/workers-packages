@@ -1,10 +1,10 @@
 import { inspect } from 'util'
 import { Command } from '@commander-js/extra-typings'
-import { validateArg } from '@jahands/cli-tools'
 import * as esbuild from 'esbuild'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
 
+import { validateArg } from '../args'
 import { TSHelpers } from '../tsconfig'
 
 import type { TSCompilerOptions } from '../tsconfig'
