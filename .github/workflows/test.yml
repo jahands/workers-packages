@@ -17,7 +17,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 10
+          fetch-depth: 3
       - uses: 1password/install-cli-action@v1
       - uses: extractions/setup-just@v3
         with:

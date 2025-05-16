@@ -24,11 +24,11 @@ jobs:
         with:
           bun-version: 1.2.7
       - uses: pnpm/action-setup@v4
-      - name: Setup Node.js 22.x
+      - name: Setup Node.js lts
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
-          cache: 'pnpm'
+          node-version: lts/*
+          # cache: 'pnpm' # makes it slower
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile --child-concurrency=10
       - name: Create Release Pull Request
