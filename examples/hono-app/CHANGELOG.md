@@ -1,5 +1,14 @@
 # @repo/hono-app
 
+## 0.3.32
+
+### Patch Changes
+
+- d7f5555: chore: update zod to latest v3 beta
+- Updated dependencies [d7f5555]
+  - workers-tagged-logger@0.10.3
+  - http-codex@0.5.7
+
 ## 0.3.31
 
 ### Patch Changes

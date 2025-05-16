@@ -1,5 +1,11 @@
 # @jahands/typeid
 
+## 0.2.4
+
+### Patch Changes
+
+- d7f5555: chore: update zod to latest v3 beta
+
 ## 0.2.3
 
 ### Patch Changes

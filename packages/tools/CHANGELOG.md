@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.10.1
+
+### Patch Changes
+
+- d7f5555: chore: update zod to latest v3 beta
+
 ## 0.10.0
 
 ### Minor Changes

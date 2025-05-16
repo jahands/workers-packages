@@ -1,5 +1,13 @@
 # @repo/cli-example
 
+## 0.1.30
+
+### Patch Changes
+
+- d7f5555: chore: update zod to latest v3 beta
+- Updated dependencies [d7f5555]
+  - @jahands/cli-tools@0.10.3
+
 ## 0.1.29
 
 ### Patch Changes
