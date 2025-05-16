@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto'
 import * as find from 'empathic/find'
 import memoizeOne from 'memoize-one'
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 import { isNotFoundError } from './fs'
 

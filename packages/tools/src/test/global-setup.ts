@@ -1,4 +1,4 @@
-// runx uses zx/globals imported in bin/runx.ts
-// This import ensures that tests work without
-// needing to import this manually.
-import 'zx/globals'
+export function setup(): void {
+	// Ensure chalk colors are disabled
+	delete process.env.FORCE_COLOR
+}

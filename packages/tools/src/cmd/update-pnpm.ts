@@ -1,7 +1,7 @@
 import { Command, program } from '@commander-js/extra-typings'
 import fetch from 'node-fetch'
 import * as toml from 'smol-toml'
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 import { getRepoRoot } from '../path'
 

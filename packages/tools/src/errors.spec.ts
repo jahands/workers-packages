@@ -20,11 +20,11 @@ beforeEach(() => {
 describe('cliError', () => {
 	it('throws program.error with given message', () => {
 		expect(() => cliError('boom!')).toThrowErrorMatchingInlineSnapshot(
-			`[CommanderError: [91merror[39m: boom!]`
+			`[CommanderError: error: boom!]`
 		)
 		expect(exitErrors, 'program.exitOverride() was called').toMatchInlineSnapshot(`
 			[
-			  [CommanderError: [91merror[39m: boom!],
+			  [CommanderError: error: boom!],
 			]
 		`)
 	})
@@ -41,13 +41,13 @@ describe('cliError', () => {
 			})
 
 		expect(() => cmd.parse(undefined)).toThrowErrorMatchingInlineSnapshot(
-			`[CommanderError: [91merror[39m: cli boom!]`
+			`[CommanderError: error: cli boom!]`
 		)
 
 		expect(exitErrors, 'does not call program.exitOverride()').toMatchInlineSnapshot(`[]`)
 		expect(cmdExitErrors, 'calls cmd.exitOverride').toMatchInlineSnapshot(`
 			[
-			  [CommanderError: [91merror[39m: cli boom!],
+			  [CommanderError: error: cli boom!],
 			]
 		`)
 	})

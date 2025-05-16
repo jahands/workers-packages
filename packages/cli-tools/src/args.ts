@@ -1,9 +1,9 @@
 import { program } from '@commander-js/extra-typings'
-import z, { ZodError } from 'zod'
+import z, { ZodError } from 'zod/v4'
 import { chalk } from 'zx'
 
 import type { Command } from '@commander-js/extra-typings'
-import type { ZodTypeAny } from 'zod'
+import type { ZodType } from 'zod/v4'
 
 /**
  * Parses an argument using a zod validator. If it fails,
@@ -12,7 +12,7 @@ import type { ZodTypeAny } from 'zod'
  * @param cmd Optional commander Command to use when throwing an error. Defaults to `program`
  * @returns The zod type specified
  */
-export function validateArg<T extends ZodTypeAny>(validator: T, cmd?: Command) {
+export function validateArg<T extends ZodType>(validator: T, cmd?: Command) {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return (s: string) => parseArg(s, validator, cmd)
 }
@@ -25,11 +25,7 @@ export function validateArg<T extends ZodTypeAny>(validator: T, cmd?: Command) {
  * @param cmd Optional commander Command to use when throwing an error. Defaults to `program`
  * @returns The zod type specified
  */
-export function parseArg<T extends ZodTypeAny>(
-	s: string,
-	validator: T,
-	cmd?: Command
-): T['_output'] {
+export function parseArg<T extends ZodType>(s: string, validator: T, cmd?: Command): T['_output'] {
 	try {
 		return validator.parse(s)
 	} catch (err) {

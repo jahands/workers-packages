@@ -2,7 +2,7 @@ import { inspect } from 'util'
 import { Command } from '@commander-js/extra-typings'
 import * as esbuild from 'esbuild'
 import { match } from 'ts-pattern'
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 import { validateArg } from '../args'
 import { TSHelpers } from '../tsconfig'

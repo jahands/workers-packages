@@ -21,11 +21,11 @@ beforeEach(() => {
 describe('getEnv', () => {
 	it('throws error when env var is not set', () => {
 		expect(() => getEnv('__env_var_that_does_not_exist__')).toThrowErrorMatchingInlineSnapshot(
-			`[CommanderError: [91merror[39m: Environment variable __env_var_that_does_not_exist__ is not set]`
+			`[CommanderError: error: Environment variable __env_var_that_does_not_exist__ is not set]`
 		)
 		expect(exitErrors, 'program.exitOverride() was called').toMatchInlineSnapshot(`
 			[
-			  [CommanderError: [91merror[39m: Environment variable __env_var_that_does_not_exist__ is not set],
+			  [CommanderError: error: Environment variable __env_var_that_does_not_exist__ is not set],
 			]
 		`)
 	})

@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import YAML from 'yaml'
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 import { slugifyText } from './slugify'
 

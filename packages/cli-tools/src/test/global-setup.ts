@@ -1,2 +1,4 @@
-// Ensure tests work without needing to import zx manually
-import 'zx/globals'
+export function setup(): void {
+	// Ensure chalk colors are disabled
+	delete process.env.FORCE_COLOR
+}

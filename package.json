@@ -47,7 +47,7 @@
 		"vitest": "2.1.1",
 		"wrangler": "4.10.0",
 		"yaml": "2.7.0",
-		"zod": "4.0.0-beta.20250505T195954"
+		"zod": "3.25.0-beta.20250516T044623"
 	},
 	"packageManager": "pnpm@10.8.1",
 	"pnpm": {
