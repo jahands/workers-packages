@@ -8,7 +8,9 @@ jobs:
   create-release-pr:
     # Release PRs are for changelogs only - we auto publish on main every time regardless.
     name: Create Release PR
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - X64
     permissions:
       contents: write
       pull-requests: write
