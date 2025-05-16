@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.10.5
+
+### Patch Changes
+
+- 3e1415e: fix: use patch version of zod in peerDeps
+
 ## 0.10.4
 
 ### Patch Changes
