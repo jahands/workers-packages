@@ -1,5 +1,12 @@
 # @repo/otel-example
 
+## 0.1.21
+
+### Patch Changes
+
+- d7f5555: chore: update zod to latest v3 beta
+  - @jahands/otel-cf-workers@0.1.18
+
 ## 0.1.20
 
 ### Patch Changes

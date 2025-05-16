@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.5.7
+
+### Patch Changes
+
+- d7f5555: chore: update zod to latest v3 beta
+
 ## 0.5.6
 
 ### Patch Changes
