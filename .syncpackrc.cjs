@@ -16,24 +16,15 @@ const config = {
 				'@jahands/otel-cf-workers',
 				'http-codex',
 				'@jahands/cli-tools', // use published version
+				'@jahands/dagger-helpers',
 			],
 			dependencyTypes: ['!local'], // Exclude the local package itself
 			pinVersion: 'workspace:*',
 		},
 		{
-			label: 'pin vitest compatible with workers-pool-vitest',
-			dependencies: ['vitest', '@vitest/ui'],
-			pinVersion: '2.1.1',
-		},
-		{
 			label: 'pin typescript to version compatible with eslint',
 			dependencies: ['typescript'],
 			pinVersion: '5.5.4',
-		},
-		{
-			label: 'pin node types to prevent conflicts with Workers types',
-			dependencies: ['@types/node'],
-			pinVersion: '20.8.3',
 		},
 	],
 	semverGroups: [
