@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.11.0
+
+### Minor Changes
+
+- 6ce7ed9: feat: add ts3-compatible WithLogTags decorator
+
 ## 0.10.3
 
 ### Patch Changes
