@@ -23,13 +23,25 @@
 	"sideEffects": false,
 	"type": "module",
 	"exports": {
-		"import": {
-			"types": "./dist/index.d.ts",
-			"default": "./dist/index.js"
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"node": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
 		},
-		"node": {
-			"types": "./dist/index.d.ts",
-			"default": "./dist/index.js"
+		"./ts5": {
+			"import": {
+				"types": "./dist/ts5-decorator.d.ts",
+				"default": "./dist/ts5-decorator.js"
+			},
+			"node": {
+				"types": "./dist/ts5-decorator.d.ts",
+				"default": "./dist/ts5-decorator.js"
+			}
 		}
 	},
 	"module": "./dist/index.js",
@@ -38,7 +50,7 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "runx build tsc ./src/index.ts",
+		"build": "runx build tsc ./src/index.ts ./src/ts5-decorator.ts",
 		"check:exports": "runx check --exports",
 		"check:lint": "run-eslint-workers",
 		"check:types": "run-tsc",

@@ -53,7 +53,7 @@ type LogLevelFns = {
 	[K in LogLevel]: LogFn
 }
 
-const als = new AsyncLocalStorage<LogTags>()
+export const als = new AsyncLocalStorage<LogTags>()
 
 export interface WorkersLoggerOptions {
 	/**
