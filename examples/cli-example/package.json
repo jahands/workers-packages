@@ -10,18 +10,18 @@
 		"test": "run-vitest"
 	},
 	"dependencies": {
-		"@commander-js/extra-typings": "13.0.0",
+		"@commander-js/extra-typings": "13.1.0",
 		"@jahands/cli-tools": "workspace:*",
-		"commander": "13.0.0",
+		"commander": "13.1.0",
 		"zod": "3.25.0-beta.20250516T044623",
-		"zx": "8.3.0"
+		"zx": "8.5.4"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.8.15",
-		"@cloudflare/workers-types": "4.20250410.0",
+		"@cloudflare/vitest-pool-workers": "0.8.30",
+		"@cloudflare/workers-types": "4.20250517.0",
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"vitest": "2.1.1"
+		"vitest": "3.1.3"
 	}
 }

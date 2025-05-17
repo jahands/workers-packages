@@ -10,15 +10,15 @@
 		"test": "run-vitest"
 	},
 	"dependencies": {
-		"hono": "4.6.16",
+		"hono": "4.7.10",
 		"workers-tagged-logger": "workspace:*"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.8.15",
-		"@cloudflare/workers-types": "4.20250410.0",
+		"@cloudflare/vitest-pool-workers": "0.8.30",
+		"@cloudflare/workers-types": "4.20250517.0",
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"vitest": "2.1.1"
+		"vitest": "3.1.3"
 	}
 }
