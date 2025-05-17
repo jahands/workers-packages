@@ -484,6 +484,36 @@ importers:
         specifier: ^4.6.16
         version: 4.6.16
 
+  packages/workers-tagged-logger-test:
+    devDependencies:
+      '@cloudflare/vitest-pool-workers':
+        specifier: 0.8.15
+        version: 0.8.15(@cloudflare/workers-types@4.20250410.0)(@vitest/runner@2.1.1)(@vitest/snapshot@2.1.1)(vitest@2.1.1(@types/node@20.8.3))
+      '@cloudflare/workers-types':
+        specifier: 4.20250410.0
+        version: 4.20250410.0
+      '@repo/tools':
+        specifier: workspace:*
+        version: link:../tools
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: 20.8.3
+        version: 20.8.3
+      typescript:
+        specifier: 5.5.4
+        version: 5.5.4
+      vitest:
+        specifier: 2.1.1
+        version: 2.1.1(@types/node@20.8.3)
+      workers-tagged-logger:
+        specifier: workspace:*
+        version: link:../workers-tagged-logger
+      zod:
+        specifier: 3.25.0-beta.20250516T044623
+        version: 3.25.0-beta.20250516T044623
+
 packages:
 
   '@aashutoshrathi/word-wrap@1.2.6':

@@ -1,0 +1,8 @@
+{
+	"extends": "@repo/typescript-config/workers-lib-emit.json",
+	"include": ["**/*.ts"],
+	"exclude": ["node_modules", "dist", "tsconfig.json"],
+	"compilerOptions": {
+		"experimentalDecorators": false
+	}
+}

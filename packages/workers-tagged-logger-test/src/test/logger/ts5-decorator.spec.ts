@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { describe, expect, it } from 'vitest'
+import { withLogTags } from 'workers-tagged-logger'
+import { WithLogTags } from 'workers-tagged-logger/ts5'
 import { z } from 'zod/v4'
 
-import { withLogTags } from '../../logger.js'
-import { WithLogTags } from '../../ts5-decorator.js'
 import { setupTest } from '../harness.js'
 
+import type { LogTags } from 'workers-tagged-logger'
 import type { TestHarness } from '../harness.js'
-import type { LogTags } from './types.js'
 
 describe('@WithLogTags', () => {
 	type TestTags = z.infer<typeof TestTags>
@@ -412,7 +412,9 @@ describe('@WithLogTags', () => {
 			}
 			// Need to instantiate or reference the class to trigger decorator execution
 			new InvalidUsage()
-		}).toThrow('@WithLogTags decorator can only be applied to methods, not properties like myProp.')
+		}).toThrow(
+			`@WithLogTags decorator can only be applied to methods, not field contexts like 'myProp'.`
+		)
 	})
 
 	it('should work with purely synchronous methods', () => {
