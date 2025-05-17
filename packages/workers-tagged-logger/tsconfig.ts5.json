@@ -1,4 +1,4 @@
 {
 	"extends": "@repo/typescript-config/workers-lib-emit.json",
-	"include": ["./src/ts5-decorator.ts", "./src/ts5-decorator.spec.ts"]
+	"include": ["./src/ts5-decorator.ts", "./src/test/logger/ts5-decorator.spec.ts"]
 }

@@ -6,10 +6,9 @@ import type { LogTags } from './logger.js'
 
 /** Type alias for the actual decorator function returned */
 type MethodDecoratorFn = (
-	target: any,
-	propertyKey: string | symbol,
-	descriptor: PropertyDescriptor
-) => PropertyDescriptor | void
+	originalMethod: (...args: any[]) => any, // The original method being decorated
+	context: ClassMethodDecoratorContext // Context object with metadata about the method
+) => ((...args: any[]) => any) | void // Returns the new method, or void if not replaced
 
 /** Tags for the WithLogTags decorator */
 type WithLogTagsDecoratorTags<T extends LogTags> = {
@@ -25,7 +24,7 @@ type WithLogTagsDecoratorTags<T extends LogTags> = {
  * Decorator: Wraps a class method with logging context.
  * Automatically uses the Class Name as the log source.
  *
- * **IMPORTANT**: Requires `"experimentalDecorators": true` to be added to tsconfig.json
+ * **IMPORTANT**: This decorator uses the standard ECMAScript decorator syntax (TypeScript 5+).
  *
  * Automatically adds:
  *   - `$logger.method`: The name of the currently executing decorated method.
@@ -66,7 +65,7 @@ export function WithLogTags(): MethodDecoratorFn
  * Decorator: Wraps a class method with logging context.
  * Uses the provided string as the log source.
  *
- * **IMPORTANT**: Requires `"experimentalDecorators": true` to be added to tsconfig.json
+ * **IMPORTANT**: This decorator uses the standard ECMAScript decorator syntax (TypeScript 5+).
  *
  * Automatically adds:
  *   - `$logger.method`: The name of the currently executing decorated method.
@@ -109,7 +108,7 @@ export function WithLogTags(source: string): MethodDecoratorFn
  * Decorator: Wraps a class method with logging context.
  * Uses options to configure source (falls back to Class Name) and initial tags.
  *
- * **IMPORTANT**: Requires `"experimentalDecorators": true` to be added to tsconfig.json
+ * **IMPORTANT**: This decorator uses the standard ECMAScript decorator syntax (TypeScript 5+).
  *
  * Automatically adds:
  *   - `$logger.method`: The name of the currently executing decorated method.
@@ -158,16 +157,15 @@ export function WithLogTags<T extends LogTags>(
 ): MethodDecoratorFn {
 	// This is the function returned that acts as the decorator
 	return function (
-		target: any, // Class prototype (instance) or constructor (static)
-		propertyKey: string | symbol,
-		descriptor: PropertyDescriptor
-	): PropertyDescriptor {
-		const method = String(propertyKey)
+		originalMethod: (...args: any[]) => any, // Class prototype (instance) or constructor (static)
+		context: ClassMethodDecoratorContext // Decorator context
+	): ((...args: any[]) => any) | void {
+		const method = String(context.name)
 
-		// Validate descriptor (ensure it's a method)
-		if (descriptor === undefined || typeof descriptor.value !== 'function') {
+		// Validate that this decorator is applied to a method
+		if (context.kind !== 'method') {
 			throw new Error(
-				`@WithLogTags decorator can only be applied to methods, not properties like ${method}.`
+				`@WithLogTags decorator can only be applied to methods, not ${context.kind} contexts like '${method}'.`
 			)
 		}
 
@@ -178,22 +176,11 @@ export function WithLogTags<T extends LogTags>(
 			explicitSource = sourceOrTags
 		} else if (sourceOrTags) {
 			explicitSource = sourceOrTags.source
-			userTags = sourceOrTags
+			userTags = sourceOrTags // Keep other tags from sourceOrTags
 		}
 
-		let inferredClassName: string | undefined = 'UnknownClass'
-		if (typeof target === 'function') {
-			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-			inferredClassName = target.name || inferredClassName
-		} else if (target !== undefined && typeof target.constructor === 'function') {
-			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-			inferredClassName = target.constructor.name || inferredClassName
-		}
-
-		// Get original method and wrap it
-		const originalMethod = descriptor.value
-
-		descriptor.value = function (...args: any[]): MethodDecoratorFn {
+		// The wrapper function that replaces the original method
+		const replacementMethod = function (this: any, ...args: any[]): any {
 			const existing = als.getStore()
 			let rootMethod = method
 			if (
@@ -207,6 +194,27 @@ export function WithLogTags<T extends LogTags>(
 				typeof existing.$logger.rootMethod === 'string'
 			) {
 				rootMethod = existing.$logger.rootMethod
+			}
+
+			// Infer class name dynamically using 'this' and context.static
+			// This logic runs when the decorated method is called.
+			let inferredClassName: string = 'UnknownClass'
+			if (context.static) {
+				// For static methods, 'this' is the class constructor
+				if (typeof this === 'function') {
+					const staticClassName = this.name
+					if (typeof staticClassName === 'string' && staticClassName !== '') {
+						inferredClassName = staticClassName
+					}
+				}
+			} else {
+				// For instance methods, 'this' is the class instance
+				if (this !== null && this !== undefined && typeof this.constructor === 'function') {
+					const instanceClassName = this.constructor.name
+					if (typeof instanceClassName === 'string' && instanceClassName !== '') {
+						inferredClassName = instanceClassName
+					}
+				}
 			}
 
 			const finalSource = explicitSource ?? existing?.source ?? inferredClassName
@@ -238,6 +246,6 @@ export function WithLogTags<T extends LogTags>(
 			})
 		}
 
-		return descriptor
+		return replacementMethod
 	}
 }
