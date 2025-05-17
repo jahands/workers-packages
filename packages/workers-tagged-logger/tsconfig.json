@@ -1,5 +1,11 @@
 {
 	"extends": "@repo/typescript-config/workers-lib-emit.json",
 	"include": ["**/*.ts"],
-	"exclude": ["node_modules", "dist", "tsconfig.json", "./src/ts5-decorator.ts"]
+	"exclude": [
+		"node_modules",
+		"dist",
+		"tsconfig.json",
+		"./src/ts5-decorator.ts",
+		"./src/ts5-decorator.spec.ts"
+	]
 }
