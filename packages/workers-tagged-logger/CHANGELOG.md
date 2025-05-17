@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.11.1
+
+### Patch Changes
+
+- 0c79cde: chore: update deps
+
 ## 0.11.0
 
 ### Minor Changes

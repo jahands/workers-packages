@@ -1,5 +1,13 @@
 # @repo/cli-example
 
+## 0.1.34
+
+### Patch Changes
+
+- 0c79cde: chore: update deps
+- Updated dependencies [0c79cde]
+  - @jahands/cli-tools@0.10.7
+
 ## 0.1.33
 
 ### Patch Changes
