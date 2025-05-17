@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.5.8
+
+### Patch Changes
+
+- 0c79cde: chore: update deps
+
 ## 0.5.7
 
 ### Patch Changes

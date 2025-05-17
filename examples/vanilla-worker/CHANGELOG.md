@@ -1,5 +1,13 @@
 # @repo/vanilla-worker
 
+## 0.2.42
+
+### Patch Changes
+
+- 0c79cde: chore: update deps
+- Updated dependencies [0c79cde]
+  - workers-tagged-logger@0.11.1
+
 ## 0.2.41
 
 ### Patch Changes

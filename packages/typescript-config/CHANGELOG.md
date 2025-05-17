@@ -1,5 +1,11 @@
 # @repo/typescript-config
 
+## 0.3.5
+
+### Patch Changes
+
+- 0c79cde: chore: update deps
+
 ## 0.3.4
 
 ### Patch Changes
