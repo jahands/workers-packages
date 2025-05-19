@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.5.9
+
+### Patch Changes
+
+- 4052d19: chore: update deps (zod)
+
 ## 0.5.8
 
 ### Patch Changes

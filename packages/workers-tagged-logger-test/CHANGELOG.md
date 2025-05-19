@@ -1,5 +1,11 @@
 # @repo/workers-tagged-logger-test
 
+## 0.2.2
+
+### Patch Changes
+
+- 4052d19: chore: update deps (zod)
+
 ## 0.2.1
 
 ### Patch Changes

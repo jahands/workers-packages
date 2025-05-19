@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.10.8
+
+### Patch Changes
+
+- 4052d19: chore: update deps (zod)
+
 ## 0.10.7
 
 ### Patch Changes

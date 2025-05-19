@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.11.2
+
+### Patch Changes
+
+- 4052d19: chore: update deps (zod)
+
 ## 0.11.1
 
 ### Patch Changes

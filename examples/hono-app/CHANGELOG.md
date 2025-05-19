@@ -1,5 +1,14 @@
 # @repo/hono-app
 
+## 0.3.35
+
+### Patch Changes
+
+- 4052d19: chore: update deps (zod)
+- Updated dependencies [4052d19]
+  - workers-tagged-logger@0.11.2
+  - http-codex@0.5.9
+
 ## 0.3.34
 
 ### Patch Changes
