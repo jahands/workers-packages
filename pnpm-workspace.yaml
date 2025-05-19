@@ -10,3 +10,4 @@ onlyBuiltDependenciesFile: node_modules/.pnpm-config/@pnpm/trusted-deps/allow.js
 onlyBuiltDependencies:
   - core-js-pure
   - unrs-resolver
+  - protobufjs
