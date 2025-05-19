@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.6.5
+
+### Patch Changes
+
+- 0c79cde: chore: update deps
+
 ## 0.6.4
 
 ### Patch Changes

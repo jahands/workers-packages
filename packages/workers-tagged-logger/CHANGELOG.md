@@ -1,5 +1,12 @@
 # workers-tagged-logger
 
+## 0.11.1
+
+### Patch Changes
+
+- df6d56f: fix: move zod to dependencies (used in Hono middleware)
+- 0c79cde: chore: update deps
+
 ## 0.11.0
 
 ### Minor Changes

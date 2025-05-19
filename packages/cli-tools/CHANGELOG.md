@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.10.7
+
+### Patch Changes
+
+- 0c79cde: chore: update deps
+
 ## 0.10.6
 
 ### Patch Changes
