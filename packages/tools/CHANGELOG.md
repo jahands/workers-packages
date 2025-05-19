@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.10.3
+
+### Patch Changes
+
+- 4052d19: chore: update deps (zod)
+
 ## 0.10.2
 
 ### Patch Changes

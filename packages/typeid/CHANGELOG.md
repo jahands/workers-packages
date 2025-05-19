@@ -1,5 +1,11 @@
 # @jahands/typeid
 
+## 0.2.5
+
+### Patch Changes
+
+- 4052d19: chore: update deps (zod)
+
 ## 0.2.4
 
 ### Patch Changes
