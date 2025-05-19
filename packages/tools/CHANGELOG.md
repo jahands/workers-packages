@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.10.2
+
+### Patch Changes
+
+- 0c79cde: chore: update deps
+
 ## 0.10.1
 
 ### Patch Changes

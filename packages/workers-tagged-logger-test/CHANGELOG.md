@@ -1,5 +1,11 @@
 # @repo/workers-tagged-logger-test
 
+## 0.2.1
+
+### Patch Changes
+
+- 0c79cde: chore: update deps
+
 ## 0.2.0
 
 ### Minor Changes
