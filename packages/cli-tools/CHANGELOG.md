@@ -1,5 +1,12 @@
 # @jahands/cli-tools
 
+## 0.10.9
+
+### Patch Changes
+
+- f1eefa4: chore: update peerDeps to include commander v14
+- 454dffd: fix: move typescript to dependencies
+
 ## 0.10.8
 
 ### Patch Changes
