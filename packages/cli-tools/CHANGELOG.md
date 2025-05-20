@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.10.10
+
+### Patch Changes
+
+- 92bab03: chore: move typescript back to peerDeps
+
 ## 0.10.9
 
 ### Patch Changes
