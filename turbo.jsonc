@@ -3,69 +3,75 @@
 	"globalEnv": ["CI", "GITHUB_ACTIONS", "FORCE_COLOR"],
 	"remoteCache": {
 		"enabled": true,
-		"signature": true
+		"signature": true,
 	},
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
 			"outputs": ["dist/**"],
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
 		},
 		"build:wrangler": {
 			"dependsOn": ["^build", "build"],
 			"outputs": ["dist/**"],
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
 		},
 		"test": {
 			"dependsOn": ["^build"],
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
 		},
 		"check": {
 			"dependsOn": ["build", "check:types", "check:exports", "check:lint"],
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
 		},
 		"check:ci": {
 			"dependsOn": [
 				"//#check:format",
 				"//#check:deps",
 				"check:types",
-				"check:exports",
-				"check:lint",
-				"build:wrangler",
+				"//#check:lint:all",
 				"//#test:ci",
-				"test:ci"
+				"test:ci",
+				"topo",
 			],
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
 		},
 		"//#check:deps": {
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
 		},
 		"//#check:format": {
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
+		},
+		"//#check:lint:all": {
+			"outputLogs": "new-only",
+			"outputs": ["node_modules/.cache/run-eslint/.eslintcache"],
+			"env": ["FIX_ESLINT"],
 		},
 		"check:types": {
 			"dependsOn": ["^build", "build", "^check:types"],
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
 		},
 		"check:exports": {
 			"dependsOn": ["^check:exports", "check:types"],
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
 		},
 		"check:lint": {
-			"dependsOn": ["^build", "build", "^check:lint"],
+			// does not depend on ^check:lint because it's better to run it
+			// from the root when needing to lint multiple packages
+			"dependsOn": ["build", "topo"],
 			"outputLogs": "new-only",
-			"passThroughEnv": ["FIX_ESLINT"]
+			"env": ["FIX_ESLINT"],
 		},
 		"//#test:ci": {
 			"dependsOn": ["^build", "build", "http-codex#build", "workers-tagged-logger#build"],
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
 		},
 		"test:ci": {
 			"dependsOn": ["^build", "build"],
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
 		},
 		"//#build": {
-			"outputLogs": "new-only"
-		}
-	}
+			"outputLogs": "new-only",
+		},
+	},
 }

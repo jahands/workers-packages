@@ -39,9 +39,10 @@ export const checkCmd = new Command('check')
 
 		const checks = {
 			deps: ['syncpack', 'lint'],
-			lint: ['turbo', 'check:lint'],
-			format: ['runx', 'prettier', 'check'],
+			// eslint can be run from anywhere and it'll automatically only lint the current dir and children
+			lint: ['run-eslint'],
 			types: ['turbo', 'check:types'],
+			format: ['runx', 'prettier', 'check'],
 			exports: ['attw', '--pack', '.', '--profile=esm-only'],
 		} as const satisfies { [key: string]: string[] }
 
