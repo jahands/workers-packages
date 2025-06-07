@@ -11,6 +11,7 @@
 	"scripts": {
 		"changeset:new": "run-changeset-new",
 		"check:ci": "turbo check:ci --log-order=grouped",
+		"check:lint:all": "run-eslint",
 		"test:ci": "run-vitest-ci",
 		"check:deps": "syncpack lint",
 		"check:format": "prettier . --check --cache --ignore-unknown",
@@ -20,7 +21,7 @@
 		"chore:update:tools:turbo": "pnpx @turbo/codemod@latest update",
 		"fix": "run-s fix:*",
 		"fix:deps": "run-fix-deps",
-		"fix:lint": "FIX_ESLINT=1 turbo check:lint",
+		"fix:lint": "FIX_ESLINT=1 run-eslint",
 		"fix:format": "prettier --write --cache --ignore-unknown \"**/*.{ts,tsx,cjs,md,json}\"",
 		"test": "vitest --testTimeout=15000",
 		"release": "run-s build:packages release:clean publish",
