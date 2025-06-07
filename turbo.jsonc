@@ -30,7 +30,7 @@
 				"//#check:deps",
 				"check:types",
 				"check:exports",
-				"check:lint",
+				"//#check:lint:all",
 				"build:wrangler",
 				"//#test:ci",
 				"test:ci"
@@ -43,6 +43,11 @@
 		"//#check:format": {
 			"outputLogs": "new-only"
 		},
+		"//#check:lint:all": {
+			"outputLogs": "new-only",
+			"outputs": ["node_modules/.cache/run-eslint/.eslintcache"],
+			"env": ["FIX_ESLINT"]
+		},
 		"check:types": {
 			"dependsOn": ["^build", "build", "^check:types"],
 			"outputLogs": "new-only"
@@ -52,9 +57,11 @@
 			"outputLogs": "new-only"
 		},
 		"check:lint": {
-			"dependsOn": ["^build", "build", "^check:lint"],
+			// does not depend on ^check:lint because it's better to run it
+			// from the root when needing to lint multiple packages
+			"dependsOn": ["build", "topo"],
 			"outputLogs": "new-only",
-			"passThroughEnv": ["FIX_ESLINT"]
+			"env": ["FIX_ESLINT"]
 		},
 		"//#test:ci": {
 			"dependsOn": ["^build", "build", "http-codex#build", "workers-tagged-logger#build"],
