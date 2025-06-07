@@ -19,7 +19,7 @@ const projectIncludes: string[] = [
 	'pnpm-lock.yaml',
 	'pnpm-workspace.yaml',
 	'tsconfig.json',
-	'turbo.json',
+	'turbo.jsonc',
 	'vitest.workspace.ts',
 ]
 
