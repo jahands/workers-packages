@@ -30,8 +30,8 @@ This logger requires `nodejs_als` or `nodejs_compat` to function. To enable this
 
 ```jsonc
 {
-	"compatibility_flags": ["nodejs_compat"],
-	// or "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  // or "compatibility_flags": ["nodejs_compat"]
 }
 ```
 
@@ -41,10 +41,10 @@ To use the `@WithLogTags` decorator, you need to enable experimental decorators 
 
 ```json
 {
-	"compilerOptions": {
-		// ... other options
-		"experimentalDecorators": true
-	}
+  "compilerOptions": {
+    // ... other options
+    "experimentalDecorators": true
+  }
 }
 ```
 
@@ -57,9 +57,9 @@ import { WorkersLogger } from 'workers-tagged-logger'
 
 // Optional type hints for tag auto-completion
 type Tags = {
-	user_id: string
-	request_id: string
-	source?: string // source is often added automatically
+  user_id: string
+  request_id: string
+  source?: string // source is often added automatically
 }
 const logger = new WorkersLogger<Tags>()
 ```
@@ -78,29 +78,29 @@ import { withLogTags, WorkersLogger } from 'workers-tagged-logger'
 const logger = new WorkersLogger<Tags>()
 
 export default {
-	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		// Establish context for the entire request
-		return withLogTags({ source: 'my-worker' }, async () => {
-			const requestId = crypto.randomUUID()
-			logger.setTags({ request_id: requestId }) // Set tags for this context
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    // Establish context for the entire request
+    return withLogTags({ source: 'my-worker' }, async () => {
+      const requestId = crypto.randomUUID()
+      logger.setTags({ request_id: requestId }) // Set tags for this context
 
-			logger.info('Handling request')
-			// ... your request handling logic ...
+      logger.info('Handling request')
+      // ... your request handling logic ...
 
-			if (request.url.includes('/admin')) {
-				// Create a sub-context if needed
-				await withLogTags({ source: 'admin-handler' }, async () => {
-					logger.setTags({ user_id: 'admin-user' })
-					logger.warn('Admin access detected')
-					// Logs here have source: 'admin-handler', request_id, user_id
-				})
-			}
+      if (request.url.includes('/admin')) {
+        // Create a sub-context if needed
+        await withLogTags({ source: 'admin-handler' }, async () => {
+          logger.setTags({ user_id: 'admin-user' })
+          logger.warn('Admin access detected')
+          // Logs here have source: 'admin-handler', request_id, user_id
+        })
+      }
 
-			// Logs here still have source: 'my-worker', request_id (but not user_id)
-			logger.info('Finished handling request')
-			return new Response('Hello!')
-		})
-	},
+      // Logs here still have source: 'my-worker', request_id (but not user_id)
+      logger.info('Finished handling request')
+      return new Response('Hello!')
+    })
+  },
 }
 ```
 
@@ -108,13 +108,13 @@ The first log (`Handling request`) would look like:
 
 ```json
 {
-	"level": "info",
-	"message": "Handling request",
-	"tags": {
-		"request_id": "...",
-		"source": "my-worker"
-	},
-	"time": "..."
+  "level": "info",
+  "message": "Handling request",
+  "tags": {
+    "request_id": "...",
+    "source": "my-worker"
+  },
+  "time": "..."
 }
 ```
 
@@ -128,37 +128,37 @@ import { WithLogTags, WorkersLogger } from 'workers-tagged-logger'
 const logger = new WorkersLogger<Tags>() // Assumes logger is defined
 
 class MyRequestHandler {
-	// Decorate the method
-	// Source will be automatically inferred as "MyRequestHandler"
-	@WithLogTags()
-	async handle(request: Request) {
-		const userId = request.headers.get('x-user-id') ?? 'anonymous'
-		logger.setTags({ user_id: userId }) // Set tags for this method's context
+  // Decorate the method
+  // Source will be automatically inferred as "MyRequestHandler"
+  @WithLogTags()
+  async handle(request: Request) {
+    const userId = request.headers.get('x-user-id') ?? 'anonymous'
+    logger.setTags({ user_id: userId }) // Set tags for this method's context
 
-		// Logs here automatically get { source: "MyRequestHandler", $logger..., user_id }
-		logger.info(`Processing request for user ${userId}`)
+    // Logs here automatically get { source: "MyRequestHandler", $logger..., user_id }
+    logger.info(`Processing request for user ${userId}`)
 
-		await this.processData(request.url)
+    await this.processData(request.url)
 
-		logger.info('Finished processing request')
-		return { success: true }
-	}
+    logger.info('Finished processing request')
+    return { success: true }
+  }
 
-	// Decorator can also be used on nested methods
-	// Explicit source overrides inference. Inherits user_id from handle's context.
-	@WithLogTags({ source: 'DataProcessor', stage: 'processing' })
-	async processData(url: string) {
-		// Logs here get { source: "DataProcessor", $logger..., user_id, stage: "processing" }
-		logger.debug(`Processing data for URL: ${url}`)
-		// ... processing ...
-	}
+  // Decorator can also be used on nested methods
+  // Explicit source overrides inference. Inherits user_id from handle's context.
+  @WithLogTags({ source: 'DataProcessor', stage: 'processing' })
+  async processData(url: string) {
+    // Logs here get { source: "DataProcessor", $logger..., user_id, stage: "processing" }
+    logger.debug(`Processing data for URL: ${url}`)
+    // ... processing ...
+  }
 
-	// Decorator can take just a string for the source
-	@WithLogTags('CleanupService')
-	async cleanup() {
-		// Logs here get { source: "CleanupService", $logger... }
-		logger.debug('Cleaning up resources')
-	}
+  // Decorator can take just a string for the source
+  @WithLogTags('CleanupService')
+  async cleanup() {
+    // Logs here get { source: "CleanupService", $logger... }
+    logger.debug('Cleaning up resources')
+  }
 }
 
 // Example Usage (within a Worker fetch handler wrapped by withLogTags)
@@ -196,14 +196,14 @@ import { Hono } from 'hono'
 import { useWorkersLogger } from 'workers-tagged-logger/hono' // Note the /hono path
 
 const app = new Hono()
-	// Register the logger (must do this before calling logger.setTags())
-	// Sets the initial context with source 'hono-app'
-	.use('*', useWorkersLogger('hono-app'))
-	.get('/', (c) => {
-		logger.setTags({ user_agent: c.req.header('User-Agent') })
-		logger.info('Handling GET /')
-		return c.text('Hello Hono!')
-	})
+  // Register the logger (must do this before calling logger.setTags())
+  // Sets the initial context with source 'hono-app'
+  .use('*', useWorkersLogger('hono-app'))
+  .get('/', (c) => {
+    logger.setTags({ user_agent: c.req.header('User-Agent') })
+    logger.info('Handling GET /')
+    return c.text('Hello Hono!')
+  })
 ```
 
 This is useful for setting the initial context for your entire request handler. For specific logic within class-based handlers you might write, consider using the `@WithLogTags` decorator instead of or in addition to this middleware.
@@ -217,7 +217,7 @@ Sometimes you may want to log a few lines that have additional tags without sett
 logger.setTags({ request_id: 'req-123' })
 
 const ctxLogger = logger.withTags({
-	operation: 'user-lookup',
+  operation: 'user-lookup',
 })
 
 // All logs using ctxLogger will have the new tag added:
@@ -265,16 +265,16 @@ Traditionally, this might mean passing logger instances or metadata objects down
 ```ts
 // helper.ts
 function doSomething(logData, input) {
-	console.log({ ...logData, message: 'Doing something', input })
-	// ...
+  console.log({ ...logData, message: 'Doing something', input })
+  // ...
 }
 
 // handler.ts
 function handleRequest(request) {
-	const userId = getUserId(request)
-	const logData = { userId, requestId: request.id }
-	console.log({ ...logData, message: 'Handling request' })
-	doSomething(logData, request.body) // Must pass logData down
+  const userId = getUserId(request)
+  const logData = { userId, requestId: request.id }
+  console.log({ ...logData, message: 'Handling request' })
+  doSomething(logData, request.body) // Must pass logData down
 }
 ```
 

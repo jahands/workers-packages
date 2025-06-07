@@ -27,29 +27,29 @@ yarn add @jahands/otel-cf-workers
 import { instrument, ResolveConfigFn, trace } from '@jahands/otel-cf-workers'
 
 export interface Env {
-	HONEYCOMB_API_KEY: string
-	OTEL_TEST: KVNamespace
+  HONEYCOMB_API_KEY: string
+  OTEL_TEST: KVNamespace
 }
 
 const handler = {
-	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		await fetch('https://cloudflare.com')
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    await fetch('https://cloudflare.com')
 
-		const greeting = "G'day World"
-		trace.getActiveSpan()?.setAttribute('greeting', greeting)
-		ctx.waitUntil(fetch('https://workers.dev'))
-		return new Response(`${greeting}!`)
-	},
+    const greeting = "G'day World"
+    trace.getActiveSpan()?.setAttribute('greeting', greeting)
+    ctx.waitUntil(fetch('https://workers.dev'))
+    return new Response(`${greeting}!`)
+  },
 }
 
 const config: ResolveConfigFn = (env: Env, _trigger) => {
-	return {
-		exporter: {
-			url: 'https://api.honeycomb.io/v1/traces',
-			headers: { 'x-honeycomb-team': env.HONEYCOMB_API_KEY },
-		},
-		service: { name: 'greetings' },
-	}
+  return {
+    exporter: {
+      url: 'https://api.honeycomb.io/v1/traces',
+      headers: { 'x-honeycomb-team': env.HONEYCOMB_API_KEY },
+    },
+    service: { name: 'greetings' },
+  }
 }
 
 export default instrument(handler, config)

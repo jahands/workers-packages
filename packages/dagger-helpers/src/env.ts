@@ -1,4 +1,3 @@
- 
 import { AsyncLocalStorage } from 'node:async_hooks'
 
 import type { Secret } from '@dagger.io/dagger'
@@ -59,7 +58,7 @@ export function extractParamNames(func: Function): string[] {
  * Decorator factory that wraps a method to capture its arguments based on
  * extracted parameter names and store them in AsyncLocalStorage.
  */
- 
+
 export function ParamsToEnv(): MethodDecorator {
 	return function (_target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
 		if (typeof descriptor === 'undefined' || typeof descriptor.value !== 'function') {

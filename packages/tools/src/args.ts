@@ -17,7 +17,6 @@ import type { ZodTypeAny } from 'zod/v4'
  * @returns The zod type specified
  */
 export function validateArg<T extends ZodTypeAny>(validator: T, cmd?: Command) {
-	 
 	return (s: string) => parseArg(s, validator, cmd)
 }
 

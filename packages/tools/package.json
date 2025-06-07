@@ -14,7 +14,7 @@
 	"dependencies": {
 		"@commander-js/extra-typings": "13.1.0",
 		"@types/luxon": "3.6.2",
-		"@types/node": "22.15.18",
+		"@types/node": "22.15.27",
 		"cli-table3": "0.6.5",
 		"commander": "13.1.0",
 		"empathic": "1.1.0",

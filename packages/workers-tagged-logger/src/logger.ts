@@ -1,5 +1,3 @@
- 
- 
 import { AsyncLocalStorage } from 'node:async_hooks'
 
 export type LogValue =
@@ -221,7 +219,6 @@ export function stringifyMessage(msg: any): string {
 		return msg.toString()
 	}
 	if (typeof msg === 'function') {
-		 
 		return `[function${msg.name ? `: ${msg.name}` : ''}()]`
 	}
 	if (msg instanceof Error) {
@@ -450,10 +447,8 @@ export function WithLogTags<T extends LogTags>(
 
 		let inferredClassName: string | undefined = 'UnknownClass'
 		if (typeof target === 'function') {
-			 
 			inferredClassName = target.name || inferredClassName
 		} else if (target !== undefined && typeof target.constructor === 'function') {
-			 
 			inferredClassName = target.constructor.name || inferredClassName
 		}
 
@@ -464,9 +459,7 @@ export function WithLogTags<T extends LogTags>(
 			const existing = als.getStore()
 			let rootMethod = method
 			if (
-				 
 				existing &&
-				 
 				existing.$logger &&
 				typeof existing.$logger === 'object' &&
 				!Array.isArray(existing.$logger) &&

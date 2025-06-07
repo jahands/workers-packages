@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { includeIgnoreFile } from '@eslint/compat'
+
 import type { FlatConfig } from '@eslint/compat'
 
 export function getDirname(importMetaUrl: string) {

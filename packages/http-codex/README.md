@@ -20,8 +20,8 @@ yarn add http-codex
 import { httpStatus } from 'http-codex'
 
 const res = new Response('hello world!', {
-	status: httpStatus.OK, // 200
-	statusText: httpStatus.text(httpStatus.OK), // 'OK'
+  status: httpStatus.OK, // 200
+  statusText: httpStatus.text(httpStatus.OK), // 'OK'
 })
 ```
 
@@ -44,7 +44,7 @@ import { httpStatus, isNullBodyStatus } from 'http-codex'
 
 const res = await fetch(url) // Might be 204, 304, etc.
 return new Response(isNullBodyStatus(res.status) ? null : res.body, {
-	// Useful for when we need to customize response headers/init/etc.
+  // Useful for when we need to customize response headers/init/etc.
 })
 ```
 
