@@ -1,0 +1,67 @@
+---
+description: How to add Cursor rules (ALWAYS read before adding rules)
+globs:
+alwaysApply: false
+---
+# Cursor Rules - Organization and Format
+
+## Location
+All cursor rules should be placed in the `.cursor/rules/` directory with the `.mdc` extension.
+
+❌ Do NOT create:
+- `.cursorrules` file in the root (deprecated)
+- Rules in other locations
+- Rules with other extensions
+
+✅ DO create:
+- `.cursor/rules/{descriptive-name}.mdc`
+- One rule per file
+- Clear, focused rules
+
+## File Naming
+- Use kebab-case: `my-rule-name.mdc`
+- Be descriptive but concise
+- Group related rules with common prefixes
+
+Examples:
+- `github-actions-runners.mdc`
+- `docker-compose.mdc`
+- `development-workflow.mdc`
+
+## Rule Format
+Rules should be written in Markdown with this structure:
+
+```markdown
+# Title - Brief Description
+
+## Context/Location
+Where this rule applies (files, directories, etc.)
+
+### Overview/Architecture
+High-level explanation of the system/pattern
+
+### Key Concepts
+Important points to understand
+
+### Usage/Patterns
+How to apply the rule
+
+### Examples
+Clear, concrete examples
+```
+
+## Best Practices
+- Focus on describing patterns rather than providing static templates
+- Let LLMs learn from existing code when possible
+- Keep rules focused and single-purpose
+- Update rules when patterns significantly change
+- Remove rules that become obsolete
+
+## Current Rules
+Reference the existing rules in `.cursor/rules/` for examples of proper formatting and organization:
+- `monorepo-structure.mdc`
+- `development-workflow.mdc`
+- `cli-tools.mdc`
+- `docker-compose.mdc`
+- `server-management.mdc`
+- `github-actions-runners.mdc`

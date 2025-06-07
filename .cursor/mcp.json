@@ -1,0 +1,7 @@
+{
+	"mcpServers": {
+		"cloudflare-docs": {
+			"url": "https://docs.mcp.cloudflare.com/sse"
+		}
+	}
+}
