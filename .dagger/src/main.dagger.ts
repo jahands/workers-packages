@@ -9,12 +9,12 @@ const projectIncludes: string[] = [
 	'packages/',
 
 	// files
-	'.eslintrc.cjs',
 	'.gitignore',
 	'.npmrc',
 	'.prettierignore',
 	'.prettierrc.cjs',
 	'.syncpackrc.cjs',
+	'eslint.config.ts',
 	'package.json',
 	'pnpm-lock.yaml',
 	'pnpm-workspace.yaml',
