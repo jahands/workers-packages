@@ -72,7 +72,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					destination: `${answers.appsDir}/{{ slug name }}`,
 					templateFiles: [
 						'templates/fetch-worker/**/**.hbs',
-						'templates/fetch-worker/.eslintrc.cjs.hbs',
+						'templates/fetch-worker/eslint.config.ts.hbs',
 					],
 				},
 				{ type: 'pnpmFix' },
