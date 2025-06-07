@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { describe, expect, it, test } from 'vitest'
 
 import { convertToCamel, snakeToCamel } from './snake-to-camel.js'

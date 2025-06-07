@@ -1,4 +1,3 @@
-import { isWorkerNameUnique } from './helpers/ensure-unique-worker-name'
 import { partials } from './helpers/partials'
 import { pnpmFix } from './plugins/pnpm-fix'
 import { pnpmInstall } from './plugins/pnpm-install'

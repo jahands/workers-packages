@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
+ 
 import { describe, expect, it } from 'vitest'
 import { withLogTags } from 'workers-tagged-logger'
 import { WithLogTags } from 'workers-tagged-logger/ts5'

@@ -13,7 +13,7 @@ import type { ZodType } from 'zod/v4'
  * @returns The zod type specified
  */
 export function validateArg<T extends ZodType>(validator: T, cmd?: Command) {
-	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+	 
 	return (s: string) => parseArg(s, validator, cmd)
 }
 

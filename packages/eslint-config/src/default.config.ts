@@ -9,6 +9,7 @@ import * as importPlugin from 'eslint-plugin-import'
 import unusedImportsPlugin from 'eslint-plugin-unused-imports'
 import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
+
 import { getDirname, getGitIgnoreFiles, getTsconfigRootDir } from './helpers'
 
 export { defineConfig }
@@ -30,6 +31,7 @@ export function getConfig(importMetaUrl: string) {
 				'eslint.config.ts',
 				'**/eslint.config.ts',
 				'**/worker-configuration.d.ts',
+				'**/.dagger/**',
 			],
 		},
 		...getGitIgnoreFiles(importMetaUrl),
@@ -85,6 +87,7 @@ export function getConfig(importMetaUrl: string) {
 				],
 				'@typescript-eslint/no-empty-object-type': 'off',
 				'@typescript-eslint/no-explicit-any': 'off',
+				'@typescript-eslint/no-unsafe-function-type': 'off',
 				'import/no-named-as-default': 'off',
 				'import/no-named-as-default-member': 'off',
 				'prefer-const': 'warn',
@@ -114,6 +117,9 @@ export function getConfig(importMetaUrl: string) {
 			rules: {
 				// ignoring fully for now due to issues
 				'import/no-unresolved': 'off',
+				// Turn off some problematic rules for now
+				'import/export': 'off',
+				'@typescript-eslint/no-unused-expressions': 'off',
 			},
 		},
 
@@ -125,9 +131,12 @@ export function getConfig(importMetaUrl: string) {
 		},
 
 		{
-			files: ['**/test/fixtures/**/*'],
+			files: ['**/test/fixtures/**/*', '**/.dagger/**/*'],
 			rules: {
 				'import/no-unresolved': 'off',
+				// Disable TypeScript project-based rules for test fixtures and dagger files
+				'@typescript-eslint/no-floating-promises': 'off',
+				'@typescript-eslint/no-unused-vars': 'off',
 			},
 		},
 

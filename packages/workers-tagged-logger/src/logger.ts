@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/naming-convention */
+ 
+ 
 import { AsyncLocalStorage } from 'node:async_hooks'
 
 export type LogValue =
@@ -221,7 +221,7 @@ export function stringifyMessage(msg: any): string {
 		return msg.toString()
 	}
 	if (typeof msg === 'function') {
-		// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+		 
 		return `[function${msg.name ? `: ${msg.name}` : ''}()]`
 	}
 	if (msg instanceof Error) {
@@ -450,10 +450,10 @@ export function WithLogTags<T extends LogTags>(
 
 		let inferredClassName: string | undefined = 'UnknownClass'
 		if (typeof target === 'function') {
-			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+			 
 			inferredClassName = target.name || inferredClassName
 		} else if (target !== undefined && typeof target.constructor === 'function') {
-			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+			 
 			inferredClassName = target.constructor.name || inferredClassName
 		}
 
@@ -464,9 +464,9 @@ export function WithLogTags<T extends LogTags>(
 			const existing = als.getStore()
 			let rootMethod = method
 			if (
-				// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+				 
 				existing &&
-				// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+				 
 				existing.$logger &&
 				typeof existing.$logger === 'object' &&
 				!Array.isArray(existing.$logger) &&
