@@ -226,7 +226,7 @@ export function stringifyMessage(msg: any): string {
 	}
 	try {
 		return JSON.stringify(msg)
-	} catch (e) {
+	} catch {
 		// may throw error if there are circular references
 		return '[unserializable object]'
 	}
