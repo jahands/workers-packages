@@ -36,7 +36,7 @@
 	"scripts": {
 		"build": "runx build bundle-lib ./src/index.ts --format esm --platform node",
 		"check:exports": "runx check --exports",
-		"check:lint": "run-eslint-workers",
+		"check:lint": "run-eslint",
 		"check:types": "run-tsc",
 		"test": "run-vitest"
 	},

@@ -1,4 +1,5 @@
 {
+	"exclude": ["eslint.config.ts"],
 	"compilerOptions": {
 		"lib": ["ESNext"],
 		"target": "ESNext",

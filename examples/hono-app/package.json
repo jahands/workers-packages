@@ -5,7 +5,7 @@
 	"sideEffects": false,
 	"scripts": {
 		"build:wrangler": "runx build wrangler",
-		"check:lint": "run-eslint-workers",
+		"check:lint": "run-eslint",
 		"check:types": "run-tsc",
 		"test": "run-vitest"
 	},
