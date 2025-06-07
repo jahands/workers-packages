@@ -4,7 +4,7 @@
 	"private": true,
 	"sideEffects": false,
 	"scripts": {
-		"check:lint": "run-eslint-workers",
+		"check:lint": "run-eslint",
 		"check:types": "run-tsc",
 		"cli": "bun ./src/bin/cli.ts",
 		"test": "run-vitest"
@@ -22,6 +22,6 @@
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"vitest": "3.1.3"
+		"vitest": "3.1.4"
 	}
 }

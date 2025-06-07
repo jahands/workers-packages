@@ -34,6 +34,26 @@ const config = {
 	importOrder: [...codeImports, ...typeImports],
 	importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
 	importOrderTypeScriptVersion: '5.5.4',
+	overrides: [
+		{
+			files: ['*.jsonc', '*.code-workspace'],
+			options: {
+				trailingComma: 'none',
+			},
+		},
+		{
+			files: 'Justfile',
+			options: {
+				useTabs: false,
+			},
+		},
+		{
+			files: '*.md',
+			options: {
+				useTabs: false,
+			},
+		},
+	],
 }
 
 module.exports = config

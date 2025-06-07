@@ -183,7 +183,6 @@ export type HttpStatusCode = (typeof httpStatus)[HttpStatusCodeName]
  * })
  * ```
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function isNullBodyStatus(status: HttpStatusCode | (number & {})): boolean {
 	return (nullBodyStatuses as number[]).includes(status)
 }

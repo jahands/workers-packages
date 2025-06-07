@@ -1,4 +1,3 @@
-import { isWorkerNameUnique } from './helpers/ensure-unique-worker-name'
 import { partials } from './helpers/partials'
 import { pnpmFix } from './plugins/pnpm-fix'
 import { pnpmInstall } from './plugins/pnpm-install'
@@ -70,10 +69,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					type: 'addMany',
 					base: 'templates/fetch-worker',
 					destination: `${answers.appsDir}/{{ slug name }}`,
-					templateFiles: [
-						'templates/fetch-worker/**/**.hbs',
-						'templates/fetch-worker/.eslintrc.cjs.hbs',
-					],
+					templateFiles: ['templates/fetch-worker/**/**.hbs'],
 				},
 				{ type: 'pnpmFix' },
 				{ type: 'pnpmInstall' },

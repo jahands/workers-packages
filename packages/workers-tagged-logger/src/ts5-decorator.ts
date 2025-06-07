@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/naming-convention */
 import { als } from './logger.js'
 
 import type { LogTags } from './logger.js'
@@ -184,9 +182,7 @@ export function WithLogTags<T extends LogTags>(
 			const existing = als.getStore()
 			let rootMethod = method
 			if (
-				// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 				existing &&
-				// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 				existing.$logger &&
 				typeof existing.$logger === 'object' &&
 				!Array.isArray(existing.$logger) &&

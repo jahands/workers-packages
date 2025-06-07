@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AsyncLocalStorage } from 'node:async_hooks'
 
 import type { Secret } from '@dagger.io/dagger'
@@ -23,7 +22,6 @@ export const envStorage = new AsyncLocalStorage<EnvContext>()
  * Note: This approach using Function.toString() can be fragile and might
  * break with code minification or complex function definitions.
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function extractParamNames(func: Function): string[] {
 	const funcStr = func.toString().replace(/(\r\n|\n|\r)/gm, '')
 	// Regex to find parameter list within parentheses, handles various function definition styles
@@ -60,7 +58,7 @@ export function extractParamNames(func: Function): string[] {
  * Decorator factory that wraps a method to capture its arguments based on
  * extracted parameter names and store them in AsyncLocalStorage.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
+
 export function ParamsToEnv(): MethodDecorator {
 	return function (_target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
 		if (typeof descriptor === 'undefined' || typeof descriptor.value !== 'function') {

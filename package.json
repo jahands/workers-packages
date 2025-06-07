@@ -20,7 +20,8 @@
 		"chore:update:tools:turbo": "pnpx @turbo/codemod@latest update",
 		"fix": "run-s fix:*",
 		"fix:deps": "run-fix-deps",
-		"fix:lint": "FIX_ESLINT=1 turbo check:lint",
+		"check:lint:all": "run-eslint",
+		"fix:lint": "FIX_ESLINT=1 run-eslint",
 		"fix:format": "prettier --write --cache --ignore-unknown \"**/*.{ts,tsx,cjs,md,json}\"",
 		"test": "vitest --testTimeout=15000",
 		"release": "run-s build:packages release:clean publish",
@@ -44,7 +45,7 @@
 		"tsx": "4.19.4",
 		"turbo": "2.5.3",
 		"typescript": "5.5.4",
-		"vitest": "3.1.3",
+		"vitest": "3.1.4",
 		"wrangler": "4.15.2",
 		"yaml": "2.8.0",
 		"zod": "3.25.7"

@@ -122,9 +122,9 @@
   - You **must** enable `experimentalDecorators` in your `tsconfig.json` to use this feature:
     ```json
     {
-    	"compilerOptions": {
-    		"experimentalDecorators": true
-    	}
+      "compilerOptions": {
+        "experimentalDecorators": true
+      }
     }
     ```
 
@@ -136,19 +136,19 @@
   const logger = new WorkersLogger()
 
   class ExampleHandler {
-  	// Source will be inferred as "ExampleHandler"
-  	@WithLogTags()
-  	async handleEvent(eventId: string) {
-  		logger.setTags({ eventId })
-  		logger.info('Handling event') // Tags: { source: "ExampleHandler", $logger..., eventId }
-  		await this.processEvent()
-  	}
+    // Source will be inferred as "ExampleHandler"
+    @WithLogTags()
+    async handleEvent(eventId: string) {
+      logger.setTags({ eventId })
+      logger.info('Handling event') // Tags: { source: "ExampleHandler", $logger..., eventId }
+      await this.processEvent()
+    }
 
-  	// Source is explicit, inherits eventId tag from caller's context
-  	@WithLogTags({ source: 'EventProcessor', tags: { stage: 'processing' } })
-  	async processEvent() {
-  		logger.info('Processing event') // Tags: { source: "EventProcessor", $logger..., eventId, stage: "processing" }
-  	}
+    // Source is explicit, inherits eventId tag from caller's context
+    @WithLogTags({ source: 'EventProcessor', tags: { stage: 'processing' } })
+    async processEvent() {
+      logger.info('Processing event') // Tags: { source: "EventProcessor", $logger..., eventId, stage: "processing" }
+    }
   }
   ```
 

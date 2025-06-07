@@ -28,7 +28,6 @@ import type { HttpStatusCode } from './status.js'
  * const status = httpStatus.OK // 200
  * ```
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function text(code: HttpStatusCode | (number & {})): string {
 	if (typeof code !== 'number') {
 		throw new TypeError('code must be a number')

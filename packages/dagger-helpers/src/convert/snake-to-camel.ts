@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /**
  * Helper type to capitalize the first letter of a string literal type.
  * e.g., 'hello' -> 'Hello'

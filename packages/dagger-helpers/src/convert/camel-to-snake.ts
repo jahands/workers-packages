@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 // Helper to check if a character is lowercase A-Z
 type IsLower<C extends string> =
 	Lowercase<C> extends Uppercase<C> ? false : C extends Lowercase<C> ? true : false
