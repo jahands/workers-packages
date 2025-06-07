@@ -105,7 +105,7 @@
 	"scripts": {
 		"build": "runx build tsc ./src/index.ts",
 		"check:exports": "runx check --exports",
-		"check:lint": "run-eslint-workers",
+		"check:lint": "run-eslint",
 		"check:types": "run-tsc",
 		"test": "run-vitest"
 	},

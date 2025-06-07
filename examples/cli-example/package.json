@@ -4,7 +4,7 @@
 	"private": true,
 	"sideEffects": false,
 	"scripts": {
-		"check:lint": "run-eslint-workers",
+		"check:lint": "run-eslint",
 		"check:types": "run-tsc",
 		"cli": "bun ./src/bin/cli.ts",
 		"test": "run-vitest"

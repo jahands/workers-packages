@@ -51,7 +51,7 @@
 	],
 	"scripts": {
 		"build": "runx build bundle-lib ./src/index.ts ./src/otel-cf-workers.ts ./src/opentelemetry-api.ts",
-		"check:lint": "run-eslint-workers",
+		"check:lint": "run-eslint",
 		"check:types": "run-tsc",
 		"test": "run-vitest"
 	},
