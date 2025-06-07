@@ -1,6 +1,8 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"display": "Default",
+	"include": ["${configDir}/**/*.ts", "${configDir}/**/*.tsx"],
+	"exclude": ["${configDir}/node_modules/", "${configDir}/dist/", "${configDir}/eslint.config.ts"],
 	"compilerOptions": {
 		"composite": false,
 		"declaration": true,
@@ -17,6 +19,5 @@
 		"strict": true,
 		"noEmit": true,
 		"experimentalDecorators": true
-	},
-	"exclude": ["node_modules"]
+	}
 }
