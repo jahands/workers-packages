@@ -1,16 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { z } from 'zod/v4'
 
 import { withLogTags, WorkersLogger } from '../../logger.js'
 import { setupTest } from '../harness.js'
-
-// Schema for $logger object with level property
-export type LoggerWithLevel = z.infer<typeof LoggerWithLevel>
-export const LoggerWithLevel = z.object({
-	method: z.string().optional(),
-	rootMethod: z.string().optional(),
-	level: z.string(),
-})
+import { LoggerWithLevel } from '../schemas.js'
 
 beforeEach(() => {
 	vi.useFakeTimers()
