@@ -181,15 +181,8 @@ export function WithLogTags<T extends LogTags>(
 		const replacementMethod = function (this: any, ...args: any[]): any {
 			const existingContext = als.getStore()
 			let rootMethod = method
-			if (
-				existingContext &&
-				existingContext.tags.$logger &&
-				typeof existingContext.tags.$logger === 'object' &&
-				!Array.isArray(existingContext.tags.$logger) &&
-				!(existingContext.tags.$logger instanceof Date) &&
-				typeof existingContext.tags.$logger.rootMethod === 'string'
-			) {
-				rootMethod = existingContext.tags.$logger.rootMethod
+			if (existingContext?.rootMethod) {
+				rootMethod = existingContext.rootMethod
 			}
 
 			// Infer class name dynamically using 'this' and context.static
@@ -216,27 +209,20 @@ export function WithLogTags<T extends LogTags>(
 			const finalSource = explicitSource ?? existingContext?.tags.source ?? inferredClassName
 			const sourceTag = { source: finalSource }
 
-			// Define the logger-specific tags for this context level
-			const loggerTags = {
-				$logger: {
-					method: method, // Always the current method
-					rootMethod: rootMethod, // Inherited or current
-				},
-			}
-
 			// Create the new context for the ALS
-			// Merge order: existing tags -> final source -> user tags -> logger tags
+			// Merge order: existing tags -> final source -> user tags
 			const newContext: LogContext = {
 				tags: structuredClone(
 					Object.assign(
 						{},
 						existingContext?.tags,
 						sourceTag, // Use the determined source tag
-						userTags, // Add user tags if provided
-						loggerTags // Logger tags take precedence
+						userTags // Add user tags if provided
 					)
 				),
 				logLevel: existingContext?.logLevel, // Preserve existing log level
+				method: method, // Always the current method
+				rootMethod: rootMethod, // Inherited or current
 			}
 
 			// Run the original method within the AsyncLocalStorage context

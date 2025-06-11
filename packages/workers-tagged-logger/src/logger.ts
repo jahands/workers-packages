@@ -51,10 +51,12 @@ type LogLevelFns = {
 	[K in LogLevel]: LogFn
 }
 
-/** Context stored in AsyncLocalStorage containing both tags and log level */
+/** Context stored in AsyncLocalStorage containing tags, log level, and method tracking */
 export type LogContext = {
 	tags: LogTags
 	logLevel?: LogLevel
+	method?: string
+	rootMethod?: string
 }
 
 export const als = new AsyncLocalStorage<LogContext>()
@@ -254,16 +256,39 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 
 		const tags = this.getTags()
 
-		// Add current effective log level to $logger object only if:
-		// 1. $logger already exists, AND
-		// 2. The effective log level was explicitly set (not using default resolution)
-		const enhancedTags: any = { ...tags }
+		// Create enhanced tags with $logger object containing method tracking and log level
+		const enhancedTags: LogTags = { ...tags }
+
+		// Build $logger object from context and existing tags
+		const existingLogger = enhancedTags.$logger
+		const loggerObject: Record<string, LogValue> =
+			existingLogger &&
+			typeof existingLogger === 'object' &&
+			!Array.isArray(existingLogger) &&
+			!(existingLogger instanceof Date)
+				? { ...existingLogger }
+				: {}
+
+		// Add method and rootMethod from context if available
+		if (context?.method !== undefined) {
+			loggerObject.method = context.method
+		}
+		if (context?.rootMethod !== undefined) {
+			loggerObject.rootMethod = context.rootMethod
+		}
+
+		// Add current effective log level only if explicitly set (not using default resolution)
 		const isLevelExplicitlySet =
 			this.instanceLogLevel !== undefined || // Set via withLogLevel()
 			context?.logLevel !== undefined || // Set via setLogLevel()
 			this.constructorLogLevel !== undefined // Set via constructor
-		if (enhancedTags.$logger && typeof enhancedTags.$logger === 'object' && isLevelExplicitlySet) {
-			enhancedTags.$logger = { ...enhancedTags.$logger, level: minimumLogLevel }
+		if (isLevelExplicitlySet) {
+			loggerObject.level = minimumLogLevel
+		}
+
+		// Only add $logger object if it has any properties
+		if (Object.keys(loggerObject).length > 0) {
+			enhancedTags.$logger = loggerObject
 		}
 
 		let message: string | undefined
@@ -352,6 +377,8 @@ export function withLogTags<T extends LogTags, R>(
 	const newContext: LogContext = {
 		tags: structuredClone(Object.assign({}, existingContext?.tags, sourceTag, opts.tags)),
 		logLevel: existingContext?.logLevel, // Preserve existing log level
+		method: existingContext?.method, // Preserve existing method
+		rootMethod: existingContext?.rootMethod, // Preserve existing rootMethod
 	}
 	return als.run(newContext, fn)
 }
@@ -546,41 +573,27 @@ export function WithLogTags<T extends LogTags>(
 		descriptor.value = function (...args: any[]): MethodDecoratorFn {
 			const existingContext = als.getStore()
 			let rootMethod = method
-			if (
-				existingContext &&
-				existingContext.tags.$logger &&
-				typeof existingContext.tags.$logger === 'object' &&
-				!Array.isArray(existingContext.tags.$logger) &&
-				!(existingContext.tags.$logger instanceof Date) &&
-				typeof existingContext.tags.$logger.rootMethod === 'string'
-			) {
-				rootMethod = existingContext.tags.$logger.rootMethod
+			if (existingContext?.rootMethod) {
+				rootMethod = existingContext.rootMethod
 			}
 
 			const finalSource = explicitSource ?? existingContext?.tags.source ?? inferredClassName
 			const sourceTag = { source: finalSource }
 
-			// Define the logger-specific tags for this context level
-			const loggerTags = {
-				$logger: {
-					method: method, // Always the current method
-					rootMethod: rootMethod, // Inherited or current
-				},
-			}
-
 			// Create the new context for the ALS
-			// Merge order: existing tags -> final source -> user tags -> logger tags
+			// Merge order: existing tags -> final source -> user tags
 			const newContext: LogContext = {
 				tags: structuredClone(
 					Object.assign(
 						{},
 						existingContext?.tags,
 						sourceTag, // Use the determined source tag
-						userTags, // Add user tags if provided
-						loggerTags // Logger tags take precedence
+						userTags // Add user tags if provided
 					)
 				),
 				logLevel: existingContext?.logLevel, // Preserve existing log level
+				method: method, // Always the current method
+				rootMethod: rootMethod, // Inherited or current
 			}
 
 			// Run the original method within the AsyncLocalStorage context

@@ -7,7 +7,7 @@ The workers-tagged-logger supports dynamic log level management with a priority-
 Log levels are resolved using the following priority order (highest to lowest):
 
 1. **Instance-specific level** - Set via `withLogLevel()` method
-2. **Context level** - Set via `setLogLevel()` in AsyncLocalStorage context  
+2. **Context level** - Set via `setLogLevel()` in AsyncLocalStorage context
 3. **Constructor level** - Set via `minimumLogLevel` option during instantiation
 4. **Default level** - `'debug'` (logs everything)
 
@@ -36,7 +36,7 @@ const logger = new WorkersLogger({ minimumLogLevel: 'warn' })
 
 await withLogTags({ source: 'app' }, async () => {
   logger.debug('Not shown - constructor level is warn')
-  
+
   logger.setLogLevel('debug') // Override constructor level
   logger.debug('Now shown - context level is debug')
 })
@@ -52,7 +52,7 @@ const errorLogger = logger.withLogLevel('error')
 
 await withLogTags({ source: 'app' }, async () => {
   logger.setLogLevel('debug') // Set context to debug
-  
+
   logger.debug('Shown - uses context level (debug)')
   errorLogger.debug('Not shown - uses instance level (error)')
   errorLogger.error('Shown - meets instance level requirement')
@@ -66,7 +66,7 @@ const logger = new WorkersLogger({ minimumLogLevel: 'warn' })
 
 await withLogTags({ source: 'app' }, async () => {
   logger.debug('Not shown - constructor level is warn')
-  
+
   logger.setLogLevel('debug') // Override constructor level
   logger.debug('Now shown - context level overrides constructor')
 })
@@ -108,8 +108,8 @@ await withLogTags({ source: 'app' }, async () => {
 
 ```typescript
 const isDev = process.env.NODE_ENV === 'development'
-const logger = new WorkersLogger({ 
-  minimumLogLevel: isDev ? 'debug' : 'warn' 
+const logger = new WorkersLogger({
+  minimumLogLevel: isDev ? 'debug' : 'warn',
 })
 ```
 
@@ -123,7 +123,7 @@ await withLogTags({ source: 'auth' }, async () => {
   if (env.DEBUG_AUTH) {
     logger.setLogLevel('debug')
   }
-  
+
   await authenticateUser(request)
 })
 ```
