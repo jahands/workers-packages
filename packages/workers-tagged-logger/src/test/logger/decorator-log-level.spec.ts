@@ -1,7 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { z } from 'zod/v4'
 
 import { WithLogTags, withLogTags } from '../../logger.js'
 import { setupTest } from '../harness.js'
+
+// Schema for $logger object with level property
+export type LoggerWithLevel = z.infer<typeof LoggerWithLevel>
+export const LoggerWithLevel = z.object({
+	method: z.string().optional(),
+	rootMethod: z.string().optional(),
+	level: z.string(),
+})
 
 beforeEach(() => {
 	vi.useFakeTimers()
@@ -33,8 +42,9 @@ describe('WithLogTags decorator with log levels', () => {
 		expect(h.logs).toHaveLength(1)
 		expect(h.oneLog().message).toBe('debug from decorator')
 		expect(h.oneLog().tags?.source).toBe('TestService')
-		expect((h.oneLog().tags?.$logger as any)?.method).toBe('testMethod')
-		expect((h.oneLog().tags?.$logger as any)?.level).toBe('debug')
+		const loggerObj = LoggerWithLevel.parse(h.oneLog().tags?.$logger)
+		expect(loggerObj.method).toBe('testMethod')
+		expect(loggerObj.level).toBe('debug')
 	})
 
 	it('inherits log level from parent context', async () => {
@@ -58,7 +68,8 @@ describe('WithLogTags decorator with log levels', () => {
 			expect(result).toBe('result')
 			expect(h.logs).toHaveLength(1)
 			expect(h.oneLog().message).toBe('debug from decorator')
-			expect((h.oneLog().tags?.$logger as any)?.level).toBe('debug')
+			const loggerObj = LoggerWithLevel.parse(h.oneLog().tags?.$logger)
+			expect(loggerObj.level).toBe('debug')
 		})
 	})
 
@@ -89,17 +100,19 @@ describe('WithLogTags decorator with log levels', () => {
 		// Parent method log
 		expect(h.logAt(0).message).toBe('debug from parent')
 		expect(h.logAt(0).tags?.source).toBe('TestService')
-		expect((h.logAt(0).tags?.$logger as any)?.method).toBe('parentMethod')
-		expect((h.logAt(0).tags?.$logger as any)?.rootMethod).toBe('parentMethod')
-		expect((h.logAt(0).tags?.$logger as any)?.level).toBe('debug')
+		const parentLoggerObj = LoggerWithLevel.parse(h.logAt(0).tags?.$logger)
+		expect(parentLoggerObj.method).toBe('parentMethod')
+		expect(parentLoggerObj.rootMethod).toBe('parentMethod')
+		expect(parentLoggerObj.level).toBe('debug')
 
 		// Child method log (inherits log level)
 		expect(h.logAt(1).message).toBe('debug from child')
 		expect(h.logAt(1).tags?.source).toBe('TestService')
 		expect(h.logAt(1).tags?.component).toBe('child')
-		expect((h.logAt(1).tags?.$logger as any)?.method).toBe('childMethod')
-		expect((h.logAt(1).tags?.$logger as any)?.rootMethod).toBe('parentMethod')
-		expect((h.logAt(1).tags?.$logger as any)?.level).toBe('debug')
+		const childLoggerObj = LoggerWithLevel.parse(h.logAt(1).tags?.$logger)
+		expect(childLoggerObj.method).toBe('childMethod')
+		expect(childLoggerObj.rootMethod).toBe('parentMethod')
+		expect(childLoggerObj.level).toBe('debug')
 	})
 
 	it('allows overriding log level in child decorated method', async () => {
@@ -130,11 +143,13 @@ describe('WithLogTags decorator with log levels', () => {
 
 		// Parent method log
 		expect(h.logAt(0).message).toBe('debug from parent')
-		expect((h.logAt(0).tags?.$logger as any)?.level).toBe('debug')
+		const parentLoggerObj = LoggerWithLevel.parse(h.logAt(0).tags?.$logger)
+		expect(parentLoggerObj.level).toBe('debug')
 
 		// Child method log (only error should log)
 		expect(h.logAt(1).message).toBe('error from child - should log')
-		expect((h.logAt(1).tags?.$logger as any)?.level).toBe('error')
+		const childLoggerObj = LoggerWithLevel.parse(h.logAt(1).tags?.$logger)
+		expect(childLoggerObj.level).toBe('error')
 	})
 
 	it('works with instance-specific log levels', async () => {
@@ -156,7 +171,8 @@ describe('WithLogTags decorator with log levels', () => {
 		expect(result).toBe('result')
 		expect(h.logs).toHaveLength(1)
 		expect(h.oneLog().message).toBe('debug from instance logger')
-		expect((h.oneLog().tags?.$logger as any)?.level).toBe('debug')
+		const loggerObj = LoggerWithLevel.parse(h.oneLog().tags?.$logger)
+		expect(loggerObj.level).toBe('debug')
 	})
 
 	it('maintains log level isolation between decorator contexts', async () => {

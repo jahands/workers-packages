@@ -1,7 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { z } from 'zod/v4'
 
 import { withLogTags, WorkersLogger } from '../../logger.js'
 import { setupTest } from '../harness.js'
+
+// Schema for $logger object with level property
+export type LoggerWithLevel = z.infer<typeof LoggerWithLevel>
+export const LoggerWithLevel = z.object({
+	method: z.string().optional(),
+	rootMethod: z.string().optional(),
+	level: z.string(),
+})
 
 beforeEach(() => {
 	vi.useFakeTimers()
@@ -239,7 +248,8 @@ describe('Dynamic Log Level Management', () => {
 				h.log.setTags({ $logger: { method: 'testMethod' } })
 				h.log.warn('test message')
 				const log = h.oneLog()
-				expect(log.tags?.$logger).toEqual({ method: 'testMethod', level: 'warn' })
+				const loggerObj = LoggerWithLevel.parse(log.tags?.$logger)
+				expect(loggerObj).toEqual({ method: 'testMethod', level: 'warn' })
 			})
 		})
 
@@ -252,7 +262,8 @@ describe('Dynamic Log Level Management', () => {
 				h.log.info('test message')
 
 				const log = h.oneLog()
-				expect(log.tags?.$logger).toEqual({
+				const loggerObj = LoggerWithLevel.parse(log.tags?.$logger)
+				expect(loggerObj).toEqual({
 					method: 'testMethod',
 					rootMethod: 'rootMethod',
 					level: 'info',
@@ -269,7 +280,8 @@ describe('Dynamic Log Level Management', () => {
 				h.log.debug('test message')
 
 				const log = h.oneLog()
-				expect(log.tags?.$logger).toEqual({ method: 'testMethod', level: 'debug' })
+				const loggerObj = LoggerWithLevel.parse(log.tags?.$logger)
+				expect(loggerObj).toEqual({ method: 'testMethod', level: 'debug' })
 			})
 		})
 
@@ -283,7 +295,8 @@ describe('Dynamic Log Level Management', () => {
 				debugLogger.debug('test message')
 
 				const log = h.oneLog()
-				expect(log.tags?.$logger).toEqual({ method: 'testMethod', level: 'debug' })
+				const loggerObj = LoggerWithLevel.parse(log.tags?.$logger)
+				expect(loggerObj).toEqual({ method: 'testMethod', level: 'debug' })
 			})
 		})
 	})
@@ -299,7 +312,8 @@ describe('Dynamic Log Level Management', () => {
 				const log = h.oneLog()
 				expect(log.message).toBe('debug with tags')
 				expect(log.tags?.component).toBe('auth')
-				expect((log.tags?.$logger as any)?.level).toBe('debug')
+				const loggerObj = LoggerWithLevel.parse(log.tags?.$logger)
+				expect(loggerObj.level).toBe('debug')
 			})
 		})
 
@@ -313,7 +327,8 @@ describe('Dynamic Log Level Management', () => {
 				const log = h.oneLog()
 				expect(log.message).toBe('debug with fields')
 				expect(log.service).toBe('api')
-				expect((log.tags?.$logger as any)?.level).toBe('debug')
+				const loggerObj = LoggerWithLevel.parse(log.tags?.$logger)
+				expect(loggerObj.level).toBe('debug')
 			})
 		})
 
@@ -329,7 +344,8 @@ describe('Dynamic Log Level Management', () => {
 					const log = h.oneLog()
 					expect(log.message).toBe('nested debug')
 					expect(log.tags?.source).toBe('child')
-					expect((log.tags?.$logger as any)?.level).toBe('debug')
+					const loggerObj = LoggerWithLevel.parse(log.tags?.$logger)
+					expect(loggerObj.level).toBe('debug')
 				})
 			})
 		})
@@ -360,7 +376,8 @@ describe('Dynamic Log Level Management', () => {
 
 				expect(h.logs).toHaveLength(1)
 				expect(h.oneLog().message).toBe('should log')
-				expect((h.oneLog().tags?.$logger as any)?.level).toBe('warn')
+				const loggerObj = LoggerWithLevel.parse(h.oneLog().tags?.$logger)
+				expect(loggerObj.level).toBe('warn')
 			})
 		})
 	})
