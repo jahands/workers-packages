@@ -6,6 +6,7 @@ A wrapper around `console.log()` for structured logging in Cloudflare Workers, p
 
 - Add tags to all logs (e.g. user_id) without needing to pass a logger to every function via `setTags()`.
 - **Class method decorator (`@WithLogTags`)** for automatically establishing logging context within class methods, including automatic `source` tagging based on the class name.
+- **Dynamic log level management** with priority-based resolution - control logging granularity at runtime using `withLogLevel()` and `setLogLevel()`.
 - Can create a context-specific logger using `withTags()` when global tags aren't desired.
 - Can create a context-specific logger using `withFields()` that adds fields to the top level (similar to `withTags()`.)
 - Can create a sub-context using `withLogTags` or `@WithLogTags` where `setTags()` will apply to that context but not the parent scope (powered by AsyncLocalStorage.)
@@ -61,7 +62,12 @@ type Tags = {
   request_id: string
   source?: string // source is often added automatically
 }
+
+// Basic logger (logs everything by default)
 const logger = new WorkersLogger<Tags>()
+
+// Logger with minimum log level (only logs warn and error by default)
+const prodLogger = new WorkersLogger<Tags>({ minimumLogLevel: 'warn' })
 ```
 
 ### Establishing Logging Context
@@ -251,6 +257,145 @@ ctxLogger.info('hi')
 ```
 
 Note: There is currently no way to set fields globally for all logs like you can with `setTags()`. `withFields` only affects the specific logger instance it's called on.
+
+### Dynamic Log Level Management
+
+The logger supports dynamic log level management with a priority-based system that allows fine-grained control over logging granularity at runtime.
+
+#### Log Level Priority
+
+Log levels are resolved using the following priority order (highest to lowest):
+
+1. **Instance-specific level** - Set via `withLogLevel()` method
+2. **Context level** - Set via `setLogLevel()` in AsyncLocalStorage context
+3. **Constructor level** - Set via `minimumLogLevel` option during instantiation
+4. **Default level** - `'debug'` (logs everything)
+
+#### Creating Loggers with Specific Log Levels
+
+Use `withLogLevel()` to create a new logger instance with a specific minimum log level. This level has the highest priority and will override context and constructor levels:
+
+```ts
+const logger = new WorkersLogger({ minimumLogLevel: 'warn' })
+const debugLogger = logger.withLogLevel('debug')
+
+await withLogTags({ source: 'app' }, async () => {
+  logger.debug('Not shown - constructor level is warn')
+  debugLogger.debug('Shown - instance level is debug')
+})
+```
+
+#### Setting Context-Level Log Levels
+
+Use `setLogLevel()` to set the minimum log level for all loggers in the current AsyncLocalStorage context. This overrides constructor-level settings but is overridden by instance-specific levels:
+
+```ts
+const logger = new WorkersLogger({ minimumLogLevel: 'warn' })
+
+await withLogTags({ source: 'app' }, async () => {
+  logger.debug('Not shown - constructor level is warn')
+
+  logger.setLogLevel('debug') // Override constructor level
+  logger.debug('Now shown - context level is debug')
+})
+```
+
+#### Priority Examples
+
+**Instance Level Overrides Context Level:**
+
+```ts
+const logger = new WorkersLogger()
+const errorLogger = logger.withLogLevel('error')
+
+await withLogTags({ source: 'app' }, async () => {
+  logger.setLogLevel('debug') // Set context to debug
+
+  logger.debug('Shown - uses context level (debug)')
+  errorLogger.debug('Not shown - uses instance level (error)')
+  errorLogger.error('Shown - meets instance level requirement')
+})
+```
+
+**Context Level Overrides Constructor Level:**
+
+```ts
+const logger = new WorkersLogger({ minimumLogLevel: 'warn' })
+
+await withLogTags({ source: 'app' }, async () => {
+  logger.debug('Not shown - constructor level is warn')
+
+  logger.setLogLevel('debug') // Override constructor level
+  logger.debug('Now shown - context level overrides constructor')
+})
+```
+
+#### Method Chaining
+
+The `withLogLevel()` method can be chained with other logger methods:
+
+```ts
+const logger = new WorkersLogger({ minimumLogLevel: 'warn' })
+
+const specialLogger = logger
+  .withLogLevel('debug')
+  .withTags({ component: 'auth' })
+  .withFields({ service: 'api' })
+
+await withLogTags({ source: 'app' }, async () => {
+  specialLogger.debug('Shown with tags and fields')
+})
+```
+
+#### Log Level in Output
+
+When using decorators or when `$logger` tags are explicitly set, the effective log level is included in the log output:
+
+```ts
+await withLogTags({ source: 'app' }, async () => {
+  logger.setTags({ $logger: { method: 'myMethod' } })
+  logger.setLogLevel('info')
+  logger.info('Message')
+  // Output includes: tags: { $logger: { method: 'myMethod', level: 'info' } }
+})
+```
+
+#### Use Cases
+
+**Development vs Production:**
+
+```ts
+const isDev = process.env.NODE_ENV === 'development'
+const logger = new WorkersLogger({
+  minimumLogLevel: isDev ? 'debug' : 'warn',
+})
+```
+
+**Feature-Specific Debugging:**
+
+```ts
+const logger = new WorkersLogger({ minimumLogLevel: 'warn' })
+
+// Enable debug logging for specific feature
+await withLogTags({ source: 'auth' }, async () => {
+  if (env.DEBUG_AUTH) {
+    logger.setLogLevel('debug')
+  }
+
+  await authenticateUser(request)
+})
+```
+
+**Component-Specific Log Levels:**
+
+```ts
+const logger = new WorkersLogger()
+const dbLogger = logger.withLogLevel('warn').withTags({ component: 'database' })
+const apiLogger = logger.withLogLevel('debug').withTags({ component: 'api' })
+
+// Database logs only warnings and errors
+// API logs everything (debug+)
+```
 
 ### Additional Examples
 
