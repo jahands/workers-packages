@@ -109,8 +109,13 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	constructor(opts: WorkersLoggerOptions = {}) {
 		// Store constructor log level separately from instance log level
 		this.constructorLogLevel = opts.minimumLogLevel
-		const ctxOpts = { ...opts }
-		delete ctxOpts.minimumLogLevel // Remove from ctx to avoid confusion
+		const ctxOpts: Omit<WorkersLoggerOptions, 'minimumLogLevel'> = {}
+		if (opts.tags) {
+			ctxOpts.tags = opts.tags
+		}
+		if (opts.fields) {
+			ctxOpts.fields = opts.fields
+		}
 		Object.assign(this.ctx, structuredClone(ctxOpts))
 	}
 
