@@ -125,13 +125,13 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 * (or sub-instances) will contain these tags.
 	 */
 	withTags(tags: Partial<T & LogTags>): WorkersLogger<Partial<T & LogTags>> {
-		const newLogger = new WorkersLogger({
+		const newLogger = new WorkersLogger<T>({
 			...this.ctx,
 			tags: structuredClone(Object.assign({}, this.ctx.tags, tags)),
 			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
 		})
 		newLogger.instanceLogLevel = this.instanceLogLevel // Preserve instance level
-		return newLogger as WorkersLogger<Partial<T & LogTags>>
+		return newLogger
 	}
 
 	/**
@@ -144,13 +144,13 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 * setting top-level fields is preferred (such as setting `timestamp`.)
 	 */
 	withFields(fields: Partial<LogFields>): WorkersLogger<Partial<T>> {
-		const newLogger = new WorkersLogger({
+		const newLogger = new WorkersLogger<T>({
 			...this.ctx,
 			fields: structuredClone(Object.assign({}, this.ctx.fields, fields)),
 			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
 		})
 		newLogger.instanceLogLevel = this.instanceLogLevel // Preserve instance level
-		return newLogger as WorkersLogger<Partial<T>>
+		return newLogger
 	}
 
 	private getFields(): Partial<LogFields> {
