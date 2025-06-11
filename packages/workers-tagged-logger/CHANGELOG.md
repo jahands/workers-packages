@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.12.1
+
+### Patch Changes
+
+- 4021bc5: docs: log level management to README.md
+
 ## 0.12.0
 
 ### Minor Changes
