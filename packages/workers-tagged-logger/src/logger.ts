@@ -224,12 +224,10 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 
 		const tags = this.getTags()
 
-		// Add current effective log level to $logger object
+		// Add current effective log level to $logger object only if $logger already exists
 		const enhancedTags: any = { ...tags }
 		if (enhancedTags.$logger && typeof enhancedTags.$logger === 'object') {
 			enhancedTags.$logger = { ...enhancedTags.$logger, level: minimumLogLevel }
-		} else {
-			enhancedTags.$logger = { level: minimumLogLevel }
 		}
 
 		let message: string | undefined
