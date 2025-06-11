@@ -51,7 +51,15 @@ type LogLevelFns = {
 	[K in LogLevel]: LogFn
 }
 
-export const als = new AsyncLocalStorage<LogTags>()
+/** Context stored in AsyncLocalStorage containing tags, log level, and method tracking */
+export type LogContext = {
+	tags: LogTags
+	logLevel?: LogLevel
+	method?: string
+	rootMethod?: string
+}
+
+export const als = new AsyncLocalStorage<LogContext>()
 
 export interface WorkersLoggerOptions {
 	/**
@@ -95,9 +103,19 @@ export interface WorkersLoggerOptions {
  */
 export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	private ctx: WorkersLoggerOptions = {}
+	private constructorLogLevel?: LogLevel
+	private instanceLogLevel?: LogLevel
 
 	constructor(opts: WorkersLoggerOptions = {}) {
-		Object.assign(this.ctx, structuredClone(opts))
+		// Store constructor log level separately from instance log level
+		this.constructorLogLevel = opts.minimumLogLevel
+
+		const ctxOpts: Omit<WorkersLoggerOptions, 'minimumLogLevel'> = {
+			tags: opts.tags,
+			fields: opts.fields,
+		}
+
+		Object.assign(this.ctx, structuredClone(ctxOpts))
 	}
 
 	/**
@@ -106,10 +124,13 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 * (or sub-instances) will contain these tags.
 	 */
 	withTags(tags: Partial<T & LogTags>): WorkersLogger<Partial<T & LogTags>> {
-		return new WorkersLogger({
+		const newLogger = new WorkersLogger<T>({
 			...this.ctx,
 			tags: structuredClone(Object.assign({}, this.ctx.tags, tags)),
+			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
 		})
+		newLogger.instanceLogLevel = this.instanceLogLevel // Preserve instance level
+		return newLogger
 	}
 
 	/**
@@ -122,10 +143,13 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 * setting top-level fields is preferred (such as setting `timestamp`.)
 	 */
 	withFields(fields: Partial<LogFields>): WorkersLogger<Partial<T>> {
-		return new WorkersLogger({
+		const newLogger = new WorkersLogger<T>({
 			...this.ctx,
 			fields: structuredClone(Object.assign({}, this.ctx.fields, fields)),
+			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
 		})
+		newLogger.instanceLogLevel = this.instanceLogLevel // Preserve instance level
+		return newLogger
 	}
 
 	private getFields(): Partial<LogFields> {
@@ -137,8 +161,8 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 * tags set on this instance using withTags())
 	 */
 	private getParentTags(): Partial<T & LogTags> | undefined {
-		const tags = als.getStore()
-		if (tags === undefined) {
+		const context = als.getStore()
+		if (context === undefined) {
 			console.log({
 				message: `Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?`,
 				level: 'warn',
@@ -146,7 +170,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			} satisfies ConsoleLog)
 			return
 		}
-		return tags as Partial<T & LogTags>
+		return context.tags as Partial<T & LogTags>
 	}
 
 	/**
@@ -159,12 +183,44 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	/** Set tags used for all logs in this async context
 	 * and any child context (unless overridden using withTags) */
 	setTags(tags: Partial<T & LogTags>): void {
-		const globalTags = this.getParentTags()
-		if (globalTags !== undefined) {
-			// no need to log when we don't have global tags because
-			// getParentTags already logs it.
-			Object.assign(globalTags, structuredClone(tags))
+		const context = als.getStore()
+		if (context !== undefined) {
+			// Update tags in the context
+			Object.assign(context.tags, structuredClone(tags))
+		} else {
+			// Log warning if no context exists (same as getParentTags)
+			console.log({
+				message: `Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?`,
+				level: 'warn',
+				time: new Date().toISOString(),
+			} satisfies ConsoleLog)
 		}
+	}
+
+	/** Set minimum log level for all loggers in the current AsyncLocalStorage context */
+	setLogLevel(level: LogLevel): void {
+		const context = als.getStore()
+		if (context !== undefined) {
+			// Update log level in the context
+			context.logLevel = level
+		} else {
+			// Log warning if no context exists (same as setTags)
+			console.log({
+				message: `Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?`,
+				level: 'warn',
+				time: new Date().toISOString(),
+			} satisfies ConsoleLog)
+		}
+	}
+
+	/** Create a new logger instance with the specified minimum log level */
+	withLogLevel(level: LogLevel): WorkersLogger<T> {
+		const newLogger = new WorkersLogger<T>({
+			...this.ctx,
+			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
+		})
+		newLogger.instanceLogLevel = level // Set instance-specific level
+		return newLogger
 	}
 
 	info = (...msgs: any[]): void => this.write(msgs, 'info')
@@ -174,13 +230,71 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	debug = (...msgs: any[]): void => this.write(msgs, 'debug')
 
 	private write(msgs: any[], level: LogLevel): void {
-		const minimumLogLevel = this.ctx.minimumLogLevel ?? 'debug'
+		// Resolve minimum log level using priority order:
+		// 1. Instance-specific level (set via withLogLevel())
+		// 2. Context level (set via setLogLevel() in ALS)
+		// 3. Constructor level (set via minimumLogLevel option)
+		// 4. Default level ('debug')
+		const context = als.getStore()
+		const contextLogLevel = context?.logLevel
+
+		let minimumLogLevel: LogLevel
+		if (this.instanceLogLevel !== undefined) {
+			// Instance-specific level (highest priority)
+			minimumLogLevel = this.instanceLogLevel
+		} else if (contextLogLevel !== undefined) {
+			// Context level (second priority)
+			minimumLogLevel = contextLogLevel
+		} else if (this.constructorLogLevel !== undefined) {
+			// Constructor level (third priority)
+			minimumLogLevel = this.constructorLogLevel
+		} else {
+			// Default level (lowest priority)
+			minimumLogLevel = 'debug'
+		}
+
 		// don't do anything if log is below minimum level
 		if (logLevelToNumber(level) < logLevelToNumber(minimumLogLevel)) {
 			return
 		}
 
 		const tags = this.getTags()
+
+		// Create enhanced tags with $logger object containing method tracking and log level
+		const enhancedTags: LogTags = { ...tags }
+
+		// Build $logger object from context and existing tags
+		const existingLogger = enhancedTags.$logger
+		const loggerObject: Record<string, LogValue> =
+			existingLogger &&
+			typeof existingLogger === 'object' &&
+			!Array.isArray(existingLogger) &&
+			!(existingLogger instanceof Date)
+				? { ...existingLogger }
+				: {}
+
+		// Add method and rootMethod from context if available
+		if (context?.method !== undefined) {
+			loggerObject.method = context.method
+		}
+		if (context?.rootMethod !== undefined) {
+			loggerObject.rootMethod = context.rootMethod
+		}
+
+		// Add current effective log level only if explicitly set (not using default resolution)
+		const isLevelExplicitlySet =
+			this.instanceLogLevel !== undefined || // Set via withLogLevel()
+			context?.logLevel !== undefined || // Set via setLogLevel()
+			this.constructorLogLevel !== undefined // Set via constructor
+		if (isLevelExplicitlySet) {
+			loggerObject.level = minimumLogLevel
+		}
+
+		// Only add $logger object if it has any properties
+		if (Object.keys(loggerObject).length > 0) {
+			enhancedTags.$logger = loggerObject
+		}
+
 		let message: string | undefined
 		if (Array.isArray(msgs)) {
 			if (msgs.length === 0) {
@@ -197,8 +311,8 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			level,
 			time: new Date().toISOString(),
 		}
-		if (Object.keys(tags).length > 0) {
-			log.tags = tags
+		if (Object.keys(enhancedTags).length > 0) {
+			log.tags = enhancedTags
 		}
 		console.log(Object.assign({}, log, this.getFields()))
 	}
@@ -256,16 +370,21 @@ export function withLogTags<T extends LogTags, R>(
 	opts: WithLogTagsOptions<Partial<T & LogTags>>,
 	fn: () => R
 ): R {
-	const existing = als.getStore()
+	const existingContext = als.getStore()
 	let sourceTag: { source: string } | undefined
 	const sourceOpt = opts.source
 	if (sourceOpt !== undefined) {
 		sourceTag = { source: sourceOpt }
 	}
-	// Note: existing won't exist when withLogTags() is first called
-	// Create a new object for the store, inheriting from existing
-	const newTags = structuredClone(Object.assign({}, existing, sourceTag, opts.tags))
-	return als.run(newTags, fn)
+	// Note: existingContext won't exist when withLogTags() is first called
+	// Create a new context, inheriting from existing
+	const newContext: LogContext = {
+		tags: structuredClone(Object.assign({}, existingContext?.tags, sourceTag, opts.tags)),
+		logLevel: existingContext?.logLevel, // Preserve existing log level
+		method: existingContext?.method, // Preserve existing method
+		rootMethod: existingContext?.rootMethod, // Preserve existing rootMethod
+	}
+	return als.run(newContext, fn)
 }
 
 /** Type alias for the actual decorator function returned */
@@ -395,7 +514,7 @@ export function WithLogTags(source: string): MethodDecoratorFn
  *   \@WithLogTags<MyTags>({ source: 'MyService' }) // $logger.method: 'handleRequest' will be added
  *   async handleRequest(requestId: string, request: Request) {
  *     logger.setTags({ requestId })
- *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger.method: 'handleRequest', requestId: '...' }
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger: { method: 'handleRequest', rootMethod: 'handleRequest' }, requestId: '...' }
  *     await this.processRequest(request)
  *     logger.info('Request handled')
  *   }
@@ -405,7 +524,7 @@ export function WithLogTags(source: string): MethodDecoratorFn
  *   \@WithLogTags<MyTags>({ foo: 'bar' })
  *   async processRequest(request: Request) {
  *      // Inherits requestId from handleRequest's context
- *      // Tags here: { source: 'MyService', foo: 'bar', $logger.method: 'processRequest', $logger.rootMethod: 'handleRequest', requestId: '...' }
+ *      // Tags here: { source: 'MyService', foo: 'bar', $logger: { method: 'processRequest', rootMethod: 'handleRequest' }, requestId: '...' }
  *     logger.debug('Processing request...')
  *     // ...
  *     logger.debug('Request processed')
@@ -456,44 +575,33 @@ export function WithLogTags<T extends LogTags>(
 		const originalMethod = descriptor.value
 
 		descriptor.value = function (...args: any[]): MethodDecoratorFn {
-			const existing = als.getStore()
+			const existingContext = als.getStore()
 			let rootMethod = method
-			if (
-				existing &&
-				existing.$logger &&
-				typeof existing.$logger === 'object' &&
-				!Array.isArray(existing.$logger) &&
-				!(existing.$logger instanceof Date) &&
-				typeof existing.$logger.rootMethod === 'string'
-			) {
-				rootMethod = existing.$logger.rootMethod
+			if (existingContext?.rootMethod) {
+				rootMethod = existingContext.rootMethod
 			}
 
-			const finalSource = explicitSource ?? existing?.source ?? inferredClassName
+			const finalSource = explicitSource ?? existingContext?.tags.source ?? inferredClassName
 			const sourceTag = { source: finalSource }
 
-			// Define the logger-specific tags for this context level
-			const loggerTags = {
-				$logger: {
-					method: method, // Always the current method
-					rootMethod: rootMethod, // Inherited or current
-				},
+			// Create the new context for the ALS
+			// Merge order: existing tags -> final source -> user tags
+			const newContext: LogContext = {
+				tags: structuredClone(
+					Object.assign(
+						{},
+						existingContext?.tags,
+						sourceTag, // Use the determined source tag
+						userTags // Add user tags if provided
+					)
+				),
+				logLevel: existingContext?.logLevel, // Preserve existing log level
+				method: method, // Always the current method
+				rootMethod: rootMethod, // Inherited or current
 			}
 
-			// Create the new tags object for the ALS context
-			// Merge order: existing -> final source -> user tags -> logger tags
-			const newTags = structuredClone(
-				Object.assign(
-					{},
-					existing,
-					sourceTag, // Use the determined source tag
-					userTags, // Add user tags if provided
-					loggerTags // Logger tags take precedence
-				)
-			)
-
 			// Run the original method within the AsyncLocalStorage context
-			return als.run(newTags, () => {
+			return als.run(newContext, () => {
 				return originalMethod.apply(this, args)
 			})
 		}
