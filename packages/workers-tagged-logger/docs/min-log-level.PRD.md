@@ -59,17 +59,36 @@ setLogLevel(level: LogLevel): void
 
 ### AsyncLocalStorage Context Extension
 
-The existing ALS context needs to be extended to store log level information:
+The existing ALS context needs to be restructured to store both tags and log level information:
 
 ```typescript
-// Current ALS stores LogTags
+// Current ALS stores LogTags directly
 export const als = new AsyncLocalStorage<LogTags>()
 
-// Needs to be extended to:
-type LogContext = LogTags & {
-  $logLevel?: LogLevel
+// Needs to be restructured to:
+type LogContext = {
+  tags: LogTags
+  logLevel?: LogLevel
 }
 export const als = new AsyncLocalStorage<LogContext>()
+```
+
+The log level will be exposed in logs through the existing `$logger` object to maintain a single top-level tag injection point:
+
+```typescript
+// Log output will include log level in the $logger object:
+{
+  "message": "Debug message",
+  "level": "debug",
+  "tags": {
+    "$logger": {
+      "method": "handleRequest",
+      "rootMethod": "handleRequest",
+      "level": "debug"  // Current effective log level
+    },
+    // ... other tags
+  }
+}
 ```
 
 ### Log Level Resolution Priority
@@ -77,9 +96,42 @@ export const als = new AsyncLocalStorage<LogContext>()
 The logger should resolve the minimum log level using the following priority (highest to lowest):
 
 1. **Instance-specific level**: Set via `withLogLevel()` on the current logger instance
-2. **Context level**: Set via `setLogLevel()` in the current ALS context
+2. **Context level**: Set via `setLogLevel()` in the current ALS context (`context.logLevel`)
 3. **Constructor level**: Set via `minimumLogLevel` option during instantiation
 4. **Default level**: `'debug'` (current default)
+
+### Context Access Pattern
+
+The logger will need to adapt its context access methods to work with the new structure:
+
+```typescript
+// Current pattern (accessing tags directly)
+const tags = als.getStore()
+
+// New pattern (accessing structured context)
+const context = als.getStore()
+const tags = context?.tags ?? {}
+const contextLogLevel = context?.logLevel
+```
+
+### Impact on Existing Functions
+
+The `withLogTags()` function and `@WithLogTags` decorator will need updates to work with the new context structure:
+
+```typescript
+// withLogTags will need to preserve existing log level
+export function withLogTags<T extends LogTags, R>(
+  opts: WithLogTagsOptions<Partial<T & LogTags>>,
+  fn: () => R
+): R {
+  const existingContext = als.getStore()
+  const newContext: LogContext = {
+    tags: { ...existingContext?.tags, ...opts.tags },
+    logLevel: existingContext?.logLevel, // Preserve existing log level
+  }
+  return als.run(newContext, fn)
+}
+```
 
 ### Integration with Existing Code
 
@@ -99,6 +151,7 @@ withLogTags({ source: 'api' }, () => {
 
   // All subsequent logs in this context use debug level
   logger.debug('This will now be logged')
+  // Output includes: tags: { $logger: { level: 'debug', ... }, requestId: 'req-456', source: 'api' }
 })
 ```
 
