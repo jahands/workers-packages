@@ -101,9 +101,14 @@ export interface WorkersLoggerOptions {
  */
 export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	private ctx: WorkersLoggerOptions = {}
+	private constructorLogLevel?: LogLevel
 
 	constructor(opts: WorkersLoggerOptions = {}) {
-		Object.assign(this.ctx, structuredClone(opts))
+		// Store constructor log level separately from instance log level
+		this.constructorLogLevel = opts.minimumLogLevel
+		const ctxOpts = { ...opts }
+		delete ctxOpts.minimumLogLevel // Remove from ctx to avoid confusion
+		Object.assign(this.ctx, structuredClone(ctxOpts))
 	}
 
 	/**
@@ -210,12 +215,27 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 
 	private write(msgs: any[], level: LogLevel): void {
 		// Resolve minimum log level using priority order:
-		// 1. Instance-specific level (this.ctx.minimumLogLevel)
-		// 2. Context level (from ALS)
-		// 3. Default level ('debug')
+		// 1. Instance-specific level (set via withLogLevel())
+		// 2. Context level (set via setLogLevel() in ALS)
+		// 3. Constructor level (set via minimumLogLevel option)
+		// 4. Default level ('debug')
 		const context = als.getStore()
 		const contextLogLevel = context?.logLevel
-		const minimumLogLevel = this.ctx.minimumLogLevel ?? contextLogLevel ?? 'debug'
+
+		let minimumLogLevel: LogLevel
+		if (this.ctx.minimumLogLevel !== undefined) {
+			// Instance-specific level (highest priority)
+			minimumLogLevel = this.ctx.minimumLogLevel
+		} else if (contextLogLevel !== undefined) {
+			// Context level (second priority)
+			minimumLogLevel = contextLogLevel
+		} else if (this.constructorLogLevel !== undefined) {
+			// Constructor level (third priority)
+			minimumLogLevel = this.constructorLogLevel
+		} else {
+			// Default level (lowest priority)
+			minimumLogLevel = 'debug'
+		}
 
 		// don't do anything if log is below minimum level
 		if (logLevelToNumber(level) < logLevelToNumber(minimumLogLevel)) {
