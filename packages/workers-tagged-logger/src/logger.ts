@@ -102,6 +102,7 @@ export interface WorkersLoggerOptions {
 export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	private ctx: WorkersLoggerOptions = {}
 	private constructorLogLevel?: LogLevel
+	private instanceLogLevel?: LogLevel
 
 	constructor(opts: WorkersLoggerOptions = {}) {
 		// Store constructor log level separately from instance log level
@@ -117,10 +118,13 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 * (or sub-instances) will contain these tags.
 	 */
 	withTags(tags: Partial<T & LogTags>): WorkersLogger<Partial<T & LogTags>> {
-		return new WorkersLogger({
+		const newLogger = new WorkersLogger({
 			...this.ctx,
 			tags: structuredClone(Object.assign({}, this.ctx.tags, tags)),
+			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
 		})
+		newLogger.instanceLogLevel = this.instanceLogLevel // Preserve instance level
+		return newLogger as WorkersLogger<Partial<T & LogTags>>
 	}
 
 	/**
@@ -133,10 +137,13 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 * setting top-level fields is preferred (such as setting `timestamp`.)
 	 */
 	withFields(fields: Partial<LogFields>): WorkersLogger<Partial<T>> {
-		return new WorkersLogger({
+		const newLogger = new WorkersLogger({
 			...this.ctx,
 			fields: structuredClone(Object.assign({}, this.ctx.fields, fields)),
+			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
 		})
+		newLogger.instanceLogLevel = this.instanceLogLevel // Preserve instance level
+		return newLogger as WorkersLogger<Partial<T>>
 	}
 
 	private getFields(): Partial<LogFields> {
@@ -202,9 +209,12 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 
 	/** Create a new logger instance with the specified minimum log level */
 	withLogLevel(level: LogLevel): WorkersLogger<T> {
-		const newCtx = structuredClone(this.ctx)
-		newCtx.minimumLogLevel = level
-		return new WorkersLogger<T>(newCtx)
+		const newLogger = new WorkersLogger<T>({
+			...this.ctx,
+			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
+		})
+		newLogger.instanceLogLevel = level // Set instance-specific level
+		return newLogger
 	}
 
 	info = (...msgs: any[]): void => this.write(msgs, 'info')
@@ -223,9 +233,9 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 		const contextLogLevel = context?.logLevel
 
 		let minimumLogLevel: LogLevel
-		if (this.ctx.minimumLogLevel !== undefined) {
+		if (this.instanceLogLevel !== undefined) {
 			// Instance-specific level (highest priority)
-			minimumLogLevel = this.ctx.minimumLogLevel
+			minimumLogLevel = this.instanceLogLevel
 		} else if (contextLogLevel !== undefined) {
 			// Context level (second priority)
 			minimumLogLevel = contextLogLevel
@@ -249,7 +259,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 		// 2. The effective log level was explicitly set (not using default resolution)
 		const enhancedTags: any = { ...tags }
 		const isLevelExplicitlySet =
-			this.ctx.minimumLogLevel !== undefined || // Set via withLogLevel()
+			this.instanceLogLevel !== undefined || // Set via withLogLevel()
 			context?.logLevel !== undefined || // Set via setLogLevel()
 			this.constructorLogLevel !== undefined // Set via constructor
 		if (enhancedTags.$logger && typeof enhancedTags.$logger === 'object' && isLevelExplicitlySet) {
