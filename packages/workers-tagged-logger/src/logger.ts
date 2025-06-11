@@ -510,7 +510,7 @@ export function WithLogTags(source: string): MethodDecoratorFn
  *   \@WithLogTags<MyTags>({ source: 'MyService' }) // $logger.method: 'handleRequest' will be added
  *   async handleRequest(requestId: string, request: Request) {
  *     logger.setTags({ requestId })
- *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger.method: 'handleRequest', requestId: '...' }
+ *     logger.info('Handling request') // -> tags: { source: 'MyService', $logger: { method: 'handleRequest', rootMethod: 'handleRequest' }, requestId: '...' }
  *     await this.processRequest(request)
  *     logger.info('Request handled')
  *   }
@@ -520,7 +520,7 @@ export function WithLogTags(source: string): MethodDecoratorFn
  *   \@WithLogTags<MyTags>({ foo: 'bar' })
  *   async processRequest(request: Request) {
  *      // Inherits requestId from handleRequest's context
- *      // Tags here: { source: 'MyService', foo: 'bar', $logger.method: 'processRequest', $logger.rootMethod: 'handleRequest', requestId: '...' }
+ *      // Tags here: { source: 'MyService', foo: 'bar', $logger: { method: 'processRequest', rootMethod: 'handleRequest' }, requestId: '...' }
  *     logger.debug('Processing request...')
  *     // ...
  *     logger.debug('Request processed')
