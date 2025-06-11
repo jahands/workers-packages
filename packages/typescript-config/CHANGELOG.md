@@ -1,5 +1,12 @@
 # @repo/typescript-config
 
+## 0.3.6
+
+### Patch Changes
+
+- 0654323: fix: update include/excludes in base.json
+- 4ef6d88: chore: remove unused publishConfig
+
 ## 0.3.5
 
 ### Patch Changes
