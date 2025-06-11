@@ -1,6 +1,6 @@
 import { als } from './logger.js'
 
-import type { LogTags } from './logger.js'
+import type { LogContext, LogTags } from './logger.js'
 
 /** Type alias for the actual decorator function returned */
 type MethodDecoratorFn = (
@@ -179,17 +179,17 @@ export function WithLogTags<T extends LogTags>(
 
 		// The wrapper function that replaces the original method
 		const replacementMethod = function (this: any, ...args: any[]): any {
-			const existing = als.getStore()
+			const existingContext = als.getStore()
 			let rootMethod = method
 			if (
-				existing &&
-				existing.$logger &&
-				typeof existing.$logger === 'object' &&
-				!Array.isArray(existing.$logger) &&
-				!(existing.$logger instanceof Date) &&
-				typeof existing.$logger.rootMethod === 'string'
+				existingContext &&
+				existingContext.tags.$logger &&
+				typeof existingContext.tags.$logger === 'object' &&
+				!Array.isArray(existingContext.tags.$logger) &&
+				!(existingContext.tags.$logger instanceof Date) &&
+				typeof existingContext.tags.$logger.rootMethod === 'string'
 			) {
-				rootMethod = existing.$logger.rootMethod
+				rootMethod = existingContext.tags.$logger.rootMethod
 			}
 
 			// Infer class name dynamically using 'this' and context.static
@@ -213,7 +213,7 @@ export function WithLogTags<T extends LogTags>(
 				}
 			}
 
-			const finalSource = explicitSource ?? existing?.source ?? inferredClassName
+			const finalSource = explicitSource ?? existingContext?.tags.source ?? inferredClassName
 			const sourceTag = { source: finalSource }
 
 			// Define the logger-specific tags for this context level
@@ -224,20 +224,23 @@ export function WithLogTags<T extends LogTags>(
 				},
 			}
 
-			// Create the new tags object for the ALS context
-			// Merge order: existing -> final source -> user tags -> logger tags
-			const newTags = structuredClone(
-				Object.assign(
-					{},
-					existing,
-					sourceTag, // Use the determined source tag
-					userTags, // Add user tags if provided
-					loggerTags // Logger tags take precedence
-				)
-			)
+			// Create the new context for the ALS
+			// Merge order: existing tags -> final source -> user tags -> logger tags
+			const newContext: LogContext = {
+				tags: structuredClone(
+					Object.assign(
+						{},
+						existingContext?.tags,
+						sourceTag, // Use the determined source tag
+						userTags, // Add user tags if provided
+						loggerTags // Logger tags take precedence
+					)
+				),
+				logLevel: existingContext?.logLevel, // Preserve existing log level
+			}
 
 			// Run the original method within the AsyncLocalStorage context
-			return als.run(newTags, () => {
+			return als.run(newContext, () => {
 				return originalMethod.apply(this, args)
 			})
 		}
