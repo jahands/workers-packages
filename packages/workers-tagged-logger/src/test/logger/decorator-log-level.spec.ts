@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { WithLogTags, withLogTags } from '../../logger.js'
 import { setupTest } from '../harness.js'
-import { LoggerWithLevel } from '../schemas.js'
+import { LoggerAutoTags } from '../schemas.js'
 
 beforeEach(() => {
 	vi.useFakeTimers()
@@ -34,7 +34,7 @@ describe('WithLogTags decorator with log levels', () => {
 		expect(h.logs).toHaveLength(1)
 		expect(h.oneLog().message).toBe('debug from decorator')
 		expect(h.oneLog().tags?.source).toBe('TestService')
-		const loggerObj = LoggerWithLevel.parse(h.oneLog().tags?.$logger)
+		const loggerObj = LoggerAutoTags.parse(h.oneLog().tags?.$logger)
 		expect(loggerObj.method).toBe('testMethod')
 		expect(loggerObj.level).toBe('debug')
 	})
@@ -60,7 +60,7 @@ describe('WithLogTags decorator with log levels', () => {
 			expect(result).toBe('result')
 			expect(h.logs).toHaveLength(1)
 			expect(h.oneLog().message).toBe('debug from decorator')
-			const loggerObj = LoggerWithLevel.parse(h.oneLog().tags?.$logger)
+			const loggerObj = LoggerAutoTags.parse(h.oneLog().tags?.$logger)
 			expect(loggerObj.level).toBe('debug')
 		})
 	})
@@ -92,7 +92,7 @@ describe('WithLogTags decorator with log levels', () => {
 		// Parent method log
 		expect(h.logAt(0).message).toBe('debug from parent')
 		expect(h.logAt(0).tags?.source).toBe('TestService')
-		const parentLoggerObj = LoggerWithLevel.parse(h.logAt(0).tags?.$logger)
+		const parentLoggerObj = LoggerAutoTags.parse(h.logAt(0).tags?.$logger)
 		expect(parentLoggerObj.method).toBe('parentMethod')
 		expect(parentLoggerObj.rootMethod).toBe('parentMethod')
 		expect(parentLoggerObj.level).toBe('debug')
@@ -101,7 +101,7 @@ describe('WithLogTags decorator with log levels', () => {
 		expect(h.logAt(1).message).toBe('debug from child')
 		expect(h.logAt(1).tags?.source).toBe('TestService')
 		expect(h.logAt(1).tags?.component).toBe('child')
-		const childLoggerObj = LoggerWithLevel.parse(h.logAt(1).tags?.$logger)
+		const childLoggerObj = LoggerAutoTags.parse(h.logAt(1).tags?.$logger)
 		expect(childLoggerObj.method).toBe('childMethod')
 		expect(childLoggerObj.rootMethod).toBe('parentMethod')
 		expect(childLoggerObj.level).toBe('debug')
@@ -135,12 +135,12 @@ describe('WithLogTags decorator with log levels', () => {
 
 		// Parent method log
 		expect(h.logAt(0).message).toBe('debug from parent')
-		const parentLoggerObj = LoggerWithLevel.parse(h.logAt(0).tags?.$logger)
+		const parentLoggerObj = LoggerAutoTags.parse(h.logAt(0).tags?.$logger)
 		expect(parentLoggerObj.level).toBe('debug')
 
 		// Child method log (only error should log)
 		expect(h.logAt(1).message).toBe('error from child - should log')
-		const childLoggerObj = LoggerWithLevel.parse(h.logAt(1).tags?.$logger)
+		const childLoggerObj = LoggerAutoTags.parse(h.logAt(1).tags?.$logger)
 		expect(childLoggerObj.level).toBe('error')
 	})
 
@@ -163,7 +163,7 @@ describe('WithLogTags decorator with log levels', () => {
 		expect(result).toBe('result')
 		expect(h.logs).toHaveLength(1)
 		expect(h.oneLog().message).toBe('debug from instance logger')
-		const loggerObj = LoggerWithLevel.parse(h.oneLog().tags?.$logger)
+		const loggerObj = LoggerAutoTags.parse(h.oneLog().tags?.$logger)
 		expect(loggerObj.level).toBe('debug')
 	})
 
