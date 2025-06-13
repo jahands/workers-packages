@@ -1,12 +1,17 @@
 ---
-description:
-globs: *.ts,*.tsx
+description: TypeScript testing conventions
+globs: "*.ts,*.tsx"
 alwaysApply: false
 ---
-# Testing
+<typescript-testing>
 
+<title>TypeScript Testing Conventions</title>
+
+<rules>
 - Always use vitest for tests
-- If testing a file (i.e. unit tests), create files in the name <file>.spec.ts
-  - e.g. my-file.ts would have a test file called my-file.spec.ts
-- When creating integration tests, they should be in the format something.test.ts
-- Error variables can be named e or err, but never error
+- Unit tests: `<file>.spec.ts` (e.g., `my-file.ts` → `my-file.spec.ts`)
+- Integration tests: `<feature>.test.ts`
+- Error variables: use `e` or `err`, never `error`
+</rules>
+
+</typescript-testing>

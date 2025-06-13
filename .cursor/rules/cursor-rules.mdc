@@ -1,67 +1,304 @@
 ---
-description: How to add Cursor rules (ALWAYS read before adding rules)
+description: Cursor rule guidelines (ALWAYS read before adding/updating rules)
 globs:
 alwaysApply: false
 ---
-# Cursor Rules - Organization and Format
+<cursor-rules-guide>
 
-## Location
-All cursor rules should be placed in the `.cursor/rules/` directory with the `.mdc` extension.
+<title>Cursor Rules - Organization and Format</title>
 
-❌ Do NOT create:
+<location>
+<description>All cursor rules should be placed in the `.cursor/rules/` directory with the `.mdc` extension.</description>
+
+<requirements type="dont">
 - `.cursorrules` file in the root (deprecated)
 - Rules in other locations
 - Rules with other extensions
+</requirements>
 
-✅ DO create:
+<requirements type="do">
 - `.cursor/rules/{descriptive-name}.mdc`
 - One rule per file
 - Clear, focused rules
+</requirements>
+</location>
 
-## File Naming
+<file-naming>
+<requirements>
 - Use kebab-case: `my-rule-name.mdc`
 - Be descriptive but concise
 - Group related rules with common prefixes
+</requirements>
 
-Examples:
+<examples>
 - `github-actions-runners.mdc`
 - `docker-compose.mdc`
 - `development-workflow.mdc`
+</examples>
+</file-naming>
 
-## Rule Format
-Rules should be written in Markdown with this structure:
+<rule-format>
+<description>Rules must be written for LLM optimization. Prioritize machine readability over human readability.</description>
 
-```markdown
-# Title - Brief Description
+<template>
+```xml
+<rule-name>
 
-## Context/Location
-Where this rule applies (files, directories, etc.)
+<title>Rule Title</title>
 
-### Overview/Architecture
-High-level explanation of the system/pattern
+<context>
+<applies-to>Where this rule applies</applies-to>
+</context>
 
-### Key Concepts
-Important points to understand
+<overview>High-level explanation</overview>
 
-### Usage/Patterns
-How to apply the rule
+<key-concepts>
+- Important concept
+- Another concept
+</key-concepts>
 
-### Examples
-Clear, concrete examples
+<rules>
+<rule>
+<name>Rule name</name>
+<requirements>
+- Requirement
+- Another requirement
+</requirements>
+</rule>
+</rules>
+
+<examples>
+<example type="good">
+```typescript
+// Code
 ```
+</example>
+</examples>
 
-## Best Practices
-- Focus on describing patterns rather than providing static templates
-- Let LLMs learn from existing code when possible
-- Keep rules focused and single-purpose
-- Update rules when patterns significantly change
-- Remove rules that become obsolete
+</rule-name>
+```
+</template>
 
-## Current Rules
-Reference the existing rules in `.cursor/rules/` for examples of proper formatting and organization:
-- `monorepo-structure.mdc`
-- `development-workflow.mdc`
-- `cli-tools.mdc`
-- `docker-compose.mdc`
-- `server-management.mdc`
-- `github-actions-runners.mdc`
+<xml-tag-guidelines>
+
+<formatting-rules>
+- No markdown headers (#, ##, ###)
+- No text formatting (**bold**, *italic*)
+- No emojis or Unicode symbols
+- No redundant labels
+- Use attributes for categorization
+- Consistent patterns throughout
+- Exception: Use markdown code blocks (```)
+- Exception: Use markdown tables for comparisons
+- XML tags only
+- Every section needs an XML tag
+- Use dash lists within tags
+- Consistent nesting
+- Semantic names
+- Lowercase with hyphens
+- Attributes for metadata
+- Specific over generic
+- No redundant text
+- No markdown formatting inside XML
+- No visual elements
+- No generic tags like section, div, content
+- No human-oriented formatting
+</formatting-rules>
+
+<xml-benefits>
+- Unambiguous parsing
+- Explicit hierarchy
+- Consistent extraction
+- No formatting ambiguity
+</xml-benefits>
+
+<common-mistakes>
+- Mixing markdown headers with XML tags
+- Using XML tags for formatting
+- Creating deeply nested structures (>4 levels)
+- Inconsistent attribute naming
+</common-mistakes>
+
+<token-optimization>
+- XML tag pair: ~2-3 tokens
+- Dash list item: ~1 token
+- Individual XML elements: ~4-5 tokens each
+- Choose lists when >3 similar items
+</token-optimization>
+
+<list-patterns>
+<pattern type="unordered">
+<description>Use dash lists for most content</description>
+```xml
+<requirements>
+- Each requirement is important
+- Order doesn't matter
+- Keep items concise
+</requirements>
+```
+</pattern>
+
+<pattern type="ordered">
+<description>Use numbered lists only when order is critical</description>
+```xml
+<steps>
+1. First do this
+2. Then do that
+3. Finally do this
+</steps>
+```
+</pattern>
+
+<pattern type="key-value">
+<description>For type definitions, use consistent format</description>
+```xml
+<types>
+- `feat:` - New feature or functionality
+- `fix:` - Bug fix
+- `chore:` - Maintenance tasks
+</types>
+```
+</pattern>
+</list-patterns>
+
+<common-patterns>
+<pattern>
+<name>Lists save tokens vs individual tags</name>
+```xml
+<concepts>
+- Concept one explanation
+- Concept two explanation
+- Concept three explanation
+</concepts>
+```
+</pattern>
+
+<pattern>
+<name>Code examples with attributes</name>
+```xml
+<example type="good">
+```typescript
+// Code here
+```
+</example>
+```
+</pattern>
+
+<pattern>
+<name>Structured comparisons</name>
+```xml
+<comparison>
+<before>Old approach</before>
+<after>New approach</after>
+</comparison>
+```
+</pattern>
+</common-patterns>
+
+<benefits>
+- Unambiguous structure for parsing
+- Clear data extraction paths
+- Consistent patterns across all rules
+- No markdown parsing required
+- Explicit relationships between elements
+- Optimal token usage
+</benefits>
+
+</xml-tag-guidelines>
+
+<exceptions>
+
+<tables>
+<description>Use markdown tables for structured comparisons</description>
+<when>
+- Side-by-side comparisons
+- Key-value mappings
+- Migration guides
+- Fixed column data
+</when>
+<example>
+| Old API | New API |
+| ------- | ------- |
+| .foo()  | .bar()  |
+</example>
+</tables>
+
+<code-blocks>
+<description>Always use markdown code blocks</description>
+<rationale>XML code tags are redundant when markdown provides syntax highlighting</rationale>
+</code-blocks>
+</exceptions>
+
+<rule-complexity-guidelines>
+
+<principle>Use the minimum structure needed for clarity</principle>
+
+<simple-rules>
+<when>For straightforward behavioral rules (< 10 requirements)</when>
+<approach>
+- Single <rules> section with dash list
+- Skip sections that add no value
+- 10-30 lines total
+</approach>
+<examples>
+- Communication style
+- Naming conventions
+- Simple do/don't lists
+</examples>
+</simple-rules>
+
+<complex-rules>
+<when>For technical systems or multi-faceted implementations</when>
+<approach>
+- Full template with multiple sections
+- Include overview, concepts, examples
+- Detailed requirements and steps
+</approach>
+<examples>
+- API design patterns
+- Architecture guidelines
+- Multi-step processes
+</examples>
+</complex-rules>
+
+<anti-pattern>
+<description>Don't over-structure simple content</description>
+<example type="bad">
+50+ lines of XML with nested sections for "don't use filler phrases"
+</example>
+<example type="good">
+```xml
+<direct-communication>
+<rules>
+- Skip pleasantries and affirmations
+- Don't start with "Great question!", "You're right!", etc.
+- Begin directly with the answer
+- Focus on content, not meta-commentary
+</rules>
+</direct-communication>
+```
+</example>
+</anti-pattern>
+
+<token-efficiency>
+- Simple rule with minimal XML: ~50-100 tokens
+- Over-structured simple rule: ~200-300 tokens
+- Complex rule with full structure: ~300-500 tokens
+</token-efficiency>
+</rule-complexity-guidelines>
+</rule-format>
+
+<best-practices>
+- Optimize for LLM parsing
+- Use XML structure exclusively
+- Dash lists within tags
+- Semantic tag names
+- Consistent patterns
+- Single-purpose rules
+- Regular updates
+- Remove obsolete rules
+- No visual formatting
+- Let tags convey meaning
+</best-practices>
+
+</cursor-rules-guide>

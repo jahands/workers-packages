@@ -3,62 +3,76 @@ description: How to align comments in typescript files
 globs:
 alwaysApply: true
 ---
-# Style
+<style-guidelines>
 
-Style guidelines for this repo.
+<title>Style Guidelines</title>
 
-## Comment Alignment - Formatting Inline Comments
+<context>
+<applies-to>TypeScript, JavaScript, and other languages using // style comments</applies-to>
+</context>
 
-### Context/Location
-Applies to TypeScript, JavaScript, and other languages using `//` style comments where inline comments need visual alignment.
+<comment-alignment>
 
-#### Key Rule
-When auto-formatters require single space before `//`, align comments by adding spaces AFTER the `//` instead of before.
+<overview>When auto-formatters require single space before //, align comments by adding spaces AFTER the // instead of before</overview>
 
-#### Pattern
-Find the longest line in a group, then add spaces after `//` on shorter lines to align comment text:
+<rules>
+<rule>
+<name>Inline comment alignment</name>
+<requirements>
+- Find the longest line in a group
+- Add spaces after // on shorter lines to align comment text
+- Count spaces: (longest_line_length - current_line_length)
+- Apply consistently within each block
+</requirements>
+</rule>
+</rules>
 
+<examples>
+<example type="before">
 ```typescript
-// Before:
 'STRING', // text field
 'MONTH_YEAR', // date with format YYYYMM
+```
+</example>
 
-// After:
+<example type="after">
+```typescript
 'STRING', //     text field
 'MONTH_YEAR', // date with format YYYYMM
 ```
+</example>
+</examples>
 
-#### Implementation
-- Use longest line as baseline
-- Add spaces after `//`: count `(longest_line_length - current_line_length)`
-- Apply consistently within each block
+</comment-alignment>
 
-## Code Comment Guidelines
+<code-comments>
 
-**Only add comments when they provide value beyond what the code itself communicates. Follow these principles:**
+<overview>Only add comments when they provide value beyond what the code itself communicates</overview>
 
-### DO comment:
-
-- **Why** decisions were made, not **what** the code does
+<rules>
+<rule>
+<name>When to comment</name>
+<requirements type="do">
+- Why decisions were made, not what the code does
 - Complex algorithms or non-obvious logic
 - Workarounds, edge cases, or potential gotchas
 - Business rules or domain-specific context
 - TODO items or known limitations
 - Function/class documentation (purpose, parameters, return values)
 - Regular expressions or complex conditions that aren't self-evident
-
-### DON'T comment:
-
-- Simple variable assignments (`// Set user name to "John"` for `userName = "John"`)
-- Obvious control flow (`// Loop through users` for `for (user in users)`)
-- Self-documenting code (`// Increment counter` for `counter++`)
+</requirements>
+<requirements type="dont">
+- Simple variable assignments
+- Obvious control flow
+- Self-documenting code
 - Type information already clear from the code
-- Restating what well-named functions do (`// Get user by ID` for `getUserById()`)
+- Restating what well-named functions do
+</requirements>
+</rule>
+</rules>
 
-### Examples:
-
-**Bad (redundant):**
-
+<examples>
+<example type="bad">
 ```python
 # Add 1 to count
 count += 1
@@ -68,9 +82,9 @@ if user.is_admin:
     # Grant access
     grant_access()
 ```
+</example>
 
-**Good (adds value):**
-
+<example type="good">
 ```python
 # Compensate for zero-indexing in the UI display
 count += 1
@@ -79,5 +93,11 @@ count += 1
 if user.is_admin:
     grant_access()  # Bypasses the standard approval workflow
 ```
+</example>
+</examples>
 
-**Remember:** Good code with meaningful names often needs fewer comments. Strive to make your code self-documenting first, then add comments only where additional context genuinely helps future readers (including yourself).
+<key-principle>Good code with meaningful names often needs fewer comments. Strive to make your code self-documenting first, then add comments only where additional context genuinely helps future readers</key-principle>
+
+</code-comments>
+
+</style-guidelines>

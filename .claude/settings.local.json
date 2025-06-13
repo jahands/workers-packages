@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__llm-rules__cursor_rule_cursor-rules"
+    ],
+    "deny": []
+  }
+}
