@@ -224,7 +224,7 @@ importers:
         specifier: 3.1.4
         version: 3.1.4(@types/node@22.15.27)
       zod:
-        specifier: ^3.25.7
+        specifier: 3.25.7
         version: 3.25.7
 
   packages/dagger-helpers:
