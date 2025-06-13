@@ -31,6 +31,7 @@
 		"zx": "8.5.4"
 	},
 	"devDependencies": {
+		"@repo/eslint-config": "workspace:*",
 		"@types/bun": "1.2.13"
 	}
 }

@@ -53,6 +53,7 @@
 		"@fast-csv/format": "5.0.0"
 	},
 	"devDependencies": {
+		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"vitest": "3.1.4"
