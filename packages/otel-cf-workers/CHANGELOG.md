@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.20
+
+### Patch Changes
+
+- 36621f6: chore: add eslint-config as a dependency to all packages
+
 ## 0.1.19
 
 ### Patch Changes

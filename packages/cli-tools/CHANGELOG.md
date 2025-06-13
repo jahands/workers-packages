@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.10.11
+
+### Patch Changes
+
+- 36621f6: chore: add eslint-config as a dependency to all packages
+
 ## 0.10.10
 
 ### Patch Changes

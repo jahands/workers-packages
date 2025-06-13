@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.12.2
+
+### Patch Changes
+
+- 36621f6: chore: add eslint-config as a dependency to all packages
+
 ## 0.12.1
 
 ### Patch Changes

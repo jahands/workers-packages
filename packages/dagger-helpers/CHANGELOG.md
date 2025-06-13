@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.6.6
+
+### Patch Changes
+
+- 36621f6: chore: add eslint-config as a dependency to all packages
+
 ## 0.6.5
 
 ### Patch Changes
