@@ -3,7 +3,6 @@ description: Zod v4 Coding Guidelines. ALWAYS read this when using Zod
 globs:
 alwaysApply: false
 ---
-
 <zod-v4-guidelines>
 
 <critical-import-rule>
