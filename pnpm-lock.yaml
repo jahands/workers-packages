@@ -351,8 +351,8 @@ importers:
   packages/llm-tools:
     dependencies:
       '@fast-csv/format':
-        specifier: ^5.0.0
-        version: 5.0.2
+        specifier: 5.0.0
+        version: 5.0.0
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1096,8 +1096,8 @@ packages:
     resolution: {integrity: sha512-0J+zgWxHN+xXONWIyPWKFMgVuJoZuGiIFu8yxk7RJjxkzpGmyja5wRFqZIVtjDVOQpV+Rw0iOAjYPE2eQyjr0w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@fast-csv/format@5.0.2':
-    resolution: {integrity: sha512-fRYcWvI8vs0Zxa/8fXd/QlmQYWWkJqKZPAXM+vksnplb3owQFKTPPh9JqOtD0L3flQw/AZjjXdPkD7Kp/uHm8g==}
+  '@fast-csv/format@5.0.0':
+    resolution: {integrity: sha512-IyMpHwYIOGa2f0BJi6Wk55UF0oBA5urdIydoEDYxPo88LFbeb3Yr4rgpu98OAO1glUWheSnNtUgS80LE+/dqmw==}
 
   '@fastify/busboy@2.1.1':
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
@@ -5727,7 +5727,7 @@ snapshots:
       '@eslint/core': 0.14.0
       levn: 0.4.1
 
-  '@fast-csv/format@5.0.2':
+  '@fast-csv/format@5.0.0':
     dependencies:
       lodash.escaperegexp: 4.1.2
       lodash.isboolean: 3.0.3

@@ -50,7 +50,7 @@
 		"test": "run-vitest"
 	},
 	"dependencies": {
-		"@fast-csv/format": "^5.0.0"
+		"@fast-csv/format": "5.0.0"
 	},
 	"devDependencies": {
 		"@repo/tools": "workspace:*",
