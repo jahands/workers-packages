@@ -90,6 +90,7 @@ alwaysApply: false
 - Consistent patterns throughout
 - Exception: Use markdown code blocks (```)
 - Exception: Use markdown tables for comparisons
+- Exception: Use backticks for inline code, commands, and technical terms
 - XML tags only
 - Every section needs an XML tag
 - Use dash lists within tags
