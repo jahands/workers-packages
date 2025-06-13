@@ -1,6 +1,6 @@
 {
 	"name": "@repo/workers-tagged-logger-test",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"private": true,
 	"description": "Test package for workers-tagged-logger",
 	"license": "MIT",

@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.5.10
+
+### Patch Changes
+
+- 36621f6: chore: add eslint-config as a dependency to all packages
+
 ## 0.5.9
 
 ### Patch Changes

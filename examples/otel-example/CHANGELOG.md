@@ -1,5 +1,12 @@
 # @repo/otel-example
 
+## 0.1.24
+
+### Patch Changes
+
+- Updated dependencies [36621f6]
+  - @jahands/otel-cf-workers@0.1.20
+
 ## 0.1.23
 
 ### Patch Changes
