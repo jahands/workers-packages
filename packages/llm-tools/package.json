@@ -1,5 +1,5 @@
 {
-	"name": "@jahands/llm-tools",
+	"name": "llm-tools",
 	"version": "0.1.0",
 	"private": false,
 	"description": "tools for working with LLMs",

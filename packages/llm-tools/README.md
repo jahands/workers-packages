@@ -1,11 +1,11 @@
-# @jahands/llm-tools
+# llm-tools
 
 Tools for working with LLMs (Large Language Models).
 
 ## Installation
 
 ```bash
-npm install @jahands/llm-tools
+npm install llm-tools
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ npm install @jahands/llm-tools
 The `fmt` object provides formatting functions useful for working with LLMs:
 
 ```typescript
-import { fmt } from '@jahands/llm-tools'
+import { fmt } from 'llm-tools'
 
 // Format multi-line strings by removing unnecessary indentation
 const formatted = fmt.trim(`
@@ -34,8 +34,8 @@ const oneLine = fmt.oneLine(`
 
 // Convert array of objects to TSV (Tab-Separated Values)
 const data = [
-    { name: 'John', age: 30 },
-    { name: 'Jane', age: 25 }
+  { name: 'John', age: 30 },
+  { name: 'Jane', age: 25 },
 ]
 const tsv = await fmt.asTSV(data)
 // Result: "name\tage\nJohn\t30\nJane\t25"
