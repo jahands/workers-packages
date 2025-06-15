@@ -37,10 +37,38 @@ alwaysApply: false
 </examples>
 </file-naming>
 
+<frontmatter-requirement>
+<critical>EVERY .mdc file MUST start with frontmatter - files without it won't work</critical>
+
+<template>
+```yaml
+---
+description: What this rule does (LLMs read this to decide relevance)
+globs:
+alwaysApply: false
+---
+```
+</template>
+
+<notes>
+- description: Required - determines when LLMs read the rule
+- globs: Keep empty for new rules
+- alwaysApply: Keep false for new rules
+</notes>
+</frontmatter-requirement>
+
 <rule-format>
 <description>Rules must be written for LLM optimization. Prioritize machine readability over human readability.</description>
 
 <template>
+```yaml
+---
+description: Brief description for LLM rule selection
+globs:
+alwaysApply: false
+---
+```
+
 ```xml
 <rule-name>
 
