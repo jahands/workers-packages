@@ -2,7 +2,7 @@
 'workers-tagged-logger': minor
 ---
 
-Add debug option to suppress noisy AsyncLocalStorage warnings
+feat: add debug option to suppress noisy AsyncLocalStorage warnings
 
 Add a new `debug` option to `WorkersLoggerOptions` that controls whether internal warning messages about missing AsyncLocalStorage context are shown. By default (`debug: false`), these warnings are suppressed to reduce noise in production environments.
 
