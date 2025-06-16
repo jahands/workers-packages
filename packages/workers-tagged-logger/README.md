@@ -68,7 +68,32 @@ const logger = new WorkersLogger<Tags>()
 
 // Logger with minimum log level (only logs warn and error by default)
 const prodLogger = new WorkersLogger<Tags>({ minimumLogLevel: 'warn' })
+
+// Logger with debug mode enabled (shows internal warnings)
+const debugLogger = new WorkersLogger<Tags>({ debug: true })
 ```
+
+### Debug Mode
+
+By default, the logger suppresses internal warning messages (such as when AsyncLocalStorage context is missing) to reduce noise in production environments. You can enable debug mode to see these warnings:
+
+```ts
+// Enable debug mode to see internal warnings
+const logger = new WorkersLogger({ debug: true })
+
+// This will now log a debug-level warning if called outside withLogTags()
+logger.setTags({ user_id: 'test' })
+
+// Debug mode is inherited by derived loggers
+const childLogger = logger.withTags({ component: 'auth' })
+childLogger.setTags({ session_id: 'abc' }) // Also shows debug warning if outside context
+```
+
+**When to use debug mode:**
+
+- **Development**: Enable to catch missing `withLogTags()` wrappers
+- **Debugging**: Enable temporarily to diagnose context issues
+- **Production**: Keep disabled (default) to reduce log noise
 
 ### Establishing Logging Context
 
