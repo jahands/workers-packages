@@ -24,21 +24,21 @@ console.log('\n3. Proper Usage (debug: true, but within context):')
 console.log('   No warnings when used correctly\n')
 
 await withLogTags({ source: 'demo-app' }, async () => {
-  // This won't show warnings because we're in proper context
-  devLogger.setTags({ session_id: 'session789' })
-  devLogger.info('Properly contextualized log')
-  
-  // Child loggers inherit debug mode
-  const childLogger = devLogger.withTags({ component: 'auth' })
-  childLogger.debug('Debug message from child logger')
+	// This won't show warnings because we're in proper context
+	devLogger.setTags({ session_id: 'session789' })
+	devLogger.info('Properly contextualized log')
+
+	// Child loggers inherit debug mode
+	const childLogger = devLogger.withTags({ component: 'auth' })
+	childLogger.debug('Debug message from child logger')
 })
 
 console.log('\n4. Mixed Usage Example:')
 console.log('   Showing both correct and incorrect usage\n')
 
 await withLogTags({ source: 'mixed-demo' }, async () => {
-  devLogger.setTags({ request_id: 'req123' })
-  devLogger.info('Inside context - no warnings')
+	devLogger.setTags({ request_id: 'req123' })
+	devLogger.info('Inside context - no warnings')
 })
 
 // Outside context - will show warning
