@@ -311,7 +311,7 @@ describe('WorkersLogger', () => {
 			})
 		})
 
-		it('does not throw error when missing ASL context', () => {
+		it('does not throw error when missing ALS context', () => {
 			const h = setupTest()
 			expect(() => {
 				h.log.withTags({ foo: 'bar' })
@@ -348,7 +348,7 @@ describe('WorkersLogger', () => {
 				`)
 		})
 
-		it('logs debug warning when missing ASL context and debug: true', () => {
+		it('logs debug warning when missing ALS context and debug: true', () => {
 			const h = setupTest({ debug: true })
 			expect(() => {
 				h.log.withTags({ foo: 'bar' })
@@ -499,7 +499,7 @@ describe('WorkersLogger', () => {
 			})
 		})
 
-		it('does not throw error when missing ASL context', () => {
+		it('does not throw error when missing ALS context', () => {
 			const h = setupTest()
 			expect(() => {
 				h.log.withFields({ foo: 'bar' })
@@ -542,13 +542,13 @@ describe('WorkersLogger', () => {
 	})
 
 	describe('setTags()', () => {
-		it('does not throw error when missing ASL context', () => {
+		it('does not throw error when missing ALS context', () => {
 			const h = setupTest()
 			expect(() => h.log.setTags({ foo: 'bar' })).not.toThrow()
 			expect(h.logs, 'no warning logged by default').toStrictEqual([])
 		})
 
-		it('logs debug warning when missing ASL context and debug: true', () => {
+		it('logs debug warning when missing ALS context and debug: true', () => {
 			const h = setupTest({ debug: true })
 			expect(() => h.log.setTags({ foo: 'bar' })).not.toThrow()
 			expect(h.logs, 'it logs a debug warning').toMatchInlineSnapshot(`
@@ -647,13 +647,13 @@ describe('WorkersLogger', () => {
 	})
 
 	describe('setLogLevel()', () => {
-		it('does not throw error when missing ASL context', () => {
+		it('does not throw error when missing ALS context', () => {
 			const h = setupTest()
 			expect(() => h.log.setLogLevel('warn')).not.toThrow()
 			expect(h.logs, 'no warning logged by default').toStrictEqual([])
 		})
 
-		it('logs debug warning when missing ASL context and debug: true', () => {
+		it('logs debug warning when missing ALS context and debug: true', () => {
 			const h = setupTest({ debug: true })
 			expect(() => h.log.setLogLevel('warn')).not.toThrow()
 			expect(h.logs, 'it logs a debug warning').toMatchInlineSnapshot(`
@@ -681,7 +681,7 @@ describe('withLogTags', () => {
 			await withLogTags({ source: 'subHandler' }, async () => {
 				// setTags applies to async context, not the localized
 				// logger instance tags, so these logs will not propagate
-				// to the above ASL scope.
+				// to the above ALS scope.
 				ctxLogger.setTags({ sub: 'handler' })
 				ctxLogger.info('hello from level 2!')
 			})
