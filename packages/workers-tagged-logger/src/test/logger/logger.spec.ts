@@ -18,16 +18,29 @@ afterEach(() => {
 
 describe('WorkersLogger', () => {
 	describe('writing logs', () => {
-		it(`logs error when not wrapped in withLogTags() (ALS context missing)`, () => {
+		it(`does not log warning when not wrapped in withLogTags() by default (ALS context missing)`, () => {
 			const h = setupTest()
 			h.log.info('hello')
-			// NOTE: We don't get a stack trace here, but the Workers
-			// runtime implementation of console.log() will include the
-			// stack trace when we log errors.
-			expect(h.logs, 'logs the error + the log without any tags').toMatchInlineSnapshot(`
+			// By default, debug warnings are suppressed to reduce noise
+			expect(h.logs, 'only logs the actual message, no warning').toMatchInlineSnapshot(`
 				[
 				  {
-				    "level": "warn",
+				    "level": "info",
+				    "message": "hello",
+				    "time": "2024-10-26T12:30:00.000Z",
+				  },
+				]
+			`)
+		})
+
+		it(`logs debug warning when not wrapped in withLogTags() and debug: true (ALS context missing)`, () => {
+			const h = setupTest({ debug: true })
+			h.log.info('hello')
+			// With debug: true, warnings are shown at debug level
+			expect(h.logs, 'logs the debug warning + the log without any tags').toMatchInlineSnapshot(`
+				[
+				  {
+				    "level": "debug",
 				    "message": "Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?",
 				    "time": "2024-10-26T12:30:00.000Z",
 				  },
@@ -307,10 +320,48 @@ describe('WorkersLogger', () => {
 			expect(h.logs, 'nothing logged when calling withTags').toStrictEqual([])
 
 			h.log.info('hi')
-			expect(h.logs.slice(0, 2), 'logs error + our message with no tags').toMatchInlineSnapshot(`
+			expect(h.logs, 'only logs our message with no tags, no warning by default')
+				.toMatchInlineSnapshot(`
 				[
 				  {
-				    "level": "warn",
+				    "level": "info",
+				    "message": "hi",
+				    "time": "2024-10-26T12:30:00.000Z",
+				  },
+				]
+			`)
+
+			const ctxLogger = h.log.withTags({ banda: 'rocks' })
+			ctxLogger.info('hello, world!')
+			expect(h.logs.slice(1), 'contains our log from ctxLogger but no global tags, no warning')
+				.toMatchInlineSnapshot(`
+					[
+					  {
+					    "level": "info",
+					    "message": "hello, world!",
+					    "tags": {
+					      "banda": "rocks",
+					    },
+					    "time": "2024-10-26T12:30:00.000Z",
+					  },
+					]
+				`)
+		})
+
+		it('logs debug warning when missing ASL context and debug: true', () => {
+			const h = setupTest({ debug: true })
+			expect(() => {
+				h.log.withTags({ foo: 'bar' })
+			}).not.toThrow()
+
+			expect(h.logs, 'nothing logged when calling withTags').toStrictEqual([])
+
+			h.log.info('hi')
+			expect(h.logs.slice(0, 2), 'logs debug warning + our message with no tags')
+				.toMatchInlineSnapshot(`
+				[
+				  {
+				    "level": "debug",
 				    "message": "Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?",
 				    "time": "2024-10-26T12:30:00.000Z",
 				  },
@@ -328,7 +379,7 @@ describe('WorkersLogger', () => {
 				.toMatchInlineSnapshot(`
 					[
 					  {
-					    "level": "warn",
+					    "level": "debug",
 					    "message": "Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?",
 					    "time": "2024-10-26T12:30:00.000Z",
 					  },
@@ -494,10 +545,16 @@ describe('WorkersLogger', () => {
 		it('does not throw error when missing ASL context', () => {
 			const h = setupTest()
 			expect(() => h.log.setTags({ foo: 'bar' })).not.toThrow()
-			expect(h.logs, 'it logs an error').toMatchInlineSnapshot(`
+			expect(h.logs, 'no warning logged by default').toStrictEqual([])
+		})
+
+		it('logs debug warning when missing ASL context and debug: true', () => {
+			const h = setupTest({ debug: true })
+			expect(() => h.log.setTags({ foo: 'bar' })).not.toThrow()
+			expect(h.logs, 'it logs a debug warning').toMatchInlineSnapshot(`
 				[
 				  {
-				    "level": "warn",
+				    "level": "debug",
 				    "message": "Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?",
 				    "time": "2024-10-26T12:30:00.000Z",
 				  },
@@ -586,6 +643,28 @@ describe('WorkersLogger', () => {
 					}
 				`)
 			})
+		})
+	})
+
+	describe('setLogLevel()', () => {
+		it('does not throw error when missing ASL context', () => {
+			const h = setupTest()
+			expect(() => h.log.setLogLevel('warn')).not.toThrow()
+			expect(h.logs, 'no warning logged by default').toStrictEqual([])
+		})
+
+		it('logs debug warning when missing ASL context and debug: true', () => {
+			const h = setupTest({ debug: true })
+			expect(() => h.log.setLogLevel('warn')).not.toThrow()
+			expect(h.logs, 'it logs a debug warning').toMatchInlineSnapshot(`
+				[
+				  {
+				    "level": "debug",
+				    "message": "Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?",
+				    "time": "2024-10-26T12:30:00.000Z",
+				  },
+				]
+			`)
 		})
 	})
 })

@@ -122,12 +122,19 @@ describe('Dynamic Log Level Management', () => {
 			})
 		})
 
-		it('logs warning when called outside ALS context', () => {
+		it('does not log warning when called outside ALS context by default', () => {
 			const h = setupTest()
 			h.log.setLogLevel('debug')
 
+			expect(h.logs).toHaveLength(0)
+		})
+
+		it('logs debug warning when called outside ALS context and debug: true', () => {
+			const h = setupTest({ debug: true })
+			h.log.setLogLevel('debug')
+
 			expect(h.logs).toHaveLength(1)
-			expect(h.oneLog().level).toBe('warn')
+			expect(h.oneLog().level).toBe('debug')
 			expect(h.oneLog().message).toContain('unable to get log tags from async local storage')
 		})
 
