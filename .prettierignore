@@ -1,3 +1,4 @@
 .changeset
 pnpm-lock.yaml
 turbo/generators/**/*.hbs
+.claude/*.json
