@@ -83,7 +83,7 @@ export interface WorkersLoggerOptions {
 	 * Enable debug mode to show internal warning messages when AsyncLocalStorage context is missing.
 	 * When false (default), these warnings are suppressed to reduce noise in production.
 	 *
-	 * Defaults to `false`.
+	 * @default false
 	 */
 	debug?: boolean
 }
