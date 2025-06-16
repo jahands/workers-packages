@@ -79,6 +79,13 @@ export interface WorkersLoggerOptions {
 	 * Defaults to the lowest level: `debug`.
 	 */
 	minimumLogLevel?: LogLevel
+	/**
+	 * Enable debug mode to show internal warning messages when AsyncLocalStorage context is missing.
+	 * When false (default), these warnings are suppressed to reduce noise in production.
+	 *
+	 * Defaults to `false`.
+	 */
+	debug?: boolean
 }
 
 /**
@@ -105,12 +112,14 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	private ctx: WorkersLoggerOptions = {}
 	private constructorLogLevel?: LogLevel
 	private instanceLogLevel?: LogLevel
+	private debugMode: boolean
 
 	constructor(opts: WorkersLoggerOptions = {}) {
 		// Store constructor log level separately from instance log level
 		this.constructorLogLevel = opts.minimumLogLevel
+		this.debugMode = opts.debug ?? false
 
-		const ctxOpts: Omit<WorkersLoggerOptions, 'minimumLogLevel'> = {
+		const ctxOpts: Omit<WorkersLoggerOptions, 'minimumLogLevel' | 'debug'> = {
 			tags: opts.tags,
 			fields: opts.fields,
 		}
@@ -128,6 +137,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			...this.ctx,
 			tags: structuredClone(Object.assign({}, this.ctx.tags, tags)),
 			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
+			debug: this.debugMode, // Preserve debug mode
 		})
 		newLogger.instanceLogLevel = this.instanceLogLevel // Preserve instance level
 		return newLogger
@@ -147,6 +157,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			...this.ctx,
 			fields: structuredClone(Object.assign({}, this.ctx.fields, fields)),
 			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
+			debug: this.debugMode, // Preserve debug mode
 		})
 		newLogger.instanceLogLevel = this.instanceLogLevel // Preserve instance level
 		return newLogger
@@ -157,17 +168,29 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	}
 
 	/**
+	 * Log a debug warning message if debug mode is enabled.
+	 * Used for internal warnings about missing AsyncLocalStorage context.
+	 */
+	private logDebugWarning(message: string): void {
+		if (this.debugMode) {
+			console.log({
+				message,
+				level: 'debug',
+				time: new Date().toISOString(),
+			} satisfies ConsoleLog)
+		}
+	}
+
+	/**
 	 * Get global tags stored in async context. Excludes
 	 * tags set on this instance using withTags())
 	 */
 	private getParentTags(): Partial<T & LogTags> | undefined {
 		const context = als.getStore()
 		if (context === undefined) {
-			console.log({
-				message: `Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?`,
-				level: 'warn',
-				time: new Date().toISOString(),
-			} satisfies ConsoleLog)
+			this.logDebugWarning(
+				`Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?`
+			)
 			return
 		}
 		return context.tags as Partial<T & LogTags>
@@ -189,11 +212,9 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			Object.assign(context.tags, structuredClone(tags))
 		} else {
 			// Log warning if no context exists (same as getParentTags)
-			console.log({
-				message: `Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?`,
-				level: 'warn',
-				time: new Date().toISOString(),
-			} satisfies ConsoleLog)
+			this.logDebugWarning(
+				`Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?`
+			)
 		}
 	}
 
@@ -205,11 +226,9 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			context.logLevel = level
 		} else {
 			// Log warning if no context exists (same as setTags)
-			console.log({
-				message: `Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?`,
-				level: 'warn',
-				time: new Date().toISOString(),
-			} satisfies ConsoleLog)
+			this.logDebugWarning(
+				`Warning: unable to get log tags from async local storage. did you forget to wrap the function using withLogTags() ?`
+			)
 		}
 	}
 
@@ -218,6 +237,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 		const newLogger = new WorkersLogger<T>({
 			...this.ctx,
 			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
+			debug: this.debugMode, // Preserve debug mode
 		})
 		newLogger.instanceLogLevel = level // Set instance-specific level
 		return newLogger
