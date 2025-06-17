@@ -1,5 +1,11 @@
 # llm-tools
 
+## 0.2.1
+
+### Patch Changes
+
+- 752f75b: fix: trim final newlines in fmt.trim()
+
 ## 0.2.0
 
 ### Minor Changes
