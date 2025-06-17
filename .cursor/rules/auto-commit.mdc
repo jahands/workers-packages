@@ -3,7 +3,6 @@ description: Read this when user asks you to auto commit as you go
 globs:
 alwaysApply: false
 ---
-
 <git-commit-guidelines>
 
 When making changes to code, commit your changes incrementally as you work. Follow these commit conventions:

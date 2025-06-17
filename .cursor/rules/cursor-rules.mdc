@@ -60,7 +60,80 @@ alwaysApply: false
 <rule-format>
 <description>Rules must be written for LLM optimization. Prioritize machine readability over human readability.</description>
 
-<template>
+<critical>START WITH THE SIMPLEST STRUCTURE THAT CLEARLY CONVEYS YOUR RULE</critical>
+
+<decision-tree>
+Ask yourself:
+1. Can I express this rule as a simple list of do's and don'ts? → Use simple template
+2. Does this rule involve multiple interconnected concepts? → Consider complex template
+3. Am I adding sections just because the template has them? → Remove those sections
+4. Am I about to add a second example? → Stop. One is usually enough.
+
+Remember: Empty sections add tokens but no value. Less structure often communicates more clearly.
+</decision-tree>
+
+<simplicity-first>
+<principle>Start with the absolute minimum. You can always add more if truly needed.</principle>
+<warning>If you're thinking "maybe I should add..." - DON'T. Only add what's essential.</warning>
+<rule-of-thumb>If your simple rule exceeds 50 lines, you're probably over-structuring it.</rule-of-thumb>
+</simplicity-first>
+
+<rule-complexity-principle>
+Use the minimum XML structure needed for clarity. Most rules only need:
+- A title
+- A list of requirements
+- Maybe some examples
+
+That's it. Don't add sections unless they add real value.
+</rule-complexity-principle>
+
+<simple-template>
+<description>Use this template for 90% of rules - formatting, naming conventions, simple behaviors</description>
+```yaml
+---
+description: Brief description for LLM rule selection
+globs:
+alwaysApply: false
+---
+```
+
+```xml
+<rule-name>
+
+<title>Rule Title</title>
+
+<rules>
+- First requirement
+- Second requirement  
+- Third requirement
+</rules>
+
+<examples>
+<example type="good">
+```typescript
+// Good code example
+```
+</example>
+</examples>
+
+</rule-name>
+```
+
+<stop-here>For most rules, you're done. Only add more sections if the rule is genuinely complex.</stop-here>
+
+<example-guidelines>
+<critical>ONE EXAMPLE IS USUALLY ENOUGH - Don't add more unless each shows a fundamentally different pattern</critical>
+- Simple formatting rules: ONE concise example (<15 lines)
+- If you're thinking "I should also show..." - DON'T
+- Only add bad examples if the mistake is non-obvious
+- Never show variations of the same concept
+- Trust the LLM to generalize from one clear example
+- Multiple examples are ONLY for rules with distinct subcategories
+</example-guidelines>
+</simple-template>
+
+<complex-template>
+<description>ONLY use this template for complex architectural patterns, multi-faceted systems, or rules requiring extensive context</description>
 ```yaml
 ---
 description: Brief description for LLM rule selection
@@ -105,7 +178,7 @@ alwaysApply: false
 
 </rule-name>
 ```
-</template>
+</complex-template>
 
 <xml-tag-guidelines>
 
@@ -258,63 +331,113 @@ alwaysApply: false
 </code-blocks>
 </exceptions>
 
-<rule-complexity-guidelines>
+<when-to-add-sections>
+<section-guidelines>
+- <context>: ONLY if scope is ambiguous or needs clarification
+- <overview>: ONLY for complex multi-part systems
+- <key-concepts>: ONLY if introducing new technical concepts
+- <categories>: ONLY if organizing 10+ related items
+- Multiple <rule> blocks: ONLY if rules have different contexts
+- Multiple examples: ONLY if showing fundamentally different patterns
+</section-guidelines>
 
-<principle>Use the minimum structure needed for clarity</principle>
+<examples-of-overuse>
+- Adding <context> for "all JavaScript files" (obvious from title)
+- Adding <overview> to explain what indentation is
+- Adding <key-concepts> for well-known terms
+- Creating nested <rule> blocks for a simple list
+</examples-of-overuse>
+</when-to-add-sections>
 
-<simple-rules>
-<when>For straightforward behavioral rules (< 10 requirements)</when>
-<approach>
-- Single <rules> section with dash list
-- Skip sections that add no value
-- 10-30 lines total
-</approach>
-<examples>
-- Communication style
-- Naming conventions
-- Simple do/don't lists
-</examples>
-</simple-rules>
-
-<complex-rules>
-<when>For technical systems or multi-faceted implementations</when>
-<approach>
-- Full template with multiple sections
-- Include overview, concepts, examples
-- Detailed requirements and steps
-</approach>
-<examples>
-- API design patterns
-- Architecture guidelines
-- Multi-step processes
-</examples>
-</complex-rules>
-
-<anti-pattern>
-<description>Don't over-structure simple content</description>
-<example type="bad">
-50+ lines of XML with nested sections for "don't use filler phrases"
-</example>
-<example type="good">
+<actual-examples>
+<example type="simple-appropriate">
 ```xml
-<direct-communication>
+<indentation-standards>
+
+<title>JavaScript/TypeScript Indentation</title>
+
 <rules>
-- Skip pleasantries and affirmations
-- Don't start with "Great question!", "You're right!", etc.
-- Begin directly with the answer
-- Focus on content, not meta-commentary
+- Always use 2 spaces for indentation
+- Never use tabs
+- Configure editors to insert spaces for tab key
+- Each nested level increases by 2 spaces
 </rules>
-</direct-communication>
+
+<examples>
+<example type="good">
+```typescript
+function example() {
+  if (condition) {
+    return true;
+  }
+}
 ```
 </example>
-</anti-pattern>
+</examples>
 
-<token-efficiency>
-- Simple rule with minimal XML: ~50-100 tokens
-- Over-structured simple rule: ~200-300 tokens
-- Complex rule with full structure: ~300-500 tokens
-</token-efficiency>
-</rule-complexity-guidelines>
+</indentation-standards>
+```
+</example>
+
+<example type="even-simpler">
+```xml
+<skip-pleasantries>
+
+<title>Skip Pleasantries in Responses</title>
+
+<rules>
+- Don't start responses with "Great question!", "You're right!", etc.
+- Get straight to the answer
+- Skip meta-commentary about the question
+- Avoid filler phrases like "Let me help you with that"
+</rules>
+
+</skip-pleasantries>
+```
+<note>Notice: No examples needed when the rule is self-explanatory!</note>
+</example>
+
+<example type="complex-appropriate">
+```xml
+<dependency-injection>
+
+<title>Dependency Injection in TypeScript</title>
+
+<overview>Guidelines for implementing DI patterns, choosing injection types, and resolving circular dependencies in enterprise applications</overview>
+
+<key-concepts>
+- Inversion of Control (IoC)
+- Constructor vs Property Injection  
+- Circular dependency resolution
+- DI container configuration
+</key-concepts>
+
+<!-- Multiple rule sections justified by different contexts -->
+<rules>
+<rule>
+<name>Constructor Injection</name>
+<requirements>
+- Default approach for required dependencies
+- Use readonly modifiers
+- Inject interfaces, not implementations
+</requirements>
+</rule>
+
+<rule>
+<name>Circular Dependency Resolution</name>
+<requirements>
+- Detect cycles with compiler tools
+- Extract shared interfaces
+- Use lazy loading as last resort
+</requirements>
+</rule>
+</rules>
+
+<!-- Extensive examples justified by complexity -->
+</dependency-injection>
+```
+</example>
+</actual-examples>
 </rule-format>
 
 <best-practices>
