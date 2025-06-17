@@ -6,8 +6,8 @@ import { writeToString } from '@fast-csv/format'
 export const fmt = {
 	/**
 	 * Formats a multi-line string by removing unnecessary indentation while preserving
-	 * the relative indentation between lines. Trims leading/trailing newlines from the
-	 * entire string and trailing whitespace from each line. Empty or whitespace-only
+	 * the relative indentation between lines. Trims ALL leading/trailing newlines from
+	 * the entire string and trailing whitespace from each line. Empty or whitespace-only
 	 * lines are preserved as empty lines.
 	 *
 	 * Useful for formatting prompts and tool instructions.
@@ -36,7 +36,7 @@ export const fmt = {
 		}
 
 		// remove minimum indentation from each line and trim trailing spaces
-		return lines
+		const result = lines
 			.map((line) => {
 				if (line.trim().length === 0) {
 					return '' // preserve empty lines as truly empty
@@ -47,6 +47,9 @@ export const fmt = {
 				return commonRemoved.replace(/\s+$/, '')
 			})
 			.join('\n')
+
+		// trim any trailing newlines that might have been added
+		return result.replace(/\n+$/, '')
 	},
 
 	/**

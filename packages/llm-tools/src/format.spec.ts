@@ -26,8 +26,7 @@ describe('fmt', () => {
 			const expected = `line1
   line2
 
-line3
-`
+line3`
 			expect(fmt.trim(input)).toBe(expected)
 		})
 
@@ -52,12 +51,12 @@ line3
       line1
         line2
       `
-			expect(fmt.trim(input)).toBe('line1\n  line2\n')
+			expect(fmt.trim(input)).toBe('line1\n  line2')
 		})
 
 		it('should trim leading and trailing newlines before processing indent', () => {
 			const input = `\n\n      line1\n        line2\n      \n\n`
-			expect(fmt.trim(input)).toBe('line1\n  line2\n')
+			expect(fmt.trim(input)).toBe('line1\n  line2')
 		})
 
 		it('should preserve empty lines and remove common indentation', () => {
@@ -66,7 +65,7 @@ line3
 
     line2
   `
-			expect(fmt.trim(input)).toBe('line1\n\nline2\n')
+			expect(fmt.trim(input)).toBe('line1\n\nline2')
 		})
 
 		it('should process all-whitespace lines to a single empty string', () => {
@@ -87,7 +86,7 @@ line3
 		line1
 			line2
 	`
-			expect(fmt.trim(input)).toBe('line1\n	line2\n')
+			expect(fmt.trim(input)).toBe('line1\n	line2')
 		})
 
 		it('should handle a string with mixed spaces and tabs by removing common prefix', () => {
@@ -95,7 +94,7 @@ line3
   	line1
   	  line2
   ` // Common prefix is "  \t"
-			expect(fmt.trim(input)).toBe('line1\n  line2\n')
+			expect(fmt.trim(input)).toBe('line1\n  line2')
 		})
 	})
 
