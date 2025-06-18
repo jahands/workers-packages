@@ -25,7 +25,7 @@ jobs:
       - name: Install Dagger
         uses: dagger/dagger-for-github@8.0.0
         with:
-          version: '0.18.9'
+          version: '0.18.10'
       - name: Test (Dagger)
         run: just dagger-test --GITHUB_ACTIONS=1
         env:
