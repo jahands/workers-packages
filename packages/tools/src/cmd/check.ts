@@ -102,15 +102,13 @@ export const checkCmd = new Command('check')
 		}
 
 		if (exports) {
-			await within(async () => {
-				const exitCode = await $`${checks.exports}`.exitCode
-				table.push([
-					'exports',
-					checks.exports.join(' '),
-					getOutcome(exitCode),
-					'Root',
-				] satisfies TableRow)
-			})
+			const exitCode = await $`${checks.exports}`.exitCode
+			table.push([
+				'exports',
+				checks.exports.join(' '),
+				getOutcome(exitCode),
+				'Root',
+			] satisfies TableRow)
 		}
 
 		echo(table.toString())
