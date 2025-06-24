@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.10.5
+
+### Patch Changes
+
+- dde07c1: fix: remove unnecessary async wrapper in check command
+
 ## 0.10.4
 
 ### Patch Changes
