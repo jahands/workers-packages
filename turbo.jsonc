@@ -29,6 +29,7 @@
 				"//#check:format",
 				"//#check:deps",
 				"check:types",
+				"check:exports",
 				"//#check:lint:all",
 				"//#test:ci",
 				"test:ci"
