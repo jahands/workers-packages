@@ -1,6 +1,8 @@
 import { customAlphabet } from 'nanoid'
-import type { PrefixesConfig, PrefixKeys, PrefixConfig } from './types.js'
-import { InvalidPrefixError, InvalidIdFormatError, CategoryExtractionError } from './types.js'
+
+import { CategoryExtractionError, InvalidPrefixError } from './types.js'
+
+import type { PrefixConfig, PrefixesConfig, PrefixKeys } from './types.js'
 
 // Alphabet excluding confusing characters (no lowercase 'l', '0', 'O', 'I')
 // Based on the reference code's alphabet
@@ -22,7 +24,7 @@ export class PrefixedNanoid<T extends PrefixesConfig> {
 		this.config = config
 		this.nanoid = customAlphabet(ALPHABET)
 		this.prefixKeys = new Set(Object.keys(config))
-		
+
 		// Validate configuration
 		this.validateConfig()
 	}
@@ -68,7 +70,7 @@ export class PrefixedNanoid<T extends PrefixesConfig> {
 		}
 
 		const extractedPrefix = idWithPrefix.substring(0, underscoreIndex)
-		
+
 		// Find the configuration that matches this prefix
 		for (const [, prefixConfig] of Object.entries(this.config)) {
 			if (prefixConfig.prefix === extractedPrefix) {
@@ -93,7 +95,11 @@ export class PrefixedNanoid<T extends PrefixesConfig> {
 		if (!this.prefixKeys.has(prefix as string)) {
 			throw new InvalidPrefixError(prefix as string, Array.from(this.prefixKeys))
 		}
-		return this.config[prefix]
+		const config = this.config[prefix]
+		if (!config) {
+			throw new InvalidPrefixError(prefix as string, Array.from(this.prefixKeys))
+		}
+		return config
 	}
 
 	/**

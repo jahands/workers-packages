@@ -1,6 +1,7 @@
-import { describe, expect, it, test } from 'vitest'
+import { describe, expect, it } from 'vitest'
+
 import { PrefixedNanoid } from './prefixed-nanoid.js'
-import { InvalidPrefixError, CategoryExtractionError } from './types.js'
+import { CategoryExtractionError, InvalidPrefixError } from './types.js'
 
 // Test configuration similar to the reference code
 const testConfig = {
@@ -99,13 +100,13 @@ describe('PrefixedNanoid', () => {
 		it('should generate many unique IDs', () => {
 			const generatedIds = new Set<string>()
 			const count = 1000
-			
+
 			for (let i = 0; i < count; i++) {
 				const id = ids.new('project')
 				expect(generatedIds.has(id)).toBe(false)
 				generatedIds.add(id)
 			}
-			
+
 			expect(generatedIds.size).toBe(count)
 		})
 	})
@@ -189,9 +190,11 @@ describe('PrefixedNanoid', () => {
 					example: 'example',
 				},
 			})
-			
+
 			const id = specialIds.new('special')
-			expect(id).toMatch(/^sp-ec\.ial_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{10}$/)
+			expect(id).toMatch(
+				/^sp-ec\.ial_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{10}$/
+			)
 			expect(specialIds.is('special', id)).toBe(true)
 			expect(specialIds.getCategory(id)).toBe('special')
 		})
@@ -203,23 +206,21 @@ describe('PrefixedNanoid', () => {
 			const id = ids.new('project')
 			expect(typeof id).toBe('string')
 			expect(id.length).toBeGreaterThan(0)
-			
+
 			// Test that validation works
 			expect(ids.is('project', id)).toBe(true)
-			
+
 			// Test that category extraction works
 			expect(ids.getCategory(id)).toBe('projects')
 		})
 
 		it('should handle concurrent ID generation', async () => {
 			// Test concurrent generation to ensure thread safety
-			const promises = Array.from({ length: 100 }, () => 
-				Promise.resolve(ids.new('project'))
-			)
-			
+			const promises = Array.from({ length: 100 }, () => Promise.resolve(ids.new('project')))
+
 			const results = await Promise.all(promises)
 			const uniqueResults = new Set(results)
-			
+
 			expect(uniqueResults.size).toBe(results.length)
 		})
 	})

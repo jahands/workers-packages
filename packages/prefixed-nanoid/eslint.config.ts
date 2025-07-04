@@ -1,3 +1,5 @@
-import { config } from '@repo/eslint-config'
+import { defineConfig, getConfig } from '@repo/eslint-config'
 
-export default config
+const config = getConfig(import.meta.url)
+
+export default defineConfig([...config])
