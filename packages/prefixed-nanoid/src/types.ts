@@ -1,4 +1,4 @@
-import { z } from 'zod/v4'
+import { z } from 'zod/v4-mini'
 
 /**
  * Configuration for a single prefix
@@ -17,7 +17,27 @@ export const PrefixConfig = z.object({
  * Configuration object mapping prefix keys to their configurations
  */
 export type PrefixesConfig = z.infer<typeof PrefixesConfig>
-export const PrefixesConfig = z.record(z.string(), PrefixConfig)
+export const PrefixesConfig = z
+	.record(z.string(), PrefixConfig)
+	.check((config) => {
+		const prefixes = Object.values(config).map((c) => c.prefix)
+		const duplicates = prefixes.filter((prefix, index) => prefixes.indexOf(prefix) !== index)
+		
+		if (duplicates.length > 0) {
+			// Find all keys that have the duplicate prefix
+			const duplicatePrefix = duplicates[0]
+			const keysWithDuplicate = Object.entries(config)
+				.filter(([_, value]) => value.prefix === duplicatePrefix)
+				.map(([key]) => key)
+			
+			return {
+				valid: false,
+				error: `Duplicate prefix "${duplicatePrefix}" found in keys: ${keysWithDuplicate.join(', ')}`,
+			}
+		}
+		
+		return { valid: true }
+	})
 
 /**
  * Extract prefix keys from a configuration object

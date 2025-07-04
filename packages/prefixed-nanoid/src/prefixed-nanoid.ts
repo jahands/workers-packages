@@ -1,5 +1,5 @@
 import { customAlphabet } from 'nanoid'
-import { z, ZodError } from 'zod/v4'
+import { z } from 'zod/v4-mini'
 
 import {
 	ALPHABET,
@@ -18,7 +18,7 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	private readonly config: T
 	private readonly nanoid: (size: number) => string
 	private readonly prefixKeys: Set<string>
-	private readonly prefixSchemas: Map<string, z.ZodString>
+	private readonly prefixSchemas: Map<string, ReturnType<typeof createPrefixedIdSchema>>
 
 	/**
 	 * Create a new PrefixedNanoId instance
@@ -33,14 +33,15 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 			this.prefixKeys = new Set(Object.keys(config))
 
 			// Initialize prefix schemas
-			this.prefixSchemas = new Map<string, z.ZodString>()
+			this.prefixSchemas = new Map()
 			for (const [key, prefixConfig] of Object.entries(this.config)) {
 				const schema = createPrefixedIdSchema(prefixConfig.prefix, prefixConfig.len)
 				this.prefixSchemas.set(key, schema)
 			}
 		} catch (e) {
-			if (e instanceof ZodError) {
-				throw new Error(`Configuration validation failed:\n${z.prettifyError(e)}`)
+			// In zod/v4-mini, we check for error shape rather than instanceof
+			if (e && typeof e === 'object' && 'issues' in e && Array.isArray((e as any).issues)) {
+				throw new Error(`Configuration validation failed:\n${z.prettifyError(e as any)}`)
 			}
 			throw e
 		}
