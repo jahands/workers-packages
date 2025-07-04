@@ -13,7 +13,7 @@
 		"@commander-js/extra-typings": "13.1.0",
 		"@jahands/cli-tools": "workspace:*",
 		"commander": "13.1.0",
-		"zod": "3.25.7",
+		"zod": "3.25.73",
 		"zx": "8.5.4"
 	},
 	"devDependencies": {
