@@ -25,7 +25,7 @@ yarn add prefixed-nanoid
 ## Quick Start
 
 ```typescript
-import { PrefixedNanoid } from 'prefixed-nanoid'
+import { PrefixedNanoId } from 'prefixed-nanoid'
 
 // Define your ID configuration
 const config = {
@@ -44,7 +44,7 @@ const config = {
 } as const
 
 // Create an instance
-const ids = new PrefixedNanoid(config)
+const ids = new PrefixedNanoId(config)
 
 // Generate IDs
 const projectId = ids.new('project') // 'prj_fKusuLcXQZij5x7URG98aP2z'
@@ -64,10 +64,10 @@ ids.getCategory(userId) // 'users'
 ### Constructor
 
 ```typescript
-new PrefixedNanoid<T extends PrefixesConfig>(config: T)
+new PrefixedNanoId<T extends PrefixesConfig>(config: T)
 ```
 
-Creates a new PrefixedNanoid instance with the given configuration.
+Creates a new PrefixedNanoId instance with the given configuration.
 
 **Parameters:**
 
@@ -157,12 +157,12 @@ Thrown when trying to extract a category from an invalid ID or unrecognized pref
 You can create multiple instances for different contexts:
 
 ```typescript
-const userIds = new PrefixedNanoid({
+const userIds = new PrefixedNanoId({
   admin: { prefix: 'adm', category: 'users', len: 20, example: 'adm_example' },
   member: { prefix: 'mbr', category: 'users', len: 16, example: 'mbr_example' },
 })
 
-const resourceIds = new PrefixedNanoid({
+const resourceIds = new PrefixedNanoId({
   file: { prefix: 'file', category: 'resources', len: 24, example: 'file_example' },
   folder: { prefix: 'dir', category: 'resources', len: 20, example: 'dir_example' },
 })
@@ -178,7 +178,7 @@ const config = {
   user: { prefix: 'usr', category: 'users', len: 16, example: 'example' },
 } as const
 
-const ids = new PrefixedNanoid(config)
+const ids = new PrefixedNanoId(config)
 
 // TypeScript will only allow 'project' or 'user' as valid prefixes
 ids.new('project') // ✅ Valid

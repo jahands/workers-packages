@@ -11,13 +11,13 @@ const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 /**
  * Class-based API for managing prefixed nanoid generation with type safety
  */
-export class PrefixedNanoid<T extends PrefixesConfig> {
+export class PrefixedNanoId<T extends PrefixesConfig> {
 	private readonly config: T
 	private readonly nanoid: (size: number) => string
 	private readonly prefixKeys: Set<string>
 
 	/**
-	 * Create a new PrefixedNanoid instance
+	 * Create a new PrefixedNanoId instance
 	 * @param config Configuration object mapping prefix keys to their configurations
 	 */
 	constructor(config: T) {

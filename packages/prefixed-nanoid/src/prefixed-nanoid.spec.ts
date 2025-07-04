@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { PrefixedNanoid } from './prefixed-nanoid.js'
+import { PrefixedNanoId } from './prefixed-nanoid.js'
 import { CategoryExtractionError, InvalidPrefixError } from './types.js'
 
 const testConfig = {
@@ -24,16 +24,16 @@ const testConfig = {
 	},
 } as const
 
-describe('PrefixedNanoid', () => {
-	const ids = new PrefixedNanoid(testConfig)
+describe('PrefixedNanoId', () => {
+	const ids = new PrefixedNanoId(testConfig)
 
 	describe('constructor', () => {
 		it('should create instance with valid config', () => {
-			expect(ids).toBeInstanceOf(PrefixedNanoid)
+			expect(ids).toBeInstanceOf(PrefixedNanoId)
 		})
 
 		it('should allow prefix with underscore', () => {
-			const idsWithUnderscore = new PrefixedNanoid({
+			const idsWithUnderscore = new PrefixedNanoId({
 				test_prefix: {
 					prefix: 'pre_fix',
 					category: 'test',
@@ -41,7 +41,7 @@ describe('PrefixedNanoid', () => {
 					example: 'example',
 				},
 			})
-			expect(idsWithUnderscore).toBeInstanceOf(PrefixedNanoid)
+			expect(idsWithUnderscore).toBeInstanceOf(PrefixedNanoId)
 
 			const id = idsWithUnderscore.new('test_prefix')
 			expect(id).toMatch(
@@ -53,7 +53,7 @@ describe('PrefixedNanoid', () => {
 
 		it('should throw error for empty prefix', () => {
 			expect(() => {
-				new PrefixedNanoid({
+				new PrefixedNanoId({
 					invalid: {
 						prefix: '',
 						category: 'test',
@@ -66,7 +66,7 @@ describe('PrefixedNanoid', () => {
 
 		it('should throw error for invalid length', () => {
 			expect(() => {
-				new PrefixedNanoid({
+				new PrefixedNanoId({
 					invalid: {
 						prefix: 'test',
 						category: 'test',
@@ -179,7 +179,7 @@ describe('PrefixedNanoid', () => {
 
 	describe('edge cases', () => {
 		it('should handle empty config', () => {
-			const emptyIds = new PrefixedNanoid({})
+			const emptyIds = new PrefixedNanoId({})
 			expect(() => {
 				// @ts-expect-error - testing with empty config
 				emptyIds.new('anything')
@@ -187,7 +187,7 @@ describe('PrefixedNanoid', () => {
 		})
 
 		it('should handle config with special characters in prefix', () => {
-			const specialIds = new PrefixedNanoid({
+			const specialIds = new PrefixedNanoId({
 				special: {
 					prefix: 'sp-ec.ial',
 					category: 'special',
