@@ -8,19 +8,16 @@ const testConfig = {
 		prefix: 'prj',
 		category: 'projects',
 		len: 24,
-		example: 'fKusuLcXQZij5x7URG98aP2z',
 	},
 	file: {
 		prefix: 'file',
 		category: 'projects',
 		len: 24,
-		example: 'fKusuLcXQZij5x7URG98aP2z',
 	},
 	user: {
 		prefix: 'usr',
 		category: 'users',
 		len: 16,
-		example: 'abc123def456ghi7',
 	},
 } as const
 
@@ -38,7 +35,6 @@ describe('PrefixedNanoId', () => {
 					prefix: 'pre_fix',
 					category: 'test',
 					len: 10,
-					example: 'example',
 				},
 			})
 			expect(idsWithUnderscore).toBeInstanceOf(PrefixedNanoId)
@@ -58,7 +54,6 @@ describe('PrefixedNanoId', () => {
 						prefix: '',
 						category: 'test',
 						len: 10,
-						example: 'example',
 					},
 				})
 			}).toThrow('Invalid prefix for key "invalid": must be a non-empty string')
@@ -71,7 +66,6 @@ describe('PrefixedNanoId', () => {
 						prefix: 'test',
 						category: 'test',
 						len: 0,
-						example: 'example',
 					},
 				})
 			}).toThrow('Invalid length for key "invalid": must be a positive integer')
@@ -192,7 +186,6 @@ describe('PrefixedNanoId', () => {
 					prefix: 'sp-ec.ial',
 					category: 'special',
 					len: 10,
-					example: 'example',
 				},
 			})
 

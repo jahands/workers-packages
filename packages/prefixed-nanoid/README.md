@@ -33,13 +33,11 @@ const config = {
     prefix: 'prj',
     category: 'projects',
     len: 24,
-    example: 'prj_fKusuLcXQZij5x7URG98aP2z',
   },
   user: {
     prefix: 'usr',
     category: 'users',
     len: 16,
-    example: 'usr_abc123def456ghi7',
   },
 } as const
 
@@ -80,7 +78,6 @@ interface PrefixConfig {
   prefix: string // The prefix string (e.g., "prj", "file")
   category: string // Logical grouping (e.g., "projects")
   len: number // Length of the random nanoid portion
-  example: string // Example ID for documentation purposes
 }
 ```
 
@@ -158,13 +155,13 @@ You can create multiple instances for different contexts:
 
 ```typescript
 const userIds = new PrefixedNanoId({
-  admin: { prefix: 'adm', category: 'users', len: 20, example: 'adm_example' },
-  member: { prefix: 'mbr', category: 'users', len: 16, example: 'mbr_example' },
+  admin: { prefix: 'adm', category: 'users', len: 20 },
+  member: { prefix: 'mbr', category: 'users', len: 16 },
 })
 
 const resourceIds = new PrefixedNanoId({
-  file: { prefix: 'file', category: 'resources', len: 24, example: 'file_example' },
-  folder: { prefix: 'dir', category: 'resources', len: 20, example: 'dir_example' },
+  file: { prefix: 'file', category: 'resources', len: 24 },
+  folder: { prefix: 'dir', category: 'resources', len: 20 },
 })
 ```
 
@@ -174,8 +171,8 @@ The library provides full TypeScript support with proper type inference:
 
 ```typescript
 const config = {
-  project: { prefix: 'prj', category: 'projects', len: 24, example: 'example' },
-  user: { prefix: 'usr', category: 'users', len: 16, example: 'example' },
+  project: { prefix: 'prj', category: 'projects', len: 24 },
+  user: { prefix: 'usr', category: 'users', len: 16 },
 } as const
 
 const ids = new PrefixedNanoId(config)

@@ -8,8 +8,6 @@ export interface PrefixConfig {
 	category: string
 	/** Length of the random nanoid portion */
 	len: number
-	/** Example ID for documentation purposes */
-	example: string
 }
 
 /**
