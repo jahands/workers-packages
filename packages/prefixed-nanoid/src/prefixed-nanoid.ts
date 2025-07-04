@@ -121,13 +121,13 @@ export class PrefixedNanoid<T extends PrefixesConfig> {
 	private validateConfig(): void {
 		for (const [key, config] of Object.entries(this.config)) {
 			if (!config.prefix || typeof config.prefix !== 'string') {
-				throw new Error(`Invalid prefix for key "${key}": must be a non-empty string`)
+				throw new Error(`invalid prefix for key "${key}": must be a non-empty string`)
 			}
 			if (!config.category || typeof config.category !== 'string') {
-				throw new Error(`Invalid category for key "${key}": must be a non-empty string`)
+				throw new Error(`invalid category for key "${key}": must be a non-empty string`)
 			}
 			if (!Number.isInteger(config.len) || config.len <= 0) {
-				throw new Error(`Invalid length for key "${key}": must be a positive integer`)
+				throw new Error(`invalid length for key "${key}": must be a positive integer`)
 			}
 		}
 	}

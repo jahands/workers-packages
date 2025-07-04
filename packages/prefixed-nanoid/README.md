@@ -150,10 +150,6 @@ Thrown when an invalid prefix is used with the `new()` method.
 
 Thrown when trying to extract a category from an invalid ID or unrecognized prefix.
 
-### `InvalidIdFormatError`
-
-Available for import but not currently used by the library (reserved for future use).
-
 ## Advanced Usage
 
 ### Multiple Configurations

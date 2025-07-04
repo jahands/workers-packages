@@ -4,4 +4,4 @@
 
 export { PrefixedNanoid } from './prefixed-nanoid.js'
 export type { PrefixConfig, PrefixesConfig, PrefixKeys } from './types.js'
-export { InvalidPrefixError, InvalidIdFormatError, CategoryExtractionError } from './types.js'
+export { InvalidPrefixError, CategoryExtractionError } from './types.js'
