@@ -19,6 +19,8 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	private readonly nanoid: (size: number) => string
 	private readonly prefixKeys: Set<string>
 	private readonly prefixSchemas: Map<string, ReturnType<typeof createPrefixedIdSchema>>
+	private readonly prefixToConfig: Map<string, { key: string; config: PrefixConfig }>
+	private readonly sortedPrefixes: string[]
 
 	/**
 	 * Create a new PrefixedNanoId instance
@@ -32,12 +34,18 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 			this.nanoid = customAlphabet(ALPHABET)
 			this.prefixKeys = new Set(Object.keys(config))
 
-			// Initialize prefix schemas
+			// Initialize prefix schemas and prefix-to-config map
 			this.prefixSchemas = new Map()
+			this.prefixToConfig = new Map()
+			
 			for (const [key, prefixConfig] of Object.entries(this.config)) {
 				const schema = createPrefixedIdSchema(prefixConfig.prefix, prefixConfig.len)
 				this.prefixSchemas.set(key, schema)
+				this.prefixToConfig.set(prefixConfig.prefix, { key, config: prefixConfig })
 			}
+			
+			// Sort prefixes by length descending to match longest first
+			this.sortedPrefixes = Array.from(this.prefixToConfig.keys()).sort((a, b) => b.length - a.length)
 		} catch (e) {
 			// In zod/v4-mini, we check for error shape rather than instanceof
 			if (e && typeof e === 'object' && 'issues' in e && Array.isArray((e as any).issues)) {
@@ -79,21 +87,24 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	 * @throws {CategoryExtractionError} If the ID format is invalid or prefix not recognized
 	 */
 	getCategory(idWithPrefix: string): string {
-		// Try each known prefix to see if the ID matches
-		for (const [key, prefixConfig] of Object.entries(this.config)) {
-			const expectedPrefix = `${prefixConfig.prefix}_`
+		// Try to match against known prefixes (sorted by length descending to match longest first)
+		for (const prefix of this.sortedPrefixes) {
+			const expectedPrefix = `${prefix}_`
 			if (idWithPrefix.startsWith(expectedPrefix)) {
+				const prefixData = this.prefixToConfig.get(prefix)!
+				
 				// Validate the full ID format using prefix schema
-				const schema = this.prefixSchemas.get(key)
+				const schema = this.prefixSchemas.get(prefixData.key)
 				if (!schema) {
-					throw new Error(`Schema not found for prefix key: ${key}. This should never happen.`)
+					throw new Error(`Schema not found for prefix key: ${prefixData.key}. This should never happen.`)
 				}
+				
 				if (schema.safeParse(idWithPrefix).success) {
-					return prefixConfig.category
+					return prefixData.config.category
 				}
 			}
 		}
-
+		
 		throw new CategoryExtractionError(idWithPrefix)
 	}
 
