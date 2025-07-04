@@ -63,17 +63,10 @@ export class PrefixedNanoid<T extends PrefixesConfig> {
 	 * @throws {CategoryExtractionError} If the ID format is invalid or prefix not recognized
 	 */
 	getCategory(idWithPrefix: string): string {
-		// Extract the prefix part from the ID
-		const underscoreIndex = idWithPrefix.indexOf('_')
-		if (underscoreIndex === -1) {
-			throw new CategoryExtractionError(idWithPrefix)
-		}
-
-		const extractedPrefix = idWithPrefix.substring(0, underscoreIndex)
-
-		// Find the configuration that matches this prefix
+		// Try each known prefix to see if the ID matches
 		for (const [, prefixConfig] of Object.entries(this.config)) {
-			if (prefixConfig.prefix === extractedPrefix) {
+			const expectedPrefix = `${prefixConfig.prefix}_`
+			if (idWithPrefix.startsWith(expectedPrefix)) {
 				// Validate the full ID format
 				const regex = this.createRegexForPrefix(prefixConfig)
 				if (regex.test(idWithPrefix)) {
@@ -135,9 +128,6 @@ export class PrefixedNanoid<T extends PrefixesConfig> {
 			}
 			if (!Number.isInteger(config.len) || config.len <= 0) {
 				throw new Error(`invalid length for key "${key}": must be a positive integer`)
-			}
-			if (config.prefix.includes('_')) {
-				throw new Error(`invalid prefix for key "${key}": cannot contain underscore character`)
 			}
 		}
 	}

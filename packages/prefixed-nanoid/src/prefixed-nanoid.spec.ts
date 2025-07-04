@@ -33,17 +33,23 @@ describe('PrefixedNanoid', () => {
 			expect(ids).toBeInstanceOf(PrefixedNanoid)
 		})
 
-		it('should throw error for invalid prefix with underscore', () => {
-			expect(() => {
-				new PrefixedNanoid({
-					invalid: {
-						prefix: 'pre_fix',
-						category: 'test',
-						len: 10,
-						example: 'example',
-					},
-				})
-			}).toThrow('Invalid prefix for key "invalid": cannot contain underscore character')
+		it('should allow prefix with underscore', () => {
+			const idsWithUnderscore = new PrefixedNanoid({
+				test_prefix: {
+					prefix: 'pre_fix',
+					category: 'test',
+					len: 10,
+					example: 'example',
+				},
+			})
+			expect(idsWithUnderscore).toBeInstanceOf(PrefixedNanoid)
+
+			const id = idsWithUnderscore.new('test_prefix')
+			expect(id).toMatch(
+				/^pre_fix_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{10}$/
+			)
+			expect(idsWithUnderscore.is('test_prefix', id)).toBe(true)
+			expect(idsWithUnderscore.getCategory(id)).toBe('test')
 		})
 
 		it('should throw error for empty prefix', () => {
@@ -56,7 +62,7 @@ describe('PrefixedNanoid', () => {
 						example: 'example',
 					},
 				})
-			}).toThrow('Invalid prefix for key "invalid": must be a non-empty string')
+			}).toThrow('invalid prefix for key "invalid": must be a non-empty string')
 		})
 
 		it('should throw error for invalid length', () => {
@@ -69,7 +75,7 @@ describe('PrefixedNanoid', () => {
 						example: 'example',
 					},
 				})
-			}).toThrow('Invalid length for key "invalid": must be a positive integer')
+			}).toThrow('invalid length for key "invalid": must be a positive integer')
 		})
 	})
 
