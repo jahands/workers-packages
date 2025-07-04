@@ -37,7 +37,7 @@ const config = {
   },
   user: {
     prefix: 'usr',
-    category: 'users', 
+    category: 'users',
     len: 16,
     example: 'usr_abc123def456ghi7',
   },
@@ -48,15 +48,15 @@ const ids = new PrefixedNanoid(config)
 
 // Generate IDs
 const projectId = ids.new('project') // 'prj_fKusuLcXQZij5x7URG98aP2z'
-const userId = ids.new('user')       // 'usr_abc123def456ghi7'
+const userId = ids.new('user') // 'usr_abc123def456ghi7'
 
 // Validate IDs
 ids.is('project', projectId) // true
-ids.is('user', projectId)    // false
+ids.is('user', projectId) // false
 
 // Extract categories
 ids.getCategory(projectId) // 'projects'
-ids.getCategory(userId)    // 'users'
+ids.getCategory(userId) // 'users'
 ```
 
 ## API Reference
@@ -70,15 +70,17 @@ new PrefixedNanoid<T extends PrefixesConfig>(config: T)
 Creates a new PrefixedNanoid instance with the given configuration.
 
 **Parameters:**
+
 - `config`: Configuration object mapping prefix keys to their configurations
 
 **Configuration Format:**
+
 ```typescript
 interface PrefixConfig {
-  prefix: string    // The prefix string (e.g., "prj", "file")
-  category: string  // Logical grouping (e.g., "projects")
-  len: number      // Length of the random nanoid portion
-  example: string  // Example ID for documentation purposes
+  prefix: string // The prefix string (e.g., "prj", "file")
+  category: string // Logical grouping (e.g., "projects")
+  len: number // Length of the random nanoid portion
+  example: string // Example ID for documentation purposes
 }
 ```
 
@@ -95,6 +97,7 @@ ids.new(prefix: PrefixKey): string
 **Returns:** A new prefixed ID in the format `{prefix}_{nanoid}`
 
 **Example:**
+
 ```typescript
 const id = ids.new('project') // 'prj_fKusuLcXQZij5x7URG98aP2z'
 ```
@@ -110,10 +113,11 @@ ids.is(prefix: PrefixKey, candidateId: string): boolean
 **Returns:** `true` if the ID matches the expected format, `false` otherwise
 
 **Example:**
+
 ```typescript
 ids.is('project', 'prj_fKusuLcXQZij5x7URG98aP2z') // true
-ids.is('project', 'usr_abc123def456ghi7')          // false
-ids.is('project', 'invalid-format')                // false
+ids.is('project', 'usr_abc123def456ghi7') // false
+ids.is('project', 'invalid-format') // false
 ```
 
 #### `getCategory(idWithPrefix)`
@@ -129,10 +133,11 @@ ids.getCategory(idWithPrefix: string): string
 **Throws:** `CategoryExtractionError` if the ID format is invalid or prefix not recognized
 
 **Example:**
+
 ```typescript
 ids.getCategory('prj_fKusuLcXQZij5x7URG98aP2z') // 'projects'
-ids.getCategory('usr_abc123def456ghi7')          // 'users'
-ids.getCategory('invalid-id')                    // throws CategoryExtractionError
+ids.getCategory('usr_abc123def456ghi7') // 'users'
+ids.getCategory('invalid-id') // throws CategoryExtractionError
 ```
 
 ## Error Types
@@ -181,7 +186,7 @@ const ids = new PrefixedNanoid(config)
 
 // TypeScript will only allow 'project' or 'user' as valid prefixes
 ids.new('project') // ✅ Valid
-ids.new('user')    // ✅ Valid
+ids.new('user') // ✅ Valid
 ids.new('invalid') // ❌ TypeScript error
 ```
 

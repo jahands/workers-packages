@@ -37,7 +37,9 @@ export class InvalidPrefixError extends Error {
  */
 export class InvalidIdFormatError extends Error {
 	constructor(id: string, prefix: string, expectedPattern: string) {
-		super(`ID "${id}" does not match expected format for prefix "${prefix}". Expected pattern: ${expectedPattern}`)
+		super(
+			`ID "${id}" does not match expected format for prefix "${prefix}". Expected pattern: ${expectedPattern}`
+		)
 		this.name = 'InvalidIdFormatError'
 	}
 }
