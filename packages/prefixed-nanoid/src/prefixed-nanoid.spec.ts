@@ -70,6 +70,23 @@ describe('PrefixedNanoId', () => {
 				})
 			}).toThrow('Configuration validation failed:')
 		})
+
+		it('should throw error for duplicate prefix values', () => {
+			expect(() => {
+				new PrefixedNanoId({
+					key1: {
+						prefix: 'prj',
+						category: 'projects',
+						len: 10,
+					},
+					key2: {
+						prefix: 'prj', // duplicate!
+						category: 'other',
+						len: 10,
+					},
+				})
+			}).toThrow('Duplicate prefix values found: "prj" (in keys: key1, key2)')
+		})
 	})
 
 	describe('new()', () => {

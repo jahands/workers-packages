@@ -17,27 +17,32 @@ export const PrefixConfig = z.object({
  * Configuration object mapping prefix keys to their configurations
  */
 export type PrefixesConfig = z.infer<typeof PrefixesConfig>
-export const PrefixesConfig = z
-	.record(z.string(), PrefixConfig)
-	.check((config) => {
-		const prefixes = Object.values(config).map((c) => c.prefix)
-		const duplicates = prefixes.filter((prefix, index) => prefixes.indexOf(prefix) !== index)
+export const PrefixesConfig = z.record(z.string(), PrefixConfig).check(
+	z.refine((config) => {
+		const prefixToKeys = new Map<string, string[]>()
 		
-		if (duplicates.length > 0) {
-			// Find all keys that have the duplicate prefix
-			const duplicatePrefix = duplicates[0]
-			const keysWithDuplicate = Object.entries(config)
-				.filter(([_, value]) => value.prefix === duplicatePrefix)
-				.map(([key]) => key)
-			
-			return {
-				valid: false,
-				error: `Duplicate prefix "${duplicatePrefix}" found in keys: ${keysWithDuplicate.join(', ')}`,
+		// Group keys by prefix
+		for (const [key, value] of Object.entries(config)) {
+			const existing = prefixToKeys.get(value.prefix) || []
+			existing.push(key)
+			prefixToKeys.set(value.prefix, existing)
+		}
+		
+		// Find duplicates
+		const duplicates: string[] = []
+		for (const [prefix, keys] of prefixToKeys) {
+			if (keys.length > 1) {
+				duplicates.push(`"${prefix}" (in keys: ${keys.join(', ')})`)
 			}
 		}
 		
-		return { valid: true }
+		if (duplicates.length > 0) {
+			throw new Error(`Duplicate prefix values found: ${duplicates.join('; ')}`)
+		}
+		
+		return true
 	})
+)
 
 /**
  * Extract prefix keys from a configuration object
