@@ -21,6 +21,7 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	private readonly config: T
 	private readonly nanoid: (size: number) => string
 	private readonly prefixKeys: Set<string>
+	private readonly prefixSchemas: Map<string, z.ZodString>
 
 	/**
 	 * Create a new PrefixedNanoId instance
@@ -33,11 +34,18 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 			this.config = validatedConfig as T
 			this.nanoid = customAlphabet(ALPHABET)
 			this.prefixKeys = new Set(Object.keys(config))
-		} catch (error) {
-			if (error instanceof ZodError) {
-				throw new Error(`Configuration validation failed:\n${z.prettifyError(error)}`)
+
+			// Initialize prefix schemas
+			this.prefixSchemas = new Map<string, z.ZodString>()
+			for (const [key, prefixConfig] of Object.entries(this.config)) {
+				const schema = createPrefixedIdSchema(prefixConfig.prefix, prefixConfig.len)
+				this.prefixSchemas.set(key, schema)
 			}
-			throw error
+		} catch (e) {
+			if (e instanceof ZodError) {
+				throw new Error(`Configuration validation failed:\n${z.prettifyError(e)}`)
+			}
+			throw e
 		}
 	}
 
@@ -59,13 +67,11 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	 * @returns True if the ID matches the expected format, false otherwise
 	 */
 	is<K extends PrefixKeys<T>>(prefix: K, candidateId: string): boolean {
-		try {
-			const prefixConfig = this.getPrefixConfig(prefix)
-			const schema = createPrefixedIdSchema(prefixConfig.prefix, prefixConfig.len)
-			return schema.safeParse(candidateId).success
-		} catch {
-			return false
+		const schema = this.prefixSchemas.get(prefix as string)
+		if (!schema) {
+			throw new InvalidPrefixError(prefix as string, Array.from(this.prefixKeys))
 		}
+		return schema.safeParse(candidateId).success
 	}
 
 	/**
@@ -76,11 +82,14 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	 */
 	getCategory(idWithPrefix: string): string {
 		// Try each known prefix to see if the ID matches
-		for (const [, prefixConfig] of Object.entries(this.config)) {
+		for (const [key, prefixConfig] of Object.entries(this.config)) {
 			const expectedPrefix = `${prefixConfig.prefix}_`
 			if (idWithPrefix.startsWith(expectedPrefix)) {
-				// Validate the full ID format using zod
-				const schema = createPrefixedIdSchema(prefixConfig.prefix, prefixConfig.len)
+				// Validate the full ID format using prefix schema
+				const schema = this.prefixSchemas.get(key)
+				if (!schema) {
+					throw new Error(`Schema not found for prefix key: ${key}. This should never happen.`)
+				}
 				if (schema.safeParse(idWithPrefix).success) {
 					return prefixConfig.category
 				}

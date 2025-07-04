@@ -94,6 +94,11 @@ describe('PrefixedNanoId', () => {
 				// @ts-expect-error - testing invalid prefix
 				ids.new('invalid')
 			}).toThrow(InvalidPrefixError)
+
+			expect(() => {
+				// @ts-expect-error - testing invalid prefix
+				ids.new('invalid')
+			}).toThrowErrorMatchingInlineSnapshot(`[InvalidPrefixError: Invalid prefix "invalid". Available prefixes: project, file, user]`)
 		})
 
 		it('should generate many unique IDs', () => {
@@ -139,9 +144,9 @@ describe('PrefixedNanoId', () => {
 			expect(ids.is('project', 'abc123')).toBe(false) // no prefix
 		})
 
-		it('should handle invalid prefix gracefully', () => {
+		it('should throw error for invalid prefix', () => {
 			// @ts-expect-error - testing invalid prefix
-			expect(ids.is('invalid', 'prj_abc123')).toBe(false)
+			expect(() => ids.is('invalid', 'prj_abc123')).toThrow('Invalid prefix "invalid"')
 		})
 	})
 
