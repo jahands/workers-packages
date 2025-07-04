@@ -416,7 +416,7 @@ importers:
   packages/prefixed-nanoid:
     dependencies:
       nanoid:
-        specifier: 3.3.11
+        specifier: ^3.3.11
         version: 3.3.11
     devDependencies:
       '@cloudflare/vitest-pool-workers':
@@ -536,7 +536,7 @@ importers:
   packages/workers-tagged-logger:
     dependencies:
       zod:
-        specifier: 3.25.7
+        specifier: ^3.25.7
         version: 3.25.7
     devDependencies:
       '@cloudflare/vitest-pool-workers':

@@ -29,6 +29,12 @@ const config = {
 	],
 	semverGroups: [
 		{
+			label: 'use range for dependencies in public packages',
+			range: '^',
+			dependencies: ['nanoid', 'zod'],
+			packages: ['prefixed-nanoid', 'workers-tagged-logger'],
+		},
+		{
 			label: 'pin all deps',
 			range: '',
 			dependencies: ['**'],
