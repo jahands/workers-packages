@@ -5,6 +5,7 @@ import {
 	ALPHABET,
 	CategoryExtractionError,
 	createPrefixedIdSchema,
+	InternalError,
 	InvalidPrefixError,
 	PrefixesConfig,
 } from './types.js'
@@ -96,7 +97,7 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 				// Validate the full ID format using prefix schema
 				const schema = this.prefixSchemas.get(prefixData.key)
 				if (!schema) {
-					throw new Error(`Schema not found for prefix key: ${prefixData.key}. This should never happen.`)
+					throw new InternalError(`Schema not found for prefix key: ${prefixData.key}`)
 				}
 				
 				if (schema.safeParse(idWithPrefix).success) {
