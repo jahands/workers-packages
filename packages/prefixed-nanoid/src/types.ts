@@ -1,24 +1,42 @@
+import { z } from 'zod/v4'
+
 /**
  * Configuration for a single prefix
  */
-export interface PrefixConfig {
-	/** The prefix string (e.g., "prj", "file") */
-	prefix: string
+export type PrefixConfig = z.infer<typeof PrefixConfig>
+export const PrefixConfig = z.object({
+	/** The prefix string (e.g., "prj", "file") - only lowercase letters, numbers, and underscores */
+	prefix: z.string().check(z.minLength(1), z.regex(/^[a-z0-9_]+$/)),
 	/** Logical grouping/category (e.g., "projects") */
-	category: string
+	category: z.string().check(z.minLength(1)),
 	/** Length of the random nanoid portion */
-	len: number
-}
+	len: z.int().check(z.gt(0)),
+})
 
 /**
  * Configuration object mapping prefix keys to their configurations
  */
-export type PrefixesConfig = Record<string, PrefixConfig>
+export type PrefixesConfig = z.infer<typeof PrefixesConfig>
+export const PrefixesConfig = z.record(z.string(), PrefixConfig)
 
 /**
  * Extract prefix keys from a configuration object
  */
 export type PrefixKeys<T extends PrefixesConfig> = keyof T
+
+// Alphabet excluding confusing characters (no lowercase 'l', '0', 'O', 'I')
+const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+
+/**
+ * Create a schema for validating prefixed IDs with a specific prefix and length
+ */
+export function createPrefixedIdSchema(prefix: string, len: number) {
+	// Escape special regex characters in prefix (though our prefix validation should prevent most)
+	const escapedPrefix = prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+	// Create regex pattern: prefix + underscore + exactly len characters from ALPHABET
+	const pattern = new RegExp(`^${escapedPrefix}_[${ALPHABET}]{${len}}$`)
+	return z.string().check(z.regex(pattern))
+}
 
 /**
  * Error thrown when an invalid prefix is used

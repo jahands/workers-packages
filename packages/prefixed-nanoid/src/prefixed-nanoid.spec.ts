@@ -56,7 +56,7 @@ describe('PrefixedNanoId', () => {
 						len: 10,
 					},
 				})
-			}).toThrow('Invalid prefix for key "invalid": must be a non-empty string')
+			}).toThrow('Configuration validation failed:')
 		})
 
 		it('should throw error for invalid length', () => {
@@ -68,7 +68,7 @@ describe('PrefixedNanoId', () => {
 						len: 0,
 					},
 				})
-			}).toThrow('Invalid length for key "invalid": must be a positive integer')
+			}).toThrow('Configuration validation failed:')
 		})
 	})
 
@@ -180,21 +180,33 @@ describe('PrefixedNanoId', () => {
 			}).toThrow(InvalidPrefixError)
 		})
 
-		it('should handle config with special characters in prefix', () => {
-			const specialIds = new PrefixedNanoId({
-				special: {
-					prefix: 'sp-ec.ial',
-					category: 'special',
+		it('should reject config with invalid characters in prefix', () => {
+			expect(() => {
+				new PrefixedNanoId({
+					special: {
+						prefix: 'sp-ec.ial', // Contains invalid characters (dash and dot)
+						category: 'special',
+						len: 10,
+					},
+				})
+			}).toThrow('Configuration validation failed:')
+		})
+
+		it('should handle config with valid prefix characters', () => {
+			const validIds = new PrefixedNanoId({
+				valid_prefix: {
+					prefix: 'valid_prefix123',
+					category: 'valid',
 					len: 10,
 				},
 			})
 
-			const id = specialIds.new('special')
+			const id = validIds.new('valid_prefix')
 			expect(id).toMatch(
-				/^sp-ec\.ial_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{10}$/
+				/^valid_prefix123_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{10}$/
 			)
-			expect(specialIds.is('special', id)).toBe(true)
-			expect(specialIds.getCategory(id)).toBe('special')
+			expect(validIds.is('valid_prefix', id)).toBe(true)
+			expect(validIds.getCategory(id)).toBe('valid')
 		})
 	})
 
