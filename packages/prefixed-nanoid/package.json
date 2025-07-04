@@ -1,0 +1,61 @@
+{
+	"name": "prefixed-nanoid",
+	"version": "0.1.0",
+	"private": false,
+	"description": "Class-based API for managing prefixed nanoid generation with type safety",
+	"keywords": [
+		"nanoid",
+		"prefixed",
+		"id generation",
+		"cloudflare workers",
+		"typescript"
+	],
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/prefixed-nanoid",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages.git",
+		"directory": "packages/prefixed-nanoid"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		}
+	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "runx build tsc ./src/index.ts",
+		"check:exports": "runx check --exports",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"nanoid": "3.3.11"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "0.8.30",
+		"@cloudflare/workers-types": "4.20250517.0",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"@types/node": "22.15.27",
+		"rimraf": "6.0.1",
+		"typescript": "5.5.4",
+		"vitest": "3.1.4"
+	}
+}
