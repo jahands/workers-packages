@@ -2,6 +2,7 @@ import { customAlphabet } from 'nanoid'
 import { z, ZodError } from 'zod/v4'
 
 import {
+	ALPHABET,
 	CategoryExtractionError,
 	createPrefixedIdSchema,
 	InvalidPrefixError,
@@ -9,10 +10,6 @@ import {
 } from './types.js'
 
 import type { PrefixConfig, PrefixKeys } from './types.js'
-
-// Alphabet excluding confusing characters (no lowercase 'l', '0', 'O', 'I')
-// Based on the reference code's alphabet
-const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 /**
  * Class-based API for managing prefixed nanoid generation with type safety

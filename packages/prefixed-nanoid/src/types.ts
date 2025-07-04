@@ -25,7 +25,7 @@ export const PrefixesConfig = z.record(z.string(), PrefixConfig)
 export type PrefixKeys<T extends PrefixesConfig> = keyof T
 
 // Alphabet excluding confusing characters (no lowercase 'l', '0', 'O', 'I')
-const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+export const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 /**
  * Create a schema for validating prefixed IDs with a specific prefix and length
