@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest'
 import { PrefixedNanoid } from './prefixed-nanoid.js'
 import { CategoryExtractionError, InvalidPrefixError } from './types.js'
 
-// Test configuration similar to the reference code
 const testConfig = {
 	project: {
 		prefix: 'prj',
