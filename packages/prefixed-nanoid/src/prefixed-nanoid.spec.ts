@@ -62,7 +62,7 @@ describe('PrefixedNanoid', () => {
 						example: 'example',
 					},
 				})
-			}).toThrow('invalid prefix for key "invalid": must be a non-empty string')
+			}).toThrow('Invalid prefix for key "invalid": must be a non-empty string')
 		})
 
 		it('should throw error for invalid length', () => {
@@ -75,7 +75,7 @@ describe('PrefixedNanoid', () => {
 						example: 'example',
 					},
 				})
-			}).toThrow('invalid length for key "invalid": must be a positive integer')
+			}).toThrow('Invalid length for key "invalid": must be a positive integer')
 		})
 	})
 
