@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { PrefixedNanoId } from './prefixed-nanoid.js'
-import { CategoryExtractionError, InvalidPrefixError } from './types.js'
+import { CategoryExtractionError, InvalidPrefixError, PrefixesConfig } from './types.js'
 
 const testConfig = {
 	project: {
@@ -19,7 +19,13 @@ const testConfig = {
 		category: 'users',
 		len: 16,
 	},
-} as const
+} as const satisfies PrefixesConfig
+
+describe('testConfig', () => {
+	it('should be a valid PrefixesConfig', () => {
+		expect(() => PrefixesConfig.parse(testConfig)).not.toThrow()
+	})
+})
 
 describe('PrefixedNanoId', () => {
 	const ids = new PrefixedNanoId(testConfig)
@@ -115,7 +121,9 @@ describe('PrefixedNanoId', () => {
 			expect(() => {
 				// @ts-expect-error - testing invalid prefix
 				ids.new('invalid')
-			}).toThrowErrorMatchingInlineSnapshot(`[InvalidPrefixError: Invalid prefix "invalid". Available prefixes: project, file, user]`)
+			}).toThrowErrorMatchingInlineSnapshot(
+				`[InvalidPrefixError: Invalid prefix "invalid". Available prefixes: project, file, user]`
+			)
 		})
 
 		it('should generate many unique IDs', () => {

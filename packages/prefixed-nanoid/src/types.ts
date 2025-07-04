@@ -20,14 +20,14 @@ export type PrefixesConfig = z.infer<typeof PrefixesConfig>
 export const PrefixesConfig = z.record(z.string(), PrefixConfig).check(
 	z.refine((config) => {
 		const prefixToKeys = new Map<string, string[]>()
-		
+
 		// Group keys by prefix
 		for (const [key, value] of Object.entries(config)) {
 			const existing = prefixToKeys.get(value.prefix) || []
 			existing.push(key)
 			prefixToKeys.set(value.prefix, existing)
 		}
-		
+
 		// Find duplicates
 		const duplicates: string[] = []
 		for (const [prefix, keys] of prefixToKeys) {
@@ -35,11 +35,11 @@ export const PrefixesConfig = z.record(z.string(), PrefixConfig).check(
 				duplicates.push(`"${prefix}" (in keys: ${keys.join(', ')})`)
 			}
 		}
-		
+
 		if (duplicates.length > 0) {
 			throw new Error(`Duplicate prefix values found: ${duplicates.join('; ')}`)
 		}
-		
+
 		return true
 	})
 )

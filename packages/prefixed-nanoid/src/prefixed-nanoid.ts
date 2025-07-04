@@ -5,7 +5,6 @@ import {
 	ALPHABET,
 	CategoryExtractionError,
 	createPrefixedIdSchema,
-	InternalError,
 	InvalidPrefixError,
 	PrefixesConfig,
 } from './types.js'
@@ -20,7 +19,10 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	private readonly nanoid: (size: number) => string
 	private readonly prefixKeys: Set<string>
 	private readonly prefixSchemas: Map<string, ReturnType<typeof createPrefixedIdSchema>>
-	private readonly prefixToConfig: Map<string, { key: string; config: PrefixConfig }>
+	private readonly prefixToConfig: Map<
+		string,
+		{ key: string; config: PrefixConfig; schema: ReturnType<typeof createPrefixedIdSchema> }
+	>
 	private readonly sortedPrefixes: string[]
 
 	/**
@@ -43,15 +45,17 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 			// Initialize prefix schemas and prefix-to-config map
 			this.prefixSchemas = new Map()
 			this.prefixToConfig = new Map()
-			
+
 			for (const [key, prefixConfig] of Object.entries(this.config)) {
 				const schema = createPrefixedIdSchema(prefixConfig.prefix, prefixConfig.len)
 				this.prefixSchemas.set(key, schema)
-				this.prefixToConfig.set(prefixConfig.prefix, { key, config: prefixConfig })
+				this.prefixToConfig.set(prefixConfig.prefix, { key, config: prefixConfig, schema })
 			}
-			
+
 			// Sort prefixes by length descending to match longest first
-			this.sortedPrefixes = Array.from(this.prefixToConfig.keys()).sort((a, b) => b.length - a.length)
+			this.sortedPrefixes = Array.from(this.prefixToConfig.keys()).sort(
+				(a, b) => b.length - a.length
+			)
 		} catch (e) {
 			// In zod/v4-mini, we check for error shape rather than instanceof
 			if (e && typeof e === 'object' && 'issues' in e && Array.isArray((e as any).issues)) {
@@ -66,8 +70,8 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	 * @param prefix The prefix key to generate an ID for
 	 * @returns A new prefixed ID in the format `{prefix}_{nanoid}`
 	 * @example
-	 * const userId = idGenerator.new('user')   // 'usr_A1b2C3d4E5f6'
-	 * const postId = idGenerator.new('post')   // 'pst_X7y8Z9a0B1c2D3e4'
+	 * const userId = idGenerator.new('user') // 'usr_A1b2C3d4E5f6'
+	 * const postId = idGenerator.new('post') // 'pst_X7y8Z9a0B1c2D3e4'
 	 */
 	new<K extends PrefixKeys<T>>(prefix: K): string {
 		const prefixConfig = this.getPrefixConfig(prefix)
@@ -81,9 +85,9 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	 * @param candidateId The ID string to validate
 	 * @returns True if the ID matches the expected format, false otherwise
 	 * @example
-	 * idGenerator.is('user', 'usr_A1b2C3d4E5f6')     // true
-	 * idGenerator.is('user', 'pst_A1b2C3d4E5f6')     // false (wrong prefix)
-	 * idGenerator.is('user', 'usr_123')              // false (too short)
+	 * idGenerator.is('user', 'usr_A1b2C3d4E5f6') // true
+	 * idGenerator.is('user', 'pst_A1b2C3d4E5f6') // false (wrong prefix)
+	 * idGenerator.is('user', 'usr_123')          // false (too short)
 	 */
 	is<K extends PrefixKeys<T>>(prefix: K, candidateId: string): boolean {
 		const schema = this.prefixSchemas.get(prefix as string)
@@ -99,7 +103,7 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	 * @returns The category of the ID
 	 * @throws {CategoryExtractionError} If the ID format is invalid or prefix not recognized
 	 * @example
-	 * idGenerator.getCategory('usr_A1b2C3d4E5f6')    // 'users'
+	 * idGenerator.getCategory('usr_A1b2C3d4E5f6')     // 'users'
 	 * idGenerator.getCategory('pst_X7y8Z9a0B1c2D3e4') // 'posts'
 	 * idGenerator.getCategory('invalid_id')           // throws CategoryExtractionError
 	 */
@@ -108,20 +112,18 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 		for (const prefix of this.sortedPrefixes) {
 			const expectedPrefix = `${prefix}_`
 			if (idWithPrefix.startsWith(expectedPrefix)) {
-				const prefixData = this.prefixToConfig.get(prefix)!
-				
-				// Validate the full ID format using prefix schema
-				const schema = this.prefixSchemas.get(prefixData.key)
-				if (!schema) {
-					throw new InternalError(`Schema not found for prefix key: ${prefixData.key}`)
+				const prefixData = this.prefixToConfig.get(prefix)
+				if (!prefixData) {
+					continue
 				}
-				
-				if (schema.safeParse(idWithPrefix).success) {
+
+				// Validate the full ID format using prefix schema
+				if (prefixData.schema.safeParse(idWithPrefix).success) {
 					return prefixData.config.category
 				}
 			}
 		}
-		
+
 		throw new CategoryExtractionError(idWithPrefix)
 	}
 
@@ -132,9 +134,6 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	 * @throws {InvalidPrefixError} If the prefix is not found
 	 */
 	private getPrefixConfig<K extends PrefixKeys<T>>(prefix: K): PrefixConfig {
-		if (!this.prefixKeys.has(prefix as string)) {
-			throw new InvalidPrefixError(prefix as string, Array.from(this.prefixKeys))
-		}
 		const config = this.config[prefix]
 		if (!config) {
 			throw new InvalidPrefixError(prefix as string, Array.from(this.prefixKeys))
