@@ -30,7 +30,7 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	 * })
 	 */
 	constructor(config: T) {
-		const cfg = structuredClone(config)
+		const cfg = config
 		try {
 			// Pre-process config to add default len values
 			const withDefaults = Object.fromEntries(
