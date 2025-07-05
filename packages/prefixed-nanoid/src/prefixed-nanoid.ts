@@ -44,10 +44,10 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	 * @param prefix The prefix key to generate an ID for
 	 * @returns A new prefixed ID in the format `{prefix}_{nanoid}`
 	 * @example
-	 * const userId = idGenerator.new('user') // 'usr_A1b2C3d4E5f6'
-	 * const postId = idGenerator.new('post') // 'pst_X7y8Z9a0B1c2D3e4'
+	 * const userId = idGenerator.generate('user') // 'usr_A1b2C3d4E5f6'
+	 * const postId = idGenerator.generate('post') // 'pst_X7y8Z9a0B1c2D3e4'
 	 */
-	new<K extends PrefixKeys<T>>(prefix: K): IdOf<PrefixConfig> {
+	generate<K extends PrefixKeys<T>>(prefix: K): IdOf<PrefixConfig> {
 		const prefixConfig = this.getPrefixConfig(prefix)
 		const randomPart = this.nano(prefixConfig.len)
 		return `${prefixConfig.prefix}_${randomPart}`

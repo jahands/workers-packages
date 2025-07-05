@@ -41,7 +41,7 @@ describe('PrefixedNanoIds', () => {
 			},
 		})
 
-		const id = idsWithDefaultLen.new('test')
+		const id = idsWithDefaultLen.generate('test')
 		expect(id).toMatch(/^tst_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{24}$/)
 		expect(idsWithDefaultLen.is('test', id)).toBe(true)
 	})
@@ -60,7 +60,7 @@ describe('PrefixedNanoIds', () => {
 			})
 			expect(idsWithUnderscore).toBeInstanceOf(PrefixedNanoIds)
 
-			const id = idsWithUnderscore.new('test_prefix')
+			const id = idsWithUnderscore.generate('test_prefix')
 			expect(id).toMatch(
 				/^pre_fix_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{10}$/
 			)
@@ -105,32 +105,32 @@ describe('PrefixedNanoIds', () => {
 		})
 	})
 
-	describe('new()', () => {
+	describe('generate()', () => {
 		it('should generate ID with correct prefix format', () => {
-			const id = ids.new('project')
+			const id = ids.generate('project')
 			expect(id).toMatch(/^prj_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{24}$/)
 		})
 
 		it('should generate ID with correct length', () => {
-			const id = ids.new('user')
+			const id = ids.generate('user')
 			expect(id).toMatch(/^usr_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{16}$/)
 		})
 
 		it('should generate unique IDs', () => {
-			const id1 = ids.new('project')
-			const id2 = ids.new('project')
+			const id1 = ids.generate('project')
+			const id2 = ids.generate('project')
 			expect(id1).not.toBe(id2)
 		})
 
 		it('should throw error for invalid prefix', () => {
 			expect(() => {
 				// @ts-expect-error - testing invalid prefix
-				ids.new('invalid')
+				ids.generate('invalid')
 			}).toThrow(InvalidPrefixError)
 
 			expect(() => {
 				// @ts-expect-error - testing invalid prefix
-				ids.new('invalid')
+				ids.generate('invalid')
 			}).toThrowErrorMatchingInlineSnapshot(
 				`[InvalidPrefixError: Invalid prefix "invalid". Available prefixes: project, file, user]`
 			)
@@ -141,7 +141,7 @@ describe('PrefixedNanoIds', () => {
 			const count = 1000
 
 			for (let i = 0; i < count; i++) {
-				const id = ids.new('project')
+				const id = ids.generate('project')
 				expect(generatedIds.has(id)).toBe(false)
 				generatedIds.add(id)
 			}
@@ -152,12 +152,12 @@ describe('PrefixedNanoIds', () => {
 
 	describe('is()', () => {
 		it('should validate correct ID format', () => {
-			const id = ids.new('project')
+			const id = ids.generate('project')
 			expect(ids.is('project', id)).toBe(true)
 		})
 
 		it('should reject ID with wrong prefix', () => {
-			const id = ids.new('project')
+			const id = ids.generate('project')
 			expect(ids.is('user', id)).toBe(false)
 		})
 
@@ -190,7 +190,7 @@ describe('PrefixedNanoIds', () => {
 			const emptyIds = new PrefixedNanoIds({})
 			expect(() => {
 				// @ts-expect-error - testing with empty config
-				emptyIds.new('anything')
+				emptyIds.generate('anything')
 			}).toThrow(InvalidPrefixError)
 		})
 
@@ -213,7 +213,7 @@ describe('PrefixedNanoIds', () => {
 				},
 			})
 
-			const id = validIds.new('valid_prefix')
+			const id = validIds.generate('valid_prefix')
 			expect(id).toMatch(
 				/^valid_prefix123_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{10}$/
 			)
@@ -224,7 +224,7 @@ describe('PrefixedNanoIds', () => {
 	describe('Workers compatibility', () => {
 		it('should work in Workers environment', () => {
 			// Test that the class works with Workers-compatible APIs
-			const id = ids.new('project')
+			const id = ids.generate('project')
 			expect(typeof id).toBe('string')
 			expect(id.length).toBeGreaterThan(0)
 
@@ -237,7 +237,7 @@ describe('PrefixedNanoIds', () => {
 			const generateIdWithDelay = async (delayMs: number): Promise<string> => {
 				// Add random delay to simulate real async operations
 				await new Promise((resolve) => setTimeout(resolve, delayMs))
-				return ids.new('project')
+				return ids.generate('project')
 			}
 
 			// Create promises with varying delays to simulate real concurrent execution
