@@ -24,19 +24,38 @@ export type PrefixesConfig = Record<string, PrefixConfig>
 export function validatePrefixesConfig(
 	config: Record<string, PrefixConfigInput>
 ): PrefixesConfig {
+	// Check if config is a valid object
+	if (!config || typeof config !== 'object' || Array.isArray(config)) {
+		throw new ConfigurationError('Configuration must be a non-null object')
+	}
+
 	const validatedConfig: PrefixesConfig = {}
 	const errors: string[] = []
 
 	// Validate each prefix configuration
 	for (const [key, value] of Object.entries(config)) {
+		// Check if value is an object
+		if (!value || typeof value !== 'object' || Array.isArray(value)) {
+			errors.push(`Key "${key}": value must be an object`)
+			continue
+		}
+
 		// Validate prefix format
 		if (!value.prefix || typeof value.prefix !== 'string') {
 			errors.push(`Key "${key}": prefix must be a non-empty string`)
 			continue
 		}
-		if (!/^[a-z0-9_]+$/.test(value.prefix)) {
+
+		// Trim prefix to handle accidental whitespace
+		const trimmedPrefix = value.prefix.trim()
+		if (trimmedPrefix.length === 0) {
+			errors.push(`Key "${key}": prefix cannot be only whitespace`)
+			continue
+		}
+
+		if (!/^[a-z0-9_]+$/.test(trimmedPrefix)) {
 			errors.push(
-				`Key "${key}": prefix "${value.prefix}" must contain only lowercase letters, numbers, and underscores`
+				`Key "${key}": prefix "${trimmedPrefix}" must contain only lowercase letters, numbers, and underscores`
 			)
 			continue
 		}
@@ -44,12 +63,18 @@ export function validatePrefixesConfig(
 		// Validate len
 		const len = value.len ?? 24
 		if (!Number.isInteger(len) || len <= 0) {
-			errors.push(`Key "${key}": len must be a positive integer`)
+			errors.push(`Key "${key}": len must be a positive integer (got ${typeof len === 'number' ? len : typeof len})`)
+			continue
+		}
+
+		// Add reasonable upper bound for len
+		if (len > 255) {
+			errors.push(`Key "${key}": len must not exceed 255 (got ${len})`)
 			continue
 		}
 
 		validatedConfig[key] = {
-			prefix: value.prefix,
+			prefix: trimmedPrefix,
 			len,
 		}
 	}
