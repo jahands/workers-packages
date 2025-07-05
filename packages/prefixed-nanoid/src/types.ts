@@ -10,15 +10,7 @@ export type PrefixConfig = {
 	len: number
 }
 
-/** The shape callers are allowed to pass to the constructor */
-export type PrefixConfigInput = Omit<PrefixConfig, 'len'> & { len?: number }
-
-/** Utility that turns all optional len properties into required ones */
-export type Normalised<T extends Record<string, PrefixConfigInput>> = {
-	[K in keyof T]: Omit<T[K], 'len'> & { len: number }
-}
-
-const PrefixConfigSchema = z.object({
+const PrefixConfig = z.object({
 	/** The prefix string (e.g., "prj", "file") - only lowercase letters, numbers, and underscores */
 	prefix: z.string().check(z.minLength(1), z.regex(/^[a-z0-9_]+$/)),
 	/**
@@ -28,11 +20,19 @@ const PrefixConfigSchema = z.object({
 	len: z.int().check(z.gt(0)),
 })
 
+/** The shape callers are allowed to pass to the constructor */
+export type PrefixConfigInput = Omit<PrefixConfig, 'len'> & { len?: number }
+
+/** Utility that turns all optional len properties into required ones */
+export type Normalised<T extends Record<string, PrefixConfigInput>> = {
+	[K in keyof T]: Omit<T[K], 'len'> & { len: number }
+}
+
 /**
  * Configuration object mapping prefix keys to their configurations
  */
 export type PrefixesConfig = z.infer<typeof PrefixesConfig>
-export const PrefixesConfig = z.record(z.string(), PrefixConfigSchema).check(
+export const PrefixesConfig = z.record(z.string(), PrefixConfig).check(
 	z.refine((config) => {
 		const prefixToKeys = new Map<string, string[]>()
 
