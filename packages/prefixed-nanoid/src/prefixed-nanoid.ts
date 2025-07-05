@@ -63,7 +63,7 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	 * idGenerator.is('user', 'pst_A1b2C3d4E5f6') // false (wrong prefix)
 	 * idGenerator.is('user', 'usr_123')          // false (too short)
 	 */
-	is<K extends PrefixKeys<T>>(prefix: K, maybeId: string): boolean {
+	is<K extends PrefixKeys<T>>(prefix: K, maybeId: unknown): maybeId is IdOf<T[K]> {
 		// Cast to string is safe: K extends keyof T, where T's keys are validated as strings
 		// by the PrefixesConfig zod schema (z.record(z.string(), ...)). TypeScript's keyof
 		// returns string | number | symbol for compatibility, but we know all keys are strings.
