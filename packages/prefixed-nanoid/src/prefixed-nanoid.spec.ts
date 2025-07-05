@@ -255,12 +255,23 @@ describe('PrefixedNanoId', () => {
 		})
 
 		it('should handle concurrent ID generation', async () => {
-			// Test concurrent generation to ensure thread safety
-			const promises = Array.from({ length: 100 }, () => Promise.resolve(ids.new('project')))
+			// Test concurrent generation to ensure thread safety with actual async operations
+			const generateIdWithDelay = async (delayMs: number): Promise<string> => {
+				// Add random delay to simulate real async operations
+				await new Promise((resolve) => setTimeout(resolve, delayMs))
+				return ids.new('project')
+			}
+
+			// Create promises with varying delays to simulate real concurrent execution
+			const promises = Array.from(
+				{ length: 100 },
+				() => generateIdWithDelay(Math.random() * 10) // Random delay 0-10ms
+			)
 
 			const results = await Promise.all(promises)
 			const uniqueResults = new Set(results)
 
+			// All IDs should be unique despite concurrent generation
 			expect(uniqueResults.size).toBe(results.length)
 		})
 	})
