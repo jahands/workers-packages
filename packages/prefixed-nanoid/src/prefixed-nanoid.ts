@@ -30,10 +30,11 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	 * })
 	 */
 	constructor(config: T) {
+		const cfg = structuredClone(config)
 		try {
 			// Pre-process config to add default len values
 			const withDefaults = Object.fromEntries(
-				Object.entries(config).map(([key, value]) => [
+				Object.entries(cfg).map(([key, value]) => [
 					key,
 					{
 						...value,
@@ -46,7 +47,7 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 			const validatedConfig = PrefixesConfig.parse(withDefaults)
 			this.config = validatedConfig as Normalised<T>
 			this.nanoid = customAlphabet(ALPHABET)
-			this.prefixKeys = new Set(Object.keys(config))
+			this.prefixKeys = new Set(Object.keys(cfg))
 
 			// Initialize prefix schemas and prefix-to-config map
 			this.prefixSchemas = new Map()
