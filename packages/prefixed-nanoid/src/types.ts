@@ -82,13 +82,3 @@ export class CategoryExtractionError extends Error {
 		this.name = 'CategoryExtractionError'
 	}
 }
-
-/**
- * Error thrown for internal consistency failures that should never happen
- */
-export class InternalError extends Error {
-	constructor(message: string) {
-		super(`Internal consistency error: ${message}`)
-		this.name = 'InternalError'
-	}
-}
