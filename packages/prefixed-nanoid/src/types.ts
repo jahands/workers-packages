@@ -21,9 +21,7 @@ export type PrefixesConfig = Record<string, PrefixConfig>
 /**
  * Validates and normalizes a prefixes configuration
  */
-export function validatePrefixesConfig(
-	config: Record<string, PrefixConfigInput>
-): PrefixesConfig {
+export function validatePrefixesConfig(config: Record<string, PrefixConfigInput>): PrefixesConfig {
 	// Check if config is a valid object
 	if (!config || typeof config !== 'object' || Array.isArray(config)) {
 		throw new ConfigurationError('Configuration must be a non-null object')
@@ -53,7 +51,7 @@ export function validatePrefixesConfig(
 			continue
 		}
 
-		if (!/^[a-z0-9_]+$/.test(trimmedPrefix)) {
+		if (!PREFIX_VALIDATION_REGEX.test(trimmedPrefix)) {
 			errors.push(
 				`Key "${key}": prefix "${trimmedPrefix}" must contain only lowercase letters, numbers, and underscores`
 			)
@@ -63,7 +61,9 @@ export function validatePrefixesConfig(
 		// Validate len
 		const len = value.len ?? 24
 		if (!Number.isInteger(len) || len <= 0) {
-			errors.push(`Key "${key}": len must be a positive integer (got ${typeof len === 'number' ? len : typeof len})`)
+			errors.push(
+				`Key "${key}": len must be a positive integer (got ${typeof len === 'number' ? len : typeof len})`
+			)
 			continue
 		}
 
@@ -113,16 +113,33 @@ export type PrefixKeys<T extends Record<string, PrefixConfigInput>> = keyof T
 // Alphabet excluding confusing characters (no lowercase 'l', '0', 'O', 'I')
 export const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
+// Regex patterns used for validation (compiled once for performance)
+const PREFIX_VALIDATION_REGEX = /^[a-z0-9_]+$/
+const REGEX_ESCAPE_REGEX = /[.*+?^${}()|[\]\\]/g
+
+// Cache for compiled ID validation regexes to avoid recompilation
+const idValidationRegexCache = new Map<string, RegExp>()
+
 /**
  * Validates if a string matches the expected format for a prefixed ID
  */
 export function validatePrefixedId(value: unknown, prefix: string, len: number): boolean {
 	if (typeof value !== 'string') return false
-	
-	// Escape special regex characters in prefix (though our prefix validation should prevent most)
-	const escapedPrefix = prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-	// Create regex pattern: prefix + underscore + exactly len characters from ALPHABET
-	const pattern = new RegExp(`^${escapedPrefix}_[${ALPHABET}]{${len}}$`)
+
+	// Create a cache key for this prefix and length combination
+	const cacheKey = `${prefix}:${len}`
+
+	// Check if we already have a compiled regex for this pattern
+	let pattern = idValidationRegexCache.get(cacheKey)
+
+	if (!pattern) {
+		// Escape special regex characters in prefix (though our prefix validation should prevent most)
+		const escapedPrefix = prefix.replace(REGEX_ESCAPE_REGEX, '\\$&')
+		// Create regex pattern: prefix + underscore + exactly len characters from ALPHABET
+		pattern = new RegExp(`^${escapedPrefix}_[${ALPHABET}]{${len}}$`)
+		idValidationRegexCache.set(cacheKey, pattern)
+	}
+
 	return pattern.test(value)
 }
 
