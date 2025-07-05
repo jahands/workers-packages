@@ -9,7 +9,7 @@ import type { IdOf, Normalised, PrefixConfig, PrefixConfigInput, PrefixKeys } fr
 /**
  * Class-based API for managing prefixed nanoid generation with type safety
  */
-export class PrefixedNanoId<T extends Record<string, PrefixConfigInput>> {
+export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	private readonly config: Normalised<T>
 	private readonly nanoid: (size: number) => string
 	private readonly prefixKeys: Set<string>
@@ -20,10 +20,10 @@ export class PrefixedNanoId<T extends Record<string, PrefixConfigInput>> {
 	>
 
 	/**
-	 * Create a new PrefixedNanoId instance
+	 * Create a new PrefixedNanoIds instance
 	 * @param config Configuration object mapping prefix keys to their configurations
 	 * @example
-	 * const ids = new PrefixedNanoId({
+	 * const ids = new PrefixedNanoIds({
 	 *   user: { prefix: 'usr', len: 12 },
 	 *   post: { prefix: 'pst', len: 16 },
 	 *   project: { prefix: 'prj' } // len defaults to 24

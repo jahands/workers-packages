@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { PrefixedNanoId } from './prefixed-nanoid.js'
+import { PrefixedNanoIds } from './prefixed-nanoid.js'
 import { InvalidPrefixError, PrefixesConfig } from './types.js'
 
 const testConfig = {
@@ -24,17 +24,17 @@ describe('testConfig', () => {
 	})
 
 	it('should support omitting len field with default value 24', () => {
-		// This test is covered by the PrefixedNanoId constructor test
+		// This test is covered by the PrefixedNanoIds constructor test
 		// Since we handle the default in the constructor, not the schema
 		expect(true).toBe(true)
 	})
 })
 
-describe('PrefixedNanoId', () => {
-	const ids = new PrefixedNanoId(testConfig)
+describe('PrefixedNanoIds', () => {
+	const ids = new PrefixedNanoIds(testConfig)
 
 	it('should work with configs that omit len field', () => {
-		const idsWithDefaultLen = new PrefixedNanoId({
+		const idsWithDefaultLen = new PrefixedNanoIds({
 			test: {
 				prefix: 'tst',
 				// len omitted, should default to 24
@@ -48,17 +48,17 @@ describe('PrefixedNanoId', () => {
 
 	describe('constructor', () => {
 		it('should create instance with valid config', () => {
-			expect(ids).toBeInstanceOf(PrefixedNanoId)
+			expect(ids).toBeInstanceOf(PrefixedNanoIds)
 		})
 
 		it('should allow prefix with underscore', () => {
-			const idsWithUnderscore = new PrefixedNanoId({
+			const idsWithUnderscore = new PrefixedNanoIds({
 				test_prefix: {
 					prefix: 'pre_fix',
 					len: 10,
 				},
 			})
-			expect(idsWithUnderscore).toBeInstanceOf(PrefixedNanoId)
+			expect(idsWithUnderscore).toBeInstanceOf(PrefixedNanoIds)
 
 			const id = idsWithUnderscore.new('test_prefix')
 			expect(id).toMatch(
@@ -69,7 +69,7 @@ describe('PrefixedNanoId', () => {
 
 		it('should throw error for empty prefix', () => {
 			expect(() => {
-				new PrefixedNanoId({
+				new PrefixedNanoIds({
 					invalid: {
 						prefix: '',
 						len: 10,
@@ -80,7 +80,7 @@ describe('PrefixedNanoId', () => {
 
 		it('should throw error for invalid length', () => {
 			expect(() => {
-				new PrefixedNanoId({
+				new PrefixedNanoIds({
 					invalid: {
 						prefix: 'test',
 						len: 0,
@@ -91,7 +91,7 @@ describe('PrefixedNanoId', () => {
 
 		it('should throw error for duplicate prefix values', () => {
 			expect(() => {
-				new PrefixedNanoId({
+				new PrefixedNanoIds({
 					key1: {
 						prefix: 'prj',
 						len: 10,
@@ -187,7 +187,7 @@ describe('PrefixedNanoId', () => {
 
 	describe('edge cases', () => {
 		it('should handle empty config', () => {
-			const emptyIds = new PrefixedNanoId({})
+			const emptyIds = new PrefixedNanoIds({})
 			expect(() => {
 				// @ts-expect-error - testing with empty config
 				emptyIds.new('anything')
@@ -196,7 +196,7 @@ describe('PrefixedNanoId', () => {
 
 		it('should reject config with invalid characters in prefix', () => {
 			expect(() => {
-				new PrefixedNanoId({
+				new PrefixedNanoIds({
 					special: {
 						prefix: 'sp-ec.ial', // Contains invalid characters (dash and dot)
 						len: 10,
@@ -206,7 +206,7 @@ describe('PrefixedNanoId', () => {
 		})
 
 		it('should handle config with valid prefix characters', () => {
-			const validIds = new PrefixedNanoId({
+			const validIds = new PrefixedNanoIds({
 				valid_prefix: {
 					prefix: 'valid_prefix123',
 					len: 10,

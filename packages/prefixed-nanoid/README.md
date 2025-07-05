@@ -25,10 +25,10 @@ yarn add prefixed-nanoid
 ## Quick Start
 
 ```typescript
-import { PrefixedNanoId } from 'prefixed-nanoid'
+import { PrefixedNanoIds } from 'prefixed-nanoid'
 
 // Create an instance with inline configuration
-const ids = new PrefixedNanoId({
+const ids = new PrefixedNanoIds({
   project: { prefix: 'prj', len: 24 },
   user: { prefix: 'usr', len: 16 },
 })
@@ -47,10 +47,10 @@ ids.is('user', projectId) // false
 ### Constructor
 
 ```typescript
-new PrefixedNanoId<T extends PrefixesConfig>(config: T)
+new PrefixedNanoIds<T extends PrefixesConfig>(config: T)
 ```
 
-Creates a new PrefixedNanoId instance with the given configuration.
+Creates a new PrefixedNanoIds instance with the given configuration.
 
 **Parameters:**
 
@@ -114,12 +114,12 @@ Thrown when an invalid prefix is used with the `new()` method.
 You can create multiple instances for different contexts:
 
 ```typescript
-const userIds = new PrefixedNanoId({
+const userIds = new PrefixedNanoIds({
   admin: { prefix: 'adm', len: 20 },
   member: { prefix: 'mbr', len: 16 },
 })
 
-const resourceIds = new PrefixedNanoId({
+const resourceIds = new PrefixedNanoIds({
   file: { prefix: 'file', len: 24 },
   folder: { prefix: 'dir', len: 20 },
 })
@@ -130,12 +130,12 @@ const resourceIds = new PrefixedNanoId({
 The library provides full TypeScript support with proper type inference:
 
 ```typescript
-const ids = new PrefixedNanoId({
+const ids = new PrefixedNanoIds({
   project: { prefix: 'prj', len: 24 },
   user: { prefix: 'usr', len: 16 },
 })
 
-const ids = new PrefixedNanoId(config)
+const ids = new PrefixedNanoIds(config)
 
 // TypeScript will only allow 'project' or 'user' as valid prefixes
 ids.new('project') // ✅ Valid
