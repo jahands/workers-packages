@@ -14,10 +14,6 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	private readonly generators = new Map<number, () => string>()
 	private readonly prefixKeys: Set<string>
 	private readonly prefixSchemas = new Map<keyof T & string, z.ZodMiniString<string>>()
-	private readonly prefixToConfig: Map<
-		string,
-		{ key: string; config: PrefixConfig; schema: z.ZodMiniString<string> }
-	>
 
 	/**
 	 * Create a new PrefixedNanoIds instance
@@ -38,7 +34,6 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 			this.prefixKeys = new Set(Object.keys(cfg))
 
 			// Initialize empty maps - will be populated lazily
-			this.prefixToConfig = new Map()
 		} catch (e) {
 			if (e instanceof $ZodError) {
 				throw new Error(`Configuration validation failed:\n${z.prettifyError(e)}`)
