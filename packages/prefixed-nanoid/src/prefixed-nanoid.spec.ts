@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest'
 
 import { PrefixedNanoIds } from './prefixed-nanoid.js'
-import { InvalidPrefixError, validatePrefixesConfig, type PrefixesConfig } from './types.js'
+import { 
+	InvalidPrefixError, 
+	validatePrefixesConfig, 
+	ConfigurationError,
+	type PrefixesConfig 
+} from './types.js'
 
 const testConfig = {
 	project: {
@@ -18,15 +23,207 @@ const testConfig = {
 	},
 } as const satisfies PrefixesConfig
 
-describe('testConfig', () => {
-	it('should be a valid PrefixesConfig', () => {
+describe('validatePrefixesConfig', () => {
+	it('should validate a correct config', () => {
 		expect(() => validatePrefixesConfig(testConfig)).not.toThrow()
 	})
 
 	it('should support omitting len field with default value 24', () => {
-		// This test is covered by the PrefixedNanoIds constructor test
-		// Since we handle the default in the constructor, not the schema
-		expect(true).toBe(true)
+		const config = validatePrefixesConfig({
+			test: { prefix: 'tst' }
+		})
+		expect(config.test?.len).toBe(24)
+	})
+
+	describe('input validation', () => {
+		it('should reject null config', () => {
+			expect(() => validatePrefixesConfig(null as any)).toThrow(
+				'Configuration must be a non-null object'
+			)
+		})
+
+		it('should reject undefined config', () => {
+			expect(() => validatePrefixesConfig(undefined as any)).toThrow(
+				'Configuration must be a non-null object'
+			)
+		})
+
+		it('should reject array config', () => {
+			expect(() => validatePrefixesConfig([] as any)).toThrow(
+				'Configuration must be a non-null object'
+			)
+		})
+
+		it('should allow empty object config', () => {
+			const result = validatePrefixesConfig({})
+			expect(result).toEqual({})
+		})
+
+		it('should reject non-object values', () => {
+			expect(() => validatePrefixesConfig({
+				test: 'string' as any
+			})).toThrow('Key "test": value must be an object')
+
+			expect(() => validatePrefixesConfig({
+				test: 123 as any
+			})).toThrow('Key "test": value must be an object')
+
+			expect(() => validatePrefixesConfig({
+				test: null as any
+			})).toThrow('Key "test": value must be an object')
+
+			expect(() => validatePrefixesConfig({
+				test: [] as any
+			})).toThrow('Key "test": value must be an object')
+		})
+	})
+
+	describe('prefix validation', () => {
+		it('should reject empty prefix', () => {
+			expect(() => validatePrefixesConfig({
+				test: { prefix: '' }
+			})).toThrow('Key "test": prefix must be a non-empty string')
+		})
+
+		it('should reject whitespace-only prefix', () => {
+			expect(() => validatePrefixesConfig({
+				test: { prefix: '   ' }
+			})).toThrow('Key "test": prefix cannot be only whitespace')
+		})
+
+		it('should trim whitespace from valid prefixes', () => {
+			const config = validatePrefixesConfig({
+				test: { prefix: '  valid  ' }
+			})
+			expect(config.test?.prefix).toBe('valid')
+		})
+
+		it('should reject prefixes with invalid characters', () => {
+			const invalidPrefixes = [
+				'test-prefix',  // dash
+				'test.prefix',  // dot
+				'test prefix',  // space
+				'Test',         // uppercase
+				'test!',        // special char
+				'test@123',     // @ symbol
+			]
+
+			for (const prefix of invalidPrefixes) {
+				expect(() => validatePrefixesConfig({
+					test: { prefix }
+				})).toThrow('must contain only lowercase letters, numbers, and underscores')
+			}
+		})
+
+		it('should accept valid prefixes', () => {
+			const validPrefixes = [
+				'test',
+				'test123',
+				'test_prefix',
+				'a',
+				'_underscore',
+				'123numeric',
+				'mix_123_test'
+			]
+
+			for (const prefix of validPrefixes) {
+				expect(() => validatePrefixesConfig({
+					test: { prefix }
+				})).not.toThrow()
+			}
+		})
+
+		it('should reject non-string prefix', () => {
+			expect(() => validatePrefixesConfig({
+				test: { prefix: 123 as any }
+			})).toThrow('Key "test": prefix must be a non-empty string')
+		})
+	})
+
+	describe('len validation', () => {
+		it('should reject non-integer len', () => {
+			expect(() => validatePrefixesConfig({
+				test: { prefix: 'test', len: 'abc' as any }
+			})).toThrow('Key "test": len must be a positive integer (got string)')
+
+			expect(() => validatePrefixesConfig({
+				test: { prefix: 'test', len: 3.14 }
+			})).toThrow('Key "test": len must be a positive integer')
+		})
+
+		it('should reject zero or negative len', () => {
+			expect(() => validatePrefixesConfig({
+				test: { prefix: 'test', len: 0 }
+			})).toThrow('Key "test": len must be a positive integer')
+
+			expect(() => validatePrefixesConfig({
+				test: { prefix: 'test', len: -5 }
+			})).toThrow('Key "test": len must be a positive integer')
+		})
+
+		it('should reject len greater than 255', () => {
+			expect(() => validatePrefixesConfig({
+				test: { prefix: 'test', len: 256 }
+			})).toThrow('Key "test": len must not exceed 255 (got 256)')
+
+			expect(() => validatePrefixesConfig({
+				test: { prefix: 'test', len: 1000 }
+			})).toThrow('Key "test": len must not exceed 255 (got 1000)')
+		})
+
+		it('should accept valid len values', () => {
+			const validLengths = [1, 10, 24, 100, 255]
+			
+			for (const len of validLengths) {
+				const config = validatePrefixesConfig({
+					test: { prefix: 'test', len }
+				})
+				expect(config.test?.len).toBe(len)
+			}
+		})
+	})
+
+	describe('duplicate detection', () => {
+		it('should detect duplicate prefixes', () => {
+			expect(() => validatePrefixesConfig({
+				key1: { prefix: 'same' },
+				key2: { prefix: 'same' }
+			})).toThrow('Duplicate prefix values found: "same" (in keys: key1, key2)')
+		})
+
+		it('should detect multiple duplicates', () => {
+			expect(() => validatePrefixesConfig({
+				a: { prefix: 'dup1' },
+				b: { prefix: 'dup1' },
+				c: { prefix: 'dup2' },
+				d: { prefix: 'dup2' },
+				e: { prefix: 'unique' }
+			})).toThrow('Duplicate prefix values found: "dup1" (in keys: a, b); "dup2" (in keys: c, d)')
+		})
+	})
+
+	describe('error aggregation', () => {
+		it('should report multiple errors at once', () => {
+			expect(() => validatePrefixesConfig({
+				test1: { prefix: '' },
+				test2: { prefix: 'INVALID' },
+				test3: { prefix: 'valid', len: -5 }
+			})).toThrow(ConfigurationError)
+
+			try {
+				validatePrefixesConfig({
+					test1: { prefix: '' },
+					test2: { prefix: 'INVALID' },
+					test3: { prefix: 'valid', len: -5 }
+				})
+			} catch (e) {
+				expect(e).toBeInstanceOf(ConfigurationError)
+				const message = (e as ConfigurationError).message
+				expect(message).toContain('test1')
+				expect(message).toContain('test2')
+				expect(message).toContain('test3')
+			}
+		})
 	})
 })
 

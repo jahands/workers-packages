@@ -2,7 +2,6 @@ import { customAlphabet } from 'nanoid'
 
 import {
 	ALPHABET,
-	ConfigurationError,
 	validatePrefixedId,
 	InvalidPrefixError,
 	validatePrefixesConfig,
