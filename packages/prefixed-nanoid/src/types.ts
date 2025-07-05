@@ -115,7 +115,6 @@ export const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvw
 
 // Regex patterns used for validation (compiled once for performance)
 const PREFIX_VALIDATION_REGEX = /^[a-z0-9_]+$/
-const REGEX_ESCAPE_REGEX = /[.*+?^${}()|[\]\\]/g
 
 // Cache for compiled ID validation regexes to avoid recompilation
 const idValidationRegexCache = new Map<string, RegExp>()
@@ -133,10 +132,8 @@ export function validatePrefixedId(value: unknown, prefix: string, len: number):
 	let pattern = idValidationRegexCache.get(cacheKey)
 
 	if (!pattern) {
-		// Escape special regex characters in prefix (though our prefix validation should prevent most)
-		const escapedPrefix = prefix.replace(REGEX_ESCAPE_REGEX, '\\$&')
 		// Create regex pattern: prefix + underscore + exactly len characters from ALPHABET
-		pattern = new RegExp(`^${escapedPrefix}_[${ALPHABET}]{${len}}$`)
+		pattern = new RegExp(`^${prefix}_[${ALPHABET}]{${len}}$`)
 		idValidationRegexCache.set(cacheKey, pattern)
 	}
 
