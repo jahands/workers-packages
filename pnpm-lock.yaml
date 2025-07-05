@@ -418,9 +418,6 @@ importers:
       nanoid:
         specifier: ^3.3.11
         version: 3.3.11
-      zod:
-        specifier: ^3.25.73
-        version: 3.25.73
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.8.30

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { PrefixedNanoIds } from './prefixed-nanoid.js'
-import { InvalidPrefixError, PrefixesConfig } from './types.js'
+import { InvalidPrefixError, validatePrefixesConfig, type PrefixesConfig } from './types.js'
 
 const testConfig = {
 	project: {
@@ -20,7 +20,7 @@ const testConfig = {
 
 describe('testConfig', () => {
 	it('should be a valid PrefixesConfig', () => {
-		expect(() => PrefixesConfig.parse(testConfig)).not.toThrow()
+		expect(() => validatePrefixesConfig(testConfig)).not.toThrow()
 	})
 
 	it('should support omitting len field with default value 24', () => {

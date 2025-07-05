@@ -1,13 +1,11 @@
 import { customAlphabet } from 'nanoid'
-import { z } from 'zod/v4-mini'
-import { $ZodError } from 'zod/v4/core'
 
 import {
 	ALPHABET,
 	ConfigurationError,
-	createPrefixedIdSchema,
+	validatePrefixedId,
 	InvalidPrefixError,
-	PrefixesConfig,
+	validatePrefixesConfig,
 } from './types.js'
 
 import type { IdOf, PrefixConfig, PrefixConfigInput, PrefixKeys } from './types.js'
@@ -16,10 +14,9 @@ import type { IdOf, PrefixConfig, PrefixConfigInput, PrefixKeys } from './types.
  * Class-based API for managing prefixed nanoid generation with type safety
  */
 export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
-	private readonly config: PrefixesConfig
+	private readonly config: Record<string, PrefixConfig>
 	private readonly generators = new Map<number, () => string>()
 	private readonly prefixKeys: Set<string>
-	private readonly prefixSchemas = new Map<keyof T & string, z.ZodMiniString<string>>()
 
 	/**
 	 * Create a new PrefixedNanoIds instance
@@ -34,17 +31,8 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	 * @throws {ConfigurationError} If the configuration is invalid
 	 */
 	constructor(config: T) {
-		const cfg = config
-		try {
-			const validatedConfig = PrefixesConfig.parse(cfg)
-			this.config = validatedConfig
-			this.prefixKeys = new Set(Object.keys(cfg))
-		} catch (e) {
-			if (e instanceof $ZodError) {
-				throw new ConfigurationError(z.prettifyError(e))
-			}
-			throw e
-		}
+		this.config = validatePrefixesConfig(config)
+		this.prefixKeys = new Set(Object.keys(config))
 	}
 
 	/**
@@ -73,19 +61,13 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	 */
 	is<K extends PrefixKeys<T>>(prefix: K, maybeId: unknown): maybeId is IdOf<T[K]> {
 		// Cast to string is safe: K extends keyof T, where T's keys are validated as strings
-		// by the PrefixesConfig zod schema (z.record(z.string(), ...)). TypeScript's keyof
-		// returns string | number | symbol for compatibility, but we know all keys are strings.
+		// TypeScript's keyof returns string | number | symbol for compatibility, but we know all keys are strings.
 		const prefixStr = prefix as string
-		let schema = this.prefixSchemas.get(prefixStr)
-		if (!schema) {
-			const prefixConfig = this.config[prefix as string]
-			if (!prefixConfig) {
-				throw new InvalidPrefixError(prefixStr, Array.from(this.prefixKeys))
-			}
-			schema = createPrefixedIdSchema(prefixConfig.prefix, prefixConfig.len)
-			this.prefixSchemas.set(prefixStr, schema)
+		const prefixConfig = this.config[prefixStr]
+		if (!prefixConfig) {
+			throw new InvalidPrefixError(prefixStr, Array.from(this.prefixKeys))
 		}
-		return schema.safeParse(maybeId).success
+		return validatePrefixedId(maybeId, prefixConfig.prefix, prefixConfig.len)
 	}
 
 	/**
