@@ -47,7 +47,7 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	 * const userId = idGenerator.generate('user') // 'usr_A1b2C3d4E5f6'
 	 * const postId = idGenerator.generate('post') // 'pst_X7y8Z9a0B1c2D3e4'
 	 */
-	generate<K extends PrefixKeys<T>>(prefix: K): IdOf<PrefixConfig> {
+	generate<K extends keyof T>(prefix: K): IdOf<T[K]> {
 		const prefixConfig = this.getPrefixConfig(prefix)
 		const randomPart = this.nano(prefixConfig.len)
 		return `${prefixConfig.prefix}_${randomPart}`

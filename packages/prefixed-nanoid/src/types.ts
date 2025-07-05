@@ -20,10 +20,17 @@ const PrefixConfig = z.object({
 	len: z.int().check(z.gt(0)),
 })
 
-export type IdOf<C extends PrefixConfig> = `${C['prefix']}_${string}`
+export type IdOf<C extends { prefix: string }> = `${C['prefix'] & string}_${string}`
 
 /** The shape callers are allowed to pass to the constructor */
 export type PrefixConfigInput = Omit<PrefixConfig, 'len'> & { len?: number }
+
+/**
+ * Normalised configuration type where all optional len values become required
+ */
+export type Normalised<T extends Record<string, PrefixConfigInput>> = {
+	[K in keyof T]: PrefixConfig
+}
 
 /**
  * Configuration object mapping prefix keys to their configurations
