@@ -11,7 +11,7 @@ import type { IdOf, Normalised, PrefixConfig, PrefixConfigInput, PrefixKeys } fr
  */
 export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	private readonly config: Normalised<T>
-	private readonly nanoid: (size: number) => string
+	private readonly generators = new Map<number, () => string>()
 	private readonly prefixKeys: Set<string>
 	private readonly prefixSchemas = new Map<keyof T & string, z.ZodMiniString<string>>()
 	private readonly prefixToConfig: Map<
@@ -35,8 +35,16 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 			// Validate configuration using zod
 			const validatedConfig = PrefixesConfig.parse(cfg) as Normalised<T>
 			this.config = validatedConfig
-			this.nanoid = customAlphabet(ALPHABET)
 			this.prefixKeys = new Set(Object.keys(cfg))
+
+			// Pre-generate nanoid functions for each unique length
+			const lengths = new Set<number>()
+			for (const prefixConfig of Object.values(this.config)) {
+				lengths.add(prefixConfig.len)
+			}
+			for (const len of lengths) {
+				this.generators.set(len, customAlphabet(ALPHABET, len))
+			}
 
 			// Initialize prefix schemas and prefix-to-config map
 			this.prefixSchemas = new Map()
@@ -65,7 +73,7 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	 */
 	new<K extends PrefixKeys<T>>(prefix: K): IdOf<Normalised<T>[K]> {
 		const prefixConfig = this.getPrefixConfig(prefix)
-		const randomPart = this.nanoid(prefixConfig.len)
+		const randomPart = this.nano(prefixConfig.len)
 		return `${prefixConfig.prefix}_${randomPart}`
 	}
 
@@ -103,5 +111,9 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 			throw new InvalidPrefixError(prefix as string, Array.from(this.prefixKeys))
 		}
 		return config
+	}
+
+	private nano(len: number): string {
+		return this.generators.get(len)!()
 	}
 }
