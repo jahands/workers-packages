@@ -32,20 +32,9 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	constructor(config: T) {
 		const cfg = config
 		try {
-			// Pre-process config to add default len values
-			const withDefaults = Object.fromEntries(
-				Object.entries(cfg).map(([key, value]) => [
-					key,
-					{
-						...value,
-						len: value.len ?? 24,
-					},
-				])
-			) as Normalised<T>
-
 			// Validate configuration using zod
-			const validatedConfig = PrefixesConfig.parse(withDefaults)
-			this.config = validatedConfig as Normalised<T>
+			const validatedConfig = PrefixesConfig.parse(cfg) as Normalised<T>
+			this.config = validatedConfig
 			this.nanoid = customAlphabet(ALPHABET)
 			this.prefixKeys = new Set(Object.keys(cfg))
 

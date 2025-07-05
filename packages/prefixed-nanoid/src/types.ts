@@ -34,31 +34,43 @@ export type Normalised<T extends Record<string, PrefixConfigInput>> = {
  * Configuration object mapping prefix keys to their configurations
  */
 export type PrefixesConfig = z.infer<typeof PrefixesConfig>
-export const PrefixesConfig = z.record(z.string(), PrefixConfig).check(
-	z.refine((config) => {
+export const PrefixesConfig = z.transform(
+	(config: Record<string, { prefix: string; len?: number }>) => {
+		// Pre-process config to add default len values
+		const withDefaults = Object.fromEntries(
+			Object.entries(config).map(([key, value]) => [
+				key,
+				{
+					...value,
+					len: value.len ?? 24,
+				},
+			])
+		)
+		
+		// Validate the processed config
+		const validatedConfig = z.record(z.string(), PrefixConfig).parse(withDefaults)
+		
+		// Check for duplicate prefixes
 		const prefixToKeys = new Map<string, string[]>()
-
-		// Group keys by prefix
-		for (const [key, value] of Object.entries(config)) {
+		for (const [key, value] of Object.entries(validatedConfig)) {
 			const existing = prefixToKeys.get(value.prefix) || []
 			existing.push(key)
 			prefixToKeys.set(value.prefix, existing)
 		}
-
-		// Find duplicates
+		
 		const duplicates: string[] = []
 		for (const [prefix, keys] of prefixToKeys) {
 			if (keys.length > 1) {
 				duplicates.push(`"${prefix}" (in keys: ${keys.join(', ')})`)
 			}
 		}
-
+		
 		if (duplicates.length > 0) {
 			throw new Error(`Duplicate prefix values found: ${duplicates.join('; ')}`)
 		}
-
-		return true
-	})
+		
+		return validatedConfig
+	}
 )
 
 /**
