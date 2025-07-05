@@ -37,24 +37,8 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 			this.config = validatedConfig
 			this.prefixKeys = new Set(Object.keys(cfg))
 
-			// Pre-generate nanoid functions for each unique length
-			const lengths = new Set<number>()
-			for (const prefixConfig of Object.values(this.config)) {
-				lengths.add(prefixConfig.len)
-			}
-			for (const len of lengths) {
-				this.generators.set(len, customAlphabet(ALPHABET, len))
-			}
-
-			// Initialize prefix schemas and prefix-to-config map
-			this.prefixSchemas = new Map()
+			// Initialize empty maps - will be populated lazily
 			this.prefixToConfig = new Map()
-
-			for (const [key, prefixConfig] of Object.entries(this.config)) {
-				const schema = createPrefixedIdSchema(prefixConfig.prefix, prefixConfig.len)
-				this.prefixSchemas.set(key, schema)
-				this.prefixToConfig.set(prefixConfig.prefix, { key, config: prefixConfig, schema })
-			}
 		} catch (e) {
 			if (e instanceof $ZodError) {
 				throw new Error(`Configuration validation failed:\n${z.prettifyError(e)}`)
@@ -91,9 +75,15 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 		// Cast to string is safe: K extends keyof T, where T's keys are validated as strings
 		// by the PrefixesConfig zod schema (z.record(z.string(), ...)). TypeScript's keyof
 		// returns string | number | symbol for compatibility, but we know all keys are strings.
-		const schema = this.prefixSchemas.get(prefix as string)
+		const prefixStr = prefix as string
+		let schema = this.prefixSchemas.get(prefixStr)
 		if (!schema) {
-			throw new InvalidPrefixError(prefix as string, Array.from(this.prefixKeys))
+			const prefixConfig = this.config[prefix]
+			if (!prefixConfig) {
+				throw new InvalidPrefixError(prefixStr, Array.from(this.prefixKeys))
+			}
+			schema = createPrefixedIdSchema(prefixConfig.prefix, prefixConfig.len)
+			this.prefixSchemas.set(prefixStr, schema)
 		}
 		return schema.safeParse(maybeId).success
 	}
@@ -114,6 +104,11 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	}
 
 	private nano(len: number): string {
-		return this.generators.get(len)!()
+		let generator = this.generators.get(len)
+		if (!generator) {
+			generator = customAlphabet(ALPHABET, len)
+			this.generators.set(len, generator)
+		}
+		return generator()
 	}
 }

@@ -71,5 +71,17 @@
 				"args": ["x", "mcp-remote@latest", "https://docs.mcp.cloudflare.com/sse"]
 			}
 		]
+	},
+	"amp.mcpServers": {
+		"llm-rules": {
+			"command": "bun",
+			"args": ["x", "llm-rules@latest"]
+		},
+		"cloudflare-docs": {
+			"url": "https://docs.mcp.cloudflare.com/sse"
+		},
+		"context7": {
+			"url": "https://mcp.context7.com/sse"
+		}
 	}
 }
