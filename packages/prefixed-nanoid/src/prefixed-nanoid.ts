@@ -1,5 +1,6 @@
 import { customAlphabet } from 'nanoid'
 import { z } from 'zod/v4-mini'
+import { $ZodError } from 'zod/v4/core'
 
 import {
 	ALPHABET,
@@ -57,9 +58,8 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 				(a, b) => b.length - a.length
 			)
 		} catch (e) {
-			// In zod/v4-mini, we check for error shape rather than instanceof
-			if (e && typeof e === 'object' && 'issues' in e && Array.isArray((e as any).issues)) {
-				throw new Error(`Configuration validation failed:\n${z.prettifyError(e as any)}`)
+			if (e instanceof $ZodError) {
+				throw new Error(`Configuration validation failed:\n${z.prettifyError(e)}`)
 			}
 			throw e
 		}
