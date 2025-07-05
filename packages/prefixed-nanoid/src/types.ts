@@ -72,7 +72,7 @@ export const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvw
 /**
  * Create a schema for validating prefixed IDs with a specific prefix and length
  */
-export function createPrefixedIdSchema(prefix: string, len: number) {
+export function createPrefixedIdSchema(prefix: string, len: number): z.ZodMiniString<string> {
 	// Escape special regex characters in prefix (though our prefix validation should prevent most)
 	const escapedPrefix = prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 	// Create regex pattern: prefix + underscore + exactly len characters from ALPHABET

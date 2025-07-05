@@ -13,10 +13,10 @@ export class PrefixedNanoId<T extends Record<string, PrefixConfigInput>> {
 	private readonly config: Normalised<T>
 	private readonly nanoid: (size: number) => string
 	private readonly prefixKeys: Set<string>
-	private readonly prefixSchemas: Map<string, ReturnType<typeof createPrefixedIdSchema>>
+	private readonly prefixSchemas = new Map<keyof T & string, z.ZodMiniString<string>>()
 	private readonly prefixToConfig: Map<
 		string,
-		{ key: string; config: PrefixConfig; schema: ReturnType<typeof createPrefixedIdSchema> }
+		{ key: string; config: PrefixConfig; schema: z.ZodMiniString<string> }
 	>
 
 	/**
