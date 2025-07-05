@@ -90,6 +90,9 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	 * idGenerator.is('user', 'usr_123')          // false (too short)
 	 */
 	is<K extends PrefixKeys<T>>(prefix: K, candidateId: string): boolean {
+		// Cast to string is safe: K extends keyof T, where T's keys are validated as strings
+		// by the PrefixesConfig zod schema (z.record(z.string(), ...)). TypeScript's keyof
+		// returns string | number | symbol for compatibility, but we know all keys are strings.
 		const schema = this.prefixSchemas.get(prefix as string)
 		if (!schema) {
 			throw new InvalidPrefixError(prefix as string, Array.from(this.prefixKeys))
@@ -136,6 +139,7 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	private getPrefixConfig<K extends PrefixKeys<T>>(prefix: K): PrefixConfig {
 		const config = this.config[prefix]
 		if (!config) {
+			// Cast to string is safe - see comment in is() method for explanation
 			throw new InvalidPrefixError(prefix as string, Array.from(this.prefixKeys))
 		}
 		return config
