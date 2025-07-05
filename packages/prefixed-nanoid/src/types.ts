@@ -3,13 +3,32 @@ import { z } from 'zod/v4-mini'
 /**
  * Configuration for a single prefix
  */
-export type PrefixConfig = z.infer<typeof PrefixConfig>
-export const PrefixConfig = z.object({
+export type PrefixConfig = {
+	/** The prefix string (e.g., "prj", "file") - only lowercase letters, numbers, and underscores */
+	prefix: string
+	/** Logical grouping/category (e.g., "projects") */
+	category: string
+	/** Length of the random nanoid portion (defaults to 24 if not specified) */
+	len: number
+}
+
+/** The shape callers are allowed to pass to the constructor */
+export type PrefixConfigInput = Omit<PrefixConfig, 'len'> & { len?: number }
+
+/** Utility that turns all optional len properties into required ones */
+export type Normalised<T extends Record<string, PrefixConfigInput>> = {
+	[K in keyof T]: Omit<T[K], 'len'> & { len: number }
+}
+
+const PrefixConfigSchema = z.object({
 	/** The prefix string (e.g., "prj", "file") - only lowercase letters, numbers, and underscores */
 	prefix: z.string().check(z.minLength(1), z.regex(/^[a-z0-9_]+$/)),
 	/** Logical grouping/category (e.g., "projects") */
 	category: z.string().check(z.minLength(1)),
-	/** Length of the random nanoid portion */
+	/**
+	 * Length of the random nanoid portion
+	 * @default 24
+	 */
 	len: z.int().check(z.gt(0)),
 })
 
@@ -17,7 +36,7 @@ export const PrefixConfig = z.object({
  * Configuration object mapping prefix keys to their configurations
  */
 export type PrefixesConfig = z.infer<typeof PrefixesConfig>
-export const PrefixesConfig = z.record(z.string(), PrefixConfig).check(
+export const PrefixesConfig = z.record(z.string(), PrefixConfigSchema).check(
 	z.refine((config) => {
 		const prefixToKeys = new Map<string, string[]>()
 
@@ -47,7 +66,7 @@ export const PrefixesConfig = z.record(z.string(), PrefixConfig).check(
 /**
  * Extract prefix keys from a configuration object
  */
-export type PrefixKeys<T extends PrefixesConfig> = keyof T
+export type PrefixKeys<T extends Record<string, PrefixConfigInput>> = keyof T
 
 // Alphabet excluding confusing characters (no lowercase 'l', '0', 'O', 'I')
 export const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'

@@ -10,13 +10,13 @@ import {
 	PrefixesConfig,
 } from './types.js'
 
-import type { PrefixConfig, PrefixKeys } from './types.js'
+import type { Normalised, PrefixConfig, PrefixConfigInput, PrefixKeys } from './types.js'
 
 /**
  * Class-based API for managing prefixed nanoid generation with type safety
  */
-export class PrefixedNanoId<T extends PrefixesConfig> {
-	private readonly config: T
+export class PrefixedNanoId<T extends Record<string, PrefixConfigInput>> {
+	private readonly config: Normalised<T>
 	private readonly nanoid: (size: number) => string
 	private readonly prefixKeys: Set<string>
 	private readonly prefixSchemas: Map<string, ReturnType<typeof createPrefixedIdSchema>>
@@ -32,14 +32,26 @@ export class PrefixedNanoId<T extends PrefixesConfig> {
 	 * @example
 	 * const idGenerator = new PrefixedNanoId({
 	 *   user: { prefix: 'usr', category: 'users', len: 12 },
-	 *   post: { prefix: 'pst', category: 'posts', len: 16 }
+	 *   post: { prefix: 'pst', category: 'posts', len: 16 },
+	 *   project: { prefix: 'prj', category: 'projects' } // len defaults to 24
 	 * })
 	 */
 	constructor(config: T) {
 		try {
+			// Pre-process config to add default len values
+			const withDefaults = Object.fromEntries(
+				Object.entries(config).map(([key, value]) => [
+					key,
+					{
+						...value,
+						len: value.len ?? 24,
+					},
+				])
+			) as Normalised<T>
+
 			// Validate configuration using zod
-			const validatedConfig = PrefixesConfig.parse(config)
-			this.config = validatedConfig as T
+			const validatedConfig = PrefixesConfig.parse(withDefaults)
+			this.config = validatedConfig as Normalised<T>
 			this.nanoid = customAlphabet(ALPHABET)
 			this.prefixKeys = new Set(Object.keys(config))
 
