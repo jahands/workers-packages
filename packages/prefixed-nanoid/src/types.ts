@@ -25,11 +25,6 @@ export type IdOf<C extends PrefixConfig> = `${C['prefix']}_${string}`
 /** The shape callers are allowed to pass to the constructor */
 export type PrefixConfigInput = Omit<PrefixConfig, 'len'> & { len?: number }
 
-/** Utility that turns all optional len properties into required ones */
-export type Normalised<T extends Record<string, PrefixConfigInput>> = {
-	[K in keyof T]: Omit<T[K], 'len'> & { len: number }
-}
-
 /**
  * Configuration object mapping prefix keys to their configurations
  */

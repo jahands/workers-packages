@@ -4,13 +4,13 @@ import { $ZodError } from 'zod/v4/core'
 
 import { ALPHABET, createPrefixedIdSchema, InvalidPrefixError, PrefixesConfig } from './types.js'
 
-import type { IdOf, Normalised, PrefixConfig, PrefixConfigInput, PrefixKeys } from './types.js'
+import type { IdOf, PrefixConfig, PrefixConfigInput, PrefixKeys } from './types.js'
 
 /**
  * Class-based API for managing prefixed nanoid generation with type safety
  */
 export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
-	private readonly config: Normalised<T>
+	private readonly config: PrefixesConfig
 	private readonly generators = new Map<number, () => string>()
 	private readonly prefixKeys: Set<string>
 	private readonly prefixSchemas = new Map<keyof T & string, z.ZodMiniString<string>>()
@@ -29,7 +29,7 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 		const cfg = config
 		try {
 			// Validate configuration using zod
-			const validatedConfig = PrefixesConfig.parse(cfg) as Normalised<T>
+			const validatedConfig = PrefixesConfig.parse(cfg)
 			this.config = validatedConfig
 			this.prefixKeys = new Set(Object.keys(cfg))
 
@@ -50,7 +50,7 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	 * const userId = idGenerator.new('user') // 'usr_A1b2C3d4E5f6'
 	 * const postId = idGenerator.new('post') // 'pst_X7y8Z9a0B1c2D3e4'
 	 */
-	new<K extends PrefixKeys<T>>(prefix: K): IdOf<Normalised<T>[K]> {
+	new<K extends PrefixKeys<T>>(prefix: K): IdOf<PrefixConfig> {
 		const prefixConfig = this.getPrefixConfig(prefix)
 		const randomPart = this.nano(prefixConfig.len)
 		return `${prefixConfig.prefix}_${randomPart}`
@@ -73,7 +73,7 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 		const prefixStr = prefix as string
 		let schema = this.prefixSchemas.get(prefixStr)
 		if (!schema) {
-			const prefixConfig = this.config[prefix]
+			const prefixConfig = this.config[prefix as string]
 			if (!prefixConfig) {
 				throw new InvalidPrefixError(prefixStr, Array.from(this.prefixKeys))
 			}
@@ -90,7 +90,7 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	 * @throws {InvalidPrefixError} If the prefix is not found
 	 */
 	private getPrefixConfig<K extends PrefixKeys<T>>(prefix: K): PrefixConfig {
-		const config = this.config[prefix]
+		const config = this.config[prefix as string]
 		if (!config) {
 			// Cast to string is safe - see comment in is() method for explanation
 			throw new InvalidPrefixError(prefix as string, Array.from(this.prefixKeys))
