@@ -41,10 +41,9 @@ export const PrefixesConfig = z.transform(
 				},
 			])
 		)
-		
-		// Validate the processed config
+
 		const validatedConfig = z.record(z.string(), PrefixConfig).parse(withDefaults)
-		
+
 		// Check for duplicate prefixes
 		const prefixToKeys = new Map<string, string[]>()
 		for (const [key, value] of Object.entries(validatedConfig)) {
@@ -52,18 +51,18 @@ export const PrefixesConfig = z.transform(
 			existing.push(key)
 			prefixToKeys.set(value.prefix, existing)
 		}
-		
+
 		const duplicates: string[] = []
 		for (const [prefix, keys] of prefixToKeys) {
 			if (keys.length > 1) {
 				duplicates.push(`"${prefix}" (in keys: ${keys.join(', ')})`)
 			}
 		}
-		
+
 		if (duplicates.length > 0) {
 			throw new Error(`Duplicate prefix values found: ${duplicates.join('; ')}`)
 		}
-		
+
 		return validatedConfig
 	}
 )

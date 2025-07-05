@@ -28,12 +28,9 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	constructor(config: T) {
 		const cfg = config
 		try {
-			// Validate configuration using zod
 			const validatedConfig = PrefixesConfig.parse(cfg)
 			this.config = validatedConfig
 			this.prefixKeys = new Set(Object.keys(cfg))
-
-			// Initialize empty maps - will be populated lazily
 		} catch (e) {
 			if (e instanceof $ZodError) {
 				throw new Error(`Configuration validation failed:\n${z.prettifyError(e)}`)
