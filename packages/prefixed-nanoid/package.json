@@ -28,10 +28,13 @@
 			"import": {
 				"types": "./dist/index.d.ts",
 				"default": "./dist/index.js"
+			},
+			"node": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
 			}
 		}
 	},
-	"main": "./dist/index.js",
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"files": [
