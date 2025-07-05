@@ -1,22 +1,19 @@
 import { describe, expect, it } from 'vitest'
 
 import { PrefixedNanoId } from './prefixed-nanoid.js'
-import { CategoryExtractionError, InvalidPrefixError, PrefixesConfig } from './types.js'
+import { InvalidPrefixError, PrefixesConfig } from './types.js'
 
 const testConfig = {
 	project: {
 		prefix: 'prj',
-		category: 'projects',
 		len: 24,
 	},
 	file: {
 		prefix: 'file',
-		category: 'projects',
 		len: 24,
 	},
 	user: {
 		prefix: 'usr',
-		category: 'users',
 		len: 16,
 	},
 } as const satisfies PrefixesConfig
@@ -40,15 +37,13 @@ describe('PrefixedNanoId', () => {
 		const idsWithDefaultLen = new PrefixedNanoId({
 			test: {
 				prefix: 'tst',
-				category: 'testing',
 				// len omitted, should default to 24
 			},
 		})
-		
+
 		const id = idsWithDefaultLen.new('test')
 		expect(id).toMatch(/^tst_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{24}$/)
 		expect(idsWithDefaultLen.is('test', id)).toBe(true)
-		expect(idsWithDefaultLen.getCategory(id)).toBe('testing')
 	})
 
 	describe('constructor', () => {
@@ -60,7 +55,6 @@ describe('PrefixedNanoId', () => {
 			const idsWithUnderscore = new PrefixedNanoId({
 				test_prefix: {
 					prefix: 'pre_fix',
-					category: 'test',
 					len: 10,
 				},
 			})
@@ -71,7 +65,6 @@ describe('PrefixedNanoId', () => {
 				/^pre_fix_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{10}$/
 			)
 			expect(idsWithUnderscore.is('test_prefix', id)).toBe(true)
-			expect(idsWithUnderscore.getCategory(id)).toBe('test')
 		})
 
 		it('should throw error for empty prefix', () => {
@@ -79,7 +72,6 @@ describe('PrefixedNanoId', () => {
 				new PrefixedNanoId({
 					invalid: {
 						prefix: '',
-						category: 'test',
 						len: 10,
 					},
 				})
@@ -91,7 +83,6 @@ describe('PrefixedNanoId', () => {
 				new PrefixedNanoId({
 					invalid: {
 						prefix: 'test',
-						category: 'test',
 						len: 0,
 					},
 				})
@@ -103,12 +94,10 @@ describe('PrefixedNanoId', () => {
 				new PrefixedNanoId({
 					key1: {
 						prefix: 'prj',
-						category: 'projects',
 						len: 10,
 					},
 					key2: {
 						prefix: 'prj', // duplicate!
-						category: 'other',
 						len: 10,
 					},
 				})
@@ -196,32 +185,6 @@ describe('PrefixedNanoId', () => {
 		})
 	})
 
-	describe('getCategory()', () => {
-		it('should extract category from valid ID', () => {
-			const projectId = ids.new('project')
-			const fileId = ids.new('file')
-			const userId = ids.new('user')
-
-			expect(ids.getCategory(projectId)).toBe('projects')
-			expect(ids.getCategory(fileId)).toBe('projects')
-			expect(ids.getCategory(userId)).toBe('users')
-		})
-
-		it('should throw error for invalid ID format', () => {
-			expect(() => ids.getCategory('invalid-id')).toThrow(CategoryExtractionError)
-			expect(() => ids.getCategory('prj-abc123')).toThrow(CategoryExtractionError)
-			expect(() => ids.getCategory('unknown_abc123')).toThrow(CategoryExtractionError)
-		})
-
-		it('should throw error for ID without underscore', () => {
-			expect(() => ids.getCategory('prjabc123')).toThrow(CategoryExtractionError)
-		})
-
-		it('should throw error for ID with wrong length', () => {
-			expect(() => ids.getCategory('prj_short')).toThrow(CategoryExtractionError)
-		})
-	})
-
 	describe('edge cases', () => {
 		it('should handle empty config', () => {
 			const emptyIds = new PrefixedNanoId({})
@@ -236,7 +199,6 @@ describe('PrefixedNanoId', () => {
 				new PrefixedNanoId({
 					special: {
 						prefix: 'sp-ec.ial', // Contains invalid characters (dash and dot)
-						category: 'special',
 						len: 10,
 					},
 				})
@@ -247,7 +209,6 @@ describe('PrefixedNanoId', () => {
 			const validIds = new PrefixedNanoId({
 				valid_prefix: {
 					prefix: 'valid_prefix123',
-					category: 'valid',
 					len: 10,
 				},
 			})
@@ -257,7 +218,6 @@ describe('PrefixedNanoId', () => {
 				/^valid_prefix123_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{10}$/
 			)
 			expect(validIds.is('valid_prefix', id)).toBe(true)
-			expect(validIds.getCategory(id)).toBe('valid')
 		})
 	})
 
@@ -270,9 +230,6 @@ describe('PrefixedNanoId', () => {
 
 			// Test that validation works
 			expect(ids.is('project', id)).toBe(true)
-
-			// Test that category extraction works
-			expect(ids.getCategory(id)).toBe('projects')
 		})
 
 		it('should handle concurrent ID generation', async () => {

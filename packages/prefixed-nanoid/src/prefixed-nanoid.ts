@@ -2,13 +2,7 @@ import { customAlphabet } from 'nanoid'
 import { z } from 'zod/v4-mini'
 import { $ZodError } from 'zod/v4/core'
 
-import {
-	ALPHABET,
-	CategoryExtractionError,
-	createPrefixedIdSchema,
-	InvalidPrefixError,
-	PrefixesConfig,
-} from './types.js'
+import { ALPHABET, createPrefixedIdSchema, InvalidPrefixError, PrefixesConfig } from './types.js'
 
 import type { Normalised, PrefixConfig, PrefixConfigInput, PrefixKeys } from './types.js'
 
@@ -24,16 +18,15 @@ export class PrefixedNanoId<T extends Record<string, PrefixConfigInput>> {
 		string,
 		{ key: string; config: PrefixConfig; schema: ReturnType<typeof createPrefixedIdSchema> }
 	>
-	private readonly sortedPrefixes: string[]
 
 	/**
 	 * Create a new PrefixedNanoId instance
 	 * @param config Configuration object mapping prefix keys to their configurations
 	 * @example
-	 * const idGenerator = new PrefixedNanoId({
-	 *   user: { prefix: 'usr', category: 'users', len: 12 },
-	 *   post: { prefix: 'pst', category: 'posts', len: 16 },
-	 *   project: { prefix: 'prj', category: 'projects' } // len defaults to 24
+	 * const ids = new PrefixedNanoId({
+	 *   user: { prefix: 'usr', len: 12 },
+	 *   post: { prefix: 'pst', len: 16 },
+	 *   project: { prefix: 'prj' } // len defaults to 24
 	 * })
 	 */
 	constructor(config: T) {
@@ -64,11 +57,6 @@ export class PrefixedNanoId<T extends Record<string, PrefixConfigInput>> {
 				this.prefixSchemas.set(key, schema)
 				this.prefixToConfig.set(prefixConfig.prefix, { key, config: prefixConfig, schema })
 			}
-
-			// Sort prefixes by length descending to match longest first
-			this.sortedPrefixes = Array.from(this.prefixToConfig.keys()).sort(
-				(a, b) => b.length - a.length
-			)
 		} catch (e) {
 			if (e instanceof $ZodError) {
 				throw new Error(`Configuration validation failed:\n${z.prettifyError(e)}`)
@@ -110,36 +98,6 @@ export class PrefixedNanoId<T extends Record<string, PrefixConfigInput>> {
 			throw new InvalidPrefixError(prefix as string, Array.from(this.prefixKeys))
 		}
 		return schema.safeParse(candidateId).success
-	}
-
-	/**
-	 * Extract the category from a prefixed ID
-	 * @param idWithPrefix The prefixed ID to extract category from
-	 * @returns The category of the ID
-	 * @throws {CategoryExtractionError} If the ID format is invalid or prefix not recognized
-	 * @example
-	 * idGenerator.getCategory('usr_A1b2C3d4E5f6')     // 'users'
-	 * idGenerator.getCategory('pst_X7y8Z9a0B1c2D3e4') // 'posts'
-	 * idGenerator.getCategory('invalid_id')           // throws CategoryExtractionError
-	 */
-	getCategory(idWithPrefix: string): string {
-		// Try to match against known prefixes (sorted by length descending to match longest first)
-		for (const prefix of this.sortedPrefixes) {
-			const expectedPrefix = `${prefix}_`
-			if (idWithPrefix.startsWith(expectedPrefix)) {
-				const prefixData = this.prefixToConfig.get(prefix)
-				if (!prefixData) {
-					continue
-				}
-
-				// Validate the full ID format using prefix schema
-				if (prefixData.schema.safeParse(idWithPrefix).success) {
-					return prefixData.config.category
-				}
-			}
-		}
-
-		throw new CategoryExtractionError(idWithPrefix)
 	}
 
 	/**

@@ -6,8 +6,6 @@ import { z } from 'zod/v4-mini'
 export type PrefixConfig = {
 	/** The prefix string (e.g., "prj", "file") - only lowercase letters, numbers, and underscores */
 	prefix: string
-	/** Logical grouping/category (e.g., "projects") */
-	category: string
 	/** Length of the random nanoid portion (defaults to 24 if not specified) */
 	len: number
 }
@@ -23,8 +21,6 @@ export type Normalised<T extends Record<string, PrefixConfigInput>> = {
 const PrefixConfigSchema = z.object({
 	/** The prefix string (e.g., "prj", "file") - only lowercase letters, numbers, and underscores */
 	prefix: z.string().check(z.minLength(1), z.regex(/^[a-z0-9_]+$/)),
-	/** Logical grouping/category (e.g., "projects") */
-	category: z.string().check(z.minLength(1)),
 	/**
 	 * Length of the random nanoid portion
 	 * @default 24
@@ -89,15 +85,5 @@ export class InvalidPrefixError extends Error {
 	constructor(prefix: string, availablePrefixes: string[]) {
 		super(`Invalid prefix "${prefix}". Available prefixes: ${availablePrefixes.join(', ')}`)
 		this.name = 'InvalidPrefixError'
-	}
-}
-
-/**
- * Error thrown when trying to extract category from an invalid ID
- */
-export class CategoryExtractionError extends Error {
-	constructor(id: string) {
-		super(`Cannot extract category from ID "${id}". ID format is invalid or prefix not recognized.`)
-		this.name = 'CategoryExtractionError'
 	}
 }
