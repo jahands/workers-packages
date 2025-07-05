@@ -4,7 +4,7 @@ import { $ZodError } from 'zod/v4/core'
 
 import { ALPHABET, createPrefixedIdSchema, InvalidPrefixError, PrefixesConfig } from './types.js'
 
-import type { Normalised, PrefixConfig, PrefixConfigInput, PrefixKeys } from './types.js'
+import type { IdOf, Normalised, PrefixConfig, PrefixConfigInput, PrefixKeys } from './types.js'
 
 /**
  * Class-based API for managing prefixed nanoid generation with type safety
@@ -73,7 +73,7 @@ export class PrefixedNanoId<T extends Record<string, PrefixConfigInput>> {
 	 * const userId = idGenerator.new('user') // 'usr_A1b2C3d4E5f6'
 	 * const postId = idGenerator.new('post') // 'pst_X7y8Z9a0B1c2D3e4'
 	 */
-	new<K extends PrefixKeys<T>>(prefix: K): string {
+	new<K extends PrefixKeys<T>>(prefix: K): IdOf<Normalised<T>[K]> {
 		const prefixConfig = this.getPrefixConfig(prefix)
 		const randomPart = this.nanoid(prefixConfig.len)
 		return `${prefixConfig.prefix}_${randomPart}`

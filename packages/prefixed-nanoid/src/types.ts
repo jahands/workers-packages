@@ -20,6 +20,8 @@ const PrefixConfig = z.object({
 	len: z.int().check(z.gt(0)),
 })
 
+export type IdOf<C extends PrefixConfig> = `${C['prefix']}_${string}`
+
 /** The shape callers are allowed to pass to the constructor */
 export type PrefixConfigInput = Omit<PrefixConfig, 'len'> & { len?: number }
 
