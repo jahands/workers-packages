@@ -183,6 +183,19 @@ describe('PrefixedNanoIds', () => {
 			// @ts-expect-error - testing invalid prefix
 			expect(() => ids.is('invalid', 'prj_abc123')).toThrow('Invalid prefix "invalid"')
 		})
+
+		it('should work as type guard', () => {
+			const id = ids.generate('project')
+			const unknownValue: unknown = id
+			
+			if (ids.is('project', unknownValue)) {
+				// TypeScript should now know that unknownValue is of type IdOf<T['project']>
+				expect(typeof unknownValue).toBe('string')
+				expect(unknownValue.startsWith('prj_')).toBe(true)
+			} else {
+				throw new Error('Type guard should have passed')
+			}
+		})
 	})
 
 	describe('edge cases', () => {

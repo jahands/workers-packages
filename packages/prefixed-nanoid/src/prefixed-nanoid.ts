@@ -2,7 +2,13 @@ import { customAlphabet } from 'nanoid'
 import { z } from 'zod/v4-mini'
 import { $ZodError } from 'zod/v4/core'
 
-import { ALPHABET, createPrefixedIdSchema, InvalidPrefixError, PrefixesConfig } from './types.js'
+import {
+	ALPHABET,
+	ConfigurationError,
+	createPrefixedIdSchema,
+	InvalidPrefixError,
+	PrefixesConfig,
+} from './types.js'
 
 import type { IdOf, PrefixConfig, PrefixConfigInput, PrefixKeys } from './types.js'
 
@@ -24,6 +30,8 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	 *   post: { prefix: 'pst', len: 16 },
 	 *   project: { prefix: 'prj' } // len defaults to 24
 	 * })
+	 *
+	 * @throws {ConfigurationError} If the configuration is invalid
 	 */
 	constructor(config: T) {
 		const cfg = config
@@ -33,7 +41,7 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 			this.prefixKeys = new Set(Object.keys(cfg))
 		} catch (e) {
 			if (e instanceof $ZodError) {
-				throw new Error(`Configuration validation failed:\n${z.prettifyError(e)}`)
+				throw new ConfigurationError(z.prettifyError(e))
 			}
 			throw e
 		}

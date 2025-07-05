@@ -94,6 +94,16 @@ export function createPrefixedIdSchema(prefix: string, len: number): z.ZodMiniSt
 }
 
 /**
+ * Error thrown when configuration validation fails
+ */
+export class ConfigurationError extends Error {
+	constructor(message: string) {
+		super(`Configuration validation failed: ${message}`)
+		this.name = 'ConfigurationError'
+	}
+}
+
+/**
  * Error thrown when an invalid prefix is used
  */
 export class InvalidPrefixError extends Error {
