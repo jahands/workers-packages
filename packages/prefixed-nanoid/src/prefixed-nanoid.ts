@@ -82,14 +82,14 @@ export class PrefixedNanoId<T extends Record<string, PrefixConfigInput>> {
 	/**
 	 * Validate if a string matches the expected format for a prefix
 	 * @param prefix The prefix key to validate against
-	 * @param candidateId The ID string to validate
+	 * @param maybeId The ID string to validate
 	 * @returns True if the ID matches the expected format, false otherwise
 	 * @example
 	 * idGenerator.is('user', 'usr_A1b2C3d4E5f6') // true
 	 * idGenerator.is('user', 'pst_A1b2C3d4E5f6') // false (wrong prefix)
 	 * idGenerator.is('user', 'usr_123')          // false (too short)
 	 */
-	is<K extends PrefixKeys<T>>(prefix: K, candidateId: string): boolean {
+	is<K extends PrefixKeys<T>>(prefix: K, maybeId: string): boolean {
 		// Cast to string is safe: K extends keyof T, where T's keys are validated as strings
 		// by the PrefixesConfig zod schema (z.record(z.string(), ...)). TypeScript's keyof
 		// returns string | number | symbol for compatibility, but we know all keys are strings.
@@ -97,7 +97,7 @@ export class PrefixedNanoId<T extends Record<string, PrefixConfigInput>> {
 		if (!schema) {
 			throw new InvalidPrefixError(prefix as string, Array.from(this.prefixKeys))
 		}
-		return schema.safeParse(candidateId).success
+		return schema.safeParse(maybeId).success
 	}
 
 	/**

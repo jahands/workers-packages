@@ -83,12 +83,12 @@ ids.new(prefix: PrefixKey): string
 const id = ids.new('project') // 'prj_fKusuLcXQZij5x7URG98aP2z'
 ```
 
-#### `is(prefix, candidateId)`
+#### `is(prefix, maybeId)`
 
 Validate if a string matches the expected format for a prefix.
 
 ```typescript
-ids.is(prefix: PrefixKey, candidateId: string): boolean
+ids.is(prefix: PrefixKey, maybeId: string): boolean
 ```
 
 **Returns:** `true` if the ID matches the expected format, `false` otherwise
