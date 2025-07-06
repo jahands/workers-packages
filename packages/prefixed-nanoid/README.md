@@ -7,13 +7,12 @@
 
 ## Features
 
-- **Type-safe**: Full TypeScript support with proper type inference
-- **Class-based API**: Clean, object-oriented interface for managing multiple prefix configurations
-- **Compatible with Cloudflare Workers**: Tested with `@cloudflare/vitest-pool-workers`
+- **Human-readable IDs**: Prefixes make IDs instantly recognizable (e.g., `usr_abc123` vs `prj_def456`)
+- **Type-safe**: Full TypeScript support with automatic type inference
+- **Works everywhere**: Node.js, Cloudflare Workers, Deno, Bun, and browsers
 - **Customizable**: Configure prefix and length for each ID type
-- **Validation**: Built-in ID format validation
-- **Error handling**: Comprehensive error types for different failure scenarios
-- **Collision-resistant**: Uses nanoid with a carefully chosen alphabet excluding confusing characters
+- **Built-in validation**: Type guards to verify ID format and origin
+- **Smart alphabet**: Excludes confusing characters (0/O, l/I) for better readability
 
 ## Requirements
 
