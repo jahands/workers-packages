@@ -29,9 +29,14 @@ export function validatePrefixesConfig(config: Record<string, PrefixConfigInput>
 
 	const validatedConfig: PrefixesConfig = {}
 	const errors: string[] = []
+	const prefixToKeys = new Map<string, string[]>()
+	const keys = Object.keys(config)
 
 	// Validate each prefix configuration
-	for (const [key, value] of Object.entries(config)) {
+	for (let i = 0; i < keys.length; i++) {
+		const key = keys[i] as string // should be safe
+		const value = config[key]
+
 		// Check if value is an object
 		if (!value || typeof value !== 'object' || Array.isArray(value)) {
 			errors.push(`Key "${key}": value must be an object`)
@@ -73,6 +78,14 @@ export function validatePrefixesConfig(config: Record<string, PrefixConfigInput>
 			continue
 		}
 
+		// Track prefix usage for duplicate detection
+		const existingKeys = prefixToKeys.get(trimmedPrefix)
+		if (existingKeys !== undefined) {
+			existingKeys.push(key)
+		} else {
+			prefixToKeys.set(trimmedPrefix, [key])
+		}
+
 		validatedConfig[key] = {
 			prefix: trimmedPrefix,
 			len,
@@ -84,17 +97,10 @@ export function validatePrefixesConfig(config: Record<string, PrefixConfigInput>
 	}
 
 	// Check for duplicate prefixes
-	const prefixToKeys = new Map<string, string[]>()
-	for (const [key, value] of Object.entries(validatedConfig)) {
-		const existing = prefixToKeys.get(value.prefix) || []
-		existing.push(key)
-		prefixToKeys.set(value.prefix, existing)
-	}
-
 	const duplicates: string[] = []
-	for (const [prefix, keys] of prefixToKeys) {
-		if (keys.length > 1) {
-			duplicates.push(`"${prefix}" (in keys: ${keys.join(', ')})`)
+	for (const [prefix, keysForPrefix] of prefixToKeys) {
+		if (keysForPrefix.length > 1) {
+			duplicates.push(`"${prefix}" (in keys: ${keysForPrefix.join(', ')})`)
 		}
 	}
 
