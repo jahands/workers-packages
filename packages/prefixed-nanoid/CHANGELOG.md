@@ -1,5 +1,11 @@
 # prefixed-nanoid
 
+## 0.1.2
+
+### Patch Changes
+
+- 5fb0c5e: chore: update readme
+
 ## 0.1.1
 
 ### Patch Changes
