@@ -1,5 +1,11 @@
 # prefixed-nanoid
 
+## 0.1.4
+
+### Patch Changes
+
+- 37fe801: perf: optimize duplicate prefix detection in validatePrefixesConfig
+
 ## 0.1.3
 
 ### Patch Changes
