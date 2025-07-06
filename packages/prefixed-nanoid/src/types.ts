@@ -80,7 +80,7 @@ export function validatePrefixesConfig(config: Record<string, PrefixConfigInput>
 	}
 
 	if (errors.length > 0) {
-		throw new ConfigurationError(errors.join('; '))
+		throw new ConfigurationError(errors.join('\n'))
 	}
 
 	// Check for duplicate prefixes
@@ -99,7 +99,7 @@ export function validatePrefixesConfig(config: Record<string, PrefixConfigInput>
 	}
 
 	if (duplicates.length > 0) {
-		throw new ConfigurationError(`Duplicate prefix values found: ${duplicates.join('; ')}`)
+		throw new ConfigurationError(`Duplicate prefix values found: ${duplicates.join('\n')}`)
 	}
 
 	return validatedConfig

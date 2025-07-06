@@ -233,7 +233,7 @@ describe('validatePrefixesConfig', () => {
 					d: { prefix: 'dup2' },
 					e: { prefix: 'unique' },
 				})
-			).toThrow('Duplicate prefix values found: "dup1" (in keys: a, b); "dup2" (in keys: c, d)')
+			).toThrow('Duplicate prefix values found: "dup1" (in keys: a, b)\n"dup2" (in keys: c, d)')
 		})
 	})
 
