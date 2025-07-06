@@ -19,6 +19,8 @@ npm install prefixed-nanoid
 # or
 pnpm add prefixed-nanoid
 # or
+bun add prefixed-nanoid
+# or
 yarn add prefixed-nanoid
 ```
 
@@ -34,8 +36,8 @@ const ids = new PrefixedNanoIds({
 })
 
 // Generate IDs
-const projectId = ids.new('project') // 'prj_fKusuLcXQZij5x7URG98aP2z'
-const userId = ids.new('user') // 'usr_abc123def456ghi7'
+const projectId = ids.generate('project') // 'prj_fKusuLcXQZij5x7URG98aP2z'
+const userId = ids.generate('user') // 'usr_abc123def456ghi7'
 
 // Validate IDs
 ids.is('project', projectId) // true
@@ -60,19 +62,19 @@ Creates a new PrefixedNanoIds instance with the given configuration.
 
 ```typescript
 interface PrefixConfig {
-  prefix: string // The prefix string (e.g., "prj", "file")
-  len: number // Length of the random nanoid portion
+  prefix: string // The prefix string (e.g., "prj", "file") - only letters, numbers, underscores, and dashes
+  len: number // Length of the random nanoid portion (defaults to 24 if not specified)
 }
 ```
 
 ### Methods
 
-#### `new(prefix)`
+#### `generate(prefix)`
 
 Generate a new prefixed nanoid for the given prefix.
 
 ```typescript
-ids.new(prefix: PrefixKey): string
+ids.generate(prefix: PrefixKey): string
 ```
 
 **Returns:** A new prefixed ID in the format `{prefix}_{nanoid}`
@@ -80,7 +82,7 @@ ids.new(prefix: PrefixKey): string
 **Example:**
 
 ```typescript
-const id = ids.new('project') // 'prj_fKusuLcXQZij5x7URG98aP2z'
+const id = ids.generate('project') // 'prj_fKusuLcXQZij5x7URG98aP2z'
 ```
 
 #### `is(prefix, maybeId)`
@@ -105,7 +107,11 @@ ids.is('project', 'invalid-format') // false
 
 ### `InvalidPrefixError`
 
-Thrown when an invalid prefix is used with the `new()` method.
+Thrown when an invalid prefix is used with the `generate()` or `is()` methods.
+
+### `ConfigurationError`
+
+Thrown when the configuration object passed to the constructor is invalid.
 
 ## Advanced Usage
 
@@ -135,12 +141,10 @@ const ids = new PrefixedNanoIds({
   user: { prefix: 'usr', len: 16 },
 })
 
-const ids = new PrefixedNanoIds(config)
-
 // TypeScript will only allow 'project' or 'user' as valid prefixes
-ids.new('project') // ✅ Valid
-ids.new('user') // ✅ Valid
-ids.new('invalid') // ❌ TypeScript error
+ids.generate('project') // ✅ Valid
+ids.generate('user') // ✅ Valid
+ids.generate('invalid') // ❌ TypeScript error
 ```
 
 ## Alphabet
