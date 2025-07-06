@@ -50,10 +50,10 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 
 	/**
 	 * Validate if a string matches the expected format for a prefix
-	 * 
-	 * This method acts as a TypeScript type guard, narrowing the type of `maybeId` 
+	 *
+	 * This method acts as a TypeScript type guard, narrowing the type of `maybeId`
 	 * to a branded string type `IdOf<T[K]>` when the validation passes.
-	 * 
+	 *
 	 * @param prefix The prefix key to validate against
 	 * @param maybeId The ID string to validate
 	 * @returns True if the ID matches the expected format, false otherwise
@@ -61,7 +61,7 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	 * idGenerator.is('user', 'usr_A1b2C3d4E5f6') // true
 	 * idGenerator.is('user', 'pst_A1b2C3d4E5f6') // false (wrong prefix)
 	 * idGenerator.is('user', 'usr_123')          // false (too short)
-	 * 
+	 *
 	 * // Type guard usage in TypeScript:
 	 * const unknownValue: unknown = getId()
 	 * if (idGenerator.is('user', unknownValue)) {
