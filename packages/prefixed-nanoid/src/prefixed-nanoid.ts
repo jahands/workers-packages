@@ -101,9 +101,9 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
  * @param {T} config – Map whose keys become generator methods (`ids.user()`) and
  *   whose values configure each prefix:
  *   - `prefix` **(required)** – lowercase letters, digits or `_`
- *   - `len` *(optional, default = 24)* – positive integer length of the random part
+ *   - `len` *(optional, default = 24)* – positive integer length of the random part (1-255)
  *
- * @throws {InvalidPrefixError}  If any `prefix` is empty or contains disallowed characters
+ * @throws {ConfigurationError}  If any `prefix` is empty or contains disallowed characters
  * @returns {PrefixedNanoIds<T>} A ready-to-use generator instance
  *
  * @example
@@ -113,7 +113,7 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
  *   project:{ prefix: 'prj' }           // len defaults to 24
  * })
  *
- * console.log(ids.user()) // → usr_6b4f90dd67a1
+ * console.log(ids.generate('user')) // → usr_6b4f90dd67a1
  */
 export function createPrefixedNanoIds<T extends Record<string, PrefixConfigInput>>(
 	config: T

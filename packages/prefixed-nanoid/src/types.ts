@@ -4,7 +4,7 @@
 export type PrefixConfig = {
 	/** The prefix string (e.g., "prj", "file") - only letters, numbers, underscores, and dashes */
 	prefix: string
-	/** Length of the random nanoid portion (defaults to 24 if not specified) */
+	/** Length of the random nanoid portion (1-255, defaults to 24 if not specified) */
 	len: number
 }
 
