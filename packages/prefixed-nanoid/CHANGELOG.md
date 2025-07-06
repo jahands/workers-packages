@@ -1,5 +1,11 @@
 # prefixed-nanoid
 
+## 0.1.3
+
+### Patch Changes
+
+- 994cf24: chore: update readme
+
 ## 0.1.2
 
 ### Patch Changes
