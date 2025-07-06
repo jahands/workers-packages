@@ -2,7 +2,7 @@
  * Configuration for a single prefix
  */
 export type PrefixConfig = {
-	/** The prefix string (e.g., "prj", "file") - only lowercase letters, numbers, and underscores */
+	/** The prefix string (e.g., "prj", "file") - only letters, numbers, and underscores */
 	prefix: string
 	/** Length of the random nanoid portion (defaults to 24 if not specified) */
 	len: number
@@ -53,7 +53,7 @@ export function validatePrefixesConfig(config: Record<string, PrefixConfigInput>
 
 		if (!PREFIX_VALIDATION_REGEX.test(trimmedPrefix)) {
 			errors.push(
-				`Key "${key}": prefix "${trimmedPrefix}" must contain only lowercase letters, numbers, and underscores`
+				`Key "${key}": prefix "${trimmedPrefix}" must contain only letters, numbers, and underscores`
 			)
 			continue
 		}
@@ -114,7 +114,7 @@ export type PrefixKeys<T extends Record<string, PrefixConfigInput>> = keyof T
 export const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 // Regex patterns used for validation (compiled once for performance)
-const PREFIX_VALIDATION_REGEX = /^[a-z0-9_]+$/
+const PREFIX_VALIDATION_REGEX = /^[a-zA-Z0-9_]+$/
 
 // Cache for compiled ID validation regexes to avoid recompilation
 const idValidationRegexCache = new Map<string, RegExp>()
