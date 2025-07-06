@@ -1,5 +1,13 @@
 # @repo/vanilla-worker
 
+## 0.2.48
+
+### Patch Changes
+
+- Updated dependencies [dccaff1]
+- Updated dependencies [dccaff1]
+  - workers-tagged-logger@0.13.1
+
 ## 0.2.47
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @repo/workers-tagged-logger-test
 
+## 0.2.4
+
+### Patch Changes
+
+- dccaff1: chore: update deps (zod)
+
 ## 0.2.3
 
 ### Patch Changes
