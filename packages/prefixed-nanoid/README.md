@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/prefixed-nanoid.svg)](https://badge.fury.io/js/prefixed-nanoid)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **Tiny, type-safe ID generator (powered by [nanoid](https://github.com/ai/nanoid)) with human-readable prefixes — perfect for Cloudflare Workers, edge runtimes, Node, and Bun.**
+> **Tiny, type-safe ID generator (powered by [nanoid](https://github.com/ai/nanoid)) with human-readable prefixes.**
 
 ## Features
 
