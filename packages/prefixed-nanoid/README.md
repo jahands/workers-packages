@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/prefixed-nanoid.svg)](https://badge.fury.io/js/prefixed-nanoid)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A class-based API for managing prefixed nanoid generation with type safety, designed for Cloudflare Workers and other JavaScript environments.
+> **Tiny, type-safe ID generator (powered by [nanoid](https://github.com/ai/nanoid)) with human-readable prefixes — perfect for Cloudflare Workers, edge runtimes, Node, and Bun.**
 
 ## Features
 
