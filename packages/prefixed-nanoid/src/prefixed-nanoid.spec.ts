@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { PrefixedNanoIds } from './prefixed-nanoid.js'
+import { createPrefixedNanoIds, PrefixedNanoIds } from './prefixed-nanoid.js'
 import { ConfigurationError, InvalidPrefixError, validatePrefixesConfig } from './types.js'
 
 import type { PrefixesConfig } from './types.js'
@@ -529,5 +529,40 @@ describe('PrefixedNanoIds', () => {
 			// All IDs should be unique despite concurrent generation
 			expect(uniqueResults.size).toBe(results.length)
 		})
+	})
+})
+
+describe('createPrefixedNanoIds factory function', () => {
+	it('should create a PrefixedNanoIds instance', () => {
+		const ids = createPrefixedNanoIds(testConfig)
+		expect(ids).toBeInstanceOf(PrefixedNanoIds)
+	})
+
+	it('should work identically to constructor', () => {
+		const factoryIds = createPrefixedNanoIds(testConfig)
+		const constructorIds = new PrefixedNanoIds(testConfig)
+
+		// Both should generate valid IDs
+		const factoryProjectId = factoryIds.generate('project')
+		const constructorProjectId = constructorIds.generate('project')
+
+		expect(factoryProjectId).toMatch(/^prj_[A-Za-z0-9]{24}$/)
+		expect(constructorProjectId).toMatch(/^prj_[A-Za-z0-9]{24}$/)
+
+		// Both should validate IDs correctly
+		expect(factoryIds.is('project', factoryProjectId)).toBe(true)
+		expect(constructorIds.is('project', constructorProjectId)).toBe(true)
+		expect(factoryIds.is('user', factoryProjectId)).toBe(false)
+		expect(constructorIds.is('user', constructorProjectId)).toBe(false)
+	})
+
+	it('should support configuration with default len', () => {
+		const ids = createPrefixedNanoIds({
+			test: { prefix: 'tst' },
+		})
+
+		const id = ids.generate('test')
+		expect(id).toMatch(/^tst_[A-Za-z0-9]{24}$/) // Default len is 24
+		expect(ids.is('test', id)).toBe(true)
 	})
 })

@@ -2,7 +2,7 @@
 	"name": "prefixed-nanoid",
 	"version": "0.1.0",
 	"private": false,
-	"description": "Class-based API for managing prefixed nanoid generation with type safety",
+	"description": "Type-safe prefixed nanoid generation for Cloudflare Workers and JavaScript environments",
 	"keywords": [
 		"nanoid",
 		"prefixed",

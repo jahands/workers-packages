@@ -2,8 +2,8 @@ import { customAlphabet } from 'nanoid'
 
 import {
 	ALPHABET,
-	validatePrefixedId,
 	InvalidPrefixError,
+	validatePrefixedId,
 	validatePrefixesConfig,
 } from './types.js'
 
@@ -92,4 +92,31 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 		}
 		return generator()
 	}
+}
+
+/**
+ * Creates a type-safe {@link PrefixedNanoIds} generator from a configuration map.
+ *
+ * @template T extends Record<string, PrefixConfigInput>
+ * @param {T} config – Map whose keys become generator methods (`ids.user()`) and
+ *   whose values configure each prefix:
+ *   - `prefix` **(required)** – lowercase letters, digits or `_`
+ *   - `len` *(optional, default = 24)* – positive integer length of the random part
+ *
+ * @throws {InvalidPrefixError}  If any `prefix` is empty or contains disallowed characters
+ * @returns {PrefixedNanoIds<T>} A ready-to-use generator instance
+ *
+ * @example
+ * const ids = createPrefixedNanoIds({
+ *   user:   { prefix: 'usr', len: 12 },
+ *   post:   { prefix: 'pst', len: 16 },
+ *   project:{ prefix: 'prj' }           // len defaults to 24
+ * })
+ *
+ * console.log(ids.user()) // → usr_6b4f90dd67a1
+ */
+export function createPrefixedNanoIds<T extends Record<string, PrefixConfigInput>>(
+	config: T
+): PrefixedNanoIds<T> {
+	return new PrefixedNanoIds(config)
 }
