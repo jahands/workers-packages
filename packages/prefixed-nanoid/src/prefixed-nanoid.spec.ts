@@ -109,7 +109,6 @@ describe('validatePrefixesConfig', () => {
 
 		it('should reject prefixes with invalid characters', () => {
 			const invalidPrefixes = [
-				'test-prefix', // dash
 				'test.prefix', // dot
 				'test prefix', // space
 				'test!', // special char
@@ -121,7 +120,7 @@ describe('validatePrefixesConfig', () => {
 					validatePrefixesConfig({
 						test: { prefix },
 					})
-				).toThrow('must contain only letters, numbers, and underscores')
+				).toThrow('must contain only letters, numbers, underscores, and dashes')
 			}
 		})
 
@@ -137,6 +136,9 @@ describe('validatePrefixesConfig', () => {
 				'Test', // uppercase
 				'TEST_PREFIX', // all uppercase
 				'MixedCase123', // mixed case with numbers
+				'test-prefix', // dash
+				'my-app', // dash
+				'prefix-with-dashes', // multiple dashes
 			]
 
 			for (const prefix of validPrefixes) {
@@ -240,7 +242,7 @@ describe('validatePrefixesConfig', () => {
 			expect(() =>
 				validatePrefixesConfig({
 					test1: { prefix: '' },
-					test2: { prefix: 'invalid-prefix' },
+					test2: { prefix: 'invalid.prefix' },
 					test3: { prefix: 'valid', len: -5 },
 				})
 			).toThrow(ConfigurationError)
@@ -248,7 +250,7 @@ describe('validatePrefixesConfig', () => {
 			try {
 				validatePrefixesConfig({
 					test1: { prefix: '' },
-					test2: { prefix: 'invalid-prefix' },
+					test2: { prefix: 'invalid.prefix' },
 					test3: { prefix: 'valid', len: -5 },
 				})
 			} catch (e) {
@@ -478,6 +480,21 @@ describe('PrefixedNanoIds', () => {
 				/^PREFIX_Test123_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{8}$/
 			)
 			expect(validIds.is('uppercase_test', id)).toBe(true)
+		})
+
+		it('should allow dashes in prefix', () => {
+			const validIds = new PrefixedNanoIds({
+				dash_test: {
+					prefix: 'my-app-prefix',
+					len: 12,
+				},
+			})
+
+			const id = validIds.generate('dash_test')
+			expect(id).toMatch(
+				/^my-app-prefix_[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{12}$/
+			)
+			expect(validIds.is('dash_test', id)).toBe(true)
 		})
 	})
 
