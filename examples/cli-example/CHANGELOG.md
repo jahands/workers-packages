@@ -1,5 +1,13 @@
 # @repo/cli-example
 
+## 0.1.39
+
+### Patch Changes
+
+- dccaff1: chore: update deps (zod)
+- Updated dependencies [dccaff1]
+  - @jahands/cli-tools@0.10.12
+
 ## 0.1.38
 
 ### Patch Changes

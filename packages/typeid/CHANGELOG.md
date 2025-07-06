@@ -1,5 +1,12 @@
 # @jahands/typeid
 
+## 0.2.6
+
+### Patch Changes
+
+- dccaff1: chore: update deps (zod)
+- dccaff1: fix: handle typeid type issue
+
 ## 0.2.5
 
 ### Patch Changes

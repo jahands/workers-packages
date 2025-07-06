@@ -1,5 +1,12 @@
 # @repo/otel-example
 
+## 0.1.25
+
+### Patch Changes
+
+- dccaff1: chore: update deps (zod)
+  - @jahands/otel-cf-workers@0.1.20
+
 ## 0.1.24
 
 ### Patch Changes

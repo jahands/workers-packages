@@ -1,5 +1,13 @@
 # @repo/tools
 
+## 0.10.5
+
+### Patch Changes
+
+- dccaff1: chore: update deps (zod)
+- dde07c1: fix: remove unnecessary async wrapper in check command
+- dccaff1: fix: add @types/fs-extra types
+
 ## 0.10.4
 
 ### Patch Changes

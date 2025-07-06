@@ -1,5 +1,12 @@
 # workers-tagged-logger
 
+## 0.13.1
+
+### Patch Changes
+
+- dccaff1: chore: update deps (zod)
+- dccaff1: chore: switch to semver range for zod and nanoid
+
 ## 0.13.0
 
 ### Minor Changes

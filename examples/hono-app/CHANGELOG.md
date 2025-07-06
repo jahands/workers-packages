@@ -1,5 +1,15 @@
 # @repo/hono-app
 
+## 0.3.40
+
+### Patch Changes
+
+- dccaff1: chore: update deps (zod)
+- Updated dependencies [dccaff1]
+- Updated dependencies [dccaff1]
+  - workers-tagged-logger@0.13.1
+  - http-codex@0.5.11
+
 ## 0.3.39
 
 ### Patch Changes

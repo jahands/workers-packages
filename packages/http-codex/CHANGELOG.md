@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.5.11
+
+### Patch Changes
+
+- dccaff1: chore: update deps (zod)
+
 ## 0.5.10
 
 ### Patch Changes
