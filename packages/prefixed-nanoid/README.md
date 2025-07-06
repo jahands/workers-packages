@@ -51,6 +51,13 @@ const userId = ids.generate('user') // 'usr_abc123def456ghi7'
 // Validate IDs
 ids.is('project', projectId) // true
 ids.is('user', projectId) // false
+
+// Type guard usage in TypeScript:
+const unknownValue: unknown = getIdFromSomewhere()
+if (ids.is('project', unknownValue)) {
+  // TypeScript now knows unknownValue is a valid project ID
+  console.log(unknownValue.startsWith('prj_')) // ✅ Type-safe
+}
 ```
 
 ## API Reference
