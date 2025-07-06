@@ -1,16 +1,24 @@
 # prefixed-nanoid
 
+[![npm version](https://badge.fury.io/js/prefixed-nanoid.svg)](https://badge.fury.io/js/prefixed-nanoid)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A class-based API for managing prefixed nanoid generation with type safety, designed for Cloudflare Workers and other JavaScript environments.
 
 ## Features
 
 - **Type-safe**: Full TypeScript support with proper type inference
 - **Class-based API**: Clean, object-oriented interface for managing multiple prefix configurations
-- **Cloudflare Workers compatible**: Tested with `@cloudflare/vitest-pool-workers`
+- **Compatible with Cloudflare Workers**: Tested with `@cloudflare/vitest-pool-workers`
 - **Customizable**: Configure prefix and length for each ID type
 - **Validation**: Built-in ID format validation
 - **Error handling**: Comprehensive error types for different failure scenarios
 - **Collision-resistant**: Uses nanoid with a carefully chosen alphabet excluding confusing characters
+
+## Requirements
+
+- **ESM-only package**: Node.js 18+, Bun, Deno, Cloudflare Workers, or any modern runtime supporting ES modules
+- **TypeScript**: 4.5+ recommended for best type inference
 
 ## Installation
 
@@ -30,8 +38,9 @@ yarn add prefixed-nanoid
 import { createPrefixedNanoIds } from 'prefixed-nanoid'
 
 // Create an instance using the factory function
+// Note: len defaults to 24 if not specified
 const ids = createPrefixedNanoIds({
-  project: { prefix: 'prj', len: 24 },
+  project: { prefix: 'prj' }, // len = 24 (default)
   user: { prefix: 'usr', len: 16 },
 })
 
@@ -63,7 +72,7 @@ Creates a new prefixed nanoid generator with the given configuration.
 ```typescript
 interface PrefixConfig {
   prefix: string // The prefix string (e.g., "prj", "file") - only letters, numbers, underscores, and dashes
-  len: number // Length of the random nanoid portion (defaults to 24 if not specified)
+  len?: number // Length of the random nanoid portion (1-255, defaults to 24 if not specified)
 }
 ```
 
@@ -103,7 +112,7 @@ ids.is('project', 'usr_abc123def456ghi7') // false
 ids.is('project', 'invalid-format') // false
 ```
 
-## Error Types
+## Errors
 
 ### `InvalidPrefixError`
 
