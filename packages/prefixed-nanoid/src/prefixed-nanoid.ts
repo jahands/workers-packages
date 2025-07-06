@@ -110,7 +110,7 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
  * const ids = createPrefixedNanoIds({
  *   user:   { prefix: 'usr', len: 12 },
  *   post:   { prefix: 'pst', len: 16 },
- *   project:{ prefix: 'prj' }           // len defaults to 24
+ *   project:{ prefix: 'prj' } // len defaults to 24
  * })
  *
  * console.log(ids.generate('user')) // → usr_6b4f90dd67a1
