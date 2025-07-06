@@ -453,7 +453,7 @@ importers:
         specifier: 13.1.0
         version: 13.1.0(commander@13.1.0)
       '@types/fs-extra':
-        specifier: ^11.0.4
+        specifier: 11.0.4
         version: 11.0.4
       '@types/luxon':
         specifier: 3.6.2
