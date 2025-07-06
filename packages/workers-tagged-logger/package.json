@@ -57,7 +57,7 @@
 		"test": "run-vitest"
 	},
 	"dependencies": {
-		"zod": "3.25.7"
+		"zod": "^3.25.73"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "0.8.30",

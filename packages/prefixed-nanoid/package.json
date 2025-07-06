@@ -1,18 +1,20 @@
 {
-	"name": "http-codex",
-	"version": "0.5.10",
+	"name": "prefixed-nanoid",
+	"version": "0.1.0",
 	"private": false,
-	"description": "http status codes based on Go's http library",
+	"description": "Type-safe prefixed nanoid generation for Cloudflare Workers and JavaScript environments",
 	"keywords": [
-		"http status codes",
-		"http",
-		"status codes"
+		"nanoid",
+		"prefixed",
+		"id generation",
+		"cloudflare workers",
+		"typescript"
 	],
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/http-codex",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/prefixed-nanoid",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
-		"directory": "packages/http-codex"
+		"directory": "packages/prefixed-nanoid"
 	},
 	"license": "MIT",
 	"author": {
@@ -26,26 +28,27 @@
 			"import": {
 				"types": "./dist/index.d.ts",
 				"default": "./dist/index.js"
-			}
-		},
-		"./status": {
-			"import": {
-				"types": "./dist/status.d.ts",
-				"default": "./dist/status.js"
+			},
+			"node": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
 			}
 		}
 	},
-	"main": "./dist/index.js",
 	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"files": [
 		"dist"
 	],
 	"scripts": {
-		"build": "runx build tsc ./src/index.ts ./src/status.ts",
+		"build": "runx build tsc ./src/index.ts",
 		"check:exports": "runx check --exports",
 		"check:lint": "run-eslint",
 		"check:types": "run-tsc",
 		"test": "run-vitest"
+	},
+	"dependencies": {
+		"nanoid": "^3.3.11"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "0.8.30",
@@ -53,10 +56,9 @@
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
+		"@types/node": "22.15.27",
 		"rimraf": "6.0.1",
 		"typescript": "5.5.4",
-		"vitest": "3.1.4",
-		"zod": "3.25.73",
-		"zx": "8.5.4"
+		"vitest": "3.1.4"
 	}
 }

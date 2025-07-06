@@ -63,8 +63,8 @@ importers:
         specifier: 2.8.0
         version: 2.8.0
       zod:
-        specifier: 3.25.7
-        version: 3.25.7
+        specifier: 3.25.73
+        version: 3.25.73
 
   examples/cli-example:
     dependencies:
@@ -78,8 +78,8 @@ importers:
         specifier: 13.1.0
         version: 13.1.0
       zod:
-        specifier: 3.25.7
-        version: 3.25.7
+        specifier: 3.25.73
+        version: 3.25.73
       zx:
         specifier: 8.5.4
         version: 8.5.4
@@ -115,8 +115,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/workers-tagged-logger
       zod:
-        specifier: 3.25.7
-        version: 3.25.7
+        specifier: 3.25.73
+        version: 3.25.73
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.8.30
@@ -146,8 +146,8 @@ importers:
         specifier: 4.7.10
         version: 4.7.10
       zod:
-        specifier: 3.25.7
-        version: 3.25.7
+        specifier: 3.25.73
+        version: 3.25.73
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.8.30
@@ -209,7 +209,7 @@ importers:
         version: 5.5.4
       zx:
         specifier: ^8.3.0
-        version: 8.3.0
+        version: 8.5.4
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -224,8 +224,8 @@ importers:
         specifier: 3.1.4
         version: 3.1.4(@types/node@22.15.27)
       zod:
-        specifier: 3.25.7
-        version: 3.25.7
+        specifier: 3.25.73
+        version: 3.25.73
 
   packages/dagger-helpers:
     dependencies:
@@ -351,8 +351,8 @@ importers:
         specifier: 3.1.4
         version: 3.1.4(@types/node@22.15.27)
       zod:
-        specifier: 3.25.7
-        version: 3.25.7
+        specifier: 3.25.73
+        version: 3.25.73
       zx:
         specifier: 8.5.4
         version: 8.5.4
@@ -413,11 +413,48 @@ importers:
         specifier: 8.5.4
         version: 8.5.4
 
+  packages/prefixed-nanoid:
+    dependencies:
+      nanoid:
+        specifier: ^3.3.11
+        version: 3.3.11
+    devDependencies:
+      '@cloudflare/vitest-pool-workers':
+        specifier: 0.8.30
+        version: 0.8.30(@cloudflare/workers-types@4.20250517.0)(@vitest/runner@3.1.4)(@vitest/snapshot@3.1.4)(vitest@3.1.4(@types/node@22.15.27))
+      '@cloudflare/workers-types':
+        specifier: 4.20250517.0
+        version: 4.20250517.0
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@repo/tools':
+        specifier: workspace:*
+        version: link:../tools
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: 22.15.27
+        version: 22.15.27
+      rimraf:
+        specifier: 6.0.1
+        version: 6.0.1
+      typescript:
+        specifier: 5.5.4
+        version: 5.5.4
+      vitest:
+        specifier: 3.1.4
+        version: 3.1.4(@types/node@22.15.27)
+
   packages/tools:
     dependencies:
       '@commander-js/extra-typings':
         specifier: 13.1.0
         version: 13.1.0(commander@13.1.0)
+      '@types/fs-extra':
+        specifier: 11.0.4
+        version: 11.0.4
       '@types/luxon':
         specifier: 3.6.2
         version: 3.6.2
@@ -461,8 +498,8 @@ importers:
         specifier: 5.7.0
         version: 5.7.0
       zod:
-        specifier: 3.25.7
-        version: 3.25.7
+        specifier: 3.25.73
+        version: 3.25.73
       zx:
         specifier: 8.5.4
         version: 8.5.4
@@ -490,8 +527,8 @@ importers:
         specifier: workspace:*
         version: link:../typescript-config
       zod:
-        specifier: 3.25.7
-        version: 3.25.7
+        specifier: 3.25.73
+        version: 3.25.73
 
   packages/typescript-config:
     devDependencies:
@@ -502,8 +539,8 @@ importers:
   packages/workers-tagged-logger:
     dependencies:
       zod:
-        specifier: 3.25.7
-        version: 3.25.7
+        specifier: ^3.25.73
+        version: 3.25.73
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.8.30
@@ -570,8 +607,8 @@ importers:
         specifier: workspace:*
         version: link:../workers-tagged-logger
       zod:
-        specifier: 3.25.7
-        version: 3.25.7
+        specifier: 3.25.73
+        version: 3.25.73
 
 packages:
 
@@ -1845,9 +1882,6 @@ packages:
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
 
-  '@types/node@20.8.3':
-    resolution: {integrity: sha512-jxiZQFpb+NlH5kjW49vXxvxTjeeqlbsnTAdBTKpzEdPs9itay7MscYXz3Fo9VYFEsfQ6LJFitHad3faerLAjCw==}
-
   '@types/node@22.15.27':
     resolution: {integrity: sha512-5fF+eu5mwihV2BeVtX5vijhdaZOfkQTATrePEaXTcKqI16LhJ7gi2/Vhd9OZM0UojcdmiOCVg5rrax+i1MdoQQ==}
 
@@ -2501,10 +2535,6 @@ packages:
 
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
-
-  cross-spawn@7.0.3:
-    resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
-    engines: {node: '>= 8'}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -3952,6 +3982,7 @@ packages:
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
+    deprecated: Use your platform's native DOMException instead
 
   node-emoji@2.2.0:
     resolution: {integrity: sha512-Z3lTE9pLaJF47NyMhd4ww1yFTAP8YhYI8SleJiHzM46Fgpm5cnNzSl9XfzFNqbaz+VlJrIj3fXQ4DeN1Rjm6cw==}
@@ -5212,13 +5243,8 @@ packages:
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
 
-  zod@3.25.7:
-    resolution: {integrity: sha512-YGdT1cVRmKkOg6Sq7vY7IkxdphySKnXhaUmFI4r4FcuFVNgpCb9tZfNwXbT6BPjD5oz0nubFsoo9pIqKrDcCvg==}
-
-  zx@8.3.0:
-    resolution: {integrity: sha512-L8mY3yfJwo3a8ZDD6f9jZzAcRWJZYcV8GauZmBxLB/aSTwaMzMIEVpPp2Kyx+7yF0gdvuxKnMxAZRft9UCawiw==}
-    engines: {node: '>= 12.17.0'}
-    hasBin: true
+  zod@3.25.73:
+    resolution: {integrity: sha512-fuIKbQAWQl22Ba5d1quwEETQYjqnpKVyZIWAhbnnHgnDd3a+z4YgEfkI5SZ2xMELnLAXo/Flk2uXgysZNf0uaA==}
 
   zx@8.5.4:
     resolution: {integrity: sha512-44oKea9Sa8ZnOkTnS6fRJpg3quzgnbB43nLrVfYnqE86J4sxgZMUDLezzKET/FdOAVkF4X+Alm9Bume+W+RW9Q==}
@@ -5473,7 +5499,7 @@ snapshots:
       semver: 7.7.1
       vitest: 3.1.4(@types/node@22.15.27)
       wrangler: 4.15.2(@cloudflare/workers-types@4.20250517.0)
-      zod: 3.25.7
+      zod: 3.25.73
     transitivePeerDependencies:
       - '@cloudflare/workers-types'
       - bufferutil
@@ -6481,7 +6507,6 @@ snapshots:
     dependencies:
       '@types/jsonfile': 6.1.4
       '@types/node': 22.15.27
-    optional: true
 
   '@types/glob@7.2.0':
     dependencies:
@@ -6500,7 +6525,6 @@ snapshots:
   '@types/jsonfile@6.1.4':
     dependencies:
       '@types/node': 22.15.27
-    optional: true
 
   '@types/luxon@3.6.2': {}
 
@@ -6512,9 +6536,6 @@ snapshots:
       form-data: 4.0.2
 
   '@types/node@12.20.55': {}
-
-  '@types/node@20.8.3':
-    optional: true
 
   '@types/node@22.15.27':
     dependencies:
@@ -7264,12 +7285,6 @@ snapshots:
       typescript: 5.5.4
 
   create-require@1.1.1: {}
-
-  cross-spawn@7.0.3:
-    dependencies:
-      path-key: 3.1.1
-      shebang-command: 2.0.0
-      which: 2.0.2
 
   cross-spawn@7.0.6:
     dependencies:
@@ -8048,7 +8063,7 @@ snapshots:
 
   foreground-child@3.3.0:
     dependencies:
-      cross-spawn: 7.0.3
+      cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
   form-data@4.0.2:
@@ -10449,11 +10464,6 @@ snapshots:
 
   zod@3.22.3: {}
 
-  zod@3.25.7: {}
-
-  zx@8.3.0:
-    optionalDependencies:
-      '@types/fs-extra': 11.0.4
-      '@types/node': 20.8.3
+  zod@3.25.73: {}
 
   zx@8.5.4: {}

@@ -41,7 +41,7 @@ describe('invalid', () => {
 describe('zod schema', () => {
 	const MyId = z.custom<`my_id_${string}`>((id) => {
 		try {
-			const tid = TypeID.fromString(id)
+			const tid = TypeID.fromString(z.string().parse(id))
 			return tid.getType() === 'my_id'
 		} catch {
 			return false
