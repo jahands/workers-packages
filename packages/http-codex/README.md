@@ -1,6 +1,6 @@
 # http-codex
 
-A simple library for http status codes, adapted from Go's [http package](https://go.dev/src/net/http/status.go).
+A simple library for HTTP status codes and methods, adapted from Go's [http package](https://go.dev/src/net/http/status.go).
 
 ## Usage
 
@@ -17,20 +17,25 @@ yarn add http-codex
 ### Example
 
 ```ts
-import { httpStatus } from 'http-codex'
+import { httpMethod, httpStatus } from 'http-codex'
 
 const res = new Response('hello world!', {
   status: httpStatus.OK, // 200
   statusText: httpStatus.text(httpStatus.OK), // 'OK'
 })
+
+// HTTP methods
+const method = httpMethod.GET // 'GET'
 ```
 
-If preferred, status codes can be imported by themselves to reduce bundle size:
+If preferred, status codes and methods can be imported by themselves to reduce bundle size:
 
 ```ts
+import { httpMethod } from 'http-codex/method'
 import { httpStatus } from 'http-codex/status'
 
 const status = httpStatus.OK // 200
+const method = httpMethod.POST // 'POST'
 ```
 
 ### Additional Helpers
@@ -56,8 +61,9 @@ Here are the bundle sizes of each import:
 | ------------------- | ------------ | --------------------- |
 | `http-codex`        | 4.1 KB       | 1.46 KB               |
 | `http-codex/status` | 1.2 KB       | 728 bytes             |
+| `http-codex/method` | ~200 bytes   | ~150 bytes            |
 
-Note: `http-codex/status` is smaller because it excludes the `statusText()` function.
+Note: `http-codex/status` is smaller because it excludes the `statusText()` function. `http-codex/method` is the smallest as it only contains the HTTP method constants.
 
 ## Why Another HTTP Status Code Library?
 

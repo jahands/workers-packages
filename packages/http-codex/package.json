@@ -2,11 +2,13 @@
 	"name": "http-codex",
 	"version": "0.5.11",
 	"private": false,
-	"description": "http status codes based on Go's http library",
+	"description": "HTTP status codes and methods based on Go's http library",
 	"keywords": [
 		"http status codes",
+		"http methods",
 		"http",
-		"status codes"
+		"status codes",
+		"methods"
 	],
 	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/http-codex",
 	"repository": {
@@ -33,6 +35,12 @@
 				"types": "./dist/status.d.ts",
 				"default": "./dist/status.js"
 			}
+		},
+		"./method": {
+			"import": {
+				"types": "./dist/method.d.ts",
+				"default": "./dist/method.js"
+			}
 		}
 	},
 	"main": "./dist/index.js",
@@ -41,7 +49,7 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "runx build tsc ./src/index.ts ./src/status.ts",
+		"build": "runx build tsc ./src/index.ts ./src/status.ts ./src/method.ts",
 		"check:exports": "runx check --exports",
 		"check:lint": "run-eslint",
 		"check:types": "run-tsc",
@@ -53,6 +61,7 @@
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
+		"esbuild": "0.25.4",
 		"rimraf": "6.0.1",
 		"typescript": "5.5.4",
 		"vitest": "3.1.4",
