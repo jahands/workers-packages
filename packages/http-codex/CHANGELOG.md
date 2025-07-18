@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.6.0
+
+### Minor Changes
+
+- 0feff92: feat: add httpMethod to http-codex
+
 ## 0.5.11
 
 ### Patch Changes

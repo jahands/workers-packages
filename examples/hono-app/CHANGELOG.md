@@ -1,5 +1,12 @@
 # @repo/hono-app
 
+## 0.3.41
+
+### Patch Changes
+
+- Updated dependencies [0feff92]
+  - http-codex@0.6.0
+
 ## 0.3.40
 
 ### Patch Changes
