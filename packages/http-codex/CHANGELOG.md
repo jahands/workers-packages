@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.6.1
+
+### Patch Changes
+
+- 06744db: chore: update deps (zod)
+
 ## 0.6.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @repo/workers-tagged-logger-test
 
+## 0.2.5
+
+### Patch Changes
+
+- 06744db: chore: update deps (zod)
+
 ## 0.2.4
 
 ### Patch Changes

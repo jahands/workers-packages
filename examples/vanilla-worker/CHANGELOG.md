@@ -1,5 +1,13 @@
 # @repo/vanilla-worker
 
+## 0.2.49
+
+### Patch Changes
+
+- fc461fd: chore: update hono in examples
+- Updated dependencies [06744db]
+  - workers-tagged-logger@0.13.2
+
 ## 0.2.48
 
 ### Patch Changes
