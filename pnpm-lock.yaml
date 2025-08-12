@@ -63,8 +63,8 @@ importers:
         specifier: 2.8.0
         version: 2.8.0
       zod:
-        specifier: 3.25.73
-        version: 3.25.73
+        specifier: 3.25.76
+        version: 3.25.76
 
   examples/cli-example:
     dependencies:
@@ -78,8 +78,8 @@ importers:
         specifier: 13.1.0
         version: 13.1.0
       zod:
-        specifier: 3.25.73
-        version: 3.25.73
+        specifier: 3.25.76
+        version: 3.25.76
       zx:
         specifier: 8.5.4
         version: 8.5.4
@@ -115,8 +115,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/workers-tagged-logger
       zod:
-        specifier: 3.25.73
-        version: 3.25.73
+        specifier: 3.25.76
+        version: 3.25.76
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.8.30
@@ -146,8 +146,8 @@ importers:
         specifier: 4.7.10
         version: 4.7.10
       zod:
-        specifier: 3.25.73
-        version: 3.25.73
+        specifier: 3.25.76
+        version: 3.25.76
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.8.30
@@ -224,8 +224,8 @@ importers:
         specifier: 3.1.4
         version: 3.1.4(@types/node@22.15.27)
       zod:
-        specifier: 3.25.73
-        version: 3.25.73
+        specifier: 3.25.76
+        version: 3.25.76
 
   packages/dagger-helpers:
     dependencies:
@@ -354,8 +354,8 @@ importers:
         specifier: 3.1.4
         version: 3.1.4(@types/node@22.15.27)
       zod:
-        specifier: 3.25.73
-        version: 3.25.73
+        specifier: 3.25.76
+        version: 3.25.76
       zx:
         specifier: 8.5.4
         version: 8.5.4
@@ -501,8 +501,8 @@ importers:
         specifier: 5.7.0
         version: 5.7.0
       zod:
-        specifier: 3.25.73
-        version: 3.25.73
+        specifier: 3.25.76
+        version: 3.25.76
       zx:
         specifier: 8.5.4
         version: 8.5.4
@@ -530,8 +530,8 @@ importers:
         specifier: workspace:*
         version: link:../typescript-config
       zod:
-        specifier: 3.25.73
-        version: 3.25.73
+        specifier: 3.25.76
+        version: 3.25.76
 
   packages/typescript-config:
     devDependencies:
@@ -542,8 +542,8 @@ importers:
   packages/workers-tagged-logger:
     dependencies:
       zod:
-        specifier: ^3.25.73
-        version: 3.25.73
+        specifier: ^3.25.76
+        version: 3.25.76
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.8.30
@@ -578,7 +578,7 @@ importers:
     optionalDependencies:
       hono:
         specifier: ^4.6.16
-        version: 4.7.10
+        version: 4.9.0
 
   packages/workers-tagged-logger-test:
     devDependencies:
@@ -610,8 +610,8 @@ importers:
         specifier: workspace:*
         version: link:../workers-tagged-logger
       zod:
-        specifier: 3.25.73
-        version: 3.25.73
+        specifier: 3.25.76
+        version: 3.25.76
 
 packages:
 
@@ -3343,6 +3343,10 @@ packages:
     resolution: {integrity: sha512-QkACju9MiN59CKSY5JsGZCYmPZkA6sIW6OFCUp7qDjZu6S6KHtJHhAc9Uy9mV9F8PJ1/HQ3ybZF2yjCa/73fvQ==}
     engines: {node: '>=16.9.0'}
 
+  hono@4.9.0:
+    resolution: {integrity: sha512-JAUc4Sqi3lhby2imRL/67LMcJFKiCu7ZKghM7iwvltVZzxEC5bVJCsAa4NTnSfmWGb+N2eOVtFE586R+K3fejA==}
+    engines: {node: '>=16.9.0'}
+
   hosted-git-info@8.1.0:
     resolution: {integrity: sha512-Rw/B2DNQaPBICNXEm8balFz9a6WpZrkCGpcWFpy7nCj+NyhSdqXipmfvtmWt9xGfp0wZnBxB+iVpLmQMYt47Tw==}
     engines: {node: ^18.17.0 || >=20.5.0}
@@ -5246,8 +5250,8 @@ packages:
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
 
-  zod@3.25.73:
-    resolution: {integrity: sha512-fuIKbQAWQl22Ba5d1quwEETQYjqnpKVyZIWAhbnnHgnDd3a+z4YgEfkI5SZ2xMELnLAXo/Flk2uXgysZNf0uaA==}
+  zod@3.25.76:
+    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
   zx@8.5.4:
     resolution: {integrity: sha512-44oKea9Sa8ZnOkTnS6fRJpg3quzgnbB43nLrVfYnqE86J4sxgZMUDLezzKET/FdOAVkF4X+Alm9Bume+W+RW9Q==}
@@ -5502,7 +5506,7 @@ snapshots:
       semver: 7.7.1
       vitest: 3.1.4(@types/node@22.15.27)
       wrangler: 4.15.2(@cloudflare/workers-types@4.20250517.0)
-      zod: 3.25.73
+      zod: 3.25.76
     transitivePeerDependencies:
       - '@cloudflare/workers-types'
       - bufferutil
@@ -8356,6 +8360,9 @@ snapshots:
 
   hono@4.7.10: {}
 
+  hono@4.9.0:
+    optional: true
+
   hosted-git-info@8.1.0:
     dependencies:
       lru-cache: 10.4.3
@@ -10467,6 +10474,6 @@ snapshots:
 
   zod@3.22.3: {}
 
-  zod@3.25.73: {}
+  zod@3.25.76: {}
 
   zx@8.5.4: {}

@@ -114,13 +114,13 @@
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"vitest": "3.1.4",
-		"zod": "3.25.73"
+		"zod": "3.25.76"
 	},
 	"peerDependencies": {
 		"@commander-js/extra-typings": "^13.0.0 || ^14.0.0",
 		"commander": "^13.0.0 || ^14.0.0",
 		"typescript": "^5.5.4",
-		"zod": "^3.25.7",
+		"zod": "^3.25.76",
 		"zx": "^8.3.0"
 	}
 }

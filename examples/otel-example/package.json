@@ -12,7 +12,7 @@
 	"dependencies": {
 		"@jahands/otel-cf-workers": "workspace:*",
 		"hono": "4.7.10",
-		"zod": "3.25.73"
+		"zod": "3.25.76"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "0.8.30",

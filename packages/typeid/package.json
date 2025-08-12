@@ -45,6 +45,6 @@
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"zod": "3.25.73"
+		"zod": "3.25.76"
 	}
 }
