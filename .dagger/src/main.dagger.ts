@@ -71,7 +71,7 @@ export class WorkersPackages {
 					].join(' && ')
 				)
 			)
-			.withExec(sh('curl -fsSL https://sh.uuid.rocks/install/mise | MISE_VERSION=v2025.4.4 bash'))
+			.withExec(sh('curl -fsSL https://sh.uuid.rocks/install/mise | MISE_VERSION=v2025.8.7 bash'))
 			.withEnvVariable('PATH', '$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH', {
 				expand: true,
 			})
