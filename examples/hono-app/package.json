@@ -10,7 +10,7 @@
 		"test": "run-vitest"
 	},
 	"dependencies": {
-		"hono": "4.7.10",
+		"hono": "4.9.0",
 		"http-codex": "workspace:*",
 		"workers-tagged-logger": "workspace:*",
 		"zod": "3.25.76"

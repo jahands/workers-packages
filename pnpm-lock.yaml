@@ -106,8 +106,8 @@ importers:
   examples/hono-app:
     dependencies:
       hono:
-        specifier: 4.7.10
-        version: 4.7.10
+        specifier: 4.9.0
+        version: 4.9.0
       http-codex:
         specifier: workspace:*
         version: link:../../packages/http-codex
@@ -143,8 +143,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/otel-cf-workers
       hono:
-        specifier: 4.7.10
-        version: 4.7.10
+        specifier: 4.9.0
+        version: 4.9.0
       zod:
         specifier: 3.25.76
         version: 3.25.76
@@ -171,8 +171,8 @@ importers:
   examples/vanilla-worker:
     dependencies:
       hono:
-        specifier: 4.7.10
-        version: 4.7.10
+        specifier: 4.9.0
+        version: 4.9.0
       workers-tagged-logger:
         specifier: workspace:*
         version: link:../../packages/workers-tagged-logger
@@ -3338,10 +3338,6 @@ packages:
 
   highlight.js@10.7.3:
     resolution: {integrity: sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==}
-
-  hono@4.7.10:
-    resolution: {integrity: sha512-QkACju9MiN59CKSY5JsGZCYmPZkA6sIW6OFCUp7qDjZu6S6KHtJHhAc9Uy9mV9F8PJ1/HQ3ybZF2yjCa/73fvQ==}
-    engines: {node: '>=16.9.0'}
 
   hono@4.9.0:
     resolution: {integrity: sha512-JAUc4Sqi3lhby2imRL/67LMcJFKiCu7ZKghM7iwvltVZzxEC5bVJCsAa4NTnSfmWGb+N2eOVtFE586R+K3fejA==}
@@ -8358,10 +8354,7 @@ snapshots:
 
   highlight.js@10.7.3: {}
 
-  hono@4.7.10: {}
-
-  hono@4.9.0:
-    optional: true
+  hono@4.9.0: {}
 
   hosted-git-info@8.1.0:
     dependencies:

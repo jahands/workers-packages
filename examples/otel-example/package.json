@@ -11,7 +11,7 @@
 	},
 	"dependencies": {
 		"@jahands/otel-cf-workers": "workspace:*",
-		"hono": "4.7.10",
+		"hono": "4.9.0",
 		"zod": "3.25.76"
 	},
 	"devDependencies": {
