@@ -1,5 +1,15 @@
 # @repo/hono-app
 
+## 0.3.42
+
+### Patch Changes
+
+- fc461fd: chore: update hono in examples
+- 06744db: chore: update deps (zod)
+- Updated dependencies [06744db]
+  - workers-tagged-logger@0.13.2
+  - http-codex@0.6.1
+
 ## 0.3.41
 
 ### Patch Changes

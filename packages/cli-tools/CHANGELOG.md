@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.10.13
+
+### Patch Changes
+
+- 06744db: chore: update deps (zod)
+
 ## 0.10.12
 
 ### Patch Changes
