@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.10.14
+
+### Patch Changes
+
+- 9047d00: fix: add zod ^4.1.1 to peer dependencies
+
 ## 0.10.13
 
 ### Patch Changes
