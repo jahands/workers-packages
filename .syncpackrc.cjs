@@ -9,22 +9,9 @@ const config = {
 		{
 			label: 'local packages',
 			packages: ['**'],
-			dependencies: [
-				'@repo/*',
-				// TODO: maybe find a way to automate getting these package names?
-				'workers-tagged-logger',
-				'@jahands/otel-cf-workers',
-				'http-codex',
-				'@jahands/cli-tools', // use published version
-				'@jahands/dagger-helpers',
-			],
+			dependencies: ['$LOCAL'],
 			dependencyTypes: ['!local'], // Exclude the local package itself
 			pinVersion: 'workspace:*',
-		},
-		{
-			label: 'pin typescript to version compatible with eslint',
-			dependencies: ['typescript'],
-			pinVersion: '5.5.4',
 		},
 	],
 	semverGroups: [
