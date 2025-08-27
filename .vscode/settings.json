@@ -61,7 +61,7 @@
 	"augment.advanced": {
 		"mcpServers": [
 			{
-				"name": "llm-rules",
+				"name": "rules",
 				"command": "${workspaceFolder}/.vscode/bin/bun",
 				"args": ["x", "llm-rules@latest", "--dir", "${workspaceFolder}"]
 			},
@@ -73,15 +73,15 @@
 		]
 	},
 	"amp.mcpServers": {
-		"llm-rules": {
+		"rules": {
 			"command": "bun",
 			"args": ["x", "llm-rules@latest"]
 		},
 		"cloudflare-docs": {
-			"url": "https://docs.mcp.cloudflare.com/sse"
+			"url": "https://docs.mcp.cloudflare.com/mcp"
 		},
 		"context7": {
-			"url": "https://mcp.context7.com/sse"
+			"url": "https://mcp.context7.com/mcp"
 		}
 	}
 }
