@@ -1,6 +1,6 @@
 {
 	"name": "opencode-plugin-cloudflare",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"private": false,
 	"description": "Cloudflare plugin for opencode (opencode-ai)",
 	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/opencode-plugin-cloudflare",
