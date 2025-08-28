@@ -4,7 +4,7 @@ A plugin for [opencode](https://opencode.ai) that enhances Cloudflare Workers de
 
 ## Features
 
-- **Cloudflare Workers Specialist Agent**: Automatically configures a specialized AI agent with deep knowledge of Cloudflare Workers, including the runtime, APIs, and best practices
+- **Cloudflare Workers Agent**: Automatically configures a specialized AI agent with deep knowledge of Cloudflare Workers, including the runtime, APIs, and best practices
 - **Documentation Integration**: Seamlessly integrates Cloudflare's official documentation via MCP (Model Context Protocol) for real-time access to the latest docs
 - **Zero Configuration**: Works out of the box with sensible defaults
 
