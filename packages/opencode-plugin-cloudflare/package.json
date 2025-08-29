@@ -16,14 +16,7 @@
 	},
 	"sideEffects": false,
 	"type": "module",
-	"exports": {
-		".": {
-			"import": {
-				"types": "./dist/cloudflare.d.ts",
-				"default": "./dist/cloudflare.js"
-			}
-		}
-	},
+	"main": "./dist/cloudflare.js",
 	"files": [
 		"dist"
 	],
