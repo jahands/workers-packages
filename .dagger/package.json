@@ -12,8 +12,8 @@
 		"@biomejs/biome": "1.9.4",
 		"vitest": "3.1.2"
 	},
-	"packageManager": "bun@1.2.10",
+	"packageManager": "bun@1.2.21",
 	"dagger": {
-		"runtime": "bun@1.2.10"
+		"runtime": "bun@1.2.21"
 	}
 }
