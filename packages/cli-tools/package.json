@@ -76,6 +76,16 @@
 				"default": "./dist/fs.js"
 			}
 		},
+		"./logger": {
+			"import": {
+				"types": "./dist/logger.d.ts",
+				"default": "./dist/logger.js"
+			},
+			"require": {
+				"types": "./dist/logger.d.ts",
+				"default": "./dist/logger.js"
+			}
+		},
 		"./proc": {
 			"import": {
 				"types": "./dist/proc.d.ts",
