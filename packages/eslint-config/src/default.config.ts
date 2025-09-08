@@ -4,13 +4,13 @@ import tsEslintPlugin from '@typescript-eslint/eslint-plugin'
 import tsEslintParser from '@typescript-eslint/parser'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import turboConfig from 'eslint-config-turbo/flat'
-// @ts-ignore eslint-plugin-import has no types
-import * as importPlugin from 'eslint-plugin-import'
-import unusedImportsPlugin from 'eslint-plugin-unused-imports'
+import importPlugin from 'eslint-plugin-import'
 import { defineConfig } from 'eslint/config'
-import tseslint from 'typescript-eslint'
+import * as tseslint from 'typescript-eslint'
 
 import { getDirname, getGitIgnoreFiles, getTsconfigRootDir } from './helpers'
+
+import type { Linter } from 'eslint'
 
 export { defineConfig }
 
@@ -19,7 +19,7 @@ const compat = new FlatCompat({
 	baseDirectory: getDirname(import.meta.url),
 })
 
-export function getConfig(importMetaUrl: string) {
+export function getConfig(importMetaUrl: string): Array<Linter.Config<Linter.RulesRecord>> {
 	return defineConfig([
 		// Global ignores
 		{
@@ -31,18 +31,19 @@ export function getConfig(importMetaUrl: string) {
 				'eslint.config.ts',
 				'**/eslint.config.ts',
 				'**/worker-configuration.d.ts',
-				'**/.dagger/**',
 			],
 		},
-		...getGitIgnoreFiles(importMetaUrl),
+
+		getGitIgnoreFiles(importMetaUrl),
+
 		eslint.configs.recommended,
 		tseslint.configs.recommended,
-		importPlugin.flatConfigs?.recommended,
-		...turboConfig,
+		importPlugin.flatConfigs.recommended,
+		turboConfig,
 
 		// TypeScript Configuration
 		{
-			files: ['**/*.{ts,tsx,mts}'],
+			files: ['**/*.{ts,tsx,mts,mjs}'],
 			languageOptions: {
 				parser: tsEslintParser,
 				parserOptions: {
@@ -50,31 +51,28 @@ export function getConfig(importMetaUrl: string) {
 						jsx: true,
 					},
 					sourceType: 'module',
-					project: true,
+					projectService: true,
 					tsconfigRootDir: getTsconfigRootDir(importMetaUrl),
 				},
-			},
-			plugins: {
-				'unused-imports': unusedImportsPlugin,
 			},
 			settings: {
 				'import/resolver': {
 					typescript: {
-						project: './tsconfig.json',
+						project: `${getTsconfigRootDir(importMetaUrl) || '.'}/tsconfig.json`,
 					},
 				},
 				'import/parsers': {
-					'@typescript-eslint/parser': ['.ts', '.tsx', '*.mts'],
+					'@typescript-eslint/parser': ['.ts', '.tsx', '.mts'],
 				},
 			},
 			rules: {
 				...tsEslintPlugin.configs.recommended.rules,
 				...importPlugin.configs?.typescript.rules,
+
 				'@typescript-eslint/consistent-type-imports': ['warn', { prefer: 'type-imports' }],
 				'@typescript-eslint/explicit-function-return-type': 'off',
 				'@typescript-eslint/ban-ts-comment': 'off',
 				'@typescript-eslint/no-floating-promises': 'warn',
-				'unused-imports/no-unused-imports': 'warn',
 				'@typescript-eslint/array-type': ['warn', { default: 'array-simple' }],
 				// Note: you must disable the base rule as it can report incorrect errors
 				'no-unused-vars': 'off',
@@ -85,23 +83,28 @@ export function getConfig(importMetaUrl: string) {
 						varsIgnorePattern: '^_',
 					},
 				],
+				// disabling because it was annoying with cloudflare:test types
 				'@typescript-eslint/no-empty-object-type': 'off',
-				'@typescript-eslint/no-explicit-any': 'off',
 				'@typescript-eslint/no-unsafe-function-type': 'off',
+
+				'@typescript-eslint/no-explicit-any': 'off',
 				'import/no-named-as-default': 'off',
 				'import/no-named-as-default-member': 'off',
 				'prefer-const': 'warn',
 				'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 				'no-empty': 'warn',
+
 				// Add Prettier last to override other formatting rules
 				...eslintConfigPrettier.rules,
 			},
 		},
 
 		// Import plugin's TypeScript specific rules using FlatCompat
-		...compat.extends('plugin:import/typescript').map((config) => ({
+		// This should apply to the same files as the TypeScript configuration above.
+		// We apply it as a separate configuration object to ensure `files` matches.
+		compat.extends('plugin:import/typescript').map((config) => ({
 			...config,
-			files: ['**/*.{ts,tsx,mjs}'],
+			files: ['**/*.{ts,tsx,mts,mjs}'], // Ensure it targets the same TypeScript files
 		})),
 
 		{
@@ -111,25 +114,32 @@ export function getConfig(importMetaUrl: string) {
 				'import/no-unresolved': 'off',
 			},
 		},
-
 		{
-			files: ['**/*.ts'],
+			files: ['**/*.{ts,tsx}'],
 			rules: {
-				// ignoring fully for now due to issues
-				'import/no-unresolved': 'off',
-				// Turn off some problematic rules for now
-				'import/export': 'off',
-				'@typescript-eslint/no-unused-expressions': 'off',
+				'import/no-unresolved': [
+					'error',
+					{
+						ignore: [
+							// Cloudflare Workers runtime modules
+							'^cloudflare:',
+							// Virtual modules from build tools
+							'^virtual:',
+							// Astro content collections
+							'^astro:',
+							// Node.js built-in modules with node: prefix
+							'^node:',
+						],
+					},
+				],
 			},
 		},
-
 		{
 			files: ['tailwind.config.ts', 'postcss.config.mjs'],
 			rules: {
 				'@typescript-eslint/no-require-imports': 'off',
 			},
 		},
-
 		{
 			files: ['**/test/fixtures/**/*', '**/.dagger/**/*'],
 			rules: {
@@ -141,8 +151,6 @@ export function getConfig(importMetaUrl: string) {
 		},
 
 		// Prettier (should be last to override other formatting rules)
-		{
-			rules: eslintConfigPrettier.rules,
-		},
+		{ rules: eslintConfigPrettier.rules },
 	])
 }

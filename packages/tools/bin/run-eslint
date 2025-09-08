@@ -12,7 +12,7 @@ args=(
   --cache-strategy content
   --cache-location "$cache_location"
   --max-warnings 1000
-  --flag unstable_config_lookup_from_file
+  --flag v10_config_lookup_from_file
   .
 )
 
