@@ -1,5 +1,13 @@
 # @repo/cli-example
 
+## 0.1.43
+
+### Patch Changes
+
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+- Updated dependencies [6ddcd10]
+  - @jahands/cli-tools@0.11.1
+
 ## 0.1.42
 
 ### Patch Changes

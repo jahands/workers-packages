@@ -1,5 +1,12 @@
 # @jahands/otel-cf-workers
 
+## 0.1.21
+
+### Patch Changes
+
+- 20729f6: fix: fix lint issues
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+
 ## 0.1.20
 
 ### Patch Changes
