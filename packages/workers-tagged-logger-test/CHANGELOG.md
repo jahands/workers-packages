@@ -1,5 +1,11 @@
 # @repo/workers-tagged-logger-test
 
+## 0.2.6
+
+### Patch Changes
+
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+
 ## 0.2.5
 
 ### Patch Changes
