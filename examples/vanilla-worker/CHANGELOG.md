@@ -1,5 +1,13 @@
 # @repo/vanilla-worker
 
+## 0.2.50
+
+### Patch Changes
+
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+- Updated dependencies [6ddcd10]
+  - workers-tagged-logger@0.13.3
+
 ## 0.2.49
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @repo/hono-app
 
+## 0.3.43
+
+### Patch Changes
+
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+- Updated dependencies [6ddcd10]
+  - workers-tagged-logger@0.13.3
+  - http-codex@0.6.2
+
 ## 0.3.42
 
 ### Patch Changes

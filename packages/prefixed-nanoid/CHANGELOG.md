@@ -1,5 +1,11 @@
 # prefixed-nanoid
 
+## 0.1.6
+
+### Patch Changes
+
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+
 ## 0.1.5
 
 ### Patch Changes

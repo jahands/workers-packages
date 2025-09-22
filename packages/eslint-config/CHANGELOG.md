@@ -1,5 +1,15 @@
 # @repo/eslint-config
 
+## 0.2.0
+
+### Minor Changes
+
+- 20729f6: feat: modernize eslint config
+
+### Patch Changes
+
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+
 ## 0.1.15
 
 ### Patch Changes

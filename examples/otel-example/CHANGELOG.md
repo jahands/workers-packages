@@ -1,5 +1,14 @@
 # @repo/otel-example
 
+## 0.1.27
+
+### Patch Changes
+
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+- Updated dependencies [20729f6]
+- Updated dependencies [6ddcd10]
+  - @jahands/otel-cf-workers@0.1.21
+
 ## 0.1.26
 
 ### Patch Changes
