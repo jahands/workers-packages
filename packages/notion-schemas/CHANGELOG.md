@@ -1,5 +1,13 @@
 # notion-schemas
 
+## 0.3.0
+
+### Minor Changes
+
+- d5e8b15: feat: add Notion.prop.number
+
+  also removed infered types for individual props
+
 ## 0.2.1
 
 ### Patch Changes
