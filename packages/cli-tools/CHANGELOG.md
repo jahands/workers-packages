@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.11.1
+
+### Patch Changes
+
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+
 ## 0.11.0
 
 ### Minor Changes

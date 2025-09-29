@@ -1,5 +1,15 @@
 # @repo/workers-tagged-logger-test
 
+## 0.3.0
+
+### Minor Changes
+
+- 4d65c0d: chore: move workers-tagged-logger-test to separate test/ directory
+
+### Patch Changes
+
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+
 ## 0.2.5
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @jahands/typeid
 
+## 0.2.8
+
+### Patch Changes
+
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+
 ## 0.2.7
 
 ### Patch Changes

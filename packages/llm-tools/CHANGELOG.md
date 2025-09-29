@@ -1,5 +1,11 @@
 # llm-tools
 
+## 0.2.2
+
+### Patch Changes
+
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+
 ## 0.2.1
 
 ### Patch Changes

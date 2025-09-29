@@ -1,5 +1,11 @@
 # opencode-plugin-cloudflare
 
+## 0.1.2
+
+### Patch Changes
+
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+
 ## 0.1.1
 
 ### Patch Changes
