@@ -7,6 +7,12 @@ const config = {
 	dependencyTypes: ['!peer'],
 	versionGroups: [
 		{
+			label: 'use zod v4 for some packages',
+			dependencies: ['zod'],
+			packages: ['notion-schemas'],
+			pinVersion: '^4.1.11',
+		},
+		{
 			label: 'local packages',
 			packages: ['**'],
 			dependencies: ['$LOCAL'],
@@ -19,7 +25,7 @@ const config = {
 			label: 'use range for dependencies in public packages',
 			range: '^',
 			dependencies: ['nanoid', 'zod'],
-			packages: ['prefixed-nanoid', 'workers-tagged-logger'],
+			packages: ['prefixed-nanoid', 'workers-tagged-logger', 'notion-schemas'],
 		},
 		{
 			label: 'pin all deps',
