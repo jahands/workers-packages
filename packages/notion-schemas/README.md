@@ -37,13 +37,13 @@ export const MyNotes = Notion.DataSource(MyNotes_Props)
 
 const notion = new NotionClient()
 
-const res = Related.query.parse(
+const res = MyNotes.query.parse(
   await notion.dataSources.query({
-    data_source_id: 'a6e71658-f7bc-4ba1-9a01-6ed35b079fa1,
+    data_source_id: 'a6e71658-f7bc-4ba1-9a01-6ed35b079fa1',
   })
 )
 
-const page = Related.page.parse(
+const page = MyNotes.page.parse(
   await notion.pages.retrieve({
     page_id: '0395f6ea58f44ef29fac0f4f5b30c523',
   })
