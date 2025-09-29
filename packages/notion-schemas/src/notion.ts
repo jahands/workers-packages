@@ -1,6 +1,6 @@
 import { z } from 'zod/v4'
 
-import * as prop from './props'
+import * as prop from './props.js'
 
 export { prop }
 

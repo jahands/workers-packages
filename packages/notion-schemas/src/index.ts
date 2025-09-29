@@ -1,1 +1,1 @@
-export * as Notion from './notion'
+export * as Notion from './notion.js'
