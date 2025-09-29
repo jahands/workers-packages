@@ -11,9 +11,16 @@ export type PartialProps<T> = Partial<{
 }>
 
 /** Union of all property types */
-export type Prop = status | date | relation | title | created_time | rich_text | checkbox | select
+export type Prop =
+	| typeof status
+	| typeof date
+	| typeof relation
+	| typeof title
+	| typeof created_time
+	| typeof rich_text
+	| typeof checkbox
+	| typeof select
 
-export type status = z.infer<typeof status>
 export const status = z.object({
 	id: z.string(),
 	type: z.literal('status'),
@@ -24,7 +31,6 @@ export const status = z.object({
 	}),
 })
 
-export type date = z.infer<typeof date>
 export const date = z.object({
 	id: z.string(),
 	type: z.literal('date'),
@@ -35,7 +41,6 @@ export const date = z.object({
 	}),
 })
 
-export type relation = z.infer<typeof relation>
 export const relation = z.object({
 	id: z.string(),
 	type: z.literal('relation'),
@@ -43,7 +48,6 @@ export const relation = z.object({
 	has_more: z.boolean(),
 })
 
-export type title = z.infer<typeof title>
 export const title = z.object({
 	id: z.string(),
 	type: z.literal('title'),
@@ -65,14 +69,12 @@ export const title = z.object({
 	),
 })
 
-export type created_time = z.infer<typeof created_time>
 export const created_time = z.object({
 	id: z.string(),
 	type: z.literal('created_time'),
 	created_time: z.string(),
 })
 
-export type rich_text = z.infer<typeof rich_text>
 export const rich_text = z.object({
 	id: z.string(),
 	type: z.literal('rich_text'),
@@ -94,14 +96,12 @@ export const rich_text = z.object({
 	),
 })
 
-export type checkbox = z.infer<typeof checkbox>
 export const checkbox = z.object({
 	id: z.string(),
 	type: z.literal('checkbox'),
 	checkbox: z.boolean(),
 })
 
-export type select = z.infer<typeof select>
 export const select = z.object({
 	id: z.string(),
 	type: z.literal('select'),
@@ -110,4 +110,10 @@ export const select = z.object({
 		name: z.string(),
 		color: z.string(),
 	}),
+})
+
+export const number = z.object({
+	id: z.string(),
+	type: z.literal('number'),
+	number: z.number().nullable(),
 })

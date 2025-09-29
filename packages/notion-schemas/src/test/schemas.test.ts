@@ -12,6 +12,7 @@ export const MyNotes_Props = z.object({
 	Notes: Notion.prop.rich_text,
 	Priority: Notion.prop.select,
 	Date: Notion.prop.title,
+	Age: Notion.prop.number,
 })
 
 export type MyNotes = Notion.DataSource<typeof MyNotes_Props>
