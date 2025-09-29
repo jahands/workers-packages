@@ -6,7 +6,7 @@
 		"*.jsx": "$(capture).js",
 		"*.tsx": "$(capture).ts",
 		"tsconfig.json": "tsconfig.*.json",
-		"package.json": ".*, eslint.config.ts, turbo.jsonc, dagger.json, bun.lock, NOTICE, drizzle.config.ts, Justfile, CHANGELOG.md, vitest.config.ts, vitest.workspace.ts, postcss.config.mjs, vite.config.ts, worker-configuration.d.ts, README.md, package-lock.json, yarn.lock, postcss.config.js, remix.config.js, remix.env.d.ts, tailwind.config.js, tsconfig.json, server.ts, tailwind.config.ts, turbo.json, LICENSE, wrangler.toml, pnpm-lock.yaml, pnpm-workspace.yaml"
+		"package.json": ".*, *.config.js, *.config.mjs, *.config.ts, bun.lock, CHANGELOG.md, CLAUDE.md, dagger.json, eslint.config.ts, Justfile, LICENSE, NOTICE, package-lock.json, pnpm-lock.yaml, pnpm-workspace.yaml, README.md, remix.env.d.ts, server.ts, tsconfig.json, turbo.json, turbo.jsonc, vitest.workspace.ts, worker-configuration.d.ts, wrangler.toml, yarn.lock"
 	},
 	"editor.tabSize": 2,
 	"editor.detectIndentation": true,
