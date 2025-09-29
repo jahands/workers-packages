@@ -397,7 +397,7 @@ importers:
         specifier: 3.1.4
         version: 3.1.4(@types/node@22.15.27)
       zod:
-        specifier: 4.1.11
+        specifier: ^4.1.11
         version: 4.1.11
 
   packages/opencode-plugin-cloudflare:
