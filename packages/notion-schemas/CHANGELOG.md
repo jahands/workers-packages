@@ -1,5 +1,11 @@
 # notion-schemas
 
+## 0.3.1
+
+### Patch Changes
+
+- fb4ab1f: fix: use correct syntax in readme
+
 ## 0.3.0
 
 ### Minor Changes
