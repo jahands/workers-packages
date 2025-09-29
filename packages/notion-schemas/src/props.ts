@@ -11,15 +11,7 @@ export type PartialProps<T> = Partial<{
 }>
 
 /** Union of all property types */
-export type PropZod =
-	| status
-	| date
-	| relation
-	| title
-	| created_time
-	| rich_text
-	| checkbox
-	| select
+export type Prop = status | date | relation | title | created_time | rich_text | checkbox | select
 
 export type status = z.infer<typeof status>
 export const status = z.object({
