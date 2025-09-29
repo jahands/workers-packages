@@ -7,6 +7,7 @@ const projectIncludes: string[] = [
 	// dirs
 	'examples/',
 	'packages/',
+	'test/',
 
 	// files
 	'.gitignore',

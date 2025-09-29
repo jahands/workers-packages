@@ -16,7 +16,7 @@ fix:
 # Run Vitest tests
 test *flags:
   turbo build -F './packages/*'
-  pnpm vitest {{flags}}
+  bun vitest {{flags}}
 
 # Update deps via syncpack
 update-deps:
