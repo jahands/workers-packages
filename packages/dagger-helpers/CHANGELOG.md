@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.6.7
+
+### Patch Changes
+
+- 20729f6: fix: fix lint issues
+
 ## 0.6.6
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @repo/tools
 
+## 0.11.0
+
+### Minor Changes
+
+- 3200608: feat: modernize run-eslint script and remove run-eslint-remix (unused)
+
+### Patch Changes
+
+- 20729f6: chore: use new eslint flag
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+
 ## 0.10.6
 
 ### Patch Changes

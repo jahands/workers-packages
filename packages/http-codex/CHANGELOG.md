@@ -1,5 +1,11 @@
 # http-codex
 
+## 0.6.2
+
+### Patch Changes
+
+- 6ddcd10: chore: don't use object spreading in eslint.config.ts
+
 ## 0.6.1
 
 ### Patch Changes
