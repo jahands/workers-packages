@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.7.0
+
+### Minor Changes
+
+- 7893d9b: feat: add prefix override to shell()
+
 ## 0.6.7
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # notion-schemas
 
+## 0.3.2
+
+### Patch Changes
+
+- 03f19c0: chore: update readme
+
 ## 0.3.1
 
 ### Patch Changes
