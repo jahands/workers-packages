@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.7.1
+
+### Patch Changes
+
+- eb73663: fix: use specified shell
+
 ## 0.7.0
 
 ### Minor Changes
