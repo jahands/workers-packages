@@ -53,9 +53,6 @@ export function shell(shellName: 'sh' | 'bash' | 'zsh') {
 			prefix += ';'
 		}
 
-		return match(shellName)
-			.with('sh', () => ['sh', '-c', `${prefix} ${trimmedInput}`])
-			.with('bash', 'zsh', () => ['zsh', '-c', `${prefix} ${trimmedInput}`])
-			.exhaustive()
+		return [shellName, '-c', `${prefix} ${trimmedInput}`]
 	}
 }
