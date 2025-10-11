@@ -1,4 +1,4 @@
-import { defineConfig, getConfig, ConfigObject } from '@repo/eslint-config'
+import { ConfigObject, defineConfig, getConfig } from '@repo/eslint-config'
 
 const config = getConfig(import.meta.url)
 

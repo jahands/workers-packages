@@ -40,6 +40,7 @@ const config = {
 		'prettier-plugin-toml',
 	],
 	importOrder: [...codeImports, ...typeImports],
+	importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
 	importOrderTypeScriptVersion: '5.8.2',
 	overrides: [
 		{

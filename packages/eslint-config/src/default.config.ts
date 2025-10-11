@@ -7,10 +7,10 @@ import turboConfig from 'eslint-config-turbo/flat'
 import importPlugin from 'eslint-plugin-import'
 import { defineConfig } from 'eslint/config'
 import * as tseslint from 'typescript-eslint'
-import type { ConfigObject } from '@eslint/core'
 
 import { getDirname, getGitIgnoreFiles, getTsconfigRootDir } from './helpers'
 
+import type { ConfigObject } from '@eslint/core'
 import type { Linter } from 'eslint'
 
 export { defineConfig, ConfigObject }

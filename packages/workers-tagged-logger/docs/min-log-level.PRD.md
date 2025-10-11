@@ -231,7 +231,6 @@ class RequestHandler {
 ### Unit Tests
 
 1. **`withLogLevel()` method**:
-
    - Returns new logger instance with correct log level
    - Preserves existing tags and fields
    - Does not affect parent logger
@@ -239,7 +238,6 @@ class RequestHandler {
    - Respects log level hierarchy in filtering
 
 2. **`setLogLevel()` method**:
-
    - Sets log level in ALS context
    - Affects all loggers reading from same context
    - Logs warning when called outside ALS context
@@ -247,7 +245,6 @@ class RequestHandler {
    - Can be overridden in child contexts
 
 3. **Log level resolution**:
-
    - Correct priority order (instance > context > constructor > default)
    - Proper filtering based on resolved level
    - Integration with existing `logLevelToNumber()` function
