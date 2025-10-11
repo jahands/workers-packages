@@ -104,7 +104,8 @@ export class WorkersPackages {
 			// install pnpm deps
 			.withMountedCache('/pnpm-store', dag.cacheVolume(`pnpm-store`))
 			.withExec(sh('pnpm config set store-dir /pnpm-store'))
-			.withExec(sh('FORCE_COLOR=1 pnpm install --frozen-lockfile --child-concurrency=10'))
+			// TODO: pass in CI as a param instead of hard-coding here
+			.withExec(sh('CI=1 FORCE_COLOR=1 pnpm install --frozen-lockfile --child-concurrency=10'))
 
 			// copy over the rest of the project
 			.withDirectory('/work', this.source.directory('/'), { include: projectIncludes })
