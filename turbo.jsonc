@@ -2,7 +2,13 @@
 	"$schema": "https://turbo.build/schema.json",
 	"globalDependencies": ["**/.dev.vars"],
 	"globalEnv": ["CI", "GITHUB_ACTIONS", "VITEST"],
-	"globalPassThroughEnv": ["WRANGLER_LOG", "FORCE_COLOR"],
+	"globalPassThroughEnv": [
+		"WRANGLER_LOG",
+		"FORCE_COLOR",
+		"TURBO_TOKEN",
+		"TURBO_REMOTE_CACHE_SIGNATURE_KEY",
+		"GITHUB_ACTIONS"
+	],
 	"remoteCache": {
 		// Enable if using Turbo Remote Cache
 		"enabled": false,
