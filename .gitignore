@@ -47,3 +47,7 @@ yarn-error.log*
 
 # Agents
 .claude/settings.local.json
+
+# Dagger
+**/.dagger/sdk
+**/dagger/sdk

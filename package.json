@@ -1,7 +1,12 @@
 {
-	"name": "workers-monorepo-template",
+	"name": "workers-packages",
 	"version": "1.0.0",
 	"private": true,
+	"description": "All of my Cloudflare Workers-related NPM packages",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://twitter.com/jachands"
+	},
 	"sideEffects": false,
 	"scripts": {
 		"build:packages": "turbo build -F './packages/*'",
