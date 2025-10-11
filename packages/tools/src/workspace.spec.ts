@@ -6,7 +6,7 @@ describe('getWorkspacePackages()', () => {
 	describe('returns packages in the workspace', async () => {
 		// assert only a few packages so that we don't have
 		// to update this after adding new packages
-		const expectedPackages = [
+		const expectedPackages: string[] = [
 			'tools/dagger-common',
 			'packages/tools',
 			'docker/debian',
