@@ -5,6 +5,7 @@
 .docs/migrations/*.md
 .docs/prompts/*.md
 .windsurf/rules/
+turbo.json
 AGENT.md
 AGENTS.md
 CLAUDE.md
