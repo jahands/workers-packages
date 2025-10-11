@@ -1,8 +1,8 @@
-name: Branches
+name: Test
 
 on:
   push:
-    branches-ignore: ['main']
+    branches-ignore: ["main"]
 
 env:
   FORCE_COLOR: 1
@@ -10,19 +10,24 @@ env:
 jobs:
   check:
     name: Check
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    runs-on:
+      - self-hosted
+      - X64
+    timeout-minutes: 5
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-      - uses: pnpm/action-setup@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
         with:
-          node-version: lts/*
-          cache: 'pnpm'
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile --child-concurrency=10
-      - name: Check & Test
-        run: bun runx ci check
+          fetch-depth: 3
+      - uses: 1password/install-cli-action@v1
+      - uses: extractions/setup-just@v3
+        with:
+          just-version: 1.40.0
+      - name: Install Dagger
+        uses: dagger/dagger-for-github@8.0.0
+        with:
+          version: "0.18.19"
+      - name: Test (Dagger)
+        run: just dagger-test --GITHUB_ACTIONS=1
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
