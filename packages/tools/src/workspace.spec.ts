@@ -30,7 +30,7 @@ describe('getWorkersProjects()', () => {
 	describe('returns workers projects in the workspace', async () => {
 		// assert only a few projects so that we don't have
 		// to update this after adding new projects
-		const expectedProjects = [
+		const expectedProjects: string[] = [
 			'1projects/allergies/allergies',
 			'apps/shortcuts',
 			'apps2/sentry-proxy',
@@ -47,7 +47,7 @@ describe('getWorkersProjects()', () => {
 	})
 
 	describe('does not return non-workers projects', async () => {
-		const nonWorkersProjects = [
+		const nonWorkersProjects: string[] = [
 			'tools/dagger-common',
 			'packages/tools',
 			'docker/debian',
