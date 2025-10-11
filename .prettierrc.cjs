@@ -57,12 +57,6 @@ const config = {
 				useTabs: false,
 			},
 		},
-		{
-			files: ['mise.toml', '.mise.toml'],
-			options: {
-				alignEntries: true,
-			},
-		},
 	],
 }
 
