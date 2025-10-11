@@ -1,4 +1,0 @@
-name = "hono-app"
-main = "src/index.ts"
-compatibility_date = "2024-09-02"
-compatibility_flags = ["nodejs_compat"]

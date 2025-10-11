@@ -1,5 +1,0 @@
-{
-	"extends": "@repo/typescript-config/lib.json",
-	"include": ["*.ts", "src/**/*.ts"],
-	"exclude": ["node_modules/", "eslint.config.ts"]
-}
