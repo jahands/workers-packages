@@ -1,3 +1,4 @@
+import { isNotFoundError } from '@jahands/cli-tools/fs'
 import * as find from 'empathic/find'
 import * as pkg from 'empathic/package'
 import memoizeOne from 'memoize-one'
@@ -27,3 +28,14 @@ export const getPackageName = memoizeOne(async (): Promise<string> => {
 	}
 	return pkgJson.data.name
 })
+
+export function ignoreNotFound(e: unknown): void {
+	if (!isNotFoundError(e)) {
+		throw e
+	}
+}
+
+export async function deleteIfExists(filePath: string | string[]): Promise<void> {
+	const filePaths = Array.isArray(filePath) ? filePath : [filePath]
+	await Promise.all(filePaths.map((p) => Bun.file(p).delete().catch(ignoreNotFound)))
+}

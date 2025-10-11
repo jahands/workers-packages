@@ -7,6 +7,7 @@ import { buildCmd } from '../cmd/build.cmd'
 import { checkWorkersTypesCmd } from '../cmd/check-workers-types.cmd'
 import { checkCmd } from '../cmd/check.cmd'
 import { ciCmd } from '../cmd/ci.cmd'
+import { daggerxCmd } from '../cmd/daggerx.cmd'
 import { devCmd } from '../cmd/dev.cmd'
 import { fixCmd } from '../cmd/fix.cmd'
 import { shfmtCmd } from '../cmd/shfmt.cmd'
@@ -27,6 +28,7 @@ program
 	.addCommand(ciCmd)
 	.addCommand(updateCmd)
 	.addCommand(shfmtCmd)
+	.addCommand(daggerxCmd)
 
 	// Don't hang for unresolved promises
 	.hook('postAction', () => process.exit(0))
