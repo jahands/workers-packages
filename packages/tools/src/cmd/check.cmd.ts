@@ -9,6 +9,7 @@ export const checkCmd = new Command('check')
 		'Check for issues with deps/lint/types/format. If no options are provided, all checks are run.'
 	)
 
+	// default checks
 	.option('-r, --root', 'Run checks from root of repo. Defaults to cwd', false)
 	.option('-d, --deps', 'Check for dependency issues with Syncpack')
 	.option('-l, --lint', 'Check for eslint issues')
@@ -18,16 +19,20 @@ export const checkCmd = new Command('check')
 		'Check for formatting issues with prettier. Also checks shell scripts if shfmt and rg (ripgrep) are available'
 	)
 
+	// non-default checks
+	.option('-e, --exports', 'Checks package exports')
+
+	// other options
 	.option('--continue', 'Use --continue when executing turbo commands', false)
 
-	.action(async ({ root, deps, lint, types, format, continue: useContinue }) => {
+	.action(async ({ root, deps, lint, types, format, continue: useContinue, exports }) => {
 		const repoRoot = getRepoRoot()
 		if (root) {
 			cd(repoRoot)
 		}
 
 		// Run all if none are selected
-		if (!deps && !lint && !types && !format) {
+		if (!deps && !lint && !types && !format && !exports) {
 			deps = true
 			lint = true
 			types = true
@@ -54,6 +59,7 @@ export const checkCmd = new Command('check')
 			types: ['turbo', turboFlags, 'check:types'].flat(),
 			format: ['prettier', '.', '--cache', '--check', '--log-level=warn'],
 			formatShell: ['runx', 'shfmt', 'check', '--skip-if-unavailable'],
+			exports: ['attw', '--pack', '.', '--profile=esm-only'],
 		} as const satisfies { [key: string]: string[] }
 
 		type TableRow = [string, string, string, string]
@@ -146,6 +152,16 @@ export const checkCmd = new Command('check')
 					'Root',
 				] satisfies TableRow
 			)
+		}
+
+		if (exports) {
+			const exitCode = await $`${checks.exports}`.exitCode
+			table.push([
+				'exports',
+				checks.exports.join(' '),
+				getOutcome({ exitCode }),
+				'Root',
+			] satisfies TableRow)
 		}
 
 		echo(table.toString())

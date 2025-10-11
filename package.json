@@ -21,6 +21,7 @@
 		"test:ci": "run-vitest-ci"
 	},
 	"devDependencies": {
+		"@arethetypeswrong/cli": "0.18.1",
 		"@changesets/cli": "2.29.7",
 		"@ianvs/prettier-plugin-sort-imports": "4.7.0",
 		"@repo/eslint-config": "workspace:*",
