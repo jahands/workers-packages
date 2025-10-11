@@ -1,0 +1,178 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"globalDependencies": [
+		"**/.dev.vars"
+	],
+	"globalEnv": [
+		"CI",
+		"GITHUB_ACTIONS",
+		"VITEST"
+	],
+	"globalPassThroughEnv": [
+		"WRANGLER_LOG",
+		"FORCE_COLOR",
+		"TURBO_TOKEN",
+		"TURBO_REMOTE_CACHE_SIGNATURE_KEY",
+		"GITHUB_ACTIONS"
+	],
+	"remoteCache": {
+		"enabled": true,
+		"signature": true
+	},
+	"tasks": {
+		"topo": {
+			"dependsOn": [
+				"^topo"
+			]
+		},
+		"build": {
+			"dependsOn": [
+				"^build",
+				"topo"
+			],
+			"outputLogs": "new-only",
+			"outputs": [
+				"dist/**",
+				".wrangler/deploy/config.json"
+			]
+		},
+		"dev": {
+			"cache": false,
+			"dependsOn": [
+				"build",
+				"topo"
+			],
+			"interactive": true,
+			"outputLogs": "new-only",
+			"persistent": true
+		},
+		"preview": {
+			"cache": false,
+			"dependsOn": [
+				"build",
+				"topo"
+			],
+			"interactive": true,
+			"outputLogs": "new-only",
+			"persistent": true
+		},
+		"deploy": {
+			"cache": false,
+			"dependsOn": [
+				"build",
+				"topo"
+			],
+			"env": [
+				"CLOUDFLARE_ACCOUNT_ID",
+				"CLOUDFLARE_API_TOKEN"
+			],
+			"outputLogs": "new-only"
+		},
+		"build:wrangler": {
+			"dependsOn": [
+				"build",
+				"topo"
+			],
+			"outputLogs": "new-only"
+		},
+		"check": {
+			"dependsOn": [
+				"check:types",
+				"check:lint",
+				"topo"
+			],
+			"outputLogs": "new-only"
+		},
+		"//#test:ci": {
+			"dependsOn": [
+				"@jahands/cli-tools#build",
+				"@jahands/dagger-helpers#build",
+				"http-codex#build",
+				"llm-tools#build",
+				"notion-schemas#build",
+				"opencode-plugin-cloudflare#build",
+				"@jahands/otel-cf-workers#build",
+				"prefixed-nanoid#build",
+				"@jahands/typeid#build",
+				"workers-tagged-logger#build",
+				"@repo/workspace-dependencies#build"
+			],
+			"outputLogs": "new-only"
+		},
+		"test:ci": {
+			"dependsOn": [
+				"build",
+				"topo"
+			],
+			"outputLogs": "new-only"
+		},
+		"check:ci": {
+			"dependsOn": [
+				"//#check:format",
+				"//#check:deps",
+				"check:types",
+				"check:exports",
+				"//#check:lint:all",
+				"//#test:ci",
+				"test:ci",
+				"topo"
+			],
+			"outputLogs": "new-only"
+		},
+		"//#check:deps": {
+			"outputLogs": "new-only"
+		},
+		"check:types": {
+			"dependsOn": [
+				"build",
+				"topo"
+			],
+			"outputLogs": "new-only"
+		},
+		"check:exports": {
+			"dependsOn": [
+				"^check:exports",
+				"check:types",
+				"topo"
+			],
+			"outputLogs": "new-only"
+		},
+		"check:lint": {
+			"dependsOn": [
+				"build",
+				"topo"
+			],
+			"env": [
+				"FIX_ESLINT"
+			],
+			"outputLogs": "new-only"
+		},
+		"//#check:lint:all": {
+			"env": [
+				"FIX_ESLINT"
+			],
+			"outputLogs": "new-only",
+			"outputs": [
+				"node_modules/.cache/.eslintcache"
+			]
+		},
+		"//#check:format": {
+			"dependsOn": [],
+			"outputLogs": "new-only"
+		},
+		"fix:workers-types": {
+			"outputLogs": "new-only",
+			"outputs": [
+				"worker-configuration.d.ts",
+				"topo"
+			]
+		},
+		"//#build": {
+			"dependsOn": [
+				"^build"
+			],
+			"outputLogs": "new-only"
+		}
+	},
+	"ui": "stream"
+}

@@ -18,6 +18,11 @@ const config = {
 			packages: ['@repo/tools'],
 		},
 		{
+			label: 'use remote turbo-config to avoid local dep issues',
+			dependencies: ['turbo-config'],
+			packages: ['@repo/workers-packages'],
+		},
+		{
 			label: 'local packages',
 			packages: ['**'],
 			dependencies: ['$LOCAL'],
