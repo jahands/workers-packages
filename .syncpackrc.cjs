@@ -3,7 +3,15 @@
 const config = {
 	indent: '\t',
 	lintFormatting: false, // handled by prettier
+	// dependencyTypes: ['prod'], // disabled filter to enable all types
+	dependencyTypes: ['!peer'],
 	versionGroups: [
+		{
+			label: 'use zod v4 for some packages',
+			dependencies: ['zod'],
+			packages: ['notion-schemas'],
+			pinVersion: '^4.1.11',
+		},
 		{
 			label: 'local packages',
 			packages: ['**'],
@@ -14,13 +22,16 @@ const config = {
 	],
 	semverGroups: [
 		{
+			label: 'use range for dependencies in public packages',
+			range: '^',
+			dependencies: ['nanoid', 'zod'],
+			packages: ['prefixed-nanoid', 'workers-tagged-logger', 'notion-schemas'],
+		},
+		{
 			label: 'pin all deps',
 			range: '',
 			dependencies: ['**'],
 			packages: ['**'],
-			// url is not supported so we need to exclude it
-			// to allow using deps from pkg.pr.new
-			specifierTypes: ['!url'],
 		},
 	],
 }

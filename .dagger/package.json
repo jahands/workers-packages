@@ -1,0 +1,15 @@
+{
+	"name": "dagger-workers-packages",
+	"type": "module",
+	"main": "src/main.dagger.ts",
+	"dependencies": {
+		"@jahands/dagger-helpers": "0.7.1",
+		"p-map": "7.0.3",
+		"typescript": "5.9.3",
+		"zod": "4.1.2"
+	},
+	"packageManager": "bun@1.2.21",
+	"dagger": {
+		"runtime": "bun@1.2.21"
+	}
+}
