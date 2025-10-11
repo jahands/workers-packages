@@ -10,11 +10,10 @@
 		"GITHUB_ACTIONS"
 	],
 	"remoteCache": {
-		// Enable if using Turbo Remote Cache
-		"enabled": false,
+		"enabled": true,
 		"signature": true
 	},
-	"ui": "tui",
+	"ui": "stream",
 	"tasks": {
 		"topo": {
 			"dependsOn": ["^topo"]
