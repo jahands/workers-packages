@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 export type WorkersEnvironment = z.infer<typeof WorkersEnvironment>
 export const WorkersEnvironment = z.enum(['VITEST', 'development', 'staging', 'production'])

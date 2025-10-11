@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, test, vi } from 'vitest'
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 import { stringifyMessage, stringifyMessages, withLogTags, WorkersLogger } from '../../logger.js'
 import { setupTest } from '../harness.js'

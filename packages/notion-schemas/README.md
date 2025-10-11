@@ -19,7 +19,7 @@ npm install notion-schemas
 ```ts
 import { Client as NotionClient } from '@notionhq/client'
 import { Notion } from 'notion-schemas'
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 export type MyNotes_Props = z.infer<typeof MyNotes_Props>
 export type MyNotes_PartialProps = Notion.prop.PartialProps<MyNotes_Props>

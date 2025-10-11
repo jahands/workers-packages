@@ -1,6 +1,6 @@
 import { Command, program } from '@commander-js/extra-typings'
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 import { parseArg } from './args.js'
 

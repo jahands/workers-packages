@@ -1,7 +1,7 @@
 import { Command } from '@commander-js/extra-typings'
 import { cliError, prefixOutput, validateArg } from '@jahands/cli-tools'
 import pMap from 'p-map'
-import z from 'zod'
+import z from 'zod/v4'
 
 import { getDaggerModules } from '../dagger-modules'
 import { deleteIfExists, getRepoRoot } from '../path'
