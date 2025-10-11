@@ -67,5 +67,31 @@
 		"logtail",
 		"miniflare",
 		"tldraw"
-	]
+	],
+	"augment.advanced": {
+		"mcpServers": [
+			{
+				"name": "rules",
+				"command": "${workspaceFolder}/.vscode/bin/bun",
+				"args": ["x", "llm-rules@latest", "--dir", "${workspaceFolder}"]
+			},
+			{
+				"name": "cloudflare-docs",
+				"command": "${workspaceFolder}/.vscode/bin/bun",
+				"args": ["x", "mcp-remote@latest", "https://docs.mcp.cloudflare.com/sse"]
+			}
+		]
+	},
+	"amp.mcpServers": {
+		"rules": {
+			"command": "bun",
+			"args": ["x", "llm-rules@latest"]
+		},
+		"cloudflare-docs": {
+			"url": "https://docs.mcp.cloudflare.com/mcp"
+		},
+		"context7": {
+			"url": "https://mcp.context7.com/mcp"
+		}
+	}
 }
