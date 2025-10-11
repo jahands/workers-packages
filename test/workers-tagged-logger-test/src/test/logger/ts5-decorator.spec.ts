@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { withLogTags } from 'workers-tagged-logger'
 import { WithLogTags } from 'workers-tagged-logger/ts5'
-import { z } from 'zod/v4'
+import { z } from 'zod'
 
 import { setupTest } from '../harness.js'
 

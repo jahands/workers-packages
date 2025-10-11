@@ -11,15 +11,15 @@
 	},
 	"dependencies": {
 		"@jahands/otel-cf-workers": "workspace:*",
-		"hono": "4.9.0",
-		"zod": "3.25.76"
+		"hono": "4.9.11",
+		"zod": "4.1.12"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.8.30",
-		"@cloudflare/workers-types": "4.20250517.0",
+		"@cloudflare/vitest-pool-workers": "0.9.12",
+		"@cloudflare/workers-types": "4.20251011.0",
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"vitest": "3.1.4"
+		"vitest": "3.2.4"
 	}
 }

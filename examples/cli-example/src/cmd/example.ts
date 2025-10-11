@@ -1,6 +1,6 @@
 import { Command } from '@commander-js/extra-typings'
 import { cliError, prefixOutput, validateArg } from '@jahands/cli-tools'
-import { z } from 'zod/v4'
+import { z } from 'zod'
 
 export const exampleCmd = new Command('example').description('An example command with subcommands')
 

@@ -1,9 +1,9 @@
 import { program } from '@commander-js/extra-typings'
-import z, { ZodError } from 'zod/v4'
+import z, { ZodError } from 'zod'
 import { chalk } from 'zx'
 
 import type { Command } from '@commander-js/extra-typings'
-import type { ZodType } from 'zod/v4'
+import type { ZodType } from 'zod'
 
 /**
  * Parses an argument using a zod validator. If it fails,

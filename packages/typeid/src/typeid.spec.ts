@@ -1,6 +1,6 @@
 import { typeid, TypeID } from '@jahands/typeid'
 import { describe, expect, it, test } from 'vitest'
-import { z } from 'zod/v4'
+import { z } from 'zod'
 
 // spec: https://github.com/jetify-com/typeid/tree/main/spec
 
