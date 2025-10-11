@@ -523,8 +523,8 @@ importers:
         specifier: 14.0.0
         version: 14.0.0(commander@14.0.1)
       '@jahands/cli-tools':
-        specifier: workspace:*
-        version: link:../cli-tools
+        specifier: 0.11.1
+        version: 0.11.1(@commander-js/extra-typings@14.0.0(commander@14.0.1))(commander@14.0.1)(typescript@5.9.2)(zod@4.1.12)(zx@8.8.4)
       '@types/fs-extra':
         specifier: 11.0.4
         version: 11.0.4
@@ -1415,6 +1415,15 @@ packages:
   '@isaacs/fs-minipass@4.0.1':
     resolution: {integrity: sha512-wgm9Ehl2jpeqP3zw/7mo3kRHFp5MEDhqAdwy1fTGkHAwnkGOVsgpvQhL8B5n1qlb01jV3n/bI0ZfZp5lWA1k4w==}
     engines: {node: '>=18.0.0'}
+
+  '@jahands/cli-tools@0.11.1':
+    resolution: {integrity: sha512-JNpW7xaPAllmmDucIfHZ88invqsTGIfU/60fSn8LPKgvOlGgBabCouBJaatdPHpqQmWKpRP9w5Kr09uNuup8Iw==}
+    peerDependencies:
+      '@commander-js/extra-typings': ^13.0.0 || ^14.0.0
+      commander: ^13.0.0 || ^14.0.0
+      typescript: ^5.5.4
+      zod: ^3.25.76 || ^4.1.1
+      zx: ^8.3.0
 
   '@jridgewell/gen-mapping@0.3.8':
     resolution: {integrity: sha512-imAbBGkb+ebQyxKgzv5Hu2nmROxoDOXHh80evxdoXNOrvAnVx7zimzc1Oo5h9RlfV4vPXaE2iM5pOFbvOCClWA==}
@@ -6034,6 +6043,14 @@ snapshots:
   '@isaacs/fs-minipass@4.0.1':
     dependencies:
       minipass: 7.1.2
+
+  '@jahands/cli-tools@0.11.1(@commander-js/extra-typings@14.0.0(commander@14.0.1))(commander@14.0.1)(typescript@5.9.2)(zod@4.1.12)(zx@8.8.4)':
+    dependencies:
+      '@commander-js/extra-typings': 14.0.0(commander@14.0.1)
+      commander: 14.0.1
+      typescript: 5.9.2
+      zod: 4.1.12
+      zx: 8.8.4
 
   '@jridgewell/gen-mapping@0.3.8':
     dependencies:

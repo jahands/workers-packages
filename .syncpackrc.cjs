@@ -13,6 +13,11 @@ const config = {
 			pinVersion: '^4.1.11',
 		},
 		{
+			label: 'use remote @jahands/cli-tools to avoid circular dependency',
+			dependencies: ['@jahands/cli-tools'],
+			packages: ['@repo/tools'],
+		},
+		{
 			label: 'local packages',
 			packages: ['**'],
 			dependencies: ['$LOCAL'],
