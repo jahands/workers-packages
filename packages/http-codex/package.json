@@ -1,0 +1,71 @@
+{
+	"name": "http-codex",
+	"version": "0.6.2",
+	"private": false,
+	"description": "HTTP status codes and methods based on Go's http library",
+	"keywords": [
+		"http status codes",
+		"http methods",
+		"http",
+		"status codes",
+		"methods"
+	],
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/http-codex",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages.git",
+		"directory": "packages/http-codex"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		},
+		"./status": {
+			"import": {
+				"types": "./dist/status.d.ts",
+				"default": "./dist/status.js"
+			}
+		},
+		"./method": {
+			"import": {
+				"types": "./dist/method.d.ts",
+				"default": "./dist/method.js"
+			}
+		}
+	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "runx build tsc ./src/index.ts ./src/status.ts ./src/method.ts",
+		"check:exports": "runx check --exports",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "0.8.30",
+		"@cloudflare/workers-types": "4.20250517.0",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"esbuild": "0.25.4",
+		"rimraf": "6.0.1",
+		"typescript": "5.5.4",
+		"vitest": "3.1.4",
+		"zod": "3.25.76",
+		"zx": "8.5.4"
+	}
+}

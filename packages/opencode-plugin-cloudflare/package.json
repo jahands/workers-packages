@@ -1,0 +1,38 @@
+{
+	"name": "opencode-plugin-cloudflare",
+	"version": "0.1.2",
+	"private": false,
+	"description": "Cloudflare plugin for opencode (opencode-ai)",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/opencode-plugin-cloudflare",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages.git",
+		"directory": "packages/opencode-plugin-cloudflare"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"main": "./dist/cloudflare.js",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "runx build tsc ./src/cloudflare.ts",
+		"check:exports": "runx check --exports",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"devDependencies": {
+		"@opencode-ai/plugin": "0.5.28",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"@types/bun": "1.2.13",
+		"vitest": "3.1.4"
+	}
+}

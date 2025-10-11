@@ -1,0 +1,64 @@
+{
+	"name": "llm-tools",
+	"version": "0.2.2",
+	"private": false,
+	"description": "tools for working with LLMs",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/llm-tools",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages.git",
+		"directory": "packages/llm-tools"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"require": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		},
+		"./format": {
+			"import": {
+				"types": "./dist/format.d.ts",
+				"default": "./dist/format.js"
+			},
+			"require": {
+				"types": "./dist/format.d.ts",
+				"default": "./dist/format.js"
+			}
+		}
+	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "runx build tsc ./src/index.ts",
+		"check:exports": "runx check --exports",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"@fast-csv/format": "5.0.0"
+	},
+	"devDependencies": {
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"vitest": "3.1.4"
+	},
+	"peerDependencies": {
+		"typescript": "^5.5.4"
+	}
+}
