@@ -1,0 +1,13 @@
+{
+	"mcpServers": {
+		"rules": {
+			"type": "stdio",
+			"command": "bun",
+			"args": ["x", "llm-rules@latest"]
+		},
+		"context7": {
+			"type": "http",
+			"url": "https://mcp.context7.com/mcp"
+		}
+	}
+}
