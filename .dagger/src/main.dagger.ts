@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { argument, Container, dag, Directory, func, object, Secret } from '@dagger.io/dagger'
 import { envStorage, ParamsToEnv, shell } from '@jahands/dagger-helpers'
 

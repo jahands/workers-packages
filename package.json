@@ -7,6 +7,9 @@
 		"check:deps": "runx check --deps",
 		"check:format": "runx check --format",
 		"check:lint:all": "run-eslint",
+		"publish": "changeset publish",
+		"release": "run-s build:packages release:clean publish",
+		"release:clean": "runx release clean",
 		"test": "vitest",
 		"test:ci": "run-vitest-ci"
 	},

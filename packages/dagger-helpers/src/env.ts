@@ -22,6 +22,7 @@ export const envStorage = new AsyncLocalStorage<EnvContext>()
  * Note: This approach using Function.toString() can be fragile and might
  * break with code minification or complex function definitions.
  */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export function extractParamNames(func: Function): string[] {
 	const funcStr = func.toString().replace(/(\r\n|\n|\r)/gm, '')
 	// Regex to find parameter list within parentheses, handles various function definition styles
