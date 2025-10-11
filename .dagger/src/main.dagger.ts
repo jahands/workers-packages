@@ -11,6 +11,7 @@ const projectIncludes: string[] = [
 	'test/',
 
 	// files
+	'.editorconfig',
 	'.gitignore',
 	'.npmrc',
 	'.prettierignore',
@@ -22,7 +23,7 @@ const projectIncludes: string[] = [
 	'pnpm-workspace.yaml',
 	'tsconfig.json',
 	'turbo.jsonc',
-	'vitest.workspace.ts',
+	'vitest.config.ts',
 ]
 
 @object()
