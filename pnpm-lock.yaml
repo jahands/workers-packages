@@ -54,21 +54,30 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
 
-  apps/example-worker-echoback:
+  examples/cli-example:
     dependencies:
-      '@repo/hono-helpers':
+      '@commander-js/extra-typings':
+        specifier: 13.1.0
+        version: 13.1.0(commander@13.1.0)
+      '@jahands/cli-tools':
         specifier: workspace:*
-        version: link:../../packages/hono-helpers
-      hono:
-        specifier: 4.9.11
-        version: 4.9.11
-      workers-tagged-logger:
-        specifier: 0.13.3
-        version: 0.13.3
+        version: link:../../packages/cli-tools
+      commander:
+        specifier: 13.1.0
+        version: 13.1.0
+      zod:
+        specifier: 3.25.76
+        version: 3.25.76
+      zx:
+        specifier: 8.5.4
+        version: 8.5.4
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.8.30
+        version: 0.8.30(@cloudflare/workers-types@4.20250517.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.1.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+      '@cloudflare/workers-types':
+        specifier: 4.20250517.0
+        version: 4.20250517.0
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -78,15 +87,102 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
-      '@types/node':
-        specifier: 22.15.27
-        version: 22.15.27
       vitest:
-        specifier: 3.2.4
-        version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
-      wrangler:
-        specifier: 4.42.2
-        version: 4.42.2(@cloudflare/workers-types@4.20251011.0)
+        specifier: 3.1.4
+        version: 3.1.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
+
+  examples/hono-app:
+    dependencies:
+      hono:
+        specifier: 4.9.0
+        version: 4.9.0
+      http-codex:
+        specifier: workspace:*
+        version: link:../../packages/http-codex
+      workers-tagged-logger:
+        specifier: workspace:*
+        version: link:../../packages/workers-tagged-logger
+      zod:
+        specifier: 3.25.76
+        version: 3.25.76
+    devDependencies:
+      '@cloudflare/vitest-pool-workers':
+        specifier: 0.8.30
+        version: 0.8.30(@cloudflare/workers-types@4.20250517.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.1.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+      '@cloudflare/workers-types':
+        specifier: 4.20250517.0
+        version: 4.20250517.0
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/tools':
+        specifier: workspace:*
+        version: link:../../packages/tools
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      vitest:
+        specifier: 3.1.4
+        version: 3.1.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
+
+  examples/otel-example:
+    dependencies:
+      '@jahands/otel-cf-workers':
+        specifier: workspace:*
+        version: link:../../packages/otel-cf-workers
+      hono:
+        specifier: 4.9.0
+        version: 4.9.0
+      zod:
+        specifier: 3.25.76
+        version: 3.25.76
+    devDependencies:
+      '@cloudflare/vitest-pool-workers':
+        specifier: 0.8.30
+        version: 0.8.30(@cloudflare/workers-types@4.20250517.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.1.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+      '@cloudflare/workers-types':
+        specifier: 4.20250517.0
+        version: 4.20250517.0
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/tools':
+        specifier: workspace:*
+        version: link:../../packages/tools
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      vitest:
+        specifier: 3.1.4
+        version: 3.1.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
+
+  examples/vanilla-worker:
+    dependencies:
+      hono:
+        specifier: 4.9.0
+        version: 4.9.0
+      workers-tagged-logger:
+        specifier: workspace:*
+        version: link:../../packages/workers-tagged-logger
+    devDependencies:
+      '@cloudflare/vitest-pool-workers':
+        specifier: 0.8.30
+        version: 0.8.30(@cloudflare/workers-types@4.20250517.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.1.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+      '@cloudflare/workers-types':
+        specifier: 4.20250517.0
+        version: 4.20250517.0
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/tools':
+        specifier: workspace:*
+        version: link:../../packages/tools
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      vitest:
+        specifier: 3.1.4
+        version: 3.1.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
 
   packages/cli-tools:
     dependencies:
@@ -563,6 +659,39 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
 
+  test/workers-tagged-logger-test:
+    devDependencies:
+      '@cloudflare/vitest-pool-workers':
+        specifier: 0.8.30
+        version: 0.8.30(@cloudflare/workers-types@4.20250517.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.1.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+      '@cloudflare/workers-types':
+        specifier: 4.20250517.0
+        version: 4.20250517.0
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/tools':
+        specifier: workspace:*
+        version: link:../../packages/tools
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@types/node':
+        specifier: 22.15.27
+        version: 22.15.27
+      typescript:
+        specifier: 5.5.4
+        version: 5.5.4
+      vitest:
+        specifier: 3.1.4
+        version: 3.1.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
+      workers-tagged-logger:
+        specifier: workspace:*
+        version: link:../../packages/workers-tagged-logger
+      zod:
+        specifier: 3.25.76
+        version: 3.25.76
+
 packages:
 
   '@astrojs/compiler@2.12.0':
@@ -769,6 +898,11 @@ packages:
   '@colors/colors@1.5.0':
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
     engines: {node: '>=0.1.90'}
+
+  '@commander-js/extra-typings@13.1.0':
+    resolution: {integrity: sha512-q5P52BYb1hwVWE6dtID7VvuJWrlfbCv4klj7BjUUOqMz4jbSZD4C9fJ9lRjL2jnBGTg+gDDlaXN51rkWcLk4fg==}
+    peerDependencies:
+      commander: ~13.1.0
 
   '@commander-js/extra-typings@14.0.0':
     resolution: {integrity: sha512-hIn0ncNaJRLkZrxBIp5AsW/eXEHNKYQBh0aPdoUqNgD+Io3NIykQqpKFyKcuasZhicGaEZJX/JBSIkZ4e5x8Dg==}
@@ -3416,6 +3550,10 @@ packages:
     engines: {node: '>= 0.10.x'}
     hasBin: true
 
+  hono@4.9.0:
+    resolution: {integrity: sha512-JAUc4Sqi3lhby2imRL/67LMcJFKiCu7ZKghM7iwvltVZzxEC5bVJCsAa4NTnSfmWGb+N2eOVtFE586R+K3fejA==}
+    engines: {node: '>=16.9.0'}
+
   hono@4.9.11:
     resolution: {integrity: sha512-MyJ4xop3boTyXl8bJBh4i20AAZTLM3AXUJphyrUb0CpgTKYb1N703z53XiKUKchGUpcPqiiYkiLOXA3kqK3icA==}
     engines: {node: '>=16.9.0'}
@@ -5746,6 +5884,10 @@ snapshots:
 
   '@colors/colors@1.5.0':
     optional: true
+
+  '@commander-js/extra-typings@13.1.0(commander@13.1.0)':
+    dependencies:
+      commander: 13.1.0
 
   '@commander-js/extra-typings@14.0.0(commander@14.0.1)':
     dependencies:
@@ -8628,6 +8770,8 @@ snapshots:
       minimist: 1.2.8
       process: 0.10.1
       xtend: 4.0.2
+
+  hono@4.9.0: {}
 
   hono@4.9.11: {}
 
