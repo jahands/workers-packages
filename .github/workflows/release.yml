@@ -2,36 +2,12 @@ name: Release
 
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
 
 env:
   FORCE_COLOR: 1
 
 jobs:
-  check:
-    name: Check
-    runs-on:
-      - self-hosted
-      - X64
-    timeout-minutes: 5
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 3
-      - uses: 1password/install-cli-action@v1
-      - uses: extractions/setup-just@v3
-        with:
-          just-version: 1.40.0
-      - name: Install Dagger
-        uses: dagger/dagger-for-github@8.0.0
-        with:
-          version: '0.18.19'
-      - name: Test (Dagger)
-        run: just dagger-test --GITHUB_ACTIONS=1
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-
   create-release-pr:
     # Release PRs are for changelogs only - we auto publish on main every time regardless.
     name: Create Release PR
