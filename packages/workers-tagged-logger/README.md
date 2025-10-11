@@ -452,27 +452,26 @@ This becomes cumbersome. `workers-tagged-logger` solves this by leveraging `Asyn
 
 ```ts
 // helper.ts
-import { logger } from './logger'; // Assume logger is exported
+import { withLogTags } from 'workers-tagged-logger'
+
+// handler.ts
+import { logger, logger } from './logger' // Assume logger is exported
 
 function doSomething(input) {
   // No need for logData argument! logger reads from context.
-  logger.info('Doing something', { input });
+  logger.info('Doing something', { input })
   // ...
 }
-
-// handler.ts
-import { logger } from './logger';
-import { withLogTags } from 'workers-tagged-logger';
 
 async function handleRequest(request) {
   // Wrap the operation in a context
   return withLogTags({ source: 'handler' }, async () => {
-    const userId = getUserId(request);
+    const userId = getUserId(request)
     // Set tags once
-    logger.setTags({ userId, requestId: request.id });
+    logger.setTags({ userId, requestId: request.id })
 
-    logger.info('Handling request'); // Automatically gets userId and requestId tags
-    await doSomething(request.body); // Automatically gets userId and requestId tags
-  });
+    logger.info('Handling request') // Automatically gets userId and requestId tags
+    await doSomething(request.body) // Automatically gets userId and requestId tags
+  })
 }
 ```
