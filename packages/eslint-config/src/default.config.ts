@@ -13,7 +13,7 @@ import { getDirname, getGitIgnoreFiles, getTsconfigRootDir } from './helpers'
 import type { ConfigObject } from '@eslint/core'
 import type { Linter } from 'eslint'
 
-export { defineConfig, ConfigObject }
+export { defineConfig, ConfigObject as Config }
 
 const compat = new FlatCompat({
 	// This helps FlatCompat resolve plugins relative to this config file

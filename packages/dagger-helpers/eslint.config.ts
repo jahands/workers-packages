@@ -1,4 +1,4 @@
-import { ConfigObject, defineConfig, getConfig } from '@repo/eslint-config'
+import { Config, defineConfig, getConfig } from '@repo/eslint-config'
 
 const config = getConfig(import.meta.url)
 
@@ -7,4 +7,4 @@ export default defineConfig([
 	{
 		ignores: ['src/test/fixtures/**/*'],
 	},
-]) as ConfigObject
+]) as Config
