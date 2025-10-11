@@ -13,7 +13,7 @@
 		"check:deps": "runx check --deps",
 		"check:format": "runx check --format",
 		"check:lint:all": "run-eslint",
-		"postinstall": "test -z \"$CI\" && turbo-config || true",
+		"postinstall": "test -z \"$CI\" && turbo-config",
 		"publish": "changeset publish",
 		"release": "run-s build:packages release:clean publish",
 		"release:clean": "runx release clean",
