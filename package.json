@@ -1,0 +1,31 @@
+{
+	"name": "workers-monorepo-template",
+	"version": "1.0.0",
+	"private": true,
+	"sideEffects": false,
+	"scripts": {
+		"check:deps": "runx check --deps",
+		"check:format": "runx check --format",
+		"check:lint:all": "run-eslint",
+		"test": "vitest",
+		"test:ci": "run-vitest-ci"
+	},
+	"devDependencies": {
+		"@changesets/cli": "2.29.7",
+		"@ianvs/prettier-plugin-sort-imports": "4.6.2",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"@repo/workspace-dependencies": "workspace:*",
+		"@turbo/gen": "2.5.8",
+		"npm-run-all2": "8.0.4",
+		"prettier": "3.6.2",
+		"prettier-plugin-packagejson": "2.5.19",
+		"prettier-plugin-toml": "2.0.6",
+		"syncpack": "13.0.4",
+		"turbo": "2.5.8",
+		"typescript": "5.9.2",
+		"vitest": "3.2.4"
+	},
+	"packageManager": "pnpm@10.14.0"
+}

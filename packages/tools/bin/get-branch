@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+echo "$branch"

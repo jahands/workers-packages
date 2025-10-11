@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+
+if test -f ./vitest.config.ts; then
+	vitest --testTimeout=15000 "$@"
+fi
+if test -f ./vitest.config.node.ts; then
+	vitest --testTimeout=15000 -c ./vitest.config.node.ts "$@"
+fi

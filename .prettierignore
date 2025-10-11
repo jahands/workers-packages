@@ -1,0 +1,17 @@
+.changeset
+.bun-build
+.claude/*.json
+.cursor/rules/
+.docs/migrations/*.md
+.docs/prompts/*.md
+.windsurf/rules/
+AGENT.md
+AGENTS.md
+CLAUDE.md
+**/dist/**
+*.lock
+/turbo/generators/**/*.hbs
+pnpm-lock.yaml
+vite.config.ts.timestamp*
+vitest.config.ts.timestamp*
+worker-configuration.d.ts

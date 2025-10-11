@@ -1,0 +1,20 @@
+#!/bin/bash
+set -eu
+
+repo_root=$(git rev-parse --show-toplevel)
+cd "$repo_root"
+
+# Stage changes so that changeset can see them
+git add .
+
+changeset
+
+# Make sure a changeset was created
+if ! git status --porcelain | grep '.changeset/.*\.md' >/dev/null; then
+	echo "🚨 No changeset created"
+	exit 1
+fi
+
+new_changeset=$(find .changeset -name "*.md" -type f -exec ls -t {} + | head -n 1)
+echo "📝 New changeset: $new_changeset"
+git add "$new_changeset"
