@@ -10,6 +10,7 @@ import { ciCmd } from '../cmd/ci.cmd'
 import { daggerxCmd } from '../cmd/daggerx.cmd'
 import { devCmd } from '../cmd/dev.cmd'
 import { fixCmd } from '../cmd/fix.cmd'
+import { releaseCmd } from '../cmd/release.cmd'
 import { shfmtCmd } from '../cmd/shfmt.cmd'
 import { updateCmd } from '../cmd/update.cmd'
 
@@ -29,6 +30,7 @@ program
 	.addCommand(updateCmd)
 	.addCommand(shfmtCmd)
 	.addCommand(daggerxCmd)
+	.addCommand(releaseCmd)
 
 	// Don't hang for unresolved promises
 	.hook('postAction', () => process.exit(0))
