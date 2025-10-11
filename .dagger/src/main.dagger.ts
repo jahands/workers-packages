@@ -60,9 +60,13 @@ export class WorkersPackages {
 
 	@func()
 	async setupWorkspace(): Promise<Container> {
-		return dag
-			.container()
-			.from(`public.ecr.aws/debian/debian:12-slim`)
+		let con = dag.container().from(`public.ecr.aws/debian/debian:12-slim`)
+
+		if (process.env.CI) {
+			con = con.withEnvVariable('CI', '1')
+		}
+
+		con = con
 			.withWorkdir('/work')
 			.withEnvVariable('HOME', '/root')
 			.withExec(
@@ -81,7 +85,8 @@ export class WorkersPackages {
 			})
 			.withFile('.mise.toml', this.source.file('.mise.toml'))
 			.withExec(sh('mise trust --yes && mise install --yes && mise reshim'))
-			.sync()
+
+		return con.sync()
 	}
 
 	@func()
