@@ -121,7 +121,7 @@ export class WorkersPackages {
 	): Promise<void> {
 		const con = this.withEnv(await this.installDeps())
 
-		await con.withExec(sh('bun check:ci')).sync()
+		await con.withExec(sh('bun runx ci check')).sync()
 	}
 
 	// =============================== //
