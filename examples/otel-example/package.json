@@ -1,0 +1,25 @@
+{
+	"name": "@repo/otel-example",
+	"version": "0.1.27",
+	"private": true,
+	"sideEffects": false,
+	"scripts": {
+		"build:wrangler": "runx build wrangler",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"@jahands/otel-cf-workers": "workspace:*",
+		"hono": "4.9.0",
+		"zod": "3.25.76"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "0.8.30",
+		"@cloudflare/workers-types": "4.20250517.0",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"vitest": "3.1.4"
+	}
+}
