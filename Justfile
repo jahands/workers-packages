@@ -114,3 +114,8 @@ update *flags:
 [group('4. utility')]
 runx *flags:
   bun runx {{flags}}
+
+# Generate turbo.json
+[group('4. Maintenance')]
+generate-turbo-config:
+  bun turbo-config generate
