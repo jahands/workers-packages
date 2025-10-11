@@ -15,6 +15,7 @@
 		"moduleResolution": "bundler",
 		"types": ["./worker-configuration.d.ts", "@cloudflare/vitest-pool-workers"],
 		"resolveJsonModule": true,
+		"experimentalDecorators": true,
 		"allowJs": true,
 		"checkJs": false,
 		"noEmit": true,
