@@ -11,6 +11,7 @@ alias new-pkg := new-package
 alias new-worker := gen
 alias up := update
 alias i := install
+alias dagx := daggerx
 
 # =============================== #
 #         DEV COMMANDS            #
@@ -42,6 +43,24 @@ test *flags:
 [no-cd]
 build *flags:
   bun turbo build {{flags}}
+
+
+[group('1. dev')]
+dagger-test *flags:
+  #!/bin/bash
+  set -euo pipefail
+  SECRETS='op://xxcrgwtyu2wmeh2jdcnee2eqda/dzxntwosd46ykwyz7qjdijfr2m'
+  export DAGGER_CLOUD_TOKEN="$SECRETS/DAGGER_CLOUD_TOKEN"
+  op run --no-masking -- dagger call test \
+    --TURBO_TOKEN="$SECRETS/TURBO_TOKEN" \
+    --TURBO_REMOTE_CACHE_SIGNATURE_KEY="$SECRETS/TURBO_REMOTE_CACHE_SIGNATURE_KEY" \
+    {{flags}}
+
+# Helpers for managing dagger modules
+[group('1. dev')]
+[no-cd]
+daggerx *flags:
+  @bun runx daggerx {{flags}}
 
 # =============================== #
 #       LOCAL DEV COMMANDS        #
