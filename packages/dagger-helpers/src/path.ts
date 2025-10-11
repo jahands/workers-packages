@@ -30,7 +30,7 @@ export function getModulePath(cwd?: string): string {
 	}
 	const repoRoot = path.dirname(lockfile)
 
-	const daggerJson = up('dagger.json', { cwd, stop: repoRoot })
+	const daggerJson = up('dagger.json', { cwd, last: repoRoot })
 	if (!daggerJson) {
 		throw new Error('could not determine dagger.json path: unable to find dagger.json')
 	}
