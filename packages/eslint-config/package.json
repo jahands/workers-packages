@@ -2,6 +2,7 @@
 	"name": "@repo/eslint-config",
 	"version": "0.2.0",
 	"private": true,
+	"license": "MIT",
 	"sideEffects": false,
 	"exports": {
 		".": "./src/default.config.ts",
