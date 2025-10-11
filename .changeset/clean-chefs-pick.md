@@ -21,4 +21,4 @@
 '@repo/tools': patch
 ---
 
-chore: update deps and modernize repo
+chore: update deps and modernize monorepo
