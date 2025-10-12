@@ -19,14 +19,11 @@ jobs:
         with:
           fetch-depth: 3
       - uses: 1password/install-cli-action@v1
-      - uses: extractions/setup-just@v3
-        with:
-          just-version: 1.40.0
       - name: Install Dagger
         uses: dagger/dagger-for-github@8.0.0
         with:
-          version: '0.18.19'
+          version: "0.18.19"
       - name: Check & Test (Dagger)
-        run: just dagger-test --GITHUB_ACTIONS=1
+        run: ./.dagger/bin/daggerx test
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
