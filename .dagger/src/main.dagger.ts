@@ -6,8 +6,9 @@ const sh = shell('bash')
 
 const projectIncludes: string[] = [
 	// dirs
-	'examples/',
+	'apps/',
 	'packages/',
+	'examples/',
 	'test/',
 
 	// files

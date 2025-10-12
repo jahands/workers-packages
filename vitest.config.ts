@@ -4,7 +4,9 @@ import { glob } from '@repo/workspace-dependencies/zx'
 
 export default defineConfig(async () => {
 	// All vitest projects
-	const projectConfigPaths = await glob(['{apps,packages,test}/*/vitest.config{,.node}.ts'])
+	const projectConfigPaths = await glob([
+		'{apps,packages,examples,test}/*/vitest.config{,.node}.ts',
+	])
 
 	return {
 		test: {

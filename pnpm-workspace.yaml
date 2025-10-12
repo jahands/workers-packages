@@ -1,6 +1,7 @@
 packages:
-  - examples/*
+  - apps/*
   - packages/*
+  - examples/*
   - test/*
 
 configDependencies:
