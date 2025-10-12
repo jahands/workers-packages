@@ -1,8 +1,8 @@
 {
-	"include": ["**/*.ts", "**/*.tsx"],
-	"exclude": ["node_modules/"],
 	"compilerOptions": {
-		"lib": ["ESNext"],
+		"lib": [
+			"ESNext"
+		],
 		"target": "ESNext",
 		"module": "ESNext",
 		"moduleDetection": "force",

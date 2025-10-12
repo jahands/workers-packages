@@ -1,5 +1,3 @@
 {
-	"extends": "@repo/typescript-config/lib-emit.json",
-	"include": ["**/*.ts"],
-	"exclude": ["node_modules", "dist", "tsconfig.json", "eslint.config.ts"]
+	"extends": "@repo/typescript-config/lib-emit.json"
 }
