@@ -1,0 +1,14 @@
+#!/bin/bash
+set -eu
+
+cmd="${1:-}"
+
+if [[ -z "$cmd" ]]; then
+	echo "No command provided"
+	exit 1
+fi
+
+script_dir="$(realpath "$(dirname "$0")")"
+cmd_dir="$script_dir/cmd"
+
+exec bun run --install=fallback "$cmd_dir/$cmd.cmd.ts"

@@ -2,6 +2,8 @@
 import { argument, Container, dag, Directory, func, object, Secret } from '@dagger.io/dagger'
 import { envStorage, ParamsToEnv, shell } from '@jahands/dagger-helpers'
 
+import { dagEnv } from './dagger-env'
+
 const sh = shell('bash')
 
 const projectIncludes: string[] = [
@@ -62,8 +64,10 @@ export class WorkersPackages {
 	}
 
 	@func()
-	async setupWorkspace(): Promise<Container> {
-		return dag
+	async setupWorkspace(options: Secret): Promise<Container> {
+		const { withEnv } = await dagEnv.getWithEnv(options, [], ['MISE_GITHUB_TOKEN'])
+
+		const con = dag
 			.container()
 			.from(`public.ecr.aws/debian/debian:12-slim`)
 			.withWorkdir('/work')
@@ -78,6 +82,8 @@ export class WorkersPackages {
 					].join(' && ')
 				)
 			)
+
+		return withEnv(con)
 			.withExec(sh('curl -fsSL https://sh.uuid.rocks/install/mise | MISE_VERSION=v2025.10.0 bash'))
 			.withEnvVariable('PATH', '$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH', {
 				expand: true,
@@ -88,8 +94,8 @@ export class WorkersPackages {
 	}
 
 	@func()
-	async installDeps(): Promise<Container> {
-		const workspace = await this.setupWorkspace()
+	async installDeps(options: Secret): Promise<Container> {
+		const workspace = await this.setupWorkspace(options)
 
 		const con = workspace
 			// copy over minimal files needed for installing tools/deps
@@ -107,8 +113,7 @@ export class WorkersPackages {
 			// install pnpm deps
 			.withMountedCache('/pnpm-store', dag.cacheVolume(`pnpm-store`))
 			.withExec(sh('pnpm config set store-dir /pnpm-store'))
-			// TODO: pass in CI as a param instead of hard-coding here
-			.withExec(sh('CI=1 FORCE_COLOR=1 pnpm install --frozen-lockfile --child-concurrency=10'))
+			.withExec(sh('FORCE_COLOR=1 pnpm install --frozen-lockfile --child-concurrency=10'))
 
 			// copy over the rest of the project
 			.withDirectory('/work', this.source.directory('/'), { include: projectIncludes })
@@ -120,86 +125,11 @@ export class WorkersPackages {
 
 	@func()
 	@ParamsToEnv()
-	async test(
-		TURBO_TOKEN?: Secret,
-		TURBO_REMOTE_CACHE_SIGNATURE_KEY?: Secret,
-		GITHUB_ACTIONS?: string
-	): Promise<void> {
-		const con = this.withEnv(await this.installDeps())
+	async test(options: Secret): Promise<void> {
+		const { withEnv } = await dagEnv.getWithEnv(options, ['turbo'])
+
+		const con = withEnv(await this.installDeps(options))
 
 		await con.withExec(sh('bun runx ci check')).sync()
-	}
-
-	// =============================== //
-	// =========== Helpers =========== //
-	// =============================== //
-
-	/**
-	 * Calculate derived environment variables based on variables present in the env object.
-	 */
-	private getDerivedEnvVars(
-		env: Record<string, string | Secret | undefined>
-	): Record<string, string> {
-		const derivedVars: Record<string, string> = {}
-
-		const setIfExists = (triggerVarName: string, envVars: Record<string, string>) => {
-			if (env[triggerVarName] !== undefined) {
-				Object.assign(derivedVars, envVars)
-			}
-		}
-
-		setIfExists('TURBO_TOKEN', {
-			TURBO_API: 'https://turbo.uuid.rocks',
-			TURBO_TEAM: 'team_workers_packages',
-			TURBO_LOG_ORDER: 'grouped',
-			DO_NOT_TRACK: '1',
-		})
-		return derivedVars
-	}
-
-	/**
-	 * Add env vars / secrets to a container based on AsyncLocalStorage context
-	 */
-	private withEnv(
-		con: Container,
-		{
-			color = true,
-		}: {
-			/**
-			 * Set FORCE_COLOR=1
-			 * @default true
-			 */
-			color?: boolean
-		} = {}
-	): Container {
-		let c = con
-		const context = envStorage.getStore()
-
-		if (color) {
-			c = c.withEnvVariable('FORCE_COLOR', '1')
-		}
-
-		if (context) {
-			const { currentParams, mergedEnv } = context
-
-			/** Set derived env vars based on trigger vars in the current context */
-			const derivedEnvVars = this.getDerivedEnvVars(mergedEnv)
-			for (const [key, value] of Object.entries(derivedEnvVars)) {
-				c = c.withEnvVariable(key, value)
-			}
-
-			for (const [key, value] of Object.entries(mergedEnv)) {
-				if (currentParams.has(key) && value) {
-					if (typeof value === 'string') {
-						c = c.withEnvVariable(key, value)
-					} else {
-						c = c.withSecretVariable(key, value as Secret)
-					}
-				}
-			}
-		} else {
-			throw new Error('AsyncLocalStorage store not found in withEnv')
-		}
-		return c
 	}
 }
