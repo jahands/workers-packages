@@ -7,11 +7,11 @@
 		"dagger",
 		"dagger.io"
 	],
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/dagger-helpers",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/dagger-helpers",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
-		"directory": "packages/dagger-helpers"
+		"directory": "npm-pkgs/dagger-helpers"
 	},
 	"license": "MIT",
 	"author": {

@@ -10,11 +10,11 @@
 		"cloudflare workers",
 		"typescript"
 	],
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/prefixed-nanoid",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/prefixed-nanoid",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
-		"directory": "packages/prefixed-nanoid"
+		"directory": "npm-pkgs/prefixed-nanoid"
 	},
 	"license": "MIT",
 	"author": {

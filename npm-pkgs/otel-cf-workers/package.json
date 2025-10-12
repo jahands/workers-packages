@@ -10,11 +10,11 @@
 		"cloudflare",
 		"workers"
 	],
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/otel-cf-workers",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/otel-cf-workers",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
-		"directory": "packages/otel-cf-workers"
+		"directory": "npm-pkgs/otel-cf-workers"
 	},
 	"license": "MIT",
 	"author": {

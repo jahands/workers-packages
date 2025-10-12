@@ -3,11 +3,11 @@
 	"version": "0.3.2",
 	"private": false,
 	"description": "Notion Zod schemas",
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/notion-schemas",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/notion-schemas",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
-		"directory": "packages/notion-schemas"
+		"directory": "npm-pkgs/notion-schemas"
 	},
 	"license": "MIT",
 	"author": {

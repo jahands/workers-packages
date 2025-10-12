@@ -10,11 +10,11 @@
 		"turbo.config.ts",
 		"config"
 	],
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/turbo-config",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/turbo-config",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
-		"directory": "packages/turbo-config"
+		"directory": "npm-pkgs/turbo-config"
 	},
 	"license": "MIT",
 	"author": {

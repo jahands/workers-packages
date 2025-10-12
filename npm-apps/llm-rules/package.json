@@ -9,11 +9,11 @@
 		"coding assistant",
 		"rules"
 	],
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/apps/llm-rules",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-apps/llm-rules",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
-		"directory": "apps/llm-rules"
+		"directory": "npm-apps/llm-rules"
 	},
 	"license": "MIT",
 	"author": {

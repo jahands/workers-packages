@@ -10,11 +10,11 @@
 		"status codes",
 		"methods"
 	],
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/http-codex",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/http-codex",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
-		"directory": "packages/http-codex"
+		"directory": "npm-pkgs/http-codex"
 	},
 	"license": "MIT",
 	"author": {

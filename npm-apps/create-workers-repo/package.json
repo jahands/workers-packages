@@ -9,11 +9,11 @@
 		"monorepo",
 		"alias"
 	],
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/apps/create-workers-repo",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-apps/create-workers-repo",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
-		"directory": "apps/create-workers-repo"
+		"directory": "npm-apps/create-workers-repo"
 	},
 	"license": "MIT",
 	"author": {

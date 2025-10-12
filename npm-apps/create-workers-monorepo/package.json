@@ -9,11 +9,11 @@
 		"cloudflare",
 		"workers"
 	],
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/apps/create-workers-monorepo",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-apps/create-workers-monorepo",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
-		"directory": "apps/create-workers-monorepo"
+		"directory": "npm-apps/create-workers-monorepo"
 	},
 	"license": "MIT",
 	"author": {

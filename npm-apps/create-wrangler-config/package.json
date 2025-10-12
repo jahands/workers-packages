@@ -10,11 +10,11 @@
 		"cli",
 		"cloudflare"
 	],
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/apps/create-wrangler-config",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-apps/create-wrangler-config",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
-		"directory": "apps/create-wrangler-config"
+		"directory": "npm-apps/create-wrangler-config"
 	},
 	"license": "MIT",
 	"author": {

@@ -3,11 +3,11 @@
 	"version": "0.2.2",
 	"private": false,
 	"description": "tools for working with LLMs",
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/packages/llm-tools",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/llm-tools",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
-		"directory": "packages/llm-tools"
+		"directory": "npm-pkgs/llm-tools"
 	},
 	"license": "MIT",
 	"author": {
