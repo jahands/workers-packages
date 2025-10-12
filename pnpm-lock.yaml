@@ -804,7 +804,7 @@ importers:
         specifier: 14.0.0
         version: 14.0.0(commander@14.0.1)
       '@jahands/cli-tools':
-        specifier: 0.11.1
+        specifier: npm:@jahands/cli-tools@0.11.1
         version: 0.11.1(@commander-js/extra-typings@14.0.0(commander@14.0.1))(commander@14.0.1)(typescript@5.9.2)(zod@4.1.12)(zx@8.8.4)
       '@types/fs-extra':
         specifier: 11.0.4
