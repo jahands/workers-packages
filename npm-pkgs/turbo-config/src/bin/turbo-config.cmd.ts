@@ -8,10 +8,17 @@ import { z } from 'zod'
 
 import { checkTurboJson, generateTurboJson } from '../cli'
 
+const isCI = () => z.stringbool().safeParse(process.env.CI).success
+
 export const program = new Command('turbo-config')
 	.description('Commands for working with turbo.config.ts and turbo.json')
-	.action(async () => {
-		if (z.stringbool().safeParse(process.env.CI).success) {
+	.option('--skip-in-ci', 'Skip checks in CI')
+	.action(async ({ skipInCi }) => {
+		if (isCI()) {
+			if (skipInCi) {
+				return
+			}
+
 			await checkTurboJson()
 		} else {
 			await generateTurboJson()
@@ -28,7 +35,12 @@ program
 program
 	.command('check')
 	.description('Ensure turbo.config.ts is valid and matches turbo.json')
-	.action(async () => {
+	.option('--skip-in-ci', 'Skip checks in CI')
+	.action(async ({ skipInCi }) => {
+		if (isCI() && skipInCi) {
+			return
+		}
+
 		await checkTurboJson()
 	})
 
