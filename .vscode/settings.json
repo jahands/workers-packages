@@ -29,7 +29,7 @@
 
 	"github-actions.workflows.pinned.workflows": [
 		".github/workflows/release.yml",
-		".github/workflows/branches.yml"
+		".github/workflows/check.yml"
 	],
 	"github-actions.workflows.pinned.refresh.enabled": true,
 	"github-actions.workflows.pinned.refresh.interval": 30,
