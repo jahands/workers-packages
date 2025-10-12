@@ -23,8 +23,8 @@ npm install dagger-env zod
 ## Quick Start
 
 ```typescript
-import { z } from 'zod/v4'
 import { createDaggerEnv } from 'dagger-env'
+import { z } from 'zod/v4'
 
 // Define your environment configuration
 const myDaggerEnv = createDaggerEnv({
@@ -55,9 +55,11 @@ const myDaggerEnv = createDaggerEnv({
     },
   } as const,
 })
+```
 
+```typescript
 // Use in your Dagger module
-import { dag, Container, object, func, Secret } from '@dagger.io/dagger'
+import { Container, dag, func, object, Secret } from '@dagger.io/dagger'
 
 @object()
 export class MyModule {

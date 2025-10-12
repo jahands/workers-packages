@@ -49,5 +49,8 @@
 	},
 	"peerDependencies": {
 		"zod": "^4.1.11"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }

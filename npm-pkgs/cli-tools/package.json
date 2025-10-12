@@ -132,5 +132,8 @@
 		"typescript": "^5.5.4",
 		"zod": "^3.25.76 || ^4.1.1",
 		"zx": "^8.3.0"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }

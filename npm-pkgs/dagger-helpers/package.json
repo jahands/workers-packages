@@ -52,5 +52,8 @@
 	},
 	"peerDependencies": {
 		"@dagger.io/dagger": "^0.18.4"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }

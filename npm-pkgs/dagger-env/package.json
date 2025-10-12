@@ -65,5 +65,8 @@
 	},
 	"peerDependencies": {
 		"zod": "^3.25.76 || ^4.1.1"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }

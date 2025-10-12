@@ -238,18 +238,15 @@ Documentation: https://developers.cloudflare.com/workers/
 **Key Modules**:
 
 1. **Package Manager Detection** (`src/package-manager.ts`)
-
    - Detect package manager from lock files
    - Check for wrangler dependency
    - Install wrangler if needed
 
 2. **Configuration Builder** (`src/config-builder.ts`)
-
    - Zod schemas for configuration validation
    - Generate wrangler.jsonc content
 
 3. **File System Operations** (`src/fs.ts`)
-
    - Check for existing config files
    - Detect common file patterns
    - Write configuration file
@@ -285,12 +282,10 @@ Documentation: https://developers.cloudflare.com/workers/
 ### Phase 2 Features
 
 1. **Advanced Configuration Options**
-
    - Custom domains/routes
    - Environment-specific configurations
 
 2. **Migration Support**
-
    - Convert from wrangler.toml to wrangler.jsonc
    - Upgrade existing configurations
 

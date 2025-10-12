@@ -47,5 +47,8 @@
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }
