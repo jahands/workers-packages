@@ -12,8 +12,7 @@
 		"WRANGLER_LOG",
 		"FORCE_COLOR",
 		"TURBO_TOKEN",
-		"TURBO_REMOTE_CACHE_SIGNATURE_KEY",
-		"GITHUB_ACTIONS"
+		"TURBO_REMOTE_CACHE_SIGNATURE_KEY"
 	],
 	"remoteCache": {
 		"enabled": true,

@@ -23,7 +23,6 @@ export default defineConfig(async () => {
 			'FORCE_COLOR',
 			'TURBO_TOKEN',
 			'TURBO_REMOTE_CACHE_SIGNATURE_KEY',
-			'GITHUB_ACTIONS',
 		],
 		remoteCache: {
 			enabled: true,
