@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -euo pipefail
 
 cmd="${1:-}"
 
@@ -8,7 +8,48 @@ if [[ -z "$cmd" ]]; then
 	exit 1
 fi
 
-script_dir="$(realpath "$(dirname "$0")")"
-cmd_dir="$script_dir/cmd"
+dagx_path="$(realpath "$(dirname "$0")")/.."
 
-exec bun run --install=fallback "$cmd_dir/$cmd.cmd.ts"
+function install_deps() {
+	local cache_dir="$dagx_path/node_modules/.cache/daggerx"
+	local hash_file="$cache_dir/.bun-lock-hash"
+	local current_hash=""
+	local stored_hash=""
+	local should_install="false"
+
+	if [[ ! -d "$dagx_path/node_modules" || ! -f "$hash_file" ]]; then
+		should_install="true"
+	else
+		current_hash=$(shasum -a 256 "$dagx_path/bun.lock" | cut -d' ' -f1)
+		stored_hash=$(cat "$hash_file")
+		if [[ "$current_hash" != "$stored_hash" ]]; then
+			should_install="true"
+
+			if [[ -n "${CI:-}" ]]; then
+				# for some reason, this cache is being buggy in CI so
+				# clear it to ensure it installs fresh deps
+				if [[ -d /home/runner/.bun/install/cache ]]; then
+					rm -rf /home/runner/.bun/install/cache
+				fi
+			fi
+		fi
+	fi
+
+	if [[ "$should_install" == "true" ]]; then
+		cd "$dagx_path"
+
+		if [[ -n "${CI:-}" ]]; then
+			bun install --frozen-lockfile
+		else
+			bun install --frozen-lockfile --silent
+		fi
+
+		mkdir -p "$cache_dir"
+		echo "$current_hash" >"$hash_file"
+	fi
+}
+
+(install_deps)
+
+dagx_bin="$dagx_path/bin/cmd/$cmd.cmd.ts"
+bun "$dagx_bin" "$@"
