@@ -1,6 +1,6 @@
 {
 	"name": "http-codex",
-	"version": "0.6.3",
+	"version": "0.6.4",
 	"private": false,
 	"description": "HTTP status codes and methods based on Go's http library",
 	"keywords": [

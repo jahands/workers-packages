@@ -1,5 +1,11 @@
 # notion-schemas
 
+## 0.3.4
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+
 ## 0.3.3
 
 ### Patch Changes

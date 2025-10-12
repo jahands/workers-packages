@@ -1,5 +1,13 @@
 # @repo/vanilla-worker
 
+## 0.2.52
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+- Updated dependencies [3e51a90]
+  - workers-tagged-logger@0.13.5
+
 ## 0.2.51
 
 ### Patch Changes

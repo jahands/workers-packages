@@ -1,6 +1,6 @@
 {
 	"name": "dagger-env",
-	"version": "0.6.2",
+	"version": "0.6.3",
 	"private": false,
 	"description": "A type-safe, reusable environment configuration abstraction for Dagger modules.",
 	"keywords": [

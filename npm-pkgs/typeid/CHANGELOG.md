@@ -1,5 +1,11 @@
 # @jahands/typeid
 
+## 0.2.10
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+
 ## 0.2.9
 
 ### Patch Changes

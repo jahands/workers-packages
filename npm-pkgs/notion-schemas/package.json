@@ -1,6 +1,6 @@
 {
 	"name": "notion-schemas",
-	"version": "0.3.3",
+	"version": "0.3.4",
 	"private": false,
 	"description": "Notion Zod schemas",
 	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/notion-schemas",
