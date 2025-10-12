@@ -9,10 +9,10 @@
 		"cloudflare",
 		"workers"
 	],
-	"homepage": "https://github.com/monorepo-rocks/monorepo-rocks/tree/main/apps/create-workers-monorepo",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/apps/create-workers-monorepo",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/monorepo-rocks/monorepo-rocks.git",
+		"url": "https://github.com/jahands/workers-packages.git",
 		"directory": "apps/create-workers-monorepo"
 	},
 	"license": "MIT",
