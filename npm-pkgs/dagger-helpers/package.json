@@ -1,0 +1,60 @@
+{
+	"name": "@jahands/dagger-helpers",
+	"version": "0.7.1",
+	"private": false,
+	"description": "dagger.io helpers for my own projects - not meant for public use",
+	"keywords": [
+		"dagger",
+		"dagger.io"
+	],
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/dagger-helpers",
+	"bugs": "https://github.com/jahands/workers-packages/issues",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages.git",
+		"directory": "npm-pkgs/dagger-helpers"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.mjs"
+			}
+		}
+	},
+	"main": "./dist/index.mjs",
+	"module": "./dist/index.mjs",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "runx build bundle-lib ./src/index.ts --format esm --platform node",
+		"check:exports": "runx check --exports",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"devDependencies": {
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"@types/node": "22.15.27",
+		"empathic": "2.0.0",
+		"ts-pattern": "5.8.0",
+		"typescript": "5.8.2",
+		"vitest": "3.2.4"
+	},
+	"peerDependencies": {
+		"@dagger.io/dagger": "^0.18.4"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

@@ -1,0 +1,64 @@
+{
+	"name": "create-wrangler-config",
+	"version": "0.2.6",
+	"private": false,
+	"description": "CLI tool for quickly setting up a wrangler.jsonc configuration file for Cloudflare Workers projects",
+	"keywords": [
+		"cloudflare workers",
+		"wrangler",
+		"configuration",
+		"cli",
+		"cloudflare"
+	],
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-apps/create-wrangler-config",
+	"bugs": "https://github.com/jahands/workers-packages/issues",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages.git",
+		"directory": "npm-apps/create-wrangler-config"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": "./dist/create-wrangler-config.cjs",
+		"./cli": "./src/cli.ts"
+	},
+	"main": "./dist/create-wrangler-config.cjs",
+	"bin": "./dist/create-wrangler-config.cjs",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "runx build lib ./src/bin/create-wrangler-config.ts --platform=node --format=cjs --sourcemap=external --no-types",
+		"build:dev": "runx build lib ./src/bin/create-wrangler-config.ts --platform=node --format=cjs --sourcemap=external --no-types --no-minify",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"prepublishOnly": "rm -f dist/*.map",
+		"start": "run-s -s build:dev start:run",
+		"start:run": "node ./dist/create-wrangler-config.cjs",
+		"test": "run-vitest"
+	},
+	"devDependencies": {
+		"@commander-js/extra-typings": "14.0.0",
+		"@inquirer/prompts": "7.5.1",
+		"@jahands/cli-tools": "workspace:*",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"@types/fs-extra": "11.0.4",
+		"@types/node": "22.15.27",
+		"commander": "14.0.1",
+		"empathic": "2.0.0",
+		"vitest": "3.2.4",
+		"zod": "4.1.12",
+		"zx": "8.8.4"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

@@ -1,0 +1,57 @@
+{
+	"name": "notion-schemas",
+	"version": "0.3.2",
+	"private": false,
+	"description": "Notion Zod schemas",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/notion-schemas",
+	"bugs": "https://github.com/jahands/workers-packages/issues",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages.git",
+		"directory": "npm-pkgs/notion-schemas"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"require": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		}
+	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "runx build tsc ./src/index.ts",
+		"check:exports": "runx check --exports",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"vitest": "3.2.4",
+		"zod": "^4.1.11"
+	},
+	"peerDependencies": {
+		"zod": "^4.1.11"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

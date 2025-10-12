@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+cli_js="$script_dir/../dist/esm/bin/turbo-config.cmd.mjs"
+
+if command -v bun >/dev/null 2>&1; then
+	exec bun "$cli_js" "$@"
+fi
+
+exec node "$cli_js" "$@"

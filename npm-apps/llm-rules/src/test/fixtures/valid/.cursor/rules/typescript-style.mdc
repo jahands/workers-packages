@@ -1,0 +1,39 @@
+---
+description: TypeScript coding standards and style guide
+globs: "**/*.ts,**/*.tsx"
+alwaysApply: false
+---
+
+# TypeScript Style Guide
+
+When writing TypeScript code:
+
+- Use `interface` for object type definitions that might be extended
+- Use `type` for unions, intersections, and computed types
+- Always use explicit return types for functions
+- Prefer `const` assertions for immutable data
+- Use strict null checks and avoid `any` type
+- Import types with `import type` syntax when possible
+
+## Naming Conventions
+
+- Use PascalCase for types, interfaces, and classes
+- Use camelCase for variables and functions
+- Use UPPER_SNAKE_CASE for constants
+- Prefix interfaces with `I` only when needed for disambiguation
+
+## Example
+
+```typescript
+interface UserProfile {
+  id: string;
+  name: string;
+  email?: string;
+}
+
+type Status = 'active' | 'inactive' | 'pending';
+
+const createUser = (profile: UserProfile): Promise<User> => {
+  // implementation
+};
+```

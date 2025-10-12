@@ -1,0 +1,61 @@
+---
+description: RESTful API design principles and validation patterns
+globs: "**/api/**,**/routes/**"
+alwaysApply: false
+---
+
+# API Design Standards
+
+When creating API endpoints:
+
+## REST Principles
+
+- Use proper HTTP methods (GET, POST, PUT, DELETE)
+- Use plural nouns for resource URLs (`/users`, not `/user`)
+- Use HTTP status codes correctly
+- Include proper error responses
+
+## Validation
+
+- Use Zod for all input validation
+- Define response schemas with Zod
+- Export inferred types from schemas
+- Validate query parameters and request bodies
+
+## Error Handling
+
+- Return consistent error format
+- Include error codes and messages
+- Log errors with proper context
+- Use middleware for common error handling
+
+## Example
+
+```typescript
+import { z } from 'zod';
+
+const CreateUserSchema = z.object({
+  name: z.string().min(1).max(100),
+  email: z.string().email(),
+  age: z.number().int().min(18)
+});
+
+type CreateUserRequest = z.infer<typeof CreateUserSchema>;
+
+app.post('/api/users', async (req, res) => {
+  try {
+    const userData = CreateUserSchema.parse(req.body);
+    const user = await createUser(userData);
+    res.status(201).json(user);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      res.status(400).json({
+        error: 'Validation failed',
+        details: error.errors
+      });
+    } else {
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+});
+```

@@ -1,0 +1,11 @@
+---
+description: "This has invalid YAML"
+globs: [unclosed array
+invalid: yaml: syntax
+---
+
+# Invalid Frontmatter Rule
+
+This rule file has invalid YAML frontmatter to test error handling.
+
+The parser should handle this gracefully and either skip the file or use default values.

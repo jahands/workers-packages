@@ -1,0 +1,54 @@
+{
+	"name": "@jahands/typeid",
+	"version": "0.2.8",
+	"private": false,
+	"description": "Bundled version of typeid-js",
+	"keywords": [
+		"typeid",
+		"typeid-js"
+	],
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/typeid",
+	"bugs": "https://github.com/jahands/workers-packages/issues",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages.git",
+		"directory": "npm-pkgs/typeid"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		"import": {
+			"types": "./dist/typeid.d.ts",
+			"default": "./dist/typeid.mjs"
+		}
+	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"files": [
+		"dist",
+		"NOTICE"
+	],
+	"scripts": {
+		"build": "runx build bundle-lib src/typeid.ts",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"typeid-js": "1.2.0"
+	},
+	"devDependencies": {
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"zod": "4.1.12"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

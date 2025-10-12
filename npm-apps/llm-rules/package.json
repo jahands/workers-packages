@@ -1,0 +1,62 @@
+{
+	"name": "llm-rules",
+	"version": "0.2.14",
+	"private": false,
+	"description": "LLM rules and instructions for AI coding assistants",
+	"keywords": [
+		"llm-rules",
+		"ai",
+		"coding assistant",
+		"rules"
+	],
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-apps/llm-rules",
+	"bugs": "https://github.com/jahands/workers-packages/issues",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages.git",
+		"directory": "npm-apps/llm-rules"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": "./dist/llm-rules.cjs",
+		"./cli": "./src/cli.ts"
+	},
+	"main": "./dist/llm-rules.cjs",
+	"bin": "./dist/llm-rules.cjs",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "runx build lib ./src/bin/llm-rules.ts --platform=node --format=cjs --sourcemap=external --no-types",
+		"build:dev": "runx build lib ./src/bin/llm-rules.ts --platform=node --format=cjs --sourcemap=external --no-types --no-minify",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"prepublishOnly": "rm -f dist/*.map",
+		"start": "run-s -s build:dev start:run",
+		"start:run": "node ./dist/llm-rules.cjs",
+		"test": "run-vitest"
+	},
+	"devDependencies": {
+		"@commander-js/extra-typings": "14.0.0",
+		"@fast-csv/format": "5.0.2",
+		"@jahands/cli-tools": "workspace:*",
+		"@modelcontextprotocol/sdk": "1.12.0",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"commander": "14.0.1",
+		"gray-matter": "4.0.3",
+		"vitest": "3.2.4",
+		"zod": "4.1.12",
+		"zx": "8.8.4"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

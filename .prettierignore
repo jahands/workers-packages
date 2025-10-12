@@ -1,6 +1,7 @@
 .changeset
 .bun-build
 .claude/*.json
+CHANGELOG.md
 .cursor/rules/
 .docs/migrations/*.md
 .docs/prompts/*.md

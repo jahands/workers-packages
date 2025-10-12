@@ -1,0 +1,37 @@
+---
+description: Project-wide coding standards that always apply
+globs: 
+alwaysApply: true
+---
+
+# Universal Project Standards
+
+These rules apply to all code in this project:
+
+## General Principles
+
+- Write clear, self-documenting code
+- Follow the principle of least surprise
+- Optimize for readability over cleverness
+- Use meaningful variable and function names
+
+## Code Organization
+
+- Keep functions small and focused (max 20 lines)
+- Group related functionality together
+- Use consistent file and folder naming
+- Include proper imports and exports
+
+## Documentation
+
+- Add JSDoc comments for public APIs
+- Include README files for major components
+- Document complex business logic
+- Keep comments up to date with code changes
+
+## Testing
+
+- Write tests for all public functions
+- Use descriptive test names
+- Follow AAA pattern (Arrange, Act, Assert)
+- Mock external dependencies properly
