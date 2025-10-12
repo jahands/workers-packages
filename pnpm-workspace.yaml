@@ -1,4 +1,6 @@
 packages:
+  - npm-apps/*
+  - npm-pkgs/*
   - apps/*
   - packages/*
   - examples/*
