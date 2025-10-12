@@ -1,7 +1,7 @@
 import tsEslintParser from '@typescript-eslint/parser'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import react from 'eslint-plugin-react'
-import * as reactHooks from 'eslint-plugin-react-hooks'
+import reactHooks from 'eslint-plugin-react-hooks'
 
 import { defineConfig, getConfig } from './default.config'
 import { getTsconfigRootDir } from './helpers'
