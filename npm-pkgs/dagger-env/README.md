@@ -44,7 +44,7 @@ const myDaggerEnv = createDaggerEnv({
   secretPresets: {
     api: ['API_TOKEN', 'DATABASE_URL'],
     cache: ['REDIS_URL'],
-  } as const,
+  },
   derivedEnvVars: {
     API_TOKEN: {
       API_BASE_URL: 'https://api.example.com',
@@ -53,7 +53,7 @@ const myDaggerEnv = createDaggerEnv({
     DATABASE_URL: {
       DB_POOL_SIZE: '10',
     },
-  } as const,
+  },
 })
 ```
 
@@ -66,7 +66,7 @@ export class MyModule {
   @func()
   async build(options: Secret): Promise<Container> {
     const opts = await myDaggerEnv.parseDaggerOptions(options)
-    const withEnv = await myDaggerEnv.getWithEnv(options, ['api'], ['REDIS_URL'])
+    const { withEnv } = await myDaggerEnv.getWithEnv(options, ['api'], ['REDIS_URL'])
 
     return withEnv(dag.container().from('node:18')).withExec(['npm', 'run', 'build']).sync()
   }
