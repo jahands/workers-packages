@@ -96,8 +96,8 @@ const myDaggerEnv = createDaggerEnv({
   }),
   secretPresets: {
     api: ['API_TOKEN'],
-  } as const,
-  derivedEnvVars: {} as const,
+  },
+  derivedEnvVars: {},
 })
 
 // Create a command runner - simply pass your DaggerEnv instance
