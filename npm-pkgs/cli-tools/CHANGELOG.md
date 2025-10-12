@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.11.4
+
+### Patch Changes
+
+- 40a18da: chore: bump min zod 4 version to 4.1.12
+
 ## 0.11.3
 
 ### Patch Changes

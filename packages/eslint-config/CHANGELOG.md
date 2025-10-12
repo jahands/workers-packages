@@ -1,5 +1,11 @@
 # @repo/eslint-config
 
+## 0.2.3
+
+### Patch Changes
+
+- 4013c9a: fix: downgrade eslint-plugin-react-hooks due to undocumented breaking changes
+
 ## 0.2.2
 
 ### Patch Changes
