@@ -13,7 +13,7 @@
 		"check:deps": "runx check --deps",
 		"check:format": "runx check --format",
 		"check:lint:all": "run-eslint",
-		"postinstall": "test -z \"$CI\" && turbo-config || true",
+		"postinstall": "turbo-config --skip-in-ci",
 		"publish": "changeset publish",
 		"release": "run-s build:packages release:clean publish",
 		"release:clean": "runx release clean",
@@ -34,7 +34,7 @@
 		"prettier-plugin-packagejson": "2.5.19",
 		"syncpack": "13.0.4",
 		"turbo": "2.5.8",
-		"turbo-config": "npm:turbo-config@0.3.0",
+		"turbo-config": "npm:turbo-config@0.3.1",
 		"typescript": "5.8.2",
 		"vitest": "3.2.4"
 	},
