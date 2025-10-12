@@ -1,5 +1,15 @@
 # llm-rules
 
+## 0.2.15
+
+### Patch Changes
+
+- ed3c346: chore: add publishConfig to package.json
+- ed3c346: chore: update author url in package.json
+- ed3c346: chore: add bugs field to package.json
+- ed3c346: chore: update deps
+- ed3c346: chore: update package path in package.json
+
 ## 0.2.14
 
 ### Patch Changes

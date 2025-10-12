@@ -1,5 +1,19 @@
 # turbo-config
 
+## 0.3.0
+
+### Minor Changes
+
+- 5bc5736: feat: add --skip-in-ci option for skipping checks in ci
+
+### Patch Changes
+
+- ed3c346: chore: add publishConfig to package.json
+- ed3c346: chore: update author url in package.json
+- ed3c346: chore: add bugs field to package.json
+- ed3c346: chore: update deps
+- ed3c346: chore: update package path in package.json
+
 ## 0.2.2
 
 ### Patch Changes

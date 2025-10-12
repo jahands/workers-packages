@@ -1,6 +1,6 @@
 {
 	"name": "prefixed-nanoid",
-	"version": "0.1.6",
+	"version": "0.1.7",
 	"private": false,
 	"description": "Type-safe prefixed nanoid generation for Cloudflare Workers and JavaScript environments",
 	"keywords": [

@@ -1,5 +1,16 @@
 # @repo/otel-example
 
+## 0.1.28
+
+### Patch Changes
+
+- c40dffe: chore: update deps and modernize monorepo
+- Updated dependencies [ed3c346]
+- Updated dependencies [c40dffe]
+- Updated dependencies [ed3c346]
+- Updated dependencies [ed3c346]
+  - @jahands/otel-cf-workers@0.1.22
+
 ## 0.1.27
 
 ### Patch Changes

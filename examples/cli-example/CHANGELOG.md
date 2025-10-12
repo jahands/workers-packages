@@ -1,5 +1,17 @@
 # @repo/cli-example
 
+## 0.1.44
+
+### Patch Changes
+
+- c40dffe: chore: update deps and modernize monorepo
+- ed3c346: chore: update tsconfig.json
+- Updated dependencies [ed3c346]
+- Updated dependencies [c40dffe]
+- Updated dependencies [ed3c346]
+- Updated dependencies [ed3c346]
+  - @jahands/cli-tools@0.11.2
+
 ## 0.1.43
 
 ### Patch Changes

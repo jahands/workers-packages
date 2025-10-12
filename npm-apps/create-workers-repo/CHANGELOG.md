@@ -1,5 +1,21 @@
 # create-workers-repo
 
+## 0.3.21
+
+### Patch Changes
+
+- ed3c346: chore: add publishConfig to package.json
+- ed3c346: chore: update author url in package.json
+- ed3c346: chore: add bugs field to package.json
+- ed3c346: chore: update deps
+- ed3c346: chore: update package path in package.json
+- Updated dependencies [ed3c346]
+- Updated dependencies [ed3c346]
+- Updated dependencies [ed3c346]
+- Updated dependencies [ed3c346]
+- Updated dependencies [ed3c346]
+  - create-workers-monorepo@0.8.6
+
 ## 0.3.20
 
 ### Patch Changes

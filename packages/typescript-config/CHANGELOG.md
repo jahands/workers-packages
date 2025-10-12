@@ -1,5 +1,12 @@
 # @repo/typescript-config
 
+## 0.3.7
+
+### Patch Changes
+
+- c40dffe: chore: update deps and modernize monorepo
+- ed3c346: chore: add missing include/exclude patterns in lib-emit.json
+
 ## 0.3.6
 
 ### Patch Changes

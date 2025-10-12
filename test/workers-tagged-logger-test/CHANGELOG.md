@@ -1,5 +1,11 @@
 # @repo/workers-tagged-logger-test
 
+## 0.3.1
+
+### Patch Changes
+
+- c40dffe: chore: update deps and modernize monorepo
+
 ## 0.3.0
 
 ### Minor Changes

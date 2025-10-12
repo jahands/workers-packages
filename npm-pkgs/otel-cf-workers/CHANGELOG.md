@@ -1,5 +1,14 @@
 # @jahands/otel-cf-workers
 
+## 0.1.22
+
+### Patch Changes
+
+- ed3c346: chore: add publishConfig to package.json
+- c40dffe: chore: update deps and modernize monorepo
+- ed3c346: chore: add bugs field to package.json
+- ed3c346: chore: update package path in package.json
+
 ## 0.1.21
 
 ### Patch Changes
