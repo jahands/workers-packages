@@ -4,6 +4,7 @@
 	"private": false,
 	"description": "cli tools for commander",
 	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/cli-tools",
+	"bugs": "https://github.com/jahands/workers-packages/issues",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",

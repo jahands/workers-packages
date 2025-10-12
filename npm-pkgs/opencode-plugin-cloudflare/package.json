@@ -4,6 +4,7 @@
 	"private": false,
 	"description": "Cloudflare plugin for opencode (opencode-ai)",
 	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/opencode-plugin-cloudflare",
+	"bugs": "https://github.com/jahands/workers-packages/issues",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",

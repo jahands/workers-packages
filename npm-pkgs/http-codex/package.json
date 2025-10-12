@@ -11,6 +11,7 @@
 		"methods"
 	],
 	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/http-codex",
+	"bugs": "https://github.com/jahands/workers-packages/issues",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",

@@ -10,6 +10,7 @@
 		"rules"
 	],
 	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-apps/llm-rules",
+	"bugs": "https://github.com/jahands/workers-packages/issues",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",

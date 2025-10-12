@@ -4,6 +4,7 @@
 	"private": false,
 	"description": "tools for working with LLMs",
 	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/llm-tools",
+	"bugs": "https://github.com/jahands/workers-packages/issues",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
