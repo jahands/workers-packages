@@ -1,6 +1,6 @@
 {
 	"name": "llm-rules",
-	"version": "0.2.15",
+	"version": "0.2.16",
 	"private": false,
 	"description": "LLM rules and instructions for AI coding assistants",
 	"keywords": [

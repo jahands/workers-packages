@@ -1,5 +1,12 @@
 # @repo/tools
 
+## 0.12.1
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+- 3954972: fix: pin @jahands/cli-tools to remote version
+
 ## 0.12.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @repo/workers-tagged-logger-test
 
+## 0.3.2
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+
 ## 0.3.1
 
 ### Patch Changes

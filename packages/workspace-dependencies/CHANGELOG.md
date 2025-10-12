@@ -1,5 +1,11 @@
 # @repo/workspace-dependencies
 
+## 0.1.2
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+
 ## 0.1.1
 
 ### Patch Changes

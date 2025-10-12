@@ -1,5 +1,11 @@
 # create-wrangler-config
 
+## 0.2.8
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+
 ## 0.2.7
 
 ### Patch Changes

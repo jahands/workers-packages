@@ -1,5 +1,13 @@
 # @repo/cli-example
 
+## 0.1.45
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+- Updated dependencies [3e51a90]
+  - @jahands/cli-tools@0.11.3
+
 ## 0.1.44
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @repo/otel-example
 
+## 0.1.29
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+- Updated dependencies [3e51a90]
+  - @jahands/otel-cf-workers@0.1.23
+
 ## 0.1.28
 
 ### Patch Changes

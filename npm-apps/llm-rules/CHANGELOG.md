@@ -1,5 +1,11 @@
 # llm-rules
 
+## 0.2.16
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+
 ## 0.2.15
 
 ### Patch Changes

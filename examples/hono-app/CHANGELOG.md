@@ -1,5 +1,14 @@
 # @repo/hono-app
 
+## 0.3.45
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+- Updated dependencies [3e51a90]
+  - http-codex@0.6.4
+  - workers-tagged-logger@0.13.5
+
 ## 0.3.44
 
 ### Patch Changes

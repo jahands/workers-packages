@@ -1,6 +1,6 @@
 {
 	"name": "turbo-config",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"private": false,
 	"description": "Write your Turborepo config in TypeScript via turbo.config.ts",
 	"keywords": [

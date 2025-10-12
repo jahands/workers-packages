@@ -1,5 +1,11 @@
 # opencode-plugin-cloudflare
 
+## 0.1.4
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+
 ## 0.1.3
 
 ### Patch Changes

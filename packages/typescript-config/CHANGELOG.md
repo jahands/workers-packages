@@ -1,5 +1,11 @@
 # @repo/typescript-config
 
+## 0.3.8
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+
 ## 0.3.7
 
 ### Patch Changes

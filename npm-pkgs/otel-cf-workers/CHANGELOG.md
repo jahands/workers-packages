@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.23
+
+### Patch Changes
+
+- 3e51a90: chore: bump version
+
 ## 0.1.22
 
 ### Patch Changes
