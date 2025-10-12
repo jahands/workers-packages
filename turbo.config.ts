@@ -76,12 +76,16 @@ export default defineConfig(async () => {
 				dependsOn: ['build', 'topo'],
 				outputLogs: 'new-only',
 			},
+			'//#check:turbo-config': {
+				outputLogs: 'new-only',
+			},
 			'check:ci': {
 				dependsOn: [
 					'//#check:format',
 					'//#check:deps',
 					'check:types',
 					'check:exports',
+					'//#check:turbo-config',
 					'//#check:lint:all',
 					'//#test:ci',
 					'test:ci',

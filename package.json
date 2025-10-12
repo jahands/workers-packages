@@ -13,6 +13,7 @@
 		"check:deps": "runx check --deps",
 		"check:format": "runx check --format",
 		"check:lint:all": "run-eslint",
+		"check:turbo-config": "turbo-config check",
 		"postinstall": "turbo-config --skip-in-ci",
 		"publish": "changeset publish",
 		"release": "run-s build:packages release:clean publish",
