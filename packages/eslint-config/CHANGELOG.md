@@ -1,5 +1,13 @@
 # @repo/eslint-config
 
+## 0.2.1
+
+### Patch Changes
+
+- c40dffe: chore: update deps and modernize monorepo
+- ed3c346: chore: fix reactHooks import
+- ed3c346: chore: update deps
+
 ## 0.2.0
 
 ### Minor Changes

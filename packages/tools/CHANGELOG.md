@@ -1,5 +1,22 @@
 # @repo/tools
 
+## 0.12.0
+
+### Minor Changes
+
+- ed3c346: feat: add build bun cmd
+- c40dffe: feat: add package-json.ts and workspace.ts
+
+### Patch Changes
+
+- c40dffe: chore: update deps and modernize monorepo
+- 93cb763: chore: disable clean cmd (not sure if it's really needed)
+- Updated dependencies [ed3c346]
+- Updated dependencies [c40dffe]
+- Updated dependencies [ed3c346]
+- Updated dependencies [ed3c346]
+  - @jahands/cli-tools@0.11.2
+
 ## 0.11.0
 
 ### Minor Changes

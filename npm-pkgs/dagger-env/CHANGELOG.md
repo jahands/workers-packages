@@ -1,5 +1,15 @@
 # dagger-env
 
+## 0.6.2
+
+### Patch Changes
+
+- ed3c346: chore: add publishConfig to package.json
+- 051259d: chore: update readme
+- ed3c346: chore: add bugs field to package.json
+- ed3c346: chore: update deps
+- ed3c346: chore: update package path in package.json
+
 ## 0.6.1
 
 ### Patch Changes
@@ -53,7 +63,6 @@
 - 6db8e9b: feat: add 1password integration and command runner to dagger-env
 
   Extends dagger-env package with new features:
-
   - Adds command runner with 1Password secret integration
   - Provides new `/run` export for executing Dagger commands
   - Updates README with comprehensive documentation for new functionality

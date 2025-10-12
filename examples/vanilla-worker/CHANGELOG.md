@@ -1,5 +1,16 @@
 # @repo/vanilla-worker
 
+## 0.2.51
+
+### Patch Changes
+
+- c40dffe: chore: update deps and modernize monorepo
+- Updated dependencies [ed3c346]
+- Updated dependencies [c40dffe]
+- Updated dependencies [ed3c346]
+- Updated dependencies [ed3c346]
+  - workers-tagged-logger@0.13.4
+
 ## 0.2.50
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
 	"name": "create-workers-monorepo",
-	"version": "0.8.5",
+	"version": "0.8.6",
 	"private": false,
 	"description": "Create a monorepo for Cloudflare Workers applications",
 	"keywords": [
