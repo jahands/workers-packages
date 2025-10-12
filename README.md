@@ -1,6 +1,6 @@
 # Workers Packages
 
-A collection of npm packages for Cloudflare Workers and monorepos
+A collection of npm packages for Cloudflare Workers, monorepos, and more.
 
 ## Why a Monorepo?
 
