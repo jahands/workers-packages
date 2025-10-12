@@ -19,7 +19,7 @@
 	"license": "MIT",
 	"author": {
 		"name": "Jacob Hands",
-		"url": "https://twitter.com/jachands"
+		"url": "https://github.com/jahands"
 	},
 	"sideEffects": false,
 	"type": "module",
