@@ -47,17 +47,17 @@
 	},
 	"devDependencies": {
 		"@commander-js/extra-typings": "14.0.0",
-		"@jahands/cli-tools": "0.11.0",
+		"@jahands/cli-tools": "workspace:*",
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"empathic": "2.0.0",
-		"esbuild": "0.25.9",
+		"esbuild": "0.25.10",
 		"memoize-one": "6.0.0",
 		"p-filter": "4.1.0",
 		"p-map": "7.0.3",
 		"vitest": "3.2.4",
-		"zod": "4.1.1",
+		"zod": "4.1.12",
 		"zx": "8.8.4"
 	}
 }

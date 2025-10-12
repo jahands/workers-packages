@@ -59,9 +59,9 @@
 		"@dagger.io/dagger": "0.18.9",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"typescript": "5.5.4",
+		"typescript": "5.8.2",
 		"vitest": "3.2.4",
-		"zod": "4.1.1"
+		"zod": "4.1.12"
 	},
 	"peerDependencies": {
 		"zod": "^3.25.76 || ^4.1.1"
