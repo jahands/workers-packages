@@ -110,6 +110,7 @@ export default defineConfig(async () => {
 				env: ['FIX_ESLINT'],
 			},
 			'//#check:lint:all': {
+				dependsOn: buildPackages,
 				outputLogs: 'new-only',
 				outputs: ['node_modules/.cache/.eslintcache'],
 				env: ['FIX_ESLINT'],

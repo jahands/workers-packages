@@ -157,6 +157,25 @@
 			"outputLogs": "new-only"
 		},
 		"//#check:lint:all": {
+			"dependsOn": [
+				"create-workers-monorepo#build",
+				"create-workers-repo#build",
+				"create-wrangler-config#build",
+				"llm-rules#build",
+				"@jahands/cli-tools#build",
+				"dagger-env#build",
+				"@jahands/dagger-helpers#build",
+				"http-codex#build",
+				"llm-tools#build",
+				"notion-schemas#build",
+				"opencode-plugin-cloudflare#build",
+				"@jahands/otel-cf-workers#build",
+				"prefixed-nanoid#build",
+				"turbo-config#build",
+				"@jahands/typeid#build",
+				"workers-tagged-logger#build",
+				"@repo/workspace-dependencies#build"
+			],
 			"env": [
 				"FIX_ESLINT"
 			],
