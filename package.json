@@ -9,7 +9,7 @@
 	},
 	"sideEffects": false,
 	"scripts": {
-		"build:packages": "turbo build -F './packages/*'",
+		"build:packages": "turbo build -F './npm-apps/*' -F './npm-pkgs/*'",
 		"check:deps": "runx check --deps",
 		"check:format": "runx check --format",
 		"check:lint:all": "run-eslint",
@@ -34,7 +34,7 @@
 		"prettier-plugin-packagejson": "2.5.19",
 		"syncpack": "13.0.4",
 		"turbo": "2.5.8",
-		"turbo-config": "0.2.2",
+		"turbo-config": "npm:turbo-config@0.3.0",
 		"typescript": "5.8.2",
 		"vitest": "3.2.4"
 	},
