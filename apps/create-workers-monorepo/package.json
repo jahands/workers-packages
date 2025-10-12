@@ -1,0 +1,63 @@
+{
+	"name": "create-workers-monorepo",
+	"version": "0.8.5",
+	"private": false,
+	"description": "Create a monorepo for Cloudflare Workers applications",
+	"keywords": [
+		"cloudflare workers",
+		"monorepo",
+		"cloudflare",
+		"workers"
+	],
+	"homepage": "https://github.com/monorepo-rocks/monorepo-rocks/tree/main/apps/create-workers-monorepo",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/monorepo-rocks/monorepo-rocks.git",
+		"directory": "apps/create-workers-monorepo"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://twitter.com/jachands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": "./dist/create-workers-monorepo.cjs",
+		"./cli": "./src/cli.ts"
+	},
+	"main": "./dist/create-workers-monorepo.cjs",
+	"bin": "./dist/create-workers-monorepo.cjs",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "runx build lib ./src/bin/create-workers-monorepo.ts --platform=node --format=cjs --sourcemap=external --no-types",
+		"build:dev": "runx build lib ./src/bin/create-workers-monorepo.ts --platform=node --format=cjs --sourcemap=external --no-types --no-minify",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"prepublishOnly": "rm -f dist/*.map",
+		"start": "run-s -s build:dev start:run",
+		"start:run": "node ./dist/create-workers-monorepo.cjs",
+		"test": "run-vitest"
+	},
+	"devDependencies": {
+		"@commander-js/extra-typings": "14.0.0",
+		"@inquirer/prompts": "7.5.1",
+		"@jahands/cli-tools": "0.11.0",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"@types/fs-extra": "11.0.4",
+		"@types/node": "22.15.27",
+		"cli-table3": "0.6.5",
+		"commander": "14.0.0",
+		"memoize-one": "6.0.0",
+		"p-filter": "4.1.0",
+		"p-map": "7.0.3",
+		"ts-pattern": "5.7.1",
+		"vitest": "3.2.4",
+		"zod": "4.1.1",
+		"zx": "8.8.4"
+	}
+}

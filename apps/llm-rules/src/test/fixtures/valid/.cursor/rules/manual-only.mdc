@@ -1,0 +1,44 @@
+---
+description: Database migration patterns and procedures
+globs:
+alwaysApply: false  
+---
+
+# Database Migration Guide
+
+This rule provides guidance for database schema changes and migrations.
+
+## Migration Best Practices
+
+- Always create reversible migrations
+- Test migrations on staging data first
+- Include data validation scripts
+- Document breaking changes clearly
+
+## Schema Changes
+
+- Use descriptive migration names
+- Add proper indexes for new columns
+- Consider performance impact of large table changes
+- Backup database before major migrations
+
+## Example Migration
+
+```sql
+-- Migration: add_user_preferences_table
+-- Date: 2024-01-15
+
+CREATE TABLE user_preferences (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  preference_key VARCHAR(100) NOT NULL,
+  preference_value TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_user_preferences_user_id ON user_preferences(user_id);
+CREATE UNIQUE INDEX idx_user_preferences_key ON user_preferences(user_id, preference_key);
+```
+
+This rule should only be applied when explicitly mentioned with @manual-only.

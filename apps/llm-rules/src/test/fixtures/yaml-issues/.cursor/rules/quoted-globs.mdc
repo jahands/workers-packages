@@ -1,0 +1,8 @@
+---
+description: "TypeScript style guide"
+globs: "*.ts,*.tsx"
+alwaysApply: false
+---
+# Testing
+
+- Always use vitest for tests

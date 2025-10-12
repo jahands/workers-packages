@@ -1,0 +1,9 @@
+---
+description: TypeScript style guide
+globs: *.ts,*.tsx
+alwaysApply: false
+---
+
+# TypeScript Style Guide
+
+Use strict typing and proper interfaces.

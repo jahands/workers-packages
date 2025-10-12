@@ -1,0 +1,51 @@
+{
+	"name": "create-workers-repo",
+	"version": "0.3.20",
+	"private": false,
+	"description": "Create a monorepo for Cloudflare Workers applications (alias for create-workers-monorepo)",
+	"keywords": [
+		"create-workers-monorepo",
+		"cloudflare workers",
+		"monorepo",
+		"alias"
+	],
+	"homepage": "https://github.com/monorepo-rocks/monorepo-rocks/tree/main/apps/create-workers-repo",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/monorepo-rocks/monorepo-rocks.git",
+		"directory": "apps/create-workers-repo"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://twitter.com/jachands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": "./dist/create-workers-repo.cjs"
+	},
+	"main": "./dist/create-workers-repo.cjs",
+	"bin": "./dist/create-workers-repo.cjs",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "runx build lib ./src/bin/create-workers-repo.ts --platform=node --format=cjs --sourcemap=external --no-types",
+		"build:dev": "runx build lib ./src/bin/create-workers-repo.ts --platform=node --format=cjs --sourcemap=external --no-types --no-minify",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"prepublishOnly": "rm -f dist/*.map",
+		"start": "run-s -s build:dev start:run",
+		"start:run": "node ./dist/create-workers-repo.cjs",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"create-workers-monorepo": "workspace:*"
+	},
+	"devDependencies": {
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*"
+	}
+}
