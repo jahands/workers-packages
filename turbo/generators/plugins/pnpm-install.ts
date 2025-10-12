@@ -1,24 +1,21 @@
-import { spawn } from 'child_process'
+import { $ } from '@repo/workspace-dependencies/zx'
+
+import { catchError, onProcSuccess } from '../helpers/proc'
 
 import type { PlopTypes } from '@turbo/gen'
-import type { Answers } from '../types'
+import type { Answers } from '../answers'
 
-const didSucceed = (code: number) => `${code}` === '0'
+export type PnpmInstallData = Answers & { destination: string }
 
-export function pnpmInstall(answers: Answers, _config: any, _plop: PlopTypes.NodePlopAPI) {
+export function pnpmInstall(data: PnpmInstallData, _config: any, _plop: PlopTypes.NodePlopAPI) {
 	return new Promise((resolve, reject) => {
-		console.log('🌀 running pnpm install...')
-		const pnpmI = spawn('pnpm', ['install'], {
-			cwd: answers.turbo.paths.root,
-			shell: true,
-		})
+		console.log('🌀 running pnpm install')
 
-		pnpmI.on('close', (code: number) => {
-			if (didSucceed(code)) {
-				resolve(`pnpm install ran correctly`)
-			} else {
-				reject(`pnpm install exited with ${code}`)
-			}
-		})
+		$({
+			cwd: data.turbo.paths.root,
+			nothrow: true,
+		})`pnpm install --child-concurrency=10 -F ./${data.destination}`
+			.then(onProcSuccess('pnpm install', resolve, reject))
+			.catch(catchError(reject))
 	})
 }

@@ -12,6 +12,8 @@ import { getDirname, getGitIgnoreFiles, getTsconfigRootDir } from './helpers'
 
 import type { Linter } from 'eslint'
 
+export type { ConfigObject as Config } from '@eslint/core'
+
 export { defineConfig }
 
 const compat = new FlatCompat({
@@ -85,7 +87,6 @@ export function getConfig(importMetaUrl: string): Array<Linter.Config<Linter.Rul
 				],
 				// disabling because it was annoying with cloudflare:test types
 				'@typescript-eslint/no-empty-object-type': 'off',
-				'@typescript-eslint/no-unsafe-function-type': 'off',
 
 				'@typescript-eslint/no-explicit-any': 'off',
 				'import/no-named-as-default': 'off',
@@ -141,12 +142,9 @@ export function getConfig(importMetaUrl: string): Array<Linter.Config<Linter.Rul
 			},
 		},
 		{
-			files: ['**/test/fixtures/**/*', '**/.dagger/**/*'],
+			files: ['**/test/fixtures/**/*'],
 			rules: {
 				'import/no-unresolved': 'off',
-				// Disable TypeScript project-based rules for test fixtures and dagger files
-				'@typescript-eslint/no-floating-promises': 'off',
-				'@typescript-eslint/no-unused-vars': 'off',
 			},
 		},
 

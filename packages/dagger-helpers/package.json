@@ -45,10 +45,10 @@
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@types/node": "22.15.27",
-		"empathic": "1.1.0",
-		"ts-pattern": "5.7.0",
-		"typescript": "5.5.4",
-		"vitest": "3.1.4"
+		"empathic": "2.0.0",
+		"ts-pattern": "5.8.0",
+		"typescript": "5.8.2",
+		"vitest": "3.2.4"
 	},
 	"peerDependencies": {
 		"@dagger.io/dagger": "^0.18.4"

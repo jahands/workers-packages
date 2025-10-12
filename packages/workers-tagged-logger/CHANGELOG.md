@@ -30,13 +30,11 @@
   **Breaking Change**: Warning messages that were previously logged at `warn` level are now only shown when `debug: true` is explicitly set, and they appear at `debug` level instead.
 
   **New Features**:
-
   - `debug?: boolean` option in `WorkersLoggerOptions` (defaults to `false`)
   - Debug mode is inherited by child loggers created with `withTags()`, `withFields()`, and `withLogLevel()`
   - Internal warnings now use `debug` level instead of `warn` level
 
   **Benefits**:
-
   - Cleaner production logs by default
   - Development aid when debug mode is enabled
   - Backward compatible API (existing code works without changes)
@@ -65,13 +63,11 @@
   ## New Features
 
   ### `withLogLevel(level: LogLevel)` Method
-
   - Creates new logger instance with specified minimum log level
   - Highest priority in resolution hierarchy
   - Supports method chaining with `withTags()` and `withFields()`
 
   ### `setLogLevel(level: LogLevel)` Method
-
   - Sets log level in current AsyncLocalStorage context
   - Affects all loggers in the context
   - Overrides constructor-level settings
@@ -79,14 +75,12 @@
   ### Priority-Based Log Level Resolution
 
   Log levels are resolved using priority order (highest to lowest):
-
   1. **Instance level** - Set via `withLogLevel()`
   2. **Context level** - Set via `setLogLevel()`
   3. **Constructor level** - Set via `minimumLogLevel` option
   4. **Default level** - `'debug'` (logs everything)
 
   ### Enhanced Log Output
-
   - Adds `level` property to existing `$logger` objects when present
   - Shows the effective log level being used
   - Only added when `$logger` tags exist (decorators or explicit setting)
@@ -115,7 +109,6 @@
   This feature is fully backward compatible. Existing code using `minimumLogLevel` in the constructor continues to work exactly as before. The new methods provide additional flexibility without breaking existing functionality.
 
   ## Technical Implementation
-
   - Separate tracking of constructor vs instance log levels
   - Enhanced `LogContext` structure with `{tags, logLevel}` in AsyncLocalStorage
   - Proper preservation of log levels across method chaining
@@ -123,7 +116,6 @@
   - Memory-efficient context management
 
   ## Testing
-
   - 28 new comprehensive tests covering all functionality
   - Integration tests with existing features
   - Decorator compatibility tests
@@ -236,7 +228,6 @@
   This release introduces a `@WithLogTags` class method decorator as a convenient alternative to the `withLogTags` function wrapper, specifically designed for use within classes.
 
   **Key Features:**
-
   - **Automatic Context:** Wraps method execution within an `AsyncLocalStorage` context, similar to `withLogTags`.
   - **Automatic Tagging:**
     - Adds `$logger.methodName` tag with the name of the decorated method.
@@ -248,7 +239,6 @@
   - **Configuration:** Accepts an optional configuration object (`@WithLogTags({ tags: {...} })`) to add specific tags for the duration of the method's execution.
 
   **Requirements:**
-
   - You **must** enable `experimentalDecorators` in your `tsconfig.json` to use this feature:
     ```json
     {

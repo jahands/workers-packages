@@ -3,6 +3,9 @@
 .wrangler
 .dev.vars
 
+# Astro generated types
+.astro/
+
 # Dependencies
 node_modules
 .pnp
@@ -16,6 +19,8 @@ node_modules
 .env.development.local
 .env.test.local
 .env.production.local
+.secret
+*.env
 
 # Testing
 coverage
@@ -39,6 +44,8 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# Agents
 .claude/settings.local.json
 
 # Dagger

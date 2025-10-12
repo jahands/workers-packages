@@ -4,35 +4,42 @@
 	"private": true,
 	"license": "MIT",
 	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": "./src/lib/index.ts",
+		"./zx": "./src/lib/zx.ts",
+		"./package": "./src/package-json.ts",
+		"./workspace": "./src/workspace.ts"
+	},
 	"directories": {
 		"bin": "bin"
 	},
 	"scripts": {
 		"check:lint": "run-eslint",
-		"check:types": "run-tsc"
+		"check:types": "run-tsc",
+		"test": "run-vitest"
 	},
 	"dependencies": {
-		"@commander-js/extra-typings": "13.1.0",
+		"@commander-js/extra-typings": "14.0.0",
+		"@jahands/cli-tools": "0.11.1",
 		"@types/fs-extra": "11.0.4",
-		"@types/luxon": "3.6.2",
 		"@types/node": "22.15.27",
 		"cli-table3": "0.6.5",
-		"commander": "13.1.0",
-		"empathic": "1.1.0",
-		"esbuild": "0.25.4",
-		"luxon": "3.6.1",
+		"commander": "14.0.1",
+		"empathic": "2.0.0",
+		"esbuild": "0.25.10",
 		"memoize-one": "6.0.0",
-		"node-fetch": "3.3.2",
 		"p-map": "7.0.3",
-		"p-queue": "8.1.0",
-		"p-retry": "6.2.1",
-		"smol-toml": "1.3.4",
-		"ts-pattern": "5.7.0",
-		"zod": "3.25.76",
-		"zx": "8.5.4"
+		"smol-toml": "1.4.2",
+		"ts-pattern": "5.8.0",
+		"tsx": "4.20.6",
+		"yaml": "2.8.1",
+		"zod": "4.1.12",
+		"zx": "8.8.4"
 	},
 	"devDependencies": {
 		"@repo/eslint-config": "workspace:*",
-		"@types/bun": "1.2.13"
+		"@types/bun": "1.3.0",
+		"vitest": "3.2.4"
 	}
 }

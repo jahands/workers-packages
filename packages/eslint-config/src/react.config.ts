@@ -29,12 +29,6 @@ export function getReactConfig(importMetaUrl: string): Array<Linter.Config<Linte
 			},
 		},
 		reactHooks.configs['recommended-latest'],
-		// disable rules of hooks for non-react files to prevent false positives
-		// with Hono middleware that have a similar naming scheme (e.g. useSentry())
-		{
-			files: ['**/*.{ts,mjs,cjs}'],
-			rules: { 'react-hooks/rules-of-hooks': 'off' },
-		},
 
 		// Prettier (should be last to override other formatting rules)
 		{ rules: eslintConfigPrettier.rules },

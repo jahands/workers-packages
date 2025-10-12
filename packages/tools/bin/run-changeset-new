@@ -1,8 +1,8 @@
-#!/bin/zsh
-set -euo pipefail
+#!/bin/bash
+set -eu
 
 repo_root=$(git rev-parse --show-toplevel)
-cd $repo_root
+cd "$repo_root"
 
 # Stage changes so that changeset can see them
 git add .
@@ -10,20 +10,11 @@ git add .
 changeset
 
 # Make sure a changeset was created
-git status --porcelain | grep '.changeset/.*\.md' >/dev/null && true ||
-  (echo "🚨 No changeset created" && exit 1)
-
-new_changeset=$(ls -t .changeset/*.md | head -n 1)
-echo "📝 New changeset: $new_changeset"
-git add $new_changeset
-
-commit_msg=$(runx parse-changeset $new_changeset --strip-packages)
-if [[ -z "$commit_msg" ]]; then
-  echo "🚨 Empty commit message"
-  exit 1
+if ! git status --porcelain | grep '.changeset/.*\.md' >/dev/null; then
+	echo "🚨 No changeset created"
+	exit 1
 fi
 
-echo "📝 Commit message:"
-echo "$commit_msg"
-
-git commit -m $commit_msg
+new_changeset=$(find .changeset -name "*.md" -type f -exec ls -t {} + | head -n 1)
+echo "📝 New changeset: $new_changeset"
+git add "$new_changeset"

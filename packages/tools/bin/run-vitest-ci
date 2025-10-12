@@ -1,4 +1,4 @@
-#!/bin/bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 
-vitest run --silent --testTimeout=15000
+exec vitest run --silent --testTimeout=15000

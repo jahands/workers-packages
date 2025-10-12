@@ -1,4 +1,4 @@
-#!/bin/bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 
-tsc --noEmit -p tsconfig.json
+exec tsc --noEmit -p tsconfig.json

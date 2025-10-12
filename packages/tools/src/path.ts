@@ -1,9 +1,8 @@
-import { createHash } from 'node:crypto'
+import { isNotFoundError } from '@jahands/cli-tools/fs'
 import * as find from 'empathic/find'
+import * as pkg from 'empathic/package'
 import memoizeOne from 'memoize-one'
 import { z } from 'zod/v4'
-
-import { isNotFoundError } from './fs'
 
 export const getRepoRoot = memoizeOne(() => {
 	const pnpmLock = z
@@ -15,27 +14,20 @@ export const getRepoRoot = memoizeOne(() => {
 	return path.dirname(pnpmLock)
 })
 
-export async function getMD5OfDir(dir: string): Promise<string> {
-	const files = await fs
-		.readdir(dir, { recursive: true, withFileTypes: true })
-		.then((fs) => fs.filter((f) => f.isFile()))
-
-	files.sort((a, b) => `${a.path}${a.name}`.localeCompare(`${b.path}${b.name}`))
-	const hash = createHash('md5')
-	for (const file of files.map((f) => `${f.path}/${f.name}`)) {
-		hash.update((await fs.readFile(file)).toString())
+/**
+ * Get the package name of the nearest package.json
+ */
+export const getPackageName = memoizeOne(async (): Promise<string> => {
+	const pkgJsonPath = pkg.up()
+	if (!pkgJsonPath) {
+		throw new Error(`unable to locate package.json from ${process.cwd()}`)
 	}
-	return hash.digest('hex')
-}
-
-export async function getMD5OfFile(path: string): Promise<string> {
-	const file = (await fs.readFile(path)).toString()
-	return getMD5OfString(file)
-}
-
-export async function getMD5OfString(str: string): Promise<string> {
-	return createHash('md5').update(str).digest('hex')
-}
+	const pkgJson = z.object({ name: z.string() }).safeParse(await fs.readJson(pkgJsonPath))
+	if (!pkgJson.success) {
+		throw new Error(`unable to parse package.json: ${pkgJsonPath}`)
+	}
+	return pkgJson.data.name
+})
 
 export function ignoreNotFound(e: unknown): void {
 	if (!isNotFoundError(e)) {

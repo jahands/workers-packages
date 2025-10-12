@@ -3,8 +3,5 @@
 	"version": "0.3.6",
 	"private": true,
 	"license": "MIT",
-	"sideEffects": false,
-	"devDependencies": {
-		"vitest": "3.1.4"
-	}
+	"sideEffects": false
 }

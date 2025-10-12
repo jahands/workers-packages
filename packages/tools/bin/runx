@@ -1,16 +1,6 @@
-#!/bin/bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 
-runx_path="$(realpath "$(dirname $0)/../src/bin/runx.ts")"
+script_path="$(realpath "$(dirname "$0")/../src/bin/runx.cmd.ts")"
 
-if [[ ! -f "$runx_path" ]]; then
-  echo "Could not find runx.ts - this should not happen!"
-  exit 1
-fi
-
-if command -v bun >/dev/null 2>&1; then
-  bun "$runx_path" "$@"
-else
-  echo "Could not find bun - unable to run runx"
-  exit 1
-fi
+exec bun "$script_path" "$@"

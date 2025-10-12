@@ -5,12 +5,16 @@ const codeImports = [
 	'<BUILTIN_MODULES>',
 	'<THIRD_PARTY_MODULES>',
 	'',
-	'^(@repo)(/.*)$', // Workspace imports
+	'^(@repo)(\/.*)$', // Workspace imports
+	'',
+	// aliases
+	'^~\/', // ~/
+	'^@\/', // @/
 	'',
 	// Local (relative) imports
 	'^[.]{2}$', // ..
-	'^[.]{2}/', // ../
-	'^[.]/(?!index)', // ./foo (but not ./index)
+	'^[.]{2}\/', // ../
+	'^[.]\/(?!index)', // ./foo (but not ./index)
 	'^[.]$', // .
 	'^[.]/index$', // ./index
 	'',
@@ -33,7 +37,7 @@ const config = {
 	plugins: ['@ianvs/prettier-plugin-sort-imports', 'prettier-plugin-packagejson'],
 	importOrder: [...codeImports, ...typeImports],
 	importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
-	importOrderTypeScriptVersion: '5.5.4',
+	importOrderTypeScriptVersion: '5.8.2',
 	overrides: [
 		{
 			files: ['*.jsonc', '*.code-workspace'],

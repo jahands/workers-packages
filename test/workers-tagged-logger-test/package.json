@@ -12,15 +12,15 @@
 		"test": "run-vitest"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.8.30",
-		"@cloudflare/workers-types": "4.20250517.0",
+		"@cloudflare/vitest-pool-workers": "0.9.12",
+		"@cloudflare/workers-types": "4.20251011.0",
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@types/node": "22.15.27",
-		"typescript": "5.5.4",
-		"vitest": "3.1.4",
+		"typescript": "5.8.2",
+		"vitest": "3.2.4",
 		"workers-tagged-logger": "workspace:*",
-		"zod": "3.25.76"
+		"zod": "4.1.12"
 	}
 }

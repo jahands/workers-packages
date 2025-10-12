@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { argument, Container, dag, Directory, func, object, Secret } from '@dagger.io/dagger'
 import { envStorage, ParamsToEnv, shell } from '@jahands/dagger-helpers'
 
@@ -10,6 +11,7 @@ const projectIncludes: string[] = [
 	'test/',
 
 	// files
+	'.editorconfig',
 	'.gitignore',
 	'.npmrc',
 	'.prettierignore',
@@ -20,8 +22,9 @@ const projectIncludes: string[] = [
 	'pnpm-lock.yaml',
 	'pnpm-workspace.yaml',
 	'tsconfig.json',
-	'turbo.jsonc',
-	'vitest.workspace.ts',
+	'turbo.config.ts',
+	'turbo.json',
+	'vitest.config.ts',
 ]
 
 @object()
@@ -72,7 +75,7 @@ export class WorkersPackages {
 					].join(' && ')
 				)
 			)
-			.withExec(sh('curl -fsSL https://sh.uuid.rocks/install/mise | MISE_VERSION=v2025.8.7 bash'))
+			.withExec(sh('curl -fsSL https://sh.uuid.rocks/install/mise | MISE_VERSION=v2025.10.0 bash'))
 			.withEnvVariable('PATH', '$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH', {
 				expand: true,
 			})
@@ -101,7 +104,8 @@ export class WorkersPackages {
 			// install pnpm deps
 			.withMountedCache('/pnpm-store', dag.cacheVolume(`pnpm-store`))
 			.withExec(sh('pnpm config set store-dir /pnpm-store'))
-			.withExec(sh('FORCE_COLOR=1 pnpm install --frozen-lockfile --child-concurrency=10'))
+			// TODO: pass in CI as a param instead of hard-coding here
+			.withExec(sh('CI=1 FORCE_COLOR=1 pnpm install --frozen-lockfile --child-concurrency=10'))
 
 			// copy over the rest of the project
 			.withDirectory('/work', this.source.directory('/'), { include: projectIncludes })
@@ -120,7 +124,7 @@ export class WorkersPackages {
 	): Promise<void> {
 		const con = this.withEnv(await this.installDeps())
 
-		await con.withExec(sh('bun check:ci')).sync()
+		await con.withExec(sh('bun runx ci check')).sync()
 	}
 
 	// =============================== //

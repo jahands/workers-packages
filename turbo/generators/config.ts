@@ -1,101 +1,143 @@
-import { partials } from './helpers/partials'
-import { pnpmFix } from './plugins/pnpm-fix'
+import { NewPackageAnswers, NewWorkerAnswers } from './answers'
+import {
+	pascalText,
+	pascalTextPlural,
+	pascalTextSingular,
+	slugifyText,
+	slugifyTextPlural,
+	slugifyTextSingular,
+} from './helpers/slugify'
+import { nameValidator } from './helpers/validate'
+import { fixAll } from './plugins/fix-all'
+import { fixDepsAndFormat } from './plugins/fix-deps-and-format'
 import { pnpmInstall } from './plugins/pnpm-install'
-import { slugifyText } from './plugins/slugify'
-import { updateWorkflows } from './plugins/workflows'
-import { wranglerSecretPut } from './plugins/wrangler-secret-put'
 
 import type { PlopTypes } from '@turbo/gen'
-import type { Answers } from './types'
+import type { PnpmInstallData } from './plugins/pnpm-install'
 
 export default function generator(plop: PlopTypes.NodePlopAPI): void {
 	plop.setActionType('pnpmInstall', pnpmInstall as PlopTypes.CustomActionFunction)
-	plop.setActionType('pnpmFix', pnpmFix as PlopTypes.CustomActionFunction)
-	plop.setActionType('updateWorkflows', updateWorkflows as PlopTypes.CustomActionFunction)
-	plop.setActionType(
-		'wranglerSecretPut',
-		wranglerSecretPut as unknown as PlopTypes.CustomActionFunction
-	)
-	plop.setHelper('slug', slugifyText)
+	plop.setActionType('fixAll', fixAll as PlopTypes.CustomActionFunction)
+	plop.setActionType('fixDepsAndFormat', fixDepsAndFormat as PlopTypes.CustomActionFunction)
 
-	// create a generator
+	plop.setHelper('slug', slugifyText)
+	plop.setHelper('slug-s', slugifyTextSingular)
+	plop.setHelper('slug-p', slugifyTextPlural)
+
+	plop.setHelper('pascal', pascalText)
+	plop.setHelper('pascal-s', pascalTextSingular)
+	plop.setHelper('pascal-p', pascalTextPlural)
+
 	plop.setGenerator('new-worker', {
-		description: 'Create a new Fetch Cloudflare Worker',
+		description: 'Create a new Cloudflare Worker using Hono',
 		// gather information from the user
 		prompts: [
-			{
-				type: 'list',
-				name: 'appsDir',
-				message: 'Workspace location?',
-				choices: ['examples'],
-			},
 			{
 				type: 'input',
 				name: 'name',
 				message: 'name of worker',
-			},
-			{
-				type: 'list',
-				name: 'uploadSecrets',
-				message: 'Upload wrangler secrets?',
-				choices: ['yes', 'no'],
-			},
-			{
-				type: 'list',
-				name: 'useAuth',
-				message: 'Use bearer auth in Worker?',
-				choices: ['yes', 'no'],
+				validate: nameValidator,
 			},
 		],
 		// perform actions based on the prompts
-		actions: (data: any) => {
-			const answers = data as Answers
+		actions: (data: unknown) => {
+			const answers = NewWorkerAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
-
-			let useAuthTypePartial = ''
-			let useAuthMiddlewarePartial = ''
-			let useAuthImportPartial = ''
-			if (answers.useAuth === 'yes') {
-				useAuthTypePartial = partials.useAuth.type
-				useAuthMiddlewarePartial = partials.useAuth.middleware
-				useAuthImportPartial = partials.useAuth.import
-			}
-			plop.setPartial('useAuthTypePartial', useAuthTypePartial)
-			plop.setPartial('useAuthMiddlewarePartial', useAuthMiddlewarePartial)
-			plop.setPartial('useAuthImportPartial', useAuthImportPartial)
+			const destination = `apps/${slugifyText(answers.name)}`
 
 			const actions: PlopTypes.Actions = [
 				{
 					type: 'addMany',
 					base: 'templates/fetch-worker',
-					destination: `${answers.appsDir}/{{ slug name }}`,
-					templateFiles: ['templates/fetch-worker/**/**.hbs'],
+					destination,
+					templateFiles: [
+						'templates/fetch-worker/**/**.hbs',
+						'templates/fetch-worker/.eslintrc.cjs.hbs',
+					],
+					data: answers,
 				},
-				{ type: 'pnpmFix' },
-				{ type: 'pnpmInstall' },
+				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{ type: 'fixAll' },
+				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
 			]
 
-			if (answers.uploadSecrets === 'yes') {
-				actions.push(
-					{
-						type: 'wranglerSecretPut',
-						data: { name: 'SENTRY_DSN' },
+			return actions
+		},
+	})
+
+	plop.setGenerator('new-worker-vite', {
+		description: 'Create a new Cloudflare Worker using Hono and Vite',
+		// gather information from the user
+		prompts: [
+			{
+				type: 'input',
+				name: 'name',
+				message: 'name of worker',
+				validate: nameValidator,
+			},
+		],
+		// perform actions based on the prompts
+		actions: (data: unknown) => {
+			const answers = NewWorkerAnswers.parse(data)
+			process.chdir(answers.turbo.paths.root)
+			const destination = `apps/${slugifyText(answers.name)}`
+
+			const actions: PlopTypes.Actions = [
+				{
+					type: 'addMany',
+					base: 'templates/fetch-worker-vite',
+					destination,
+					templateFiles: [
+						'templates/fetch-worker-vite/**/**.hbs',
+						'templates/fetch-worker-vite/.eslintrc.cjs.hbs',
+					],
+					data: answers,
+				},
+				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{ type: 'fixAll' },
+				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+			]
+
+			return actions
+		},
+	})
+
+	plop.setGenerator('new-package', {
+		description: 'Create a new shared package',
+		prompts: [
+			{
+				type: 'input',
+				name: 'name',
+				message: 'name of package',
+				validate: nameValidator,
+			},
+			{
+				type: 'confirm',
+				name: 'usedInWorkers',
+				message: 'Will this package be used within Cloudflare Workers?',
+				default: true,
+			},
+		],
+		actions: (data: unknown) => {
+			const answers = NewPackageAnswers.parse(data)
+			process.chdir(answers.turbo.paths.root)
+			const destination = `packages/${slugifyText(answers.name)}`
+
+			const actions: PlopTypes.Actions = [
+				{
+					type: 'addMany',
+					base: 'templates/package',
+					destination,
+					templateFiles: ['templates/package/**/**.hbs', 'templates/package/.eslintrc.cjs.hbs'],
+					data: {
+						...answers,
+						tsconfigType: answers.usedInWorkers ? 'workers-lib.json' : 'lib.json',
 					},
-					{
-						type: 'wranglerSecretPut',
-						data: { name: 'AXIOM_API_KEY' },
-					}
-				)
+				},
+				{ type: 'fixDepsAndFormat' },
+				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+			]
 
-				if (answers.useAuth === 'yes') {
-					actions.push({
-						type: 'wranglerSecretPut',
-						data: { name: 'API_TOKEN' },
-					})
-				}
-			}
-
-			// actions.push({ type: 'updateWorkflows' })
 			return actions
 		},
 	})

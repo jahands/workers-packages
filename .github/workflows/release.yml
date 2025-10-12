@@ -4,6 +4,9 @@ on:
   push:
     branches: ['main']
 
+env:
+  FORCE_COLOR: 1
+
 jobs:
   create-release-pr:
     # Release PRs are for changelogs only - we auto publish on main every time regardless.
@@ -22,13 +25,12 @@ jobs:
         uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.2.7
+          bun-version: 1.2.21
       - uses: pnpm/action-setup@v4
       - name: Setup Node.js lts
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          # cache: 'pnpm' # makes it slower
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile --child-concurrency=10
       - name: Create Release Pull Request

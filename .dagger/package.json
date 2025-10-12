@@ -3,14 +3,10 @@
 	"type": "module",
 	"main": "src/main.dagger.ts",
 	"dependencies": {
-		"@jahands/dagger-helpers": "0.6.4",
+		"@jahands/dagger-helpers": "0.7.1",
 		"p-map": "7.0.3",
-		"typescript": "5.5.4",
-		"zod": "3.25.7"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
-		"vitest": "3.1.2"
+		"typescript": "5.9.3",
+		"zod": "4.1.2"
 	},
 	"packageManager": "bun@1.2.21",
 	"dagger": {
