@@ -1,0 +1,69 @@
+{
+	"name": "dagger-env",
+	"version": "0.6.1",
+	"private": false,
+	"description": "A type-safe, reusable environment configuration abstraction for Dagger modules.",
+	"keywords": [
+		"dagger",
+		"env"
+	],
+	"homepage": "https://github.com/monorepo-rocks/monorepo-rocks/tree/main/packages/dagger-env",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/monorepo-rocks/monorepo-rocks.git",
+		"directory": "packages/dagger-env"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		},
+		"./op": {
+			"import": {
+				"types": "./dist/op.d.ts",
+				"default": "./dist/op.js"
+			}
+		},
+		"./run": {
+			"import": {
+				"types": "./dist/run-dagger-cmd.d.ts",
+				"default": "./dist/run-dagger-cmd.js"
+			}
+		}
+	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "runx build tsc ./src/index.ts ./src/op.ts ./src/run-dagger-cmd.ts",
+		"check:exports": "runx check --exports",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"zx": "8.8.4"
+	},
+	"devDependencies": {
+		"@dagger.io/dagger": "0.18.9",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"typescript": "5.5.4",
+		"vitest": "3.2.4",
+		"zod": "4.1.1"
+	},
+	"peerDependencies": {
+		"zod": "^3.25.76 || ^4.1.1"
+	}
+}

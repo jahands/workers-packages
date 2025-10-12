@@ -1,0 +1,63 @@
+{
+	"name": "turbo-config",
+	"version": "0.2.2",
+	"private": false,
+	"description": "Write your Turborepo config in TypeScript via turbo.config.ts",
+	"keywords": [
+		"turborepo",
+		"turbo",
+		"turbo.json",
+		"turbo.config.ts",
+		"config"
+	],
+	"homepage": "https://github.com/monorepo-rocks/monorepo-rocks/tree/main/packages/turbo-config",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/monorepo-rocks/monorepo-rocks.git",
+		"directory": "packages/turbo-config"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://twitter.com/jachands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"import": "./dist/esm/index.mjs",
+			"default": "./dist/cjs/index.cjs",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"main": "./dist/esm/index.mjs",
+	"bin": {
+		"turbo-config": "./bin/turbo-config"
+	},
+	"files": [
+		"dist",
+		"bin"
+	],
+	"scripts": {
+		"build": "runx build bun ./src/index.ts ./src/bin/turbo-config.cmd.ts --format esm cjs --no-sourcemap",
+		"build:dev": "runx build bun ./src/bin/turbo-config.cmd.ts --format esm cjs --no-minify",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"devDependencies": {
+		"@commander-js/extra-typings": "14.0.0",
+		"@jahands/cli-tools": "0.11.0",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"empathic": "2.0.0",
+		"esbuild": "0.25.9",
+		"memoize-one": "6.0.0",
+		"p-filter": "4.1.0",
+		"p-map": "7.0.3",
+		"vitest": "3.2.4",
+		"zod": "4.1.1",
+		"zx": "8.8.4"
+	}
+}
