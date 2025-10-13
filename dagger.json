@@ -1,7 +1,7 @@
 {
 	"$schema": "https://docs.dagger.io/reference/dagger.schema.json",
 	"name": "workers-packages",
-	"engineVersion": "v0.18.19",
+	"engineVersion": "v0.19.2",
 	"sdk": {
 		"source": "typescript"
 	},

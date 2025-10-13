@@ -5,6 +5,7 @@ bun   = "1.2.20"
 just  = "1.42.4"
 rg    = "latest"
 shfmt = "latest"
+dagger = "0.19.2"
 
 [settings]
 idiomatic_version_file_enable_tools = []
