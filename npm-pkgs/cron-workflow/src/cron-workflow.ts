@@ -4,6 +4,24 @@ import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
 
 export class CronWorkflow extends WorkflowEntrypoint {
 	override async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
+		const getWorkflowBinding = () => {
+			if (!(typeof this.env === 'object')) {
+				throw new Error('this.env is not an object') // should never happen
+			}
+			if (this.env === null) {
+				throw new Error('this.env is null') // should never happen
+			}
+
+			// name of the derived class
+			const name = this.constructor.name
+			if (!(name in this.env)) {
+				throw new Error(
+					`could not find Workflows binding for ${name} - did you add it to your Workflows configuration in wrangler.jsonc?`
+				)
+			}
+			if(!(typeof this.env[name] === 'object'))
+		}
+
 		const nextRunTime = await step.do('start time', async () => {
 			return Date.now()
 		})
