@@ -3,7 +3,7 @@ import { WorkflowEntrypoint } from 'cloudflare:workers'
 import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
 
 export class CronWorkflow extends WorkflowEntrypoint {
-	async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
+	override async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
 		const nextRunTime = await step.do('start time', async () => {
 			return Date.now()
 		})
