@@ -1,15 +1,16 @@
 {
-	"name": "workers-tagged-logger",
-	"version": "0.13.5",
+	"name": "cron-workflow",
+	"version": "0.1.0",
 	"private": false,
-	"description": "A structured logger for Cloudflare Workers",
+	"description": "Build Cron Jobs with Cloudflare Workflows",
 	"keywords": [
+		"cron",
+		"cron job",
 		"cloudflare workers",
-		"logging",
-		"cloudflare",
-		"workers"
+		"cloudflare workflows",
+		"workflows"
 	],
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/workers-tagged-logger",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/cron-workflow",
 	"bugs": "https://github.com/jahands/workers-packages/issues",
 	"repository": {
 		"type": "git",
@@ -33,16 +34,6 @@
 				"types": "./dist/index.d.ts",
 				"default": "./dist/index.js"
 			}
-		},
-		"./ts5": {
-			"import": {
-				"types": "./dist/ts5-decorator.d.ts",
-				"default": "./dist/ts5-decorator.js"
-			},
-			"node": {
-				"types": "./dist/ts5-decorator.d.ts",
-				"default": "./dist/ts5-decorator.js"
-			}
 		}
 	},
 	"module": "./dist/index.js",
@@ -51,7 +42,7 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "runx build tsc ./src/index.ts ./src/ts5-decorator.ts",
+		"build": "runx build tsc ./src/index.ts",
 		"check:exports": "runx check --exports",
 		"check:lint": "run-eslint",
 		"check:types": "run-tsc",

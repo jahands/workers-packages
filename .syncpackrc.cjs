@@ -35,7 +35,7 @@ const config = {
 			label: 'use range for dependencies in public packages',
 			range: '^',
 			dependencies: ['nanoid', 'zod'],
-			packages: ['prefixed-nanoid', 'workers-tagged-logger', 'notion-schemas'],
+			packages: ['prefixed-nanoid', 'workers-tagged-logger', 'notion-schemas', 'cron-workflow'],
 		},
 		{
 			label: 'pin all deps',
