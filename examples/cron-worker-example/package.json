@@ -15,6 +15,7 @@
 	},
 	"dependencies": {
 		"@repo/hono-helpers": "workspace:*",
+		"cron-workflow": "workspace:*",
 		"hono": "4.9.11",
 		"workers-tagged-logger": "workspace:*"
 	},

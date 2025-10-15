@@ -99,6 +99,9 @@ importers:
       '@repo/hono-helpers':
         specifier: workspace:*
         version: link:../../packages/hono-helpers
+      cron-workflow:
+        specifier: workspace:*
+        version: link:../../npm-pkgs/cron-workflow
       hono:
         specifier: 4.9.11
         version: 4.9.11
