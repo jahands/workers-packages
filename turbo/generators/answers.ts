@@ -25,5 +25,11 @@ export const NewPackageAnswers = z.object({
 	usedInWorkers: z.boolean().optional(),
 })
 
+export type NewPlayTSBunAnswers = z.infer<typeof NewPlayTSBunAnswers>
+export const NewPlayTSBunAnswers = z.object({
+	name: z.string(),
+	turbo: Turbo,
+})
+
 export type Answers = z.infer<typeof Answers>
 export const Answers = z.union([NewWorkerAnswers, NewPackageAnswers])
