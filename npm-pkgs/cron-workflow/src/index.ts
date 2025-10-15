@@ -1,1 +1,2 @@
-export { CronWorkflow } from './cron-workflow.js'
+export { CronWorkflow } from './CronWorkflow.wf.js'
+export { CronController } from './CronController.actor.js'

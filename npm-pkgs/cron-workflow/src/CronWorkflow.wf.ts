@@ -3,9 +3,7 @@ import { WorkflowEntrypoint } from 'cloudflare:workers'
 
 import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
 
-interface Env {}
-
-export class CronWorkflow extends WorkflowEntrypoint {
+export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 	constructor(env: Env, ctx: ExecutionContext) {
 		super(ctx, env)
 
