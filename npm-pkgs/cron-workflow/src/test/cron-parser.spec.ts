@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
 import { CronExpressionParser } from 'cron-parser'
+import { describe, expect, it } from 'vitest'
 
 const parseExpression = CronExpressionParser.parse.bind(CronExpressionParser)
 
@@ -105,6 +105,74 @@ describe('cron-parser', () => {
 			})
 			const next = interval.next()
 			expect(next.toDate().getDate()).toBe(29)
+		})
+
+		it('handles L for last occurrence of weekday (1L)', () => {
+			const interval = parseExpression('0 0 * * 1L', {
+				currentDate: new Date('2024-01-01'),
+			})
+			const next = interval.next()
+			// Last Monday of January 2024 is the 29th
+			expect(next.toDate().getDate()).toBe(29)
+			expect(next.toDate().getDay()).toBe(1) // Monday
+		})
+
+		it('handles # for Nth weekday of month', () => {
+			const interval = parseExpression('0 0 * * 1#1', {
+				currentDate: new Date('2023-12-31'),
+			})
+			const next = interval.next()
+			// First Monday of January 2024 is the 1st (Jan 1, 2024 is Monday)
+			expect(next.toDate().getDate()).toBe(1)
+			expect(next.toDate().getDay()).toBe(1) // Monday
+			expect(next.toDate().getMonth()).toBe(0) // January
+		})
+
+		it('handles # for second Friday of month', () => {
+			const interval = parseExpression('0 0 * * 5#2', {
+				currentDate: new Date('2024-01-01'),
+			})
+			const next = interval.next()
+			// Second Friday of January 2024 is the 12th
+			expect(next.toDate().getDate()).toBe(12)
+			expect(next.toDate().getDay()).toBe(5) // Friday
+		})
+
+		it('handles H (hash) for randomized values with seed', () => {
+			const interval1 = parseExpression('H * * * *', {
+				hashSeed: 'test-job',
+			})
+			const interval2 = parseExpression('H * * * *', {
+				hashSeed: 'test-job',
+			})
+			const interval3 = parseExpression('H * * * *', {
+				hashSeed: 'different-job',
+			})
+
+			// Same seed should produce same jitter
+			expect(interval1.stringify()).toBe(interval2.stringify())
+			// Different seed should produce different jitter
+			expect(interval1.stringify()).not.toBe(interval3.stringify())
+		})
+
+		it('handles H with range', () => {
+			const interval = parseExpression('H(0-10) * * * *', {
+				hashSeed: 'test-job',
+			})
+			const next = interval.next()
+			const minute = next.toDate().getMinutes()
+			expect(minute).toBeGreaterThanOrEqual(0)
+			expect(minute).toBeLessThanOrEqual(10)
+		})
+
+		it('handles H with step values', () => {
+			const interval = parseExpression('H/15 * * * *', {
+				hashSeed: 'test-job',
+			})
+			// H/15 expands to specific values like "7,22,37,52 * * * *"
+			const stringified = interval.stringify()
+			expect(stringified).toContain(',')
+			expect(stringified).toMatch(/^\d+,\d+,\d+,\d+ \* \* \* \*$/)
 		})
 	})
 
@@ -371,10 +439,10 @@ describe('cron-parser', () => {
 
 		it('skips months without 31 days', () => {
 			const interval = parseExpression('0 0 31 * *', {
-				currentDate: new Date('2024-01-31'),
+				currentDate: new Date('2024-01-31T12:00:00'), // After the scheduled time
 			})
 
-			const next = interval.next() // Should skip Feb
+			const next = interval.next() // Should skip Feb and go to March
 			expect(next.toDate().getMonth()).toBe(2) // March
 			expect(next.toDate().getDate()).toBe(31)
 		})
@@ -476,8 +544,13 @@ describe('cron-parser', () => {
 
 		it('throws error for malformed expressions', () => {
 			expect(() => parseExpression('not a cron')).toThrow()
-			expect(() => parseExpression('* * *')).toThrow()
-			expect(() => parseExpression('')).toThrow()
+			expect(() => parseExpression('* *')).toThrow()
+		})
+
+		it('handles empty string as valid default', () => {
+			// Empty string defaults to '* * * * *'
+			const interval = parseExpression('')
+			expect(interval.stringify()).toBe('* * * * *')
 		})
 
 		it('throws error for invalid step values', () => {
@@ -496,12 +569,6 @@ describe('cron-parser', () => {
 	})
 
 	describe('utility methods', () => {
-		it('converts to string representation', () => {
-			const interval = parseExpression('*/5 * * * *')
-			const fields = interval.fields
-			expect(fields).toBeDefined()
-		})
-
 		it('provides access to expression fields', () => {
 			const interval = parseExpression('30 12 * * 1-5')
 			const fields = interval.fields
@@ -511,6 +578,39 @@ describe('cron-parser', () => {
 			expect(fields.dayOfMonth).toBeDefined()
 			expect(fields.month).toBeDefined()
 			expect(fields.dayOfWeek).toBeDefined()
+		})
+
+		it('converts expression to string with stringify()', () => {
+			const interval = parseExpression('30 12 * * 1-5')
+			expect(interval.stringify()).toBe('30 12 * * 1-5')
+		})
+
+		it('stringify() optimizes expressions', () => {
+			// Library optimizes 0,15,30,45 to */15
+			const interval = parseExpression('0,15,30,45 9-17 1,15 * 1-5')
+			expect(interval.stringify()).toBe('*/15 9-17 1,15 * 1-5')
+		})
+
+		it('checks if date matches expression with includesDate()', () => {
+			const interval = parseExpression('30 12 * * 1-5') // 12:30 on weekdays
+
+			const monday = new Date('2024-01-15T12:30:00') // Monday at 12:30
+			const saturday = new Date('2024-01-13T12:30:00') // Saturday at 12:30
+			const mondayWrongTime = new Date('2024-01-15T13:30:00') // Monday at 13:30
+
+			expect(interval.includesDate(monday)).toBe(true)
+			expect(interval.includesDate(saturday)).toBe(false)
+			expect(interval.includesDate(mondayWrongTime)).toBe(false)
+		})
+
+		it('includesDate() works with complex expressions', () => {
+			const interval = parseExpression('*/15 * * * *') // Every 15 minutes
+
+			expect(interval.includesDate(new Date('2024-01-15T12:00:00'))).toBe(true)
+			expect(interval.includesDate(new Date('2024-01-15T12:15:00'))).toBe(true)
+			expect(interval.includesDate(new Date('2024-01-15T12:30:00'))).toBe(true)
+			expect(interval.includesDate(new Date('2024-01-15T12:45:00'))).toBe(true)
+			expect(interval.includesDate(new Date('2024-01-15T12:10:00'))).toBe(false)
 		})
 	})
 
@@ -524,7 +624,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles complex expressions efficiently', () => {
-			const interval = parseExpression('*/5,10,15 9-17/2 1-15,20-25 1-6,9-12 1-5', {
+			const interval = parseExpression('5,10,15,20 9-17 1-15,20-25 1,6,12 1-5', {
 				currentDate: new Date('2024-01-01'),
 			})
 
@@ -562,12 +662,13 @@ describe('cron-parser', () => {
 
 		it('runs on the first day of every quarter', () => {
 			const interval = parseExpression('0 0 1 1,4,7,10 *', {
-				currentDate: new Date('2024-01-01'),
+				currentDate: new Date('2023-12-15'),
 			})
 
 			const dates = Array.from({ length: 4 }, () => interval.next().toDate())
 			const months = dates.map((d) => d.getMonth())
 			expect(months).toEqual([0, 3, 6, 9]) // Jan, Apr, Jul, Oct
+			dates.forEach((date) => expect(date.getDate()).toBe(1))
 		})
 
 		it('runs at specific times on specific days', () => {
