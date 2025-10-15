@@ -3,6 +3,13 @@ import { WorkflowEntrypoint } from 'cloudflare:workers'
 
 import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
 
+export type CronContext = {
+	step: WorkflowStep
+	// TODO: maybe add schedule info?
+}
+
+export type FinalizeContext = CronContext & { error?: unknown }
+
 export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 	constructor(env: Env, ctx: ExecutionContext) {
 		super(ctx, env)
@@ -34,7 +41,7 @@ export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 	 *
 	 * @param step The Workflows step
 	 */
-	async onInit(step: WorkflowStep) {
+	async onInit({ step }: CronContext) {
 		// do nothing if user doesn't override - this is not mandatory
 	}
 
@@ -44,7 +51,7 @@ export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 	 * Override this to implement your cron Workflow (required)
 	 * @param step The Workflows step
 	 */
-	async onTick(step: WorkflowStep) {
+	async onTick({ step }: CronContext) {
 		// stub - child class must override
 	}
 
@@ -56,7 +63,7 @@ export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 	 * @param step The Workflows step
 	 * @param error Optional error that was thrown if the Workflow failed
 	 */
-	async onFinalize(step: WorkflowStep, { error }: { error?: Error }) {
+	async onFinalize({ step, error }: FinalizeContext) {
 		// do nothing if user doesn't override - this is not mandatory
 	}
 
