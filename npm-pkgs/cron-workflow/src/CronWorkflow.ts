@@ -34,11 +34,6 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 					'Implement your cron logic in a different method instead.'
 			)
 		}
-
-		// onTick must be overridden
-		if (this.onTick === CronWorkflow.prototype.onTick) {
-			throw new Error(`CronWorkflow ${this.constructor.name} must override the onTick() method.`)
-		}
 	}
 
 	// ================================ //
