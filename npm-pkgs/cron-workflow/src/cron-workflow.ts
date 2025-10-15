@@ -9,12 +9,17 @@ export class CronWorkflow extends WorkflowEntrypoint {
 	constructor(env: Env, ctx: ExecutionContext) {
 		super(ctx, env)
 
-		// prevent subclasses from overriding run()
+		// prevent child classes from overriding run()
 		if (this.run !== CronWorkflow.prototype.run) {
 			throw new Error(
 				'Cannot override run() method in CronWorkflow. ' +
 					'Implement your cron logic in a different method instead.'
 			)
+		}
+
+		// onTick must be overridden
+		if (this.onTick === CronWorkflow.prototype.onTick) {
+			throw new Error(`CronWorkflow ${this.constructor.name} must override the onTick() method.`)
 		}
 	}
 
@@ -38,13 +43,11 @@ export class CronWorkflow extends WorkflowEntrypoint {
 	/**
 	 * Main Cron handler that runs once per cron run.
 	 *
-	 * Override this to implement your cron Workflow
+	 * Override this to implement your cron Workflow (required)
 	 * @param step The Workflows step
 	 */
 	async onTick(step: WorkflowStep) {
-		throw new Error(
-			`CronWorkflow ${this.constructor.name} not implemented! Please override the onTick() method.`
-		)
+		// stub - child class must override
 	}
 
 	/**
