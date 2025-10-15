@@ -14,7 +14,7 @@ export type CronContext = {
 
 export type CronFinalizeContext = CronContext & { error?: unknown }
 
-export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
+export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env> {
 	// TODO: add type to validate schedule pattern
 
 	/**
