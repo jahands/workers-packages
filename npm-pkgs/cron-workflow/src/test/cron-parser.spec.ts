@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import parser from 'cron-parser'
+import { CronExpressionParser } from 'cron-parser'
 
-const parseExpression = parser.parseExpression.bind(parser)
+const parseExpression = CronExpressionParser.parse.bind(CronExpressionParser)
 
 describe('cron-parser', () => {
 	describe('basic parsing', () => {
@@ -258,18 +258,13 @@ describe('cron-parser', () => {
 			}
 		})
 
-		it('uses iterator option to control behavior', () => {
+		it('parses expressions with all options combined', () => {
 			const interval = parseExpression('*/5 * * * *', {
-				iterator: true,
+				currentDate: new Date('2024-01-15T10:00:00'),
+				startDate: new Date('2024-01-15T00:00:00'),
+				endDate: new Date('2024-01-20T00:00:00'),
 			})
 			expect(interval).toBeDefined()
-		})
-
-		it('handles UTC option', () => {
-			const interval = parseExpression('0 12 * * *', {
-				currentDate: new Date('2024-01-15T10:00:00Z'),
-				utc: true,
-			})
 			const next = interval.next()
 			expect(next).toBeDefined()
 		})
