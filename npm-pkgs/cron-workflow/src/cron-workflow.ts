@@ -98,8 +98,41 @@ export class CronWorkflow extends WorkflowEntrypoint {
 		})
 
 		const userSteps = async () => {
-			// This has to be defined somewhere
-			// return
+			// catch errors in onInit() and onTick() so that we can still run onFinalize()
+			let error: Error | undefined
+
+			// run onInit first
+			try {
+				await this.onInit(step)
+			} catch (e) {
+				if (e instanceof Error) {
+					error = e
+				} else {
+					error = new Error(`Unknown error thrown in onInit(): ${String(e)}`)
+				}
+			}
+
+			// only run onTick if onInit succeeded
+			if (!error) {
+				try {
+					await this.onTick(step)
+				} catch (e) {
+					if (e instanceof Error) {
+						error = e
+					} else {
+						error = new Error(`Unknown error thrown in onTick(): ${String(e)}`)
+					}
+				}
+			}
+
+			// bubble up errors thrown in onFinalize()
+			await this.onFinalize(step, { error })
+
+			// re-throw error from onInit/onTick if it exists so that
+			// the Workflow shows as failed
+			if (error) {
+				throw error
+			}
 		}
 
 		const createNext = async () => {
