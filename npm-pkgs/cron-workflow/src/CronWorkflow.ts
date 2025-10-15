@@ -12,7 +12,7 @@ export type CronContext = {
 	// TODO: maybe add schedule info?
 }
 
-export type FinalizeContext = CronContext & { error?: unknown }
+export type CronFinalizeContext = CronContext & { error?: unknown }
 
 export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 	// TODO: add type to validate schedule pattern
@@ -66,7 +66,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 	 * @param step The Workflows step
 	 * @param error Optional error that was thrown if the Workflow failed
 	 */
-	protected async onFinalize({ step, error }: FinalizeContext): Promise<void> {
+	protected async onFinalize({ step, error }: CronFinalizeContext): Promise<void> {
 		// do nothing if user doesn't override - this is not mandatory
 	}
 

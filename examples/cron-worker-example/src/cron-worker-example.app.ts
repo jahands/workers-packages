@@ -5,7 +5,7 @@ import { useWorkersLogger } from 'workers-tagged-logger'
 
 import { withNotFound, withOnError } from '@repo/hono-helpers'
 
-import type { CronContext, FinalizeContext } from 'cron-workflow'
+import type { CronContext, CronFinalizeContext } from 'cron-workflow'
 import type { App, Env } from './context'
 
 export { CronController }
@@ -29,7 +29,7 @@ export class UuidRocksCheckerCron extends CronWorkflow<Env> {
 		})
 	}
 
-	override async onFinalize({ step, error }: FinalizeContext) {
+	override async onFinalize({ step, error }: CronFinalizeContext) {
 		await step.do('send outcome to sentry', async () => {
 			if (error) {
 				Sentry.captureCheckIn({ monitorSlug: 'uuid-rocks-checker', status: 'error' })
