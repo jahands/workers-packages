@@ -14,7 +14,16 @@ export type CronContext = {
 
 export type FinalizeContext = CronContext & { error?: unknown }
 
-export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
+export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
+	// TODO: add type to validate schedule pattern
+
+	/**
+	 * The cron pattern to use for scheduling the cron job
+	 *
+	 * @default every 5 minutes
+	 */
+	schedule: string = '*/5 * * * *'
+
 	constructor(env: Env, ctx: ExecutionContext) {
 		super(ctx, env)
 
@@ -45,7 +54,7 @@ export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 	 *
 	 * @param step The Workflows step
 	 */
-	async onInit({ step }: CronContext) {
+	protected async onInit({ step }: CronContext): Promise<void> {
 		// do nothing if user doesn't override - this is not mandatory
 	}
 
@@ -55,9 +64,7 @@ export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 	 * Override this to implement your cron Workflow (required)
 	 * @param step The Workflows step
 	 */
-	async onTick({ step }: CronContext) {
-		// stub - child class must override
-	}
+	protected abstract onTick({ step }: CronContext): Promise<void>
 
 	/**
 	 * Lifecycle hook that is run after the Workflow completes and the
@@ -67,7 +74,7 @@ export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 	 * @param step The Workflows step
 	 * @param error Optional error that was thrown if the Workflow failed
 	 */
-	async onFinalize({ step, error }: FinalizeContext) {
+	protected async onFinalize({ step, error }: FinalizeContext): Promise<void> {
 		// do nothing if user doesn't override - this is not mandatory
 	}
 
@@ -80,7 +87,7 @@ export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 	 *
 	 * Use {@link onTick()} instead
 	 */
-	override async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
+	override async run(event: WorkflowEvent<Params>, step: WorkflowStep): Promise<void> {
 		const name = this.constructor.name
 
 		const getWorkflowBinding = (): Workflow => {

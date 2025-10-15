@@ -11,6 +11,8 @@ import type { App, Env } from './context'
 export { CronController }
 
 export class UuidRocksCheckerCron extends CronWorkflow<Env> {
+	schedule = '* * * * *'
+
 	override async onInit({ step }: CronContext) {
 		await step.do('send sentry checkin', async () => {
 			Sentry.captureCheckIn({ monitorSlug: 'uuid-rocks-checker', status: 'in_progress' })
