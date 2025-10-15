@@ -4,6 +4,10 @@ import { WorkflowEntrypoint } from 'cloudflare:workers'
 import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
 
 export type CronContext = {
+	/**
+	 * Name of the Cron job
+	 */
+	name: string
 	step: WorkflowStep
 	// TODO: maybe add schedule info?
 }
@@ -77,6 +81,8 @@ export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 	 * Use {@link onTick()} instead
 	 */
 	override async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
+		const name = this.constructor.name
+
 		const getWorkflowBinding = (): Workflow => {
 			const env = this.env as Record<string, unknown>
 
@@ -108,7 +114,7 @@ export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 
 			// run onInit first
 			try {
-				await this.onInit(step)
+				await this.onInit({ name, step })
 			} catch (e) {
 				if (e instanceof Error) {
 					error = e
@@ -120,7 +126,7 @@ export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 			// only run onTick if onInit succeeded
 			if (!error) {
 				try {
-					await this.onTick(step)
+					await this.onTick({ name, step })
 				} catch (e) {
 					if (e instanceof Error) {
 						error = e
@@ -131,7 +137,7 @@ export class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 			}
 
 			// bubble up errors thrown in onFinalize()
-			await this.onFinalize(step, { error })
+			await this.onFinalize({ name, step, error })
 
 			// re-throw error from onInit/onTick if it exists so that
 			// the Workflow shows as failed
