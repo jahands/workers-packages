@@ -9,7 +9,7 @@ export class CronWorkflow extends WorkflowEntrypoint {
 	constructor(env: Env, ctx: ExecutionContext) {
 		super(ctx, env)
 
-		// Prevent subclasses from overriding run()
+		// prevent subclasses from overriding run()
 		if (this.run !== CronWorkflow.prototype.run) {
 			throw new Error(
 				'Cannot override run() method in CronWorkflow. ' +
@@ -24,7 +24,7 @@ export class CronWorkflow extends WorkflowEntrypoint {
 
 	/**
 	 * Lifecycle hook that is run when the Workflow first starts,
-	 * before {@link cron()} is run.
+	 * before {@link onTick()} is run.
 	 *
 	 * Useful for setting up initial state,
 	 * sending heartbeats to Sentry, etc.
@@ -36,24 +36,26 @@ export class CronWorkflow extends WorkflowEntrypoint {
 	}
 
 	/**
-	 * Main Cron handler - override this to implement your Cron Workflow
+	 * Main Cron handler that runs once per cron run.
+	 *
+	 * Override this to implement your cron Workflow
 	 * @param step The Workflows step
 	 */
-	async cron(step: WorkflowStep) {
+	async onTick(step: WorkflowStep) {
 		throw new Error(
-			`CronWorkflow ${this.constructor.name} not implemented! Please override the cron() method.`
+			`CronWorkflow ${this.constructor.name} not implemented! Please override the onTick() method.`
 		)
 	}
 
 	/**
 	 * Lifecycle hook that is run after the Workflow completes and the
-	 * {@link cron()} method has completed (or threw an unhandled error).
+	 * {@link onTick()} method has completed (or threw an unhandled error).
 	 *
 	 * Useful for cleanup, sending final status to Sentry, etc.
 	 * @param step The Workflows step
 	 * @param error Optional error that was thrown if the Workflow failed
 	 */
-	async onEnd(step: WorkflowStep, { error }: { error?: Error }) {
+	async onFinalize(step: WorkflowStep, { error }: { error?: Error }) {
 		// do nothing if user doesn't override - this is not mandatory
 	}
 
@@ -64,7 +66,7 @@ export class CronWorkflow extends WorkflowEntrypoint {
 	/**
 	 * DO NOT override this method!
 	 *
-	 * Use {@link cron()} instead
+	 * Use {@link onTick()} instead
 	 */
 	override async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
 		const getWorkflowBinding = (): Workflow => {
