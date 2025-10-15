@@ -27,12 +27,9 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint {
 	constructor(env: Env, ctx: ExecutionContext) {
 		super(ctx, env)
 
-		// prevent child classes from overriding run()
+		// overriding run() in a child class would break everything
 		if (this.run !== CronWorkflow.prototype.run) {
-			throw new Error(
-				'Cannot override run() method in CronWorkflow. ' +
-					'Implement your cron logic in a different method instead.'
-			)
+			throw new Error('Cannot override run() method in CronWorkflow. Override onTick() instead.')
 		}
 	}
 
