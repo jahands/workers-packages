@@ -1,31 +1,31 @@
 import { CronExpressionParser } from 'cron-parser'
 import { describe, expect, it } from 'vitest'
 
-const parseExpression = CronExpressionParser.parse.bind(CronExpressionParser)
+const parseCron = CronExpressionParser.parse
 
 describe('cron-parser', () => {
 	describe('basic parsing', () => {
 		it('parses simple cron expressions', () => {
-			const interval = parseExpression('*/2 * * * *')
+			const interval = parseCron('*/2 * * * *')
 			expect(interval).toBeDefined()
 		})
 
 		it('gets next occurrence', () => {
-			const interval = parseExpression('*/5 * * * *')
+			const interval = parseCron('*/5 * * * *')
 			const next = interval.next()
 			expect(next).toBeDefined()
 			expect(next.toDate()).toBeInstanceOf(Date)
 		})
 
 		it('gets previous occurrence', () => {
-			const interval = parseExpression('*/5 * * * *')
+			const interval = parseCron('*/5 * * * *')
 			const prev = interval.prev()
 			expect(prev).toBeDefined()
 			expect(prev.toDate()).toBeInstanceOf(Date)
 		})
 
 		it('gets multiple occurrences using next()', () => {
-			const interval = parseExpression('0 0 * * *')
+			const interval = parseCron('0 0 * * *')
 			const first = interval.next()
 			const second = interval.next()
 			const third = interval.next()
@@ -35,34 +35,34 @@ describe('cron-parser', () => {
 		})
 
 		it('throws error for invalid cron expressions', () => {
-			expect(() => parseExpression('invalid')).toThrow()
-			expect(() => parseExpression('60 * * * *')).toThrow()
-			expect(() => parseExpression('* 24 * * *')).toThrow()
+			expect(() => parseCron('invalid')).toThrow()
+			expect(() => parseCron('60 * * * *')).toThrow()
+			expect(() => parseCron('* 24 * * *')).toThrow()
 		})
 	})
 
 	describe('special characters', () => {
 		it('handles asterisk (*) for any value', () => {
-			const interval = parseExpression('* * * * *')
+			const interval = parseCron('* * * * *')
 			const next = interval.next()
 			expect(next).toBeDefined()
 		})
 
 		it('handles question mark (?) as alias for asterisk', () => {
-			const interval = parseExpression('? * * * *')
+			const interval = parseCron('? * * * *')
 			const next = interval.next()
 			expect(next).toBeDefined()
 		})
 
 		it('handles comma (,) for value list separator', () => {
-			const interval = parseExpression('0,15,30,45 * * * *')
+			const interval = parseCron('0,15,30,45 * * * *')
 			const next = interval.next()
 			const minute = next.toDate().getMinutes()
 			expect([0, 15, 30, 45]).toContain(minute)
 		})
 
 		it('handles dash (-) for range of values', () => {
-			const interval = parseExpression('0 9-17 * * *')
+			const interval = parseCron('0 9-17 * * *')
 			const next = interval.next()
 			const hour = next.toDate().getHours()
 			expect(hour).toBeGreaterThanOrEqual(9)
@@ -70,21 +70,21 @@ describe('cron-parser', () => {
 		})
 
 		it('handles slash (/) for step values', () => {
-			const interval = parseExpression('*/10 * * * *')
+			const interval = parseCron('*/10 * * * *')
 			const next = interval.next()
 			const minute = next.toDate().getMinutes()
 			expect(minute % 10).toBe(0)
 		})
 
 		it('handles step values with range', () => {
-			const interval = parseExpression('5-55/10 * * * *')
+			const interval = parseCron('5-55/10 * * * *')
 			const next = interval.next()
 			const minute = next.toDate().getMinutes()
 			expect([5, 15, 25, 35, 45, 55]).toContain(minute)
 		})
 
 		it('handles L for last day of month', () => {
-			const interval = parseExpression('0 0 L * *', {
+			const interval = parseCron('0 0 L * *', {
 				currentDate: new Date('2024-01-15'),
 			})
 			const next = interval.next()
@@ -92,7 +92,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles L for last day of month in February (non-leap year)', () => {
-			const interval = parseExpression('0 0 L * *', {
+			const interval = parseCron('0 0 L * *', {
 				currentDate: new Date('2023-02-15'),
 			})
 			const next = interval.next()
@@ -100,7 +100,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles L for last day of month in February (leap year)', () => {
-			const interval = parseExpression('0 0 L * *', {
+			const interval = parseCron('0 0 L * *', {
 				currentDate: new Date('2024-02-15'),
 			})
 			const next = interval.next()
@@ -108,7 +108,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles L for last occurrence of weekday (1L)', () => {
-			const interval = parseExpression('0 0 * * 1L', {
+			const interval = parseCron('0 0 * * 1L', {
 				currentDate: new Date('2024-01-01'),
 			})
 			const next = interval.next()
@@ -118,7 +118,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles # for Nth weekday of month', () => {
-			const interval = parseExpression('0 0 * * 1#1', {
+			const interval = parseCron('0 0 * * 1#1', {
 				currentDate: new Date('2023-12-31'),
 			})
 			const next = interval.next()
@@ -129,7 +129,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles # for second Friday of month', () => {
-			const interval = parseExpression('0 0 * * 5#2', {
+			const interval = parseCron('0 0 * * 5#2', {
 				currentDate: new Date('2024-01-01'),
 			})
 			const next = interval.next()
@@ -139,13 +139,13 @@ describe('cron-parser', () => {
 		})
 
 		it('handles H (hash) for randomized values with seed', () => {
-			const interval1 = parseExpression('H * * * *', {
+			const interval1 = parseCron('H * * * *', {
 				hashSeed: 'test-job',
 			})
-			const interval2 = parseExpression('H * * * *', {
+			const interval2 = parseCron('H * * * *', {
 				hashSeed: 'test-job',
 			})
-			const interval3 = parseExpression('H * * * *', {
+			const interval3 = parseCron('H * * * *', {
 				hashSeed: 'different-job',
 			})
 
@@ -156,7 +156,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles H with range', () => {
-			const interval = parseExpression('H(0-10) * * * *', {
+			const interval = parseCron('H(0-10) * * * *', {
 				hashSeed: 'test-job',
 			})
 			const next = interval.next()
@@ -166,7 +166,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles H with step values', () => {
-			const interval = parseExpression('H/15 * * * *', {
+			const interval = parseCron('H/15 * * * *', {
 				hashSeed: 'test-job',
 			})
 			// H/15 expands to specific values like "7,22,37,52 * * * *"
@@ -178,7 +178,7 @@ describe('cron-parser', () => {
 
 	describe('predefined expressions', () => {
 		it('handles @yearly', () => {
-			const interval = parseExpression('@yearly', {
+			const interval = parseCron('@yearly', {
 				currentDate: new Date('2024-06-15'),
 			})
 			const next = interval.next()
@@ -187,7 +187,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles @monthly', () => {
-			const interval = parseExpression('@monthly', {
+			const interval = parseCron('@monthly', {
 				currentDate: new Date('2024-01-15'),
 			})
 			const next = interval.next()
@@ -195,7 +195,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles @weekly', () => {
-			const interval = parseExpression('@weekly', {
+			const interval = parseCron('@weekly', {
 				currentDate: new Date('2024-01-10'),
 			})
 			const next = interval.next()
@@ -203,7 +203,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles @daily', () => {
-			const interval = parseExpression('@daily', {
+			const interval = parseCron('@daily', {
 				currentDate: new Date('2024-01-15T12:00:00'),
 			})
 			const next = interval.next()
@@ -212,7 +212,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles @hourly', () => {
-			const interval = parseExpression('@hourly', {
+			const interval = parseCron('@hourly', {
 				currentDate: new Date('2024-01-15T12:30:00'),
 			})
 			const next = interval.next()
@@ -220,7 +220,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles @weekdays', () => {
-			const interval = parseExpression('@weekdays', {
+			const interval = parseCron('@weekdays', {
 				currentDate: new Date('2024-01-15T00:00:00'), // Monday
 			})
 			const dates = Array.from({ length: 5 }, () => interval.next().toDate())
@@ -232,7 +232,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles @weekends', () => {
-			const interval = parseExpression('@weekends', {
+			const interval = parseCron('@weekends', {
 				currentDate: new Date('2024-01-15T00:00:00'),
 			})
 			const next = interval.next()
@@ -243,7 +243,7 @@ describe('cron-parser', () => {
 
 	describe('field values and aliases', () => {
 		it('handles month aliases (JAN-DEC)', () => {
-			const interval = parseExpression('0 0 1 JAN *', {
+			const interval = parseCron('0 0 1 JAN *', {
 				currentDate: new Date('2024-01-01'),
 			})
 			const next = interval.next()
@@ -251,7 +251,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles multiple month aliases', () => {
-			const interval = parseExpression('0 0 1 JAN,JUN,DEC *', {
+			const interval = parseCron('0 0 1 JAN,JUN,DEC *', {
 				currentDate: new Date('2024-01-01'),
 			})
 			const next = interval.next()
@@ -259,7 +259,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles day of week aliases (SUN-SAT)', () => {
-			const interval = parseExpression('0 0 * * MON', {
+			const interval = parseCron('0 0 * * MON', {
 				currentDate: new Date('2024-01-15'),
 			})
 			const next = interval.next()
@@ -267,7 +267,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles multiple day aliases', () => {
-			const interval = parseExpression('0 0 * * MON,WED,FRI', {
+			const interval = parseCron('0 0 * * MON,WED,FRI', {
 				currentDate: new Date('2024-01-15'),
 			})
 			const next = interval.next()
@@ -275,7 +275,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles day range with aliases', () => {
-			const interval = parseExpression('0 0 * * MON-FRI', {
+			const interval = parseCron('0 0 * * MON-FRI', {
 				currentDate: new Date('2024-01-15'),
 			})
 			const dates = Array.from({ length: 5 }, () => interval.next().toDate())
@@ -290,7 +290,7 @@ describe('cron-parser', () => {
 	describe('options', () => {
 		it('uses currentDate option', () => {
 			const currentDate = new Date('2024-01-15T10:00:00')
-			const interval = parseExpression('0 12 * * *', { currentDate })
+			const interval = parseCron('0 12 * * *', { currentDate })
 			const next = interval.next()
 			expect(next.toDate().getDate()).toBe(15)
 			expect(next.toDate().getHours()).toBe(12)
@@ -298,7 +298,7 @@ describe('cron-parser', () => {
 
 		it('uses startDate option', () => {
 			const startDate = new Date('2024-06-01')
-			const interval = parseExpression('0 0 1 * *', {
+			const interval = parseCron('0 0 1 * *', {
 				startDate,
 				currentDate: new Date('2024-01-01'),
 			})
@@ -308,7 +308,7 @@ describe('cron-parser', () => {
 
 		it('uses endDate option to limit iterations', () => {
 			const endDate = new Date('2024-01-31')
-			const interval = parseExpression('0 0 * * *', {
+			const interval = parseCron('0 0 * * *', {
 				currentDate: new Date('2024-01-15'),
 				endDate,
 			})
@@ -327,7 +327,7 @@ describe('cron-parser', () => {
 		})
 
 		it('parses expressions with all options combined', () => {
-			const interval = parseExpression('*/5 * * * *', {
+			const interval = parseCron('*/5 * * * *', {
 				currentDate: new Date('2024-01-15T10:00:00'),
 				startDate: new Date('2024-01-15T00:00:00'),
 				endDate: new Date('2024-01-20T00:00:00'),
@@ -340,7 +340,7 @@ describe('cron-parser', () => {
 
 	describe('timezone support', () => {
 		it('handles timezone option', () => {
-			const interval = parseExpression('0 12 * * *', {
+			const interval = parseCron('0 12 * * *', {
 				currentDate: '2024-01-15T10:00:00',
 				tz: 'America/New_York',
 			})
@@ -351,12 +351,12 @@ describe('cron-parser', () => {
 		it('handles different timezones correctly', () => {
 			const currentDate = '2024-01-15T10:00:00'
 
-			const intervalNY = parseExpression('0 12 * * *', {
+			const intervalNY = parseCron('0 12 * * *', {
 				currentDate,
 				tz: 'America/New_York',
 			})
 
-			const intervalLondon = parseExpression('0 12 * * *', {
+			const intervalLondon = parseCron('0 12 * * *', {
 				currentDate,
 				tz: 'Europe/London',
 			})
@@ -370,7 +370,7 @@ describe('cron-parser', () => {
 
 		it('handles DST transitions', () => {
 			// March 10, 2024 - DST starts in US
-			const interval = parseExpression('0 * * * *', {
+			const interval = parseCron('0 * * * *', {
 				currentDate: '2024-03-10T00:00:00',
 				tz: 'America/New_York',
 			})
@@ -382,7 +382,7 @@ describe('cron-parser', () => {
 
 	describe('iteration', () => {
 		it('supports hasNext() method', () => {
-			const interval = parseExpression('0 0 * * *', {
+			const interval = parseCron('0 0 * * *', {
 				currentDate: new Date('2024-01-15'),
 				endDate: new Date('2024-01-20'),
 			})
@@ -391,7 +391,7 @@ describe('cron-parser', () => {
 		})
 
 		it('supports hasPrev() method', () => {
-			const interval = parseExpression('0 0 * * *', {
+			const interval = parseCron('0 0 * * *', {
 				currentDate: new Date('2024-01-15'),
 			})
 
@@ -399,7 +399,7 @@ describe('cron-parser', () => {
 		})
 
 		it('iterates backwards with prev()', () => {
-			const interval = parseExpression('0 0 * * *', {
+			const interval = parseCron('0 0 * * *', {
 				currentDate: new Date('2024-01-15'),
 			})
 
@@ -412,7 +412,7 @@ describe('cron-parser', () => {
 		})
 
 		it('resets to initial state with reset()', () => {
-			const interval = parseExpression('0 0 * * *', {
+			const interval = parseCron('0 0 * * *', {
 				currentDate: new Date('2024-01-15T12:00:00'),
 			})
 
@@ -429,7 +429,7 @@ describe('cron-parser', () => {
 
 	describe('edge cases', () => {
 		it('handles end of month transitions', () => {
-			const interval = parseExpression('0 0 31 * *', {
+			const interval = parseCron('0 0 31 * *', {
 				currentDate: new Date('2024-01-15'),
 			})
 
@@ -438,7 +438,7 @@ describe('cron-parser', () => {
 		})
 
 		it('skips months without 31 days', () => {
-			const interval = parseExpression('0 0 31 * *', {
+			const interval = parseCron('0 0 31 * *', {
 				currentDate: new Date('2024-01-31T12:00:00'), // After the scheduled time
 			})
 
@@ -448,7 +448,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles end of year transitions', () => {
-			const interval = parseExpression('0 0 * * *', {
+			const interval = parseCron('0 0 * * *', {
 				currentDate: new Date('2024-12-30'),
 			})
 
@@ -457,7 +457,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles February 29th in leap years', () => {
-			const interval = parseExpression('0 0 29 2 *', {
+			const interval = parseCron('0 0 29 2 *', {
 				currentDate: new Date('2024-01-01'),
 			})
 
@@ -467,7 +467,7 @@ describe('cron-parser', () => {
 		})
 
 		it('skips February 29th in non-leap years', () => {
-			const interval = parseExpression('0 0 29 2 *', {
+			const interval = parseCron('0 0 29 2 *', {
 				currentDate: new Date('2023-01-01'),
 			})
 
@@ -476,7 +476,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles complex combinations of values and ranges', () => {
-			const interval = parseExpression('0,30 9-17 1,15 1,6,12 1-5', {
+			const interval = parseCron('0,30 9-17 1,15 1,6,12 1-5', {
 				currentDate: new Date('2024-01-01'),
 			})
 
@@ -487,7 +487,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles midnight correctly', () => {
-			const interval = parseExpression('0 0 0 * * *', {
+			const interval = parseCron('0 0 0 * * *', {
 				currentDate: new Date('2024-01-15T12:00:00'),
 			})
 
@@ -498,7 +498,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles expressions with seconds field', () => {
-			const interval = parseExpression('30 */5 * * * *', {
+			const interval = parseCron('30 */5 * * * *', {
 				currentDate: new Date('2024-01-15T12:00:00'),
 			})
 
@@ -507,7 +507,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles every second', () => {
-			const interval = parseExpression('* * * * * *', {
+			const interval = parseCron('* * * * * *', {
 				currentDate: new Date('2024-01-15T12:00:00'),
 			})
 
@@ -521,44 +521,44 @@ describe('cron-parser', () => {
 
 	describe('error handling', () => {
 		it('throws error for out of range minute values', () => {
-			expect(() => parseExpression('60 * * * *')).toThrow()
+			expect(() => parseCron('60 * * * *')).toThrow()
 		})
 
 		it('throws error for out of range hour values', () => {
-			expect(() => parseExpression('0 24 * * *')).toThrow()
+			expect(() => parseCron('0 24 * * *')).toThrow()
 		})
 
 		it('throws error for out of range day values', () => {
-			expect(() => parseExpression('0 0 32 * *')).toThrow()
-			expect(() => parseExpression('0 0 0 * *')).toThrow()
+			expect(() => parseCron('0 0 32 * *')).toThrow()
+			expect(() => parseCron('0 0 0 * *')).toThrow()
 		})
 
 		it('throws error for out of range month values', () => {
-			expect(() => parseExpression('0 0 1 13 *')).toThrow()
-			expect(() => parseExpression('0 0 1 0 *')).toThrow()
+			expect(() => parseCron('0 0 1 13 *')).toThrow()
+			expect(() => parseCron('0 0 1 0 *')).toThrow()
 		})
 
 		it('throws error for out of range day of week values', () => {
-			expect(() => parseExpression('0 0 * * 8')).toThrow()
+			expect(() => parseCron('0 0 * * 8')).toThrow()
 		})
 
 		it('throws error for malformed expressions', () => {
-			expect(() => parseExpression('not a cron')).toThrow()
-			expect(() => parseExpression('* *')).toThrow()
+			expect(() => parseCron('not a cron')).toThrow()
+			expect(() => parseCron('* *')).toThrow()
 		})
 
 		it('handles empty string as valid default', () => {
 			// Empty string defaults to '* * * * *'
-			const interval = parseExpression('')
+			const interval = parseCron('')
 			expect(interval.stringify()).toBe('* * * * *')
 		})
 
 		it('throws error for invalid step values', () => {
-			expect(() => parseExpression('*/0 * * * *')).toThrow()
+			expect(() => parseCron('*/0 * * * *')).toThrow()
 		})
 
 		it('throws error when endDate is reached', () => {
-			const interval = parseExpression('0 0 * * *', {
+			const interval = parseCron('0 0 * * *', {
 				currentDate: new Date('2024-01-15'),
 				endDate: new Date('2024-01-16'),
 			})
@@ -570,7 +570,7 @@ describe('cron-parser', () => {
 
 	describe('utility methods', () => {
 		it('provides access to expression fields', () => {
-			const interval = parseExpression('30 12 * * 1-5')
+			const interval = parseCron('30 12 * * 1-5')
 			const fields = interval.fields
 
 			expect(fields.minute).toBeDefined()
@@ -581,18 +581,18 @@ describe('cron-parser', () => {
 		})
 
 		it('converts expression to string with stringify()', () => {
-			const interval = parseExpression('30 12 * * 1-5')
+			const interval = parseCron('30 12 * * 1-5')
 			expect(interval.stringify()).toBe('30 12 * * 1-5')
 		})
 
 		it('stringify() optimizes expressions', () => {
 			// Library optimizes 0,15,30,45 to */15
-			const interval = parseExpression('0,15,30,45 9-17 1,15 * 1-5')
+			const interval = parseCron('0,15,30,45 9-17 1,15 * 1-5')
 			expect(interval.stringify()).toBe('*/15 9-17 1,15 * 1-5')
 		})
 
 		it('checks if date matches expression with includesDate()', () => {
-			const interval = parseExpression('30 12 * * 1-5') // 12:30 on weekdays
+			const interval = parseCron('30 12 * * 1-5') // 12:30 on weekdays
 
 			const monday = new Date('2024-01-15T12:30:00') // Monday at 12:30
 			const saturday = new Date('2024-01-13T12:30:00') // Saturday at 12:30
@@ -604,7 +604,7 @@ describe('cron-parser', () => {
 		})
 
 		it('includesDate() works with complex expressions', () => {
-			const interval = parseExpression('*/15 * * * *') // Every 15 minutes
+			const interval = parseCron('*/15 * * * *') // Every 15 minutes
 
 			expect(interval.includesDate(new Date('2024-01-15T12:00:00'))).toBe(true)
 			expect(interval.includesDate(new Date('2024-01-15T12:15:00'))).toBe(true)
@@ -616,7 +616,7 @@ describe('cron-parser', () => {
 
 	describe('performance', () => {
 		it('handles many iterations efficiently', () => {
-			const interval = parseExpression('* * * * *')
+			const interval = parseCron('* * * * *')
 			const iterations = 1000
 
 			const dates = Array.from({ length: iterations }, () => interval.next())
@@ -624,7 +624,7 @@ describe('cron-parser', () => {
 		})
 
 		it('handles complex expressions efficiently', () => {
-			const interval = parseExpression('5,10,15,20 9-17 1-15,20-25 1,6,12 1-5', {
+			const interval = parseCron('5,10,15,20 9-17 1-15,20-25 1,6,12 1-5', {
 				currentDate: new Date('2024-01-01'),
 			})
 
@@ -635,7 +635,7 @@ describe('cron-parser', () => {
 
 	describe('real-world scenarios', () => {
 		it('runs every weekday at 9 AM', () => {
-			const interval = parseExpression('0 9 * * 1-5', {
+			const interval = parseCron('0 9 * * 1-5', {
 				currentDate: new Date('2024-01-15T08:00:00'),
 			})
 
@@ -650,7 +650,7 @@ describe('cron-parser', () => {
 		})
 
 		it('runs every 15 minutes during business hours', () => {
-			const interval = parseExpression('*/15 9-17 * * 1-5', {
+			const interval = parseCron('*/15 9-17 * * 1-5', {
 				currentDate: new Date('2024-01-15T08:00:00'),
 			})
 
@@ -661,7 +661,7 @@ describe('cron-parser', () => {
 		})
 
 		it('runs on the first day of every quarter', () => {
-			const interval = parseExpression('0 0 1 1,4,7,10 *', {
+			const interval = parseCron('0 0 1 1,4,7,10 *', {
 				currentDate: new Date('2023-12-15'),
 			})
 
@@ -673,7 +673,7 @@ describe('cron-parser', () => {
 
 		it('runs at specific times on specific days', () => {
 			// Every Monday and Friday at 8:30 AM
-			const interval = parseExpression('30 8 * * 1,5', {
+			const interval = parseCron('30 8 * * 1,5', {
 				currentDate: new Date('2024-01-15T00:00:00'),
 			})
 
@@ -686,7 +686,7 @@ describe('cron-parser', () => {
 		})
 
 		it('runs on last day of every month at midnight', () => {
-			const interval = parseExpression('0 0 L * *', {
+			const interval = parseCron('0 0 L * *', {
 				currentDate: new Date('2024-01-01'),
 			})
 
