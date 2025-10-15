@@ -24,7 +24,7 @@
 		// If transpiling with TypeScript:
 		"module": "ES2022",
 		"moduleResolution": "bundler",
-		"outDir": "${configDir}/dist",
+		"outDir": "dist",
 		// "rootDir": "src",
 		"sourceMap": true,
 
