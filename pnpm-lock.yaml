@@ -99,6 +99,9 @@ importers:
       '@repo/hono-helpers':
         specifier: workspace:*
         version: link:../../packages/hono-helpers
+      '@sentry/cloudflare':
+        specifier: 10.19.0
+        version: 10.19.0(@cloudflare/workers-types@4.20251011.0)
       cron-workflow:
         specifier: workspace:*
         version: link:../../npm-pkgs/cron-workflow
@@ -409,7 +412,7 @@ importers:
   npm-pkgs/cron-workflow:
     dependencies:
       cron-parser:
-        specifier: ^5.4.0
+        specifier: 5.4.0
         version: 5.4.0
       zod:
         specifier: ^4.1.12
@@ -2417,6 +2420,19 @@ packages:
 
   '@sec-ant/readable-stream@0.4.1':
     resolution: {integrity: sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==}
+
+  '@sentry/cloudflare@10.19.0':
+    resolution: {integrity: sha512-EwN3RULZ2XOPK2iNlRnTHpk4fGYXTj8qw/EywQG/leR6rl6/xGtgl5/is4yu8I8GdxQjJ47W3N8thFIRaGm46Q==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@cloudflare/workers-types': ^4.x
+    peerDependenciesMeta:
+      '@cloudflare/workers-types':
+        optional: true
+
+  '@sentry/core@10.19.0':
+    resolution: {integrity: sha512-OqZjYDYsK6ZmBG5UzML0uKiKq//G6mMwPcszfuCsFgPt+pg5giUCrCUbt5VIVkHdN1qEEBk321JO2haU5n2Eig==}
+    engines: {node: '>=18'}
 
   '@sindresorhus/is@4.6.0':
     resolution: {integrity: sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==}
@@ -7528,6 +7544,15 @@ snapshots:
   '@rtsao/scc@1.1.0': {}
 
   '@sec-ant/readable-stream@0.4.1': {}
+
+  '@sentry/cloudflare@10.19.0(@cloudflare/workers-types@4.20251011.0)':
+    dependencies:
+      '@opentelemetry/api': 1.9.0
+      '@sentry/core': 10.19.0
+    optionalDependencies:
+      '@cloudflare/workers-types': 4.20251011.0
+
+  '@sentry/core@10.19.0': {}
 
   '@sindresorhus/is@4.6.0': {}
 

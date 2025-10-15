@@ -12,5 +12,12 @@
 	"vars": {
 		"ENVIRONMENT": "development", // overridden during deployment
 		"SENTRY_RELEASE": "unknown" // overridden during deployment
-	}
+	},
+	"workflows": [
+		{
+			"name": "UuidRocksCheckerCron",
+			"class_name": "UuidRocksCheckerCron",
+			"binding": "UuidRocksCheckerCron" // currently must match class_name
+		}
+	]
 }

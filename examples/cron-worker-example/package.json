@@ -15,6 +15,7 @@
 	},
 	"dependencies": {
 		"@repo/hono-helpers": "workspace:*",
+		"@sentry/cloudflare": "10.19.0",
 		"cron-workflow": "workspace:*",
 		"hono": "4.9.11",
 		"workers-tagged-logger": "workspace:*"

@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/cloudflare'
 import { CronController, CronWorkflow } from 'cron-workflow'
 import { Hono } from 'hono'
 import { useWorkersLogger } from 'workers-tagged-logger'
@@ -9,10 +10,10 @@ import type { App, Env } from './context'
 
 export { CronController }
 
-export class MyCron extends CronWorkflow<Env> {
+export class UuidRocksCheckerCron extends CronWorkflow<Env> {
 	override async onInit({ step }: CronContext) {
-		await step.do('send sentry heartbeat', async () => {
-			console.log('todo: send heartbeat to sentry cron monitor')
+		await step.do('send sentry checkin', async () => {
+			Sentry.captureCheckIn({ monitorSlug: 'uuid-rocks-checker', status: 'in_progress' })
 		})
 	}
 
@@ -29,9 +30,9 @@ export class MyCron extends CronWorkflow<Env> {
 	override async onFinalize({ step, error }: FinalizeContext) {
 		await step.do('send outcome to sentry', async () => {
 			if (error) {
-				console.log('todo: send error to sentry cron monitor')
+				Sentry.captureCheckIn({ monitorSlug: 'uuid-rocks-checker', status: 'error' })
 			} else {
-				console.log('todo: send success to sentry cron monitor')
+				Sentry.captureCheckIn({ monitorSlug: 'uuid-rocks-checker', status: 'ok' })
 			}
 		})
 	}
