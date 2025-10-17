@@ -192,13 +192,14 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 					await workflow.create({
 						params: { timeToNextRun: event.payload.timeToNextRun },
 					})
-					return
 				})
 			}
 
-			await Promise.all([userSteps(), createNext()])
-
-			return
+			await userSteps().finally(async () => {
+				// TODO: run this first and use waitForEvent to
+				// prevent it from failing when user steps consume all subrequests
+				await createNext()
+			})
 		}
 	}
 }
