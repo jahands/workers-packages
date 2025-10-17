@@ -30,7 +30,7 @@ describe('CronWorkflow', async () => {
 
 		await expect(
 			instance.waitForStepResult({
-				name: steps.getStartTime,
+				name: steps.runOnFinalize,
 			})
 		).resolves.toBeGreaterThan(0)
 	})
