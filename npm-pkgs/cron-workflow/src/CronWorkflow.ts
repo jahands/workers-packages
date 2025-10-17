@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { WorkflowEntrypoint } from 'cloudflare:workers'
+import { NonRetryableError } from 'cloudflare:workflows'
 
 import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
 
@@ -24,7 +25,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 	 */
 	schedule: string = '*/5 * * * *'
 
-	constructor(env: Env, ctx: ExecutionContext) {
+	constructor(ctx: ExecutionContext, env: Env) {
 		super(ctx, env)
 
 		// overriding run() in a child class would break everything
@@ -108,41 +109,73 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 		})
 
 		const userSteps = async () => {
-			// catch errors in onInit() and onTick() so that we can still run onFinalize()
-			let error: Error | undefined
+			await step.do('run-user-steps', async () => {
+				// catch errors in onInit() and onTick() so that we can still run onFinalize()
+				let error: Error | undefined
 
-			// run onInit first
-			try {
-				await this.onInit({ name, step })
-			} catch (e) {
-				if (e instanceof Error) {
-					error = e
-				} else {
-					error = new Error(`Unknown error thrown in onInit(): ${String(e)}`)
-				}
-			}
+				// run onInit first
+				if (this.onInit !== CronWorkflow.prototype.onInit) {
+					const err = await step.do('run-on-init', async () => {
+						try {
+							await this.onInit({ name, step })
+						} catch (e) {
+							if (e instanceof Error) {
+								return e
+							} else {
+								return new Error(`Unknown error thrown in onInit(): ${String(e)}`)
+							}
+						}
+					})
 
-			// only run onTick if onInit succeeded
-			if (!error) {
-				try {
-					await this.onTick({ name, step })
-				} catch (e) {
-					if (e instanceof Error) {
-						error = e
-					} else {
-						error = new Error(`Unknown error thrown in onTick(): ${String(e)}`)
+					if (err) {
+						error = err
 					}
 				}
-			}
 
-			// bubble up errors thrown in onFinalize()
-			await this.onFinalize({ name, step, error })
+				// only run onTick if onInit succeeded
+				if (!error) {
+					const err = await step.do('run-on-tick', async () => {
+						try {
+							await this.onTick({ name, step })
+						} catch (e) {
+							if (e instanceof Error) {
+								return e
+							} else {
+								return new Error(`Unknown error thrown in onTick(): ${String(e)}`)
+							}
+						}
+					})
 
-			// re-throw error from onInit/onTick if it exists so that
-			// the Workflow shows as failed
-			if (error) {
-				throw error
-			}
+					if (err) {
+						error = err
+					}
+				}
+
+				if (this.onFinalize !== CronWorkflow.prototype.onFinalize) {
+					const err = await step.do('run-on-finalize', async () => {
+						// bubble up errors thrown in onFinalize()
+						try {
+							await this.onFinalize({ name, step, error })
+						} catch (e) {
+							if (e instanceof Error) {
+								return e
+							} else {
+								return new Error(`Unknown error thrown in onFinalize(): ${String(e)}`)
+							}
+						}
+					})
+
+					if (err) {
+						error = err
+					}
+				}
+
+				// re-throw error from onInit/onTick if it exists so that
+				// the Workflow shows as failed
+				if (error) {
+					throw new NonRetryableError(error.message, error.name)
+				}
+			})
 		}
 
 		const createNext = async () => {
