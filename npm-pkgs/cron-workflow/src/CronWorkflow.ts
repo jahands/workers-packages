@@ -204,11 +204,16 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 
 				await step.sleepUntil('sleep some more', nextRunTime + sleepSize.payload.newSleepSize)
 			} finally {
-				await step.do('create-next-instance', async () => {
+				await step.do<StepResult & { id: string }>('create-next-instance', async () => {
 					const workflow = getWorkflowBinding()
-					await workflow.create({
+					const instance = await workflow.create({
 						params: { timeToNextRun: event.payload.timeToNextRun },
 					})
+
+					return {
+						success: true,
+						id: instance.id,
+					}
 				})
 			}
 		}

@@ -17,6 +17,13 @@ describe('BasicCron', async () => {
 	it('should run lifecycle hooks and user steps', async () => {
 		await using ctrl = await setupTest()
 		const { instance } = ctrl
+		await instance.modify(async (m) => {
+			await m.mockStepResult(
+				// can't create new instances within a test
+				{ name: steps.createNextInstance },
+				{ success: true, id: 'mock-id' }
+			)
+		})
 
 		await expect(
 			instance.waitForStepResult({
@@ -29,5 +36,23 @@ describe('BasicCron', async () => {
 				name: steps.runOnInit,
 			})
 		).resolves.toStrictEqual({ success: true })
+
+		await expect(
+			instance.waitForStepResult({
+				name: steps.runOnTick,
+			})
+		).resolves.toStrictEqual({ success: true })
+
+		await expect(
+			instance.waitForStepResult({
+				name: steps.runOnFinalize,
+			})
+		).resolves.toStrictEqual({ success: true })
+
+		await expect(
+			instance.waitForStepResult({
+				name: steps.createNextInstance,
+			})
+		).resolves.toMatchInlineSnapshot()
 	})
 })
