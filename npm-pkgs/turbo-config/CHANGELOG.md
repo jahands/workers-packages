@@ -1,5 +1,13 @@
 # turbo-config
 
+## 0.3.2
+
+### Patch Changes
+
+- 767f9eb: fix: resolve script dir with nested symlinks
+
+  fixes issues when using turbo-config with bun
+
 ## 0.3.1
 
 ### Patch Changes
