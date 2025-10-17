@@ -5,12 +5,12 @@ import { steps } from './steps'
 describe('CronWorkflow', async () => {
 	it('should get start time', async () => {
 		const id = '123456'
-		await using instance = await introspectWorkflowInstance(env.UuidRocksCheckerCron, id)
+		await using instance = await introspectWorkflowInstance(env.BasicCron, id)
 		await instance.modify(async (m) => {
 			await m.disableSleeps()
 		})
 
-		await env.UuidRocksCheckerCron.create({ id })
+		await env.BasicCron.create({ id })
 
 		await expect(
 			instance.waitForStepResult({
@@ -21,12 +21,12 @@ describe('CronWorkflow', async () => {
 
 	it('should run lifecycle hooks and user steps', async () => {
 		const id = '123456'
-		await using instance = await introspectWorkflowInstance(env.UuidRocksCheckerCron, id)
+		await using instance = await introspectWorkflowInstance(env.BasicCron, id)
 		await instance.modify(async (m) => {
 			await m.disableSleeps()
 		})
 
-		await env.UuidRocksCheckerCron.create({ id })
+		await env.BasicCron.create({ id })
 
 		await expect(
 			instance.waitForStepResult({

@@ -10,7 +10,7 @@ import type { App, Env } from './context'
 
 export { CronController }
 
-export class UuidRocksCheckerCron extends CronWorkflow<Env> {
+export class BasicCron extends CronWorkflow<Env> {
 	schedule = '* * * * *'
 
 	override async onInit({ step }: CronContext) {

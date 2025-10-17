@@ -1,9 +1,9 @@
 import type { HonoApp } from '@repo/hono-helpers'
 import type { SharedHonoEnv, SharedHonoVariables } from '@repo/hono-helpers/src/types'
-import type { UuidRocksCheckerCron } from './cron-workflow-test.app'
+import type { BasicCron } from './cron-workflow-test.app'
 
 export type Env = SharedHonoEnv & {
-	UuidRocksCheckerCron: Workflow<UuidRocksCheckerCron>
+	BasicCron: Workflow<BasicCron>
 }
 
 /** Variables can be extended */

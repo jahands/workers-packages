@@ -15,9 +15,9 @@
 	},
 	"workflows": [
 		{
-			"name": "UuidRocksCheckerCron",
-			"class_name": "UuidRocksCheckerCron",
-			"binding": "UuidRocksCheckerCron" // currently must match class_name
+			"name": "BasicCron",
+			"class_name": "BasicCron",
+			"binding": "BasicCron" // currently must match class_name
 		}
 	]
 }
