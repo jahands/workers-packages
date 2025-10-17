@@ -20,8 +20,8 @@ describe('BasicCron', async () => {
 
 		await expect(
 			instance.waitForStepResult({
-				name: steps.runOnFinalize,
+				name: steps.runOnInit,
 			})
-		).resolves.toBeGreaterThan(0)
+		).resolves.toStrictEqual({ success: true })
 	})
 })

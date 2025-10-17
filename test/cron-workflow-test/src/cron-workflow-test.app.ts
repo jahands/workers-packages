@@ -1,4 +1,3 @@
-import { CronController } from 'cron-workflow'
 import { Hono } from 'hono'
 import { useWorkersLogger } from 'workers-tagged-logger'
 
@@ -6,7 +5,9 @@ import { withNotFound, withOnError } from '@repo/hono-helpers'
 
 import type { App } from './context'
 
-export { CronController }
+export { CronController } from 'cron-workflow'
+
+export { BasicCron } from './crons/basic.cron'
 
 const app = new Hono<App>()
 	.use(

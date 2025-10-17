@@ -15,6 +15,8 @@ export type CronContext = {
 
 export type CronFinalizeContext = CronContext & { error?: unknown }
 
+type StepResult = { success: boolean; error?: Error }
+
 export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env> {
 	// TODO: add type to validate schedule pattern
 
@@ -115,58 +117,73 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 
 				// run onInit first
 				if (this.onInit !== CronWorkflow.prototype.onInit) {
-					const err = await step.do('run-on-init', async () => {
+					const res = await step.do<StepResult>('run-on-init', async () => {
 						try {
 							await this.onInit({ name, step })
 						} catch (e) {
 							if (e instanceof Error) {
-								return e
+								return { success: false, error: e }
 							} else {
-								return new Error(`Unknown error thrown in onInit(): ${String(e)}`)
+								return {
+									success: false,
+									error: new Error(`Unknown error thrown in onInit(): ${String(e)}`),
+								}
 							}
 						}
+
+						return { success: true }
 					})
 
-					if (err) {
-						error = err
+					if (res.error) {
+						error = res.error
 					}
 				}
 
 				// only run onTick if onInit succeeded
 				if (!error) {
-					const err = await step.do('run-on-tick', async () => {
+					const res = await step.do<StepResult>('run-on-tick', async () => {
 						try {
 							await this.onTick({ name, step })
 						} catch (e) {
 							if (e instanceof Error) {
-								return e
+								return { error: e, success: false }
 							} else {
-								return new Error(`Unknown error thrown in onTick(): ${String(e)}`)
+								return {
+									error: new Error(`Unknown error thrown in onTick(): ${String(e)}`),
+									success: false,
+								}
 							}
 						}
+
+						return { success: true }
 					})
 
-					if (err) {
-						error = err
+					if (res.error) {
+						error = res.error
 					}
 				}
 
 				if (this.onFinalize !== CronWorkflow.prototype.onFinalize) {
-					const err = await step.do('run-on-finalize', async () => {
+					const err = await step.do<StepResult>('run-on-finalize', async () => {
 						// bubble up errors thrown in onFinalize()
 						try {
 							await this.onFinalize({ name, step, error })
 						} catch (e) {
 							if (e instanceof Error) {
-								return e
+								return { success: false, error: e }
 							} else {
-								return new Error(`Unknown error thrown in onFinalize(): ${String(e)}`)
+								return {
+									success: false,
+									error: new Error(`Unknown error thrown in onFinalize(): ${String(e)}`),
+								}
 							}
 						}
+
+						return { success: true }
 					})
 
-					if (err) {
-						error = err
+					if (err.error) {
+						error = err.error
 					}
 				}
 
