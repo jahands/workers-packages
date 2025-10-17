@@ -197,12 +197,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 
 		const createNext = async () => {
 			try {
-				const sleepSize = await step.waitForEvent<{ newSleepSize: number }>('timing-decreased', {
-					type: 'timing-decreased',
-					timeout: Date.now() - nextRunTime,
-				}) // Something will have to emit this event (this might also prove to be challenging)
-
-				await step.sleepUntil('sleep some more', nextRunTime + sleepSize.payload.newSleepSize)
+				await step.sleepUntil('sleep-until-next-run-time', nextRunTime)
 			} finally {
 				await step.do<StepResult & { id: string }>('create-next-instance', async () => {
 					const workflow = getWorkflowBinding()
