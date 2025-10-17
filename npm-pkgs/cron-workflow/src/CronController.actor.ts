@@ -1,7 +1,5 @@
 import { DurableObject } from 'cloudflare:workers'
 
-import type { CronWorkflow } from './CronWorkflow'
-
 /**
  * Single instance Durable Object for monitoring
  * and managing cron Workflows
