@@ -25,7 +25,7 @@
 		}
 	],
 	"durable_objects": {
-		"bindings": [{ "class_name": "CronController" }]
+		"bindings": [{ "name": "CronController", "class_name": "CronController" }]
 	},
 	"migrations": [{ "tag": "v1", "new_sqlite_classes": ["CronController"] }]
 }
