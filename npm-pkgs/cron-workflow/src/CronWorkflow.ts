@@ -94,7 +94,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 
 			// name of the derived class
 			const className = this.constructor.name
-			if (!(className in env || typeof (this.env as any)[className] === 'undefined')) {
+			if (!(className in env) || typeof (this.env as any)[className] === 'undefined') {
 				throw new Error(
 					`could not find Workflows binding for ${className} - did you add it to your Workflows configuration in wrangler.jsonc?`
 				)
