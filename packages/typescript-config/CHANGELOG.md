@@ -1,5 +1,11 @@
 # @repo/typescript-config
 
+## 0.3.9
+
+### Patch Changes
+
+- 81d44fc: fix: add vitest types to workers-lib-emit.json
+
 ## 0.3.8
 
 ### Patch Changes
