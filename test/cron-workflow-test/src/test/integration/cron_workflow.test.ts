@@ -57,5 +57,12 @@ describe('BasicCron', async () => {
 			id: 'mock-id',
 			success: true,
 		})
+
+		// run-user-steps the above 3 steps are inside run-user-steps
+		await expect(
+			instance.waitForStepResult({
+				name: steps.runUserSteps,
+			})
+		).resolves.toBeUndefined()
 	})
 })
