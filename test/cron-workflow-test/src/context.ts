@@ -1,6 +1,6 @@
 import type { HonoApp } from '@repo/hono-helpers'
 import type { SharedHonoEnv, SharedHonoVariables } from '@repo/hono-helpers/src/types'
-import type { BasicCron } from './cron-workflow-test.app'
+import type { BasicCron } from './crons/basic.cron'
 
 export type Env = SharedHonoEnv & {
 	BasicCron: Workflow<BasicCron>
