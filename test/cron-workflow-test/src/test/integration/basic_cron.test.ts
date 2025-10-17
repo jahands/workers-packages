@@ -2,7 +2,7 @@ import { describe, it, assert, expect, test } from 'vitest'
 import { env, introspectWorkflowInstance } from 'cloudflare:test'
 import { steps } from './steps'
 
-describe('CronWorkflow', async () => {
+describe('BasicCron', async () => {
 	it('should get start time', async () => {
 		const id = '123456'
 		await using instance = await introspectWorkflowInstance(env.BasicCron, id)
