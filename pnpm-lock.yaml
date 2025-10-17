@@ -973,6 +973,46 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
 
+  test/cron-workflow-test:
+    dependencies:
+      '@repo/hono-helpers':
+        specifier: workspace:*
+        version: link:../../packages/hono-helpers
+      '@sentry/cloudflare':
+        specifier: 10.19.0
+        version: 10.19.0(@cloudflare/workers-types@4.20251011.0)
+      cron-workflow:
+        specifier: workspace:*
+        version: link:../../npm-pkgs/cron-workflow
+      hono:
+        specifier: 4.9.11
+        version: 4.9.11
+      workers-tagged-logger:
+        specifier: workspace:*
+        version: link:../../npm-pkgs/workers-tagged-logger
+    devDependencies:
+      '@cloudflare/vitest-pool-workers':
+        specifier: 0.9.12
+        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/tools':
+        specifier: workspace:*
+        version: link:../../packages/tools
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@types/node':
+        specifier: 22.15.27
+        version: 22.15.27
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
+      wrangler:
+        specifier: 4.42.2
+        version: 4.42.2(@cloudflare/workers-types@4.20251011.0)
+
   test/workers-tagged-logger-test:
     devDependencies:
       '@cloudflare/vitest-pool-workers':
