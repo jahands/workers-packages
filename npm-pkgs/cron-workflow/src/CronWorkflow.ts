@@ -104,7 +104,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 			return env[className] as Workflow
 		}
 
-		const nextRunTime = await step.do('start time', async () => {
+		const nextRunTime = await step.do('get-start-time', async () => {
 			return Date.now()
 		})
 

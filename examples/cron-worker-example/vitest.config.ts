@@ -5,6 +5,7 @@ export default defineWorkersProject({
 		poolOptions: {
 			workers: {
 				wrangler: { configPath: `${__dirname}/wrangler.jsonc` },
+				isolatedStorage: true,
 				miniflare: {
 					bindings: {
 						ENVIRONMENT: 'VITEST',
