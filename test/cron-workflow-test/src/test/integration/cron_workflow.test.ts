@@ -23,5 +23,11 @@ describe('BasicCron', async () => {
 				name: steps.runOnInit,
 			})
 		).resolves.toStrictEqual({ success: true })
+
+		await expect(
+			instance.waitForStepResult({
+				name: steps.runOnInit,
+			})
+		).resolves.toStrictEqual({ success: true })
 	})
 })
