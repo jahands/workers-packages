@@ -53,6 +53,9 @@ describe('BasicCron', async () => {
 			instance.waitForStepResult({
 				name: steps.createNextInstance,
 			})
-		).resolves.toMatchInlineSnapshot()
+		).resolves.toStrictEqual({
+			id: 'mock-id',
+			success: true,
+		})
 	})
 })
