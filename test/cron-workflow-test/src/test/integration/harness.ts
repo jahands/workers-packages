@@ -1,7 +1,19 @@
 import { env, introspectWorkflowInstance } from 'cloudflare:test'
 
+import type { WorkflowInstanceIntrospector } from 'cloudflare:test'
+
 let lastId = 0
-export async function setupTest() {
+
+export type TestHarness = {
+	/**
+	 * ID of the workflow instance
+	 */
+	id: string
+	instance: WorkflowInstanceIntrospector
+	[Symbol.asyncDispose]: () => Promise<void>
+}
+
+export async function setupTest(): Promise<TestHarness> {
 	const id = `instance-${lastId++}`
 	const instance = await introspectWorkflowInstance(env.BasicCron, id)
 
@@ -14,6 +26,8 @@ export async function setupTest() {
 	return {
 		id,
 		instance,
-		[Symbol.asyncDispose]: () => instance[Symbol.asyncDispose](),
+		[Symbol.asyncDispose]: async () => {
+			await instance[Symbol.asyncDispose]()
+		},
 	}
 }
