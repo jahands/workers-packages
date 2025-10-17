@@ -10,7 +10,7 @@ import type { App, Env } from './context'
 
 export { CronController }
 
-export class UuidRocksCheckerCron extends CronWorkflow<Env> {
+export class UuidRocksCheckerCronBase extends CronWorkflow<Env> {
 	schedule = '* * * * *'
 
 	override async onInit({ step }: CronContext) {
@@ -39,6 +39,14 @@ export class UuidRocksCheckerCron extends CronWorkflow<Env> {
 		})
 	}
 }
+
+export const UuidRocksCheckerCron = Sentry.instrumentWorkflowWithSentry(
+	(_env: Env) => ({
+		dsn: 'https://08271f0670b5f8c254d4da7125db4c1c@sentry.uuid.rocks/93',
+		tracesSampleRate: 1.0,
+	}),
+	UuidRocksCheckerCronBase
+)
 
 const app = new Hono<App>()
 	.use(
