@@ -149,7 +149,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 			try {
 				const sleepSize = await step.waitForEvent<{ newSleepSize: number }>('timing-decreased', {
 					type: 'timing-decreased',
-					timeout: nextRunTime,
+					timeout: Date.now() - nextRunTime,
 				}) // Something will have to emit this event (this might also prove to be challenging)
 
 				await step.sleepUntil('sleep some more', nextRunTime + sleepSize.payload.newSleepSize)
