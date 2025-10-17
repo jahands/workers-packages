@@ -2,7 +2,7 @@
  * All user tests (to make testing easier)
  */
 export const steps = {
-	getStartTime: 'get-start-time',
+	getNextRunTime: 'get-next-run-time',
 	runUserSteps: 'run-user-steps',
 	runOnInit: 'run-on-init',
 	runOnTick: 'run-on-tick',

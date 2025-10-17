@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { WorkflowEntrypoint } from 'cloudflare:workers'
 import { NonRetryableError } from 'cloudflare:workflows'
+import { CronExpressionParser } from 'cron-parser'
 
 import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
 
@@ -16,6 +17,14 @@ export type CronContext = {
 export type CronFinalizeContext = CronContext & { error?: unknown }
 
 type StepResult = { success: boolean; error?: Error }
+
+type CronWorkflowParams = {
+	/**
+	 * The absolute timestamp (in milliseconds) of when this workflow instance should run.
+	 * If not provided, the next run time will be calculated from the cron schedule.
+	 */
+	nextRunTime?: number
+}
 
 export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env> {
 	// TODO: add type to validate schedule pattern
@@ -82,7 +91,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 	 *
 	 * Use {@link onTick()} instead
 	 */
-	override async run(event: WorkflowEvent<Params>, step: WorkflowStep): Promise<void> {
+	override async run(event: WorkflowEvent<CronWorkflowParams>, step: WorkflowStep): Promise<void> {
 		const name = this.constructor.name
 
 		const getWorkflowBinding = (): Workflow => {
@@ -106,8 +115,15 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 			return env[className] as Workflow
 		}
 
-		const nextRunTime = await step.do('get-start-time', async () => {
-			return Date.now()
+		// get the next run time from params or calculate it from the cron schedule
+		const nextRunTime = await step.do('get-next-run-time', async () => {
+			if (event.payload.nextRunTime) {
+				return event.payload.nextRunTime
+			}
+
+			// first instance - calculate the next run time from the cron schedule
+			const interval = CronExpressionParser.parse(this.schedule)
+			return interval.next().toDate().getTime()
 		})
 
 		const userSteps = async () => {
@@ -195,28 +211,29 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 			})
 		}
 
-		const createNext = async () => {
-			try {
-				await step.sleepUntil('sleep-until-next-run-time', nextRunTime)
-			} finally {
-				await step.do<StepResult & { id: string }>('create-next-instance', async () => {
-					const workflow = getWorkflowBinding()
-					const instance = await workflow.create({
-						params: { timeToNextRun: event.payload.timeToNextRun },
-					})
+		await step.sleepUntil('sleep-until-next-run-time', nextRunTime)
 
-					return {
-						success: true,
-						id: instance.id,
-					}
+		try {
+			await userSteps()
+		} finally {
+			// TODO: handle the case where userSteps() exhausts subrequest limit
+
+			const timeToNextRun = await step.do('calculate-next-run-time', async () => {
+				const interval = CronExpressionParser.parse(this.schedule)
+				return interval.next().toDate().getTime()
+			})
+
+			await step.do<StepResult & { id: string }>('create-next-instance', async () => {
+				const workflow = getWorkflowBinding()
+				const instance = await workflow.create({
+					params: { nextRunTime: timeToNextRun },
 				})
-			}
-		}
 
-		await userSteps().finally(async () => {
-			// TODO: run this first and use waitForEvent to
-			// prevent it from failing when user steps consume all subrequests
-			await createNext()
-		})
+				return {
+					success: true,
+					id: instance.id,
+				}
+			})
+		}
 	}
 }

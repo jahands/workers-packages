@@ -9,7 +9,7 @@ describe('BasicCron', async () => {
 
 		await expect(
 			instance.waitForStepResult({
-				name: steps.getStartTime,
+				name: steps.getNextRunTime,
 			})
 		).resolves.toBeGreaterThan(0)
 	})
