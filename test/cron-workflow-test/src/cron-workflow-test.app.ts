@@ -1,0 +1,30 @@
+import { Hono } from 'hono'
+import { useWorkersLogger } from 'workers-tagged-logger'
+
+import { withNotFound, withOnError } from '@repo/hono-helpers'
+
+import type { App } from './context'
+
+export { CronController } from 'cron-workflow'
+
+export { BasicCron } from './crons/basic.cron'
+
+const app = new Hono<App>()
+	.use(
+		'*',
+		// middleware
+		(c, next) =>
+			useWorkersLogger(c.env.NAME, {
+				environment: c.env.ENVIRONMENT,
+				release: c.env.SENTRY_RELEASE,
+			})(c, next)
+	)
+
+	.onError(withOnError())
+	.notFound(withNotFound())
+
+	.get('/', async (c) => {
+		return c.text('hello, world!')
+	})
+
+export default app

@@ -1,0 +1,19 @@
+{
+	"name": "class-inheritance",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "bun build src/class-inheritance.app.ts --target bun --outdir dist",
+		"start": "bun run src/class-inheritance.app.ts"
+	},
+	"dependencies": {
+		"@commander-js/extra-typings": "^14.0.0",
+		"@jahands/cli-tools": "^0.11.4",
+		"commander": "^14.0.1",
+		"zod": "^4.1.12",
+		"zx": "^8.8.4"
+	},
+	"devDependencies": {
+		"@types/bun": "^1.3.0"
+	}
+}

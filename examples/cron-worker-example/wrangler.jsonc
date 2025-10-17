@@ -1,0 +1,31 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "cron-worker-example",
+	"main": "src/cron-worker-example.app.ts",
+	"compatibility_date": "2025-10-08",
+	"compatibility_flags": ["nodejs_compat"],
+	"routes": [],
+	"logpush": true,
+	"observability": {
+		"enabled": true
+	},
+	"vars": {
+		"ENVIRONMENT": "development", // overridden during deployment
+		"SENTRY_RELEASE": "unknown" // overridden during deployment
+	},
+	// used by @sentry/cloudflare
+	"version_metadata": {
+		"binding": "CF_VERSION_METADATA"
+	},
+	"workflows": [
+		{
+			"name": "UuidRocksCheckerCron",
+			"class_name": "UuidRocksCheckerCron",
+			"binding": "UuidRocksCheckerCron" // currently must match class_name
+		}
+	],
+	"durable_objects": {
+		"bindings": [{ "name": "CronController", "class_name": "CronController" }]
+	},
+	"migrations": [{ "tag": "v1", "new_sqlite_classes": ["CronController"] }]
+}

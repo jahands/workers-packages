@@ -34,7 +34,11 @@ const config = {
 	semi: false,
 	singleQuote: true,
 	printWidth: 100,
-	plugins: ['@ianvs/prettier-plugin-sort-imports', 'prettier-plugin-packagejson'],
+	plugins: [
+		'@ianvs/prettier-plugin-sort-imports',
+		'prettier-plugin-packagejson',
+		'@babel/plugin-proposal-explicit-resource-management',
+	],
 	importOrder: [...codeImports, ...typeImports],
 	importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
 	importOrderTypeScriptVersion: '5.8.2',

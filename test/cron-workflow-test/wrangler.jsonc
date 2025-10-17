@@ -1,0 +1,23 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "cron-worker-example",
+	"main": "src/cron-workflow-test.app.ts",
+	"compatibility_date": "2025-10-08",
+	"compatibility_flags": ["nodejs_compat"],
+	"routes": [],
+	"logpush": true,
+	"observability": {
+		"enabled": true
+	},
+	"vars": {
+		"ENVIRONMENT": "development", // overridden during deployment
+		"SENTRY_RELEASE": "unknown" // overridden during deployment
+	},
+	"workflows": [
+		{
+			"name": "BasicCron",
+			"class_name": "BasicCron",
+			"binding": "BasicCron" // currently must match class_name
+		}
+	]
+}

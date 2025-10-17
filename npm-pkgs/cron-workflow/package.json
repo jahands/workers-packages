@@ -1,0 +1,73 @@
+{
+	"name": "cron-workflow",
+	"version": "0.1.0",
+	"private": false,
+	"description": "Build Cron Jobs with Cloudflare Workflows",
+	"keywords": [
+		"cron",
+		"cron job",
+		"cloudflare workers",
+		"cloudflare workflows",
+		"workflows"
+	],
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/cron-workflow",
+	"bugs": "https://github.com/jahands/workers-packages/issues",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages.git",
+		"directory": "npm-pkgs/cron-workflow"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"node": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		}
+	},
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "runx build tsc ./src/index.ts",
+		"check:exports": "runx check --exports",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"cron-parser": "5.4.0",
+		"zod": "^4.1.12"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "0.9.12",
+		"@cloudflare/workers-types": "4.20251011.0",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"@types/node": "22.15.27",
+		"pkgroll": "2.12.2",
+		"rimraf": "6.0.1",
+		"typescript": "5.8.2",
+		"vitest": "3.2.4"
+	},
+	"optionalDependencies": {
+		"hono": "^4.6.16"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}
