@@ -1,5 +1,11 @@
 # @repo/workspace-dependencies
 
+## 0.1.3
+
+### Patch Changes
+
+- 7de9d94: chore: update deps
+
 ## 0.1.2
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @repo/otel-example
 
+## 0.1.30
+
+### Patch Changes
+
+- 7de9d94: chore: update deps
+- f88228f: chore: bump compat date to 2025-10-08
+- ccf4780: chore: update compat date to 2025-09-20 due to issues with 9/21+
+- Updated dependencies [7de9d94]
+  - @jahands/otel-cf-workers@0.1.24
+
 ## 0.1.29
 
 ### Patch Changes

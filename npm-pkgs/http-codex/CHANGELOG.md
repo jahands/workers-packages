@@ -1,5 +1,13 @@
 # http-codex
 
+## 0.6.5
+
+### Patch Changes
+
+- 7de9d94: chore: update deps
+- f88228f: chore: bump compat date to 2025-10-08
+- ccf4780: chore: update compat date to 2025-09-20 due to issues with 9/21+
+
 ## 0.6.4
 
 ### Patch Changes
