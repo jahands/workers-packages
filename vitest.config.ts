@@ -11,8 +11,8 @@ export default defineConfig(async () => {
 	const isolated: string[] = [
 		// workflows has issues for some reason
 		// TODO: fix this
-		'test/cron-workflow-test/vitest.config.ts',
-		'examples/cron-worker-example/vitest.config.ts',
+		// 'test/cron-workflow-test/vitest.config.ts',
+		// 'examples/cron-worker-example/vitest.config.ts',
 	]
 
 	return {
