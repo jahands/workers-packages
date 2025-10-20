@@ -46,7 +46,7 @@ Each hook receives the underlying `WorkflowStep`, so you can wrap work in `step.
 
 Add the workflow and required Durable Object binding to `wrangler.jsonc`:
 
-```json
+```jsonc
 {
   "workflows": [
     // note: binding MUST match class_name

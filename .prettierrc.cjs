@@ -59,6 +59,7 @@ const config = {
 			files: '*.md',
 			options: {
 				useTabs: false,
+				trailingComma: 'none',
 			},
 		},
 	],
