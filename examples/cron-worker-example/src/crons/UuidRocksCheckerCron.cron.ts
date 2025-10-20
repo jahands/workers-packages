@@ -27,10 +27,11 @@ export class UuidRocksCheckerCron extends CronWorkflow<Env> {
 
 	override async onFinalize({ step, error }: CronFinalizeContext) {
 		await step.do('send outcome to sentry', async () => {
-			console.log('cron_on_finalize')
 			if (error) {
+				console.error(`cron_on_finalize_error ${String(error)}`)
 				Sentry.captureCheckIn({ monitorSlug: 'uuid-rocks-checker', status: 'error' })
 			} else {
+				console.log('cron_on_finalize')
 				Sentry.captureCheckIn({ monitorSlug: 'uuid-rocks-checker', status: 'ok' })
 			}
 		})
