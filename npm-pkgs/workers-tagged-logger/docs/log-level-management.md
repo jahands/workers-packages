@@ -109,7 +109,7 @@ await withLogTags({ source: 'app' }, async () => {
 ```typescript
 const isDev = process.env.NODE_ENV === 'development'
 const logger = new WorkersLogger({
-  minimumLogLevel: isDev ? 'debug' : 'warn',
+  minimumLogLevel: isDev ? 'debug' : 'warn'
 })
 ```
 

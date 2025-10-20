@@ -127,7 +127,7 @@ export function withLogTags<T extends LogTags, R>(
   const existingContext = als.getStore()
   const newContext: LogContext = {
     tags: { ...existingContext?.tags, ...opts.tags },
-    logLevel: existingContext?.logLevel, // Preserve existing log level
+    logLevel: existingContext?.logLevel // Preserve existing log level
   }
   return als.run(newContext, fn)
 }
@@ -179,7 +179,7 @@ export default {
 
       return new Response('OK')
     })
-  },
+  }
 }
 ```
 

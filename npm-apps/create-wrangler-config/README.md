@@ -58,8 +58,8 @@ The tool automatically detects and pre-selects features based on your project:
   "main": "src/index.ts",
   "compatibility_date": "2025-06-03",
   "observability": {
-    "enabled": true,
-  },
+    "enabled": true
+  }
 }
 ```
 
@@ -70,8 +70,8 @@ The tool automatically detects and pre-selects features based on your project:
   "name": "my-worker",
   "compatibility_date": "2025-06-03",
   "assets": {
-    "directory": "./public",
-  },
+    "directory": "./public"
+  }
 }
 ```
 
@@ -83,12 +83,12 @@ The tool automatically detects and pre-selects features based on your project:
   "main": "src/index.ts",
   "compatibility_date": "2025-06-03",
   "observability": {
-    "enabled": true,
+    "enabled": true
   },
   "assets": {
     "directory": "./public",
-    "binding": "ASSETS",
-  },
+    "binding": "ASSETS"
+  }
 }
 ```
 

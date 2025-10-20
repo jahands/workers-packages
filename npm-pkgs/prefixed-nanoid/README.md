@@ -40,7 +40,7 @@ import { createPrefixedNanoIds } from 'prefixed-nanoid'
 // Note: len defaults to 24 if not specified
 const ids = createPrefixedNanoIds({
   project: { prefix: 'prj' }, // len = 24 (default)
-  user: { prefix: 'usr', len: 16 },
+  user: { prefix: 'usr', len: 16 }
 })
 
 // Generate IDs
@@ -137,12 +137,12 @@ You can create multiple instances for different contexts:
 ```typescript
 const userIds = createPrefixedNanoIds({
   admin: { prefix: 'adm', len: 20 },
-  member: { prefix: 'mbr', len: 16 },
+  member: { prefix: 'mbr', len: 16 }
 })
 
 const resourceIds = createPrefixedNanoIds({
   file: { prefix: 'file', len: 24 },
-  folder: { prefix: 'dir', len: 20 },
+  folder: { prefix: 'dir', len: 20 }
 })
 ```
 
@@ -153,7 +153,7 @@ The library provides full TypeScript support with proper type inference:
 ```typescript
 const ids = createPrefixedNanoIds({
   project: { prefix: 'prj', len: 24 },
-  user: { prefix: 'usr', len: 16 },
+  user: { prefix: 'usr', len: 16 }
 })
 
 // TypeScript will only allow 'project' or 'user' as valid prefixes

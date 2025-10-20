@@ -35,7 +35,7 @@ const oneLine = fmt.oneLine(`
 // Convert array of objects to TSV (Tab-Separated Values)
 const data = [
   { name: 'John', age: 30 },
-  { name: 'Jane', age: 25 },
+  { name: 'Jane', age: 25 }
 ]
 const tsv = await fmt.asTSV(data)
 // Result: "name\tage\nJohn\t30\nJane\t25"

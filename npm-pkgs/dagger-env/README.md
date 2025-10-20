@@ -30,30 +30,30 @@ import { z } from 'zod/v4'
 const myDaggerEnv = createDaggerEnv({
   args: z.object({
     push: z.string().optional(),
-    environment: z.enum(['dev', 'staging', 'prod']).optional(),
+    environment: z.enum(['dev', 'staging', 'prod']).optional()
   }),
   env: z.object({
     CI: z.string().optional(),
-    NODE_ENV: z.string().optional(),
+    NODE_ENV: z.string().optional()
   }),
   secrets: z.object({
     API_TOKEN: z.string(),
     DATABASE_URL: z.string(),
-    REDIS_URL: z.string(),
+    REDIS_URL: z.string()
   }),
   secretPresets: {
     api: ['API_TOKEN', 'DATABASE_URL'],
-    cache: ['REDIS_URL'],
+    cache: ['REDIS_URL']
   },
   derivedEnvVars: {
     API_TOKEN: {
       API_BASE_URL: 'https://api.example.com',
-      API_VERSION: 'v1',
+      API_VERSION: 'v1'
     },
     DATABASE_URL: {
-      DB_POOL_SIZE: '10',
-    },
-  },
+      DB_POOL_SIZE: '10'
+    }
+  }
 })
 ```
 
@@ -85,19 +85,19 @@ import { z } from 'zod/v4'
 // Create your DaggerEnv configuration
 const myDaggerEnv = createDaggerEnv({
   args: z.object({
-    environment: z.enum(['dev', 'staging', 'prod']).optional(),
+    environment: z.enum(['dev', 'staging', 'prod']).optional()
   }),
   env: z.object({
     CI: z.string().optional(),
-    NODE_ENV: z.string().optional(),
+    NODE_ENV: z.string().optional()
   }),
   secrets: z.object({
-    API_TOKEN: z.string(),
+    API_TOKEN: z.string()
   }),
   secretPresets: {
-    api: ['API_TOKEN'],
+    api: ['API_TOKEN']
   },
-  derivedEnvVars: {},
+  derivedEnvVars: {}
 })
 
 // Create a command runner - simply pass your DaggerEnv instance
@@ -107,17 +107,17 @@ const runDaggerCommand = createDaggerCommandRunner({
   opSections: [
     {
       id: 'your-section-id',
-      label: 'Shared',
-    },
+      label: 'Shared'
+    }
   ],
   dockerCommands: ['build', 'deploy', 'test'],
-  daggerEnv: myDaggerEnv,
+  daggerEnv: myDaggerEnv
 })
 
 // Run a Dagger command
 await runDaggerCommand('test', {
   args: { environment: 'dev' },
-  env: { NODE_ENV: 'development' },
+  env: { NODE_ENV: 'development' }
 })
 ```
 
@@ -130,7 +130,7 @@ const runDaggerCommand = createDaggerCommandRunner({
   opItem: 'your-item-id',
   opSections: [
     { id: 'shared-section-id', label: 'Shared' },
-    { id: 'project-section-id', label: 'Project Specific' },
+    { id: 'project-section-id', label: 'Project Specific' }
   ],
   dockerCommands: ['build', 'deploy', 'test'],
   beforeCommand: async () => {
@@ -138,7 +138,7 @@ const runDaggerCommand = createDaggerCommandRunner({
     console.log('Setting up environment...')
     // await setupDaggerVendorFiles()
   },
-  daggerEnv: myDaggerEnv,
+  daggerEnv: myDaggerEnv
 })
 ```
 
@@ -236,23 +236,23 @@ Options for individual command execution:
 ```typescript
 const apiServiceEnv = createDaggerEnv({
   args: z.object({
-    push: z.string().optional(),
+    push: z.string().optional()
   }),
   env: z.object({
-    CI: z.string().optional(),
+    CI: z.string().optional()
   }),
   secrets: z.object({
     API_TOKEN: z.string(),
-    DATABASE_URL: z.string(),
+    DATABASE_URL: z.string()
   }),
   secretPresets: {
-    api: ['API_TOKEN', 'DATABASE_URL'],
+    api: ['API_TOKEN', 'DATABASE_URL']
   } as const,
   derivedEnvVars: {
     API_TOKEN: {
-      API_BASE_URL: 'https://api.example.com',
-    },
-  } as const,
+      API_BASE_URL: 'https://api.example.com'
+    }
+  } as const
 })
 ```
 
@@ -262,26 +262,26 @@ const apiServiceEnv = createDaggerEnv({
 const multiEnvDaggerEnv = createDaggerEnv({
   args: z.object({
     environment: z.enum(['dev', 'staging', 'prod']),
-    push: z.string().optional(),
+    push: z.string().optional()
   }),
   env: z.object({
-    CI: z.string().optional(),
+    CI: z.string().optional()
   }),
   secrets: z.object({
     DEV_API_KEY: z.string(),
     STAGING_API_KEY: z.string(),
-    PROD_API_KEY: z.string(),
+    PROD_API_KEY: z.string()
   }),
   secretPresets: {
     dev: ['DEV_API_KEY'],
     staging: ['STAGING_API_KEY'],
-    prod: ['PROD_API_KEY'],
+    prod: ['PROD_API_KEY']
   } as const,
   derivedEnvVars: {
     DEV_API_KEY: { API_URL: 'https://dev-api.example.com' },
     STAGING_API_KEY: { API_URL: 'https://staging-api.example.com' },
-    PROD_API_KEY: { API_URL: 'https://api.example.com' },
-  } as const,
+    PROD_API_KEY: { API_URL: 'https://api.example.com' }
+  } as const
 })
 ```
 

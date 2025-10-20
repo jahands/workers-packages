@@ -31,7 +31,7 @@ This logger requires `nodejs_als` or `nodejs_compat` to function. To enable this
 
 ```jsonc
 {
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": ["nodejs_compat"]
   // or "compatibility_flags": ["nodejs_compat"]
 }
 ```
@@ -131,7 +131,7 @@ export default {
       logger.info('Finished handling request')
       return new Response('Hello!')
     })
-  },
+  }
 }
 ```
 
@@ -248,7 +248,7 @@ Sometimes you may want to log a few lines that have additional tags without sett
 logger.setTags({ request_id: 'req-123' })
 
 const ctxLogger = logger.withTags({
-  operation: 'user-lookup',
+  operation: 'user-lookup'
 })
 
 // All logs using ctxLogger will have the new tag added:
@@ -392,7 +392,7 @@ await withLogTags({ source: 'app' }, async () => {
 ```ts
 const isDev = process.env.NODE_ENV === 'development'
 const logger = new WorkersLogger({
-  minimumLogLevel: isDev ? 'debug' : 'warn',
+  minimumLogLevel: isDev ? 'debug' : 'warn'
 })
 ```
 

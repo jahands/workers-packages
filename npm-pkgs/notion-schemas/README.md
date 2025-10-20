@@ -29,7 +29,7 @@ export const MyNotes_Props = z.object({
   Keep: Notion.prop.checkbox,
   Notes: Notion.prop.rich_text,
   Priority: Notion.prop.select,
-  Date: Notion.prop.title,
+  Date: Notion.prop.title
 })
 
 export type MyNotes = Notion.DataSource<typeof MyNotes_Props>
@@ -39,13 +39,13 @@ const notion = new NotionClient()
 
 const res = MyNotes.query.parse(
   await notion.dataSources.query({
-    data_source_id: 'a6e71658-f7bc-4ba1-9a01-6ed35b079fa1',
+    data_source_id: 'a6e71658-f7bc-4ba1-9a01-6ed35b079fa1'
   })
 )
 
 const page = MyNotes.page.parse(
   await notion.pages.retrieve({
-    page_id: '0395f6ea58f44ef29fac0f4f5b30c523',
+    page_id: '0395f6ea58f44ef29fac0f4f5b30c523'
   })
 )
 ```

@@ -38,13 +38,13 @@ export default defineConfig(async () => ({
   tasks: {
     build: {
       dependsOn: ['^build'],
-      outputs: ['dist/**'],
+      outputs: ['dist/**']
     },
     lint: {
       cache: false,
-      dependsOn: ['build'],
-    },
-  },
+      dependsOn: ['build']
+    }
+  }
 }))
 ```
 

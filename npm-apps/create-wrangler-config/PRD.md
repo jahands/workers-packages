@@ -144,7 +144,7 @@ Based on selected checkboxes, prompt for specific details:
 ```jsonc
 {
   "name": "worker-name",
-  "compatibility_date": "2025-06-03", // Always today's date
+  "compatibility_date": "2025-06-03" // Always today's date
   // Optional fields based on selected features:
   // "main": "src/index.ts" (if Entry Point selected)
   // "observability": { "enabled": true } (if Entry Point selected)
@@ -162,8 +162,8 @@ Based on selected checkboxes, prompt for specific details:
   "name": "worker-name",
   "compatibility_date": "2025-06-03",
   "assets": {
-    "directory": "./public",
-  },
+    "directory": "./public"
+  }
 }
 ```
 
@@ -175,8 +175,8 @@ Based on selected checkboxes, prompt for specific details:
   "main": "src/index.ts",
   "compatibility_date": "2025-06-03",
   "observability": {
-    "enabled": true,
-  },
+    "enabled": true
+  }
 }
 ```
 
@@ -188,12 +188,12 @@ Based on selected checkboxes, prompt for specific details:
   "main": "src/index.ts",
   "compatibility_date": "2025-06-03",
   "observability": {
-    "enabled": true,
+    "enabled": true
   },
   "assets": {
     "directory": "./public",
-    "binding": "ASSETS",
-  },
+    "binding": "ASSETS"
+  }
 }
 ```
 

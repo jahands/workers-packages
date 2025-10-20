@@ -39,16 +39,16 @@ const handler = {
     trace.getActiveSpan()?.setAttribute('greeting', greeting)
     ctx.waitUntil(fetch('https://workers.dev'))
     return new Response(`${greeting}!`)
-  },
+  }
 }
 
 const config: ResolveConfigFn = (env: Env, _trigger) => {
   return {
     exporter: {
       url: 'https://api.honeycomb.io/v1/traces',
-      headers: { 'x-honeycomb-team': env.HONEYCOMB_API_KEY },
+      headers: { 'x-honeycomb-team': env.HONEYCOMB_API_KEY }
     },
-    service: { name: 'greetings' },
+    service: { name: 'greetings' }
   }
 }
 
