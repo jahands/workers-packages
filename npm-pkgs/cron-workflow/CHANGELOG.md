@@ -1,5 +1,11 @@
 # cron-workflow
 
+## 0.3.1
+
+### Patch Changes
+
+- a4ca940: fix: use jsonc code block in readme
+
 ## 0.3.0
 
 ### Minor Changes
