@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.24
+
+### Patch Changes
+
+- 7de9d94: chore: update deps
+
 ## 0.1.23
 
 ### Patch Changes

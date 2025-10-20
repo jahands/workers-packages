@@ -1,5 +1,15 @@
 # @repo/vanilla-worker
 
+## 0.2.53
+
+### Patch Changes
+
+- 7de9d94: chore: update deps
+- f88228f: chore: bump compat date to 2025-10-08
+- ccf4780: chore: update compat date to 2025-09-20 due to issues with 9/21+
+- Updated dependencies [7de9d94]
+  - workers-tagged-logger@0.13.6
+
 ## 0.2.52
 
 ### Patch Changes

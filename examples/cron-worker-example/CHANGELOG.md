@@ -1,5 +1,18 @@
 # @repo/cron-worker-example
 
+## 0.1.2
+
+### Patch Changes
+
+- 7de9d94: chore: update deps
+- f88228f: chore: bump compat date to 2025-10-08
+- ccf4780: chore: update compat date to 2025-09-20 due to issues with 9/21+
+- Updated dependencies [0a4273b]
+- Updated dependencies [7de9d94]
+  - cron-workflow@0.3.0
+  - workers-tagged-logger@0.13.6
+  - @repo/hono-helpers@0.1.3
+
 ## 0.1.1
 
 ### Patch Changes

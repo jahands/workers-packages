@@ -1,5 +1,11 @@
 # prefixed-nanoid
 
+## 0.1.9
+
+### Patch Changes
+
+- 7de9d94: chore: update deps
+
 ## 0.1.8
 
 ### Patch Changes

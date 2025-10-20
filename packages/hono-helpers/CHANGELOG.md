@@ -1,5 +1,16 @@
 # @repo/hono-helpers
 
+## 0.1.3
+
+### Patch Changes
+
+- 7de9d94: chore: update deps
+- Updated dependencies [7de9d94]
+- Updated dependencies [f88228f]
+- Updated dependencies [ccf4780]
+  - workers-tagged-logger@0.13.6
+  - http-codex@0.6.5
+
 ## 0.1.2
 
 ### Patch Changes

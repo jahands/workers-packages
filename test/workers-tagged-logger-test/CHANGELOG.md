@@ -1,5 +1,11 @@
 # @repo/workers-tagged-logger-test
 
+## 0.3.3
+
+### Patch Changes
+
+- 7de9d94: chore: update deps
+
 ## 0.3.2
 
 ### Patch Changes
