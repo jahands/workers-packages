@@ -19,5 +19,9 @@
 			"class_name": "BasicCron",
 			"binding": "BasicCron" // currently must match class_name
 		}
-	]
+	],
+	"durable_objects": {
+		"bindings": [{ "name": "CronController", "class_name": "CronController" }]
+	},
+	"migrations": [{ "tag": "v1", "new_sqlite_classes": ["CronController"] }]
 }
