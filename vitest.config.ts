@@ -9,10 +9,9 @@ export default defineConfig(async () => {
 	).filter((p) => !p.includes('node_modules'))
 
 	const isolated: string[] = [
-		// workflows has issues for some reason
-		// TODO: fix this
-		'test/cron-workflow-test/vitest.config.ts',
-		'examples/cron-worker-example/vitest.config.ts',
+		// add here and then add test:ci script to the package
+		// if it needs to run tests separately. e.g.
+		// 'test/cron-workflow-test/vitest.config.ts',
 	]
 
 	return {
