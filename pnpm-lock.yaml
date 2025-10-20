@@ -18,8 +18,8 @@ importers:
         specifier: 2.29.7
         version: 2.29.7(@types/node@22.15.27)
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@ianvs/prettier-plugin-sort-imports':
         specifier: 4.7.0
         version: 4.7.0(prettier@3.6.2)
@@ -82,8 +82,8 @@ importers:
         version: 8.8.4
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@cloudflare/workers-types':
         specifier: 4.20251011.0
         version: 4.20251011.0
@@ -119,8 +119,8 @@ importers:
         version: link:../../npm-pkgs/workers-tagged-logger
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -137,8 +137,8 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
       wrangler:
-        specifier: 4.42.2
-        version: 4.42.2(@cloudflare/workers-types@4.20251011.0)
+        specifier: 4.43.0
+        version: 4.43.0(@cloudflare/workers-types@4.20251011.0)
 
   examples/hono-app:
     dependencies:
@@ -156,8 +156,8 @@ importers:
         version: 4.1.12
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@cloudflare/workers-types':
         specifier: 4.20251011.0
         version: 4.20251011.0
@@ -187,8 +187,8 @@ importers:
         version: 4.1.12
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@cloudflare/workers-types':
         specifier: 4.20251011.0
         version: 4.20251011.0
@@ -215,8 +215,8 @@ importers:
         version: link:../../npm-pkgs/workers-tagged-logger
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@cloudflare/workers-types':
         specifier: 4.20251011.0
         version: 4.20251011.0
@@ -425,8 +425,8 @@ importers:
         version: 4.1.12
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@cloudflare/workers-types':
         specifier: 4.20251011.0
         version: 4.20251011.0
@@ -518,8 +518,8 @@ importers:
   npm-pkgs/http-codex:
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@cloudflare/workers-types':
         specifier: 4.20251011.0
         version: 4.20251011.0
@@ -622,8 +622,8 @@ importers:
         version: 1.9.0
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@cloudflare/workers-types':
         specifier: 4.20251011.0
         version: 4.20251011.0
@@ -653,8 +653,8 @@ importers:
         version: 3.3.11
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@cloudflare/workers-types':
         specifier: 4.20251011.0
         version: 4.20251011.0
@@ -748,8 +748,8 @@ importers:
         version: 4.1.12
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@cloudflare/workers-types':
         specifier: 4.20251011.0
         version: 4.20251011.0
@@ -870,8 +870,8 @@ importers:
         version: 4.1.12
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@cloudflare/workers-types':
         specifier: 4.20251011.0
         version: 4.20251011.0
@@ -960,8 +960,8 @@ importers:
         specifier: 1.6.6
         version: 1.6.6
       wrangler:
-        specifier: 4.42.2
-        version: 4.42.2(@cloudflare/workers-types@4.20251011.0)
+        specifier: 4.43.0
+        version: 4.43.0(@cloudflare/workers-types@4.20251011.0)
       yaml:
         specifier: 2.8.1
         version: 2.8.1
@@ -995,8 +995,8 @@ importers:
         version: link:../../npm-pkgs/workers-tagged-logger
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -1013,14 +1013,14 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
       wrangler:
-        specifier: 4.42.2
-        version: 4.42.2(@cloudflare/workers-types@4.20251011.0)
+        specifier: 4.43.0
+        version: 4.43.0(@cloudflare/workers-types@4.20251011.0)
 
   test/workers-tagged-logger-test:
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: 0.9.12
-        version: 0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
+        specifier: 0.9.13
+        version: 0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))
       '@cloudflare/workers-types':
         specifier: 4.20251011.0
         version: 4.20251011.0
@@ -1262,8 +1262,8 @@ packages:
       workerd:
         optional: true
 
-  '@cloudflare/vitest-pool-workers@0.9.12':
-    resolution: {integrity: sha512-MTHFgqyhji3VhdjNQX/CcKNYchAyaQMbjh23Hif8LFq2YaMCISSVoVAUBXoGMMS/+RblwqZOWfH2ZojTVhEr+Q==}
+  '@cloudflare/vitest-pool-workers@0.9.13':
+    resolution: {integrity: sha512-CvahDQJLRe7hYBv+aKYpsZtXLS/a9exSRRGudXA7HIHKyhbKqVvHXmZeMkOBZDwQR4HCaAV+1Nz8SsGSt7XZ3g==}
     peerDependencies:
       '@vitest/runner': 2.0.x - 3.2.x
       '@vitest/snapshot': 2.0.x - 3.2.x
@@ -6214,8 +6214,8 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  wrangler@4.42.2:
-    resolution: {integrity: sha512-1iTnbjB4F12KSP1zbfxQL495xarS+vdrZnulQP2SEcAxDTUGn7N9zk1O2WtFOc+Fhcgl+9/sdz/4AL9pF34Pwg==}
+  wrangler@4.43.0:
+    resolution: {integrity: sha512-IBNqXlYHSUSCNNWj/tQN4hFiQy94l7fTxEnJWETXyW69+cjUyjQ7MfeoId3vIV9KBgY8y5M5uf2XulU95OikJg==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     peerDependencies:
@@ -6679,7 +6679,7 @@ snapshots:
     optionalDependencies:
       workerd: 1.20251008.0
 
-  '@cloudflare/vitest-pool-workers@0.9.12(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))':
+  '@cloudflare/vitest-pool-workers@0.9.13(@cloudflare/workers-types@4.20251011.0)(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1))':
     dependencies:
       '@vitest/runner': 3.2.4
       '@vitest/snapshot': 3.2.4
@@ -6689,7 +6689,7 @@ snapshots:
       miniflare: 4.20251008.0
       semver: 7.7.1
       vitest: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
-      wrangler: 4.42.2(@cloudflare/workers-types@4.20251011.0)
+      wrangler: 4.43.0(@cloudflare/workers-types@4.20251011.0)
       zod: 3.25.76
     transitivePeerDependencies:
       - '@cloudflare/workers-types'
@@ -12061,7 +12061,7 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20251008.0
       '@cloudflare/workerd-windows-64': 1.20251008.0
 
-  wrangler@4.42.2(@cloudflare/workers-types@4.20251011.0):
+  wrangler@4.43.0(@cloudflare/workers-types@4.20251011.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
       '@cloudflare/unenv-preset': 2.7.7(unenv@2.0.0-rc.21)(workerd@1.20251008.0)
