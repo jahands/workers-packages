@@ -1,4 +1,4 @@
 name = "vanilla-worker"
 main = "src/index.ts"
-compatibility_date = "2025-10-08"
+compatibility_date = "2025-09-20"
 compatibility_flags = ["nodejs_compat"]

@@ -2,7 +2,7 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "cron-worker-example",
 	"main": "src/cron-workflow-test.app.ts",
-	"compatibility_date": "2025-10-08",
+	"compatibility_date": "2025-09-20",
 	"compatibility_flags": ["nodejs_compat"],
 	"routes": [],
 	"logpush": true,
