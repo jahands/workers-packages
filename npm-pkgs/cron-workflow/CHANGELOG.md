@@ -1,5 +1,11 @@
 # cron-workflow
 
+## 0.3.2
+
+### Patch Changes
+
+- 596e94b: fix: handle case where sleepUntil() fails
+
 ## 0.3.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # turbo-config
 
+## 0.3.3
+
+### Patch Changes
+
+- e21bcec: chore: formatting
+
 ## 0.3.2
 
 ### Patch Changes

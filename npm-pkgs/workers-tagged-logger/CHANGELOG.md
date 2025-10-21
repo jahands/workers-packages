@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.13.7
+
+### Patch Changes
+
+- e21bcec: chore: formatting
+
 ## 0.13.6
 
 ### Patch Changes

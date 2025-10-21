@@ -1,5 +1,11 @@
 # notion-schemas
 
+## 0.3.5
+
+### Patch Changes
+
+- e21bcec: chore: formatting
+
 ## 0.3.4
 
 ### Patch Changes

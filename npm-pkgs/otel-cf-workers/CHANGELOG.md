@@ -1,5 +1,11 @@
 # @jahands/otel-cf-workers
 
+## 0.1.25
+
+### Patch Changes
+
+- e21bcec: chore: formatting
+
 ## 0.1.24
 
 ### Patch Changes

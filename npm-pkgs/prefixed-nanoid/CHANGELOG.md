@@ -1,5 +1,11 @@
 # prefixed-nanoid
 
+## 0.1.10
+
+### Patch Changes
+
+- e21bcec: chore: formatting
+
 ## 0.1.9
 
 ### Patch Changes

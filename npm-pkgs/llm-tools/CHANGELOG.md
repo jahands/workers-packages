@@ -1,5 +1,11 @@
 # llm-tools
 
+## 0.2.5
+
+### Patch Changes
+
+- e21bcec: chore: formatting
+
 ## 0.2.4
 
 ### Patch Changes
