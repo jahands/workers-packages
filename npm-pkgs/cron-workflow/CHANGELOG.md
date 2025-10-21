@@ -1,5 +1,11 @@
 # cron-workflow
 
+## 0.3.3
+
+### Patch Changes
+
+- 986797b: fix: don't sleep again after successful sleep
+
 ## 0.3.2
 
 ### Patch Changes
