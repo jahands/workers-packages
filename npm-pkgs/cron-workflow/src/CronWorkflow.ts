@@ -211,7 +211,18 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 			})
 		}
 
-		await step.sleepUntil('sleep-until-next-run-time', nextRunTime)
+		let shouldSleep = true
+		while (shouldSleep) {
+			try {
+				await step.sleepUntil('sleep-until-next-run-time', nextRunTime)
+			} catch (e) {
+				const isTimeTravelErr =
+					e instanceof Error &&
+					e.message.includes(`You can't sleep until a time in the past, time-traveler`)
+
+				shouldSleep = isTimeTravelErr || Date.now() < nextRunTime
+			}
+		}
 
 		try {
 			await userSteps()
