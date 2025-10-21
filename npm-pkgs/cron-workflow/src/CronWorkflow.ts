@@ -215,12 +215,13 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 		while (shouldSleep) {
 			try {
 				await step.sleepUntil('sleep-until-next-run-time', nextRunTime)
+				shouldSleep = false
 			} catch (e) {
 				const isTimeTravelErr =
 					e instanceof Error &&
 					e.message.includes(`You can't sleep until a time in the past, time-traveler`)
 
-				shouldSleep = isTimeTravelErr || Date.now() < nextRunTime
+				shouldSleep = !isTimeTravelErr && Date.now() < nextRunTime
 			}
 		}
 
