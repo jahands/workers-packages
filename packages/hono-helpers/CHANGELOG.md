@@ -1,5 +1,13 @@
 # @repo/hono-helpers
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies [e21bcec]
+  - workers-tagged-logger@0.13.7
+  - http-codex@0.6.6
+
 ## 0.1.3
 
 ### Patch Changes

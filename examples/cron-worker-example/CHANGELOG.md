@@ -1,5 +1,18 @@
 # @repo/cron-worker-example
 
+## 0.1.4
+
+### Patch Changes
+
+- df44e2f: chore: add logs to example
+- ce39b89: chore: log errors
+- 32b25a7: chore: add addiitonal requests to debug runs
+- Updated dependencies [596e94b]
+- Updated dependencies [e21bcec]
+  - cron-workflow@0.3.2
+  - workers-tagged-logger@0.13.7
+  - @repo/hono-helpers@0.1.4
+
 ## 0.1.3
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
 	"name": "create-wrangler-config",
-	"version": "0.2.8",
+	"version": "0.2.9",
 	"private": false,
 	"description": "CLI tool for quickly setting up a wrangler.jsonc configuration file for Cloudflare Workers projects",
 	"keywords": [

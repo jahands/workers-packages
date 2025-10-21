@@ -1,5 +1,11 @@
 # dagger-env
 
+## 0.6.5
+
+### Patch Changes
+
+- e21bcec: chore: formatting
+
 ## 0.6.4
 
 ### Patch Changes
