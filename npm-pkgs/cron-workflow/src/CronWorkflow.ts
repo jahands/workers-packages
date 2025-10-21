@@ -211,7 +211,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 			})
 		}
 
-		let shouldSleep = true
+		let shouldSleep = Date.now() < nextRunTime
 		while (shouldSleep) {
 			try {
 				await step.sleepUntil('sleep-until-next-run-time', nextRunTime)
