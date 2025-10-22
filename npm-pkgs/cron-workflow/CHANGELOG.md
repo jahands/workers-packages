@@ -1,5 +1,11 @@
 # cron-workflow
 
+## 0.3.4
+
+### Patch Changes
+
+- 0205637: chore: only call sleepUntil() if we know we need to
+
 ## 0.3.3
 
 ### Patch Changes
