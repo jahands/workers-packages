@@ -1,5 +1,11 @@
 # create-workers-monorepo
 
+## 0.9.0
+
+### Minor Changes
+
+- 6f56bb0: feat: improve tool installation logic
+
 ## 0.8.7
 
 ### Patch Changes
