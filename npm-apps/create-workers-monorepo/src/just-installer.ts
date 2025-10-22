@@ -8,8 +8,10 @@ export async function checkAndInstallJust(): Promise<void> {
 	}
 
 	echo(chalk.yellow('\n⚠️  just is not installed on your system.'))
-	echo(chalk.dim('just is required to run tasks in the monorepo.'))
-	echo(chalk.dim('You can install just manually from: https://just.systems/man/en/packages.html\n'))
+	echo(chalk.white('just is highly recommended for running tasks in the monorepo.'))
+	echo(
+		chalk.white('You can install just manually from: https://just.systems/man/en/packages.html\n')
+	)
 
 	const shouldInstall = await confirm({
 		message: 'Would you like to install just now?',

@@ -7,6 +7,7 @@ import { z } from 'zod/v4'
 import { ampExists, claudeExists, getAvailableEditors } from './editor'
 import { isDirEmpty } from './fs'
 import { checkAndInstallJust } from './just-installer'
+import { ensurePnpmInstalled } from './pnpm-installer'
 
 import type { AIAssistant } from './editor'
 
@@ -14,9 +15,6 @@ export async function ensurePrerequisites() {
 	if (!(await which('git', { nothrow: true }))) {
 		throw cliError('git is required to create a monorepo. Please install it and try again.')
 	}
-
-	// Check and offer to install just
-	await checkAndInstallJust()
 }
 
 export const RepoName = z.string().regex(/^(?!\.+$)(?!_+$)[a-z0-9-_.]+$/i)
@@ -184,30 +182,38 @@ export async function createMonorepo(opts: CreateMonorepoOptions) {
 
 	echo(chalk.dim(`Initializing git repository...`))
 	cd(targetDir)
-	await $`git init`.quiet()
-	await $`git add .`.quiet()
-	await $`git commit -m "Initial commit"`.quiet()
+	await $`git init`
+	await $`git add .`
+	await $`git commit -m "Initial commit"`
 
 	echo(`${chalk.green('Monorepo created successfully!')} ${chalk.dim(targetDir)}`)
+
+	// pnpm is required for the monorepo to work - ensure it's installed
+	const pkgJson = z
+		.object({
+			packageManager: z.string().regex(/^pnpm@\d+\.\d+\.\d+$/),
+		})
+		.parse(JSON.parse(fs.readFileSync(path.join(targetDir, 'package.json'), 'utf8')))
+
+	const pnpmVersion = pkgJson.packageManager.split('@')[1]
+	if (!pnpmVersion) {
+		throw cliError('Failed to parse package.json: No pnpm version found')
+	}
+	await ensurePnpmInstalled(targetDir, pnpmVersion)
 
 	if (await promptInstallDependencies()) {
 		echo(chalk.dim(`Installing dependencies...`))
 
-		// get pnpm version from package.json
-		const pkgJson = z
-			.object({
-				packageManager: z.string().regex(/^pnpm@\d+\.\d+\.\d+$/),
-			})
-			.parse(JSON.parse(fs.readFileSync(path.join(targetDir, 'package.json'), 'utf8')))
-
-		const pnpmVersion = pkgJson.packageManager.split('@')[1]
-		if (!pnpmVersion) {
-			throw cliError('Failed to parse package.json: No pnpm version found')
-		}
-		const cmd = `npm exec --yes pnpm@${pnpmVersion} -- install --child-concurrency=10 --loglevel=error`
+		const cmd = 'pnpm install --child-concurrency=10 --loglevel=error'
 		echo(chalk.dim(`Running command: ${cmd}`))
-		await $`${cmd.split(' ')}`.verbose()
+
+		await $({
+			cwd: targetDir,
+			stdio: 'inherit',
+		})`${cmd.split(' ')}`
 	}
+
+	await checkAndInstallJust()
 
 	// check if vscode or cursor are installed and offer to open the monorepo with one of them
 	const availableEditors = await getAvailableEditors()
@@ -227,4 +233,7 @@ export async function createMonorepo(opts: CreateMonorepoOptions) {
 			await $`${editor.command} .`.quiet()
 		}
 	}
+
+	echo('\n\nMonorepo created successfully!')
+	echo(`  ${targetDir}`)
 }
