@@ -32,13 +32,13 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 	/**
 	 * The name of the Workflow (derived from the class name)
 	 */
-	name: string
+	readonly name: string
 	/**
 	 * The cron pattern to use for scheduling the cron job
 	 *
 	 * @default every 5 minutes
 	 */
-	schedule: string = '*/5 * * * *'
+	readonly schedule: string = '*/5 * * * *'
 
 	constructor(ctx: ExecutionContext, env: Env) {
 		super(ctx, env)
