@@ -30,6 +30,10 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 	// TODO: add type to validate schedule pattern
 
 	/**
+	 * The name of the Workflow (derived from the class name)
+	 */
+	name: string
+	/**
 	 * The cron pattern to use for scheduling the cron job
 	 *
 	 * @default every 5 minutes
@@ -38,6 +42,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 
 	constructor(ctx: ExecutionContext, env: Env) {
 		super(ctx, env)
+		this.name = this.constructor.name
 
 		// overriding run() in a child class would break everything
 		if (this.run !== CronWorkflow.prototype.run) {
