@@ -1,5 +1,11 @@
 # cron-workflow
 
+## 0.5.0
+
+### Minor Changes
+
+- 941cf49: feat: return output in cron hooks
+
 ## 0.4.2
 
 ### Patch Changes
