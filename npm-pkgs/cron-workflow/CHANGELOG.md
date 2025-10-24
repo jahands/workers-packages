@@ -1,5 +1,11 @@
 # cron-workflow
 
+## 0.5.1
+
+### Patch Changes
+
+- 6c05e2c: fix: remove generics from hooks
+
 ## 0.5.0
 
 ### Minor Changes

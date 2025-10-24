@@ -1,5 +1,12 @@
 # @repo/cron-worker-example
 
+## 0.1.11
+
+### Patch Changes
+
+- Updated dependencies [6c05e2c]
+  - cron-workflow@0.5.1
+
 ## 0.1.10
 
 ### Patch Changes

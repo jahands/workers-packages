@@ -1,5 +1,13 @@
 # @repo/cron-worker-test
 
+## 0.1.11
+
+### Patch Changes
+
+- 9166e9c: chore: fix tests
+- Updated dependencies [6c05e2c]
+  - cron-workflow@0.5.1
+
 ## 0.1.10
 
 ### Patch Changes
