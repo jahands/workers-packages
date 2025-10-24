@@ -12,7 +12,11 @@ export type CronContext = {
 
 export type CronFinalizeContext = CronContext & { error?: unknown }
 
-type StepResult = { success: boolean; error?: Error }
+type StepResult = {
+	success: boolean
+	output?: Rpc.Serializable<unknown>
+	error?: Error
+}
 
 type CronWorkflowParams = {
 	/**
@@ -59,7 +63,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 	 *
 	 * @param step The Workflows step
 	 */
-	protected async onInit({ step }: CronContext): Promise<void> {
+	protected async onInit<R extends Rpc.Serializable<R>>({ step }: CronContext): Promise<R | void> {
 		// do nothing if user doesn't override - this is not mandatory
 	}
 
@@ -69,7 +73,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 	 * Override this to implement your cron Workflow (required)
 	 * @param step The Workflows step
 	 */
-	protected abstract onTick({ step }: CronContext): Promise<void>
+	protected abstract onTick<R extends Rpc.Serializable<R>>({ step }: CronContext): Promise<R | void>
 
 	/**
 	 * Lifecycle hook that is run after the Workflow completes and the
@@ -79,7 +83,10 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 	 * @param step The Workflows step
 	 * @param error Optional error that was thrown if the Workflow failed
 	 */
-	protected async onFinalize({ step, error }: CronFinalizeContext): Promise<void> {
+	protected async onFinalize<R extends Rpc.Serializable<R>>({
+		step,
+		error,
+	}: CronFinalizeContext): Promise<R | void> {
 		// do nothing if user doesn't override - this is not mandatory
 	}
 
@@ -133,8 +140,10 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 				// run onInit first
 				if (this.onInit !== CronWorkflow.prototype.onInit) {
 					const res = await step.do<StepResult>('run-on-init', async () => {
+						let output: Rpc.Serializable<unknown> | undefined
+
 						try {
-							await this.onInit({ step })
+							output = await this.onInit({ step })
 						} catch (e) {
 							if (e instanceof Error) {
 								return { success: false, error: e }
@@ -146,7 +155,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 							}
 						}
 
-						return { success: true }
+						return { success: true, output }
 					})
 
 					if (res.error) {
@@ -157,20 +166,22 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 				// only run onTick if onInit succeeded
 				if (!error) {
 					const res = await step.do<StepResult>('run-on-tick', async () => {
+						let output: Rpc.Serializable<unknown> | undefined
+
 						try {
-							await this.onTick({ step })
+							output = await this.onTick({ step })
 						} catch (e) {
 							if (e instanceof Error) {
-								return { error: e, success: false }
+								return { success: false, error: e }
 							} else {
 								return {
-									error: new Error(`Unknown error thrown in onTick(): ${String(e)}`),
 									success: false,
+									error: new Error(`Unknown error thrown in onTick(): ${String(e)}`),
 								}
 							}
 						}
 
-						return { success: true }
+						return { success: true, output }
 					})
 
 					if (res.error) {
@@ -180,9 +191,11 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 
 				if (this.onFinalize !== CronWorkflow.prototype.onFinalize) {
 					const err = await step.do<StepResult>('run-on-finalize', async () => {
+						let output: Rpc.Serializable<unknown> | undefined
+
 						// bubble up errors thrown in onFinalize()
 						try {
-							await this.onFinalize({ step, error })
+							output = await this.onFinalize({ step, error })
 						} catch (e) {
 							if (e instanceof Error) {
 								return { success: false, error: e }
@@ -194,7 +207,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 							}
 						}
 
-						return { success: true }
+						return { success: true, output }
 					})
 
 					if (err.error) {
