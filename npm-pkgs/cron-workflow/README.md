@@ -17,22 +17,22 @@ Extend `CronWorkflow` and implement the `onTick()` handler (and optionally add `
 import { CronContext, CronFinalizeContext, CronWorkflow } from 'cron-workflow'
 
 export class CleanupCron extends CronWorkflow<Env> {
-  schedule = '0 * * * *' // defaults to every 5 minutes
+  override schedule = '0 * * * *' // defaults to every 5 minutes
 
   // optional
-  protected async onInit({ step }: CronContext) {
+  override async onInit({ step }: CronContext) {
     await step.do('log start', async () => console.log('starting cleanup'))
   }
 
   // required
-  protected async onTick({ step }: CronContext) {
+  override async onTick({ step }: CronContext) {
     await step.do('delete stale records', async () => {
       // your cron work goes here
     })
   }
 
   // optional
-  protected async onFinalize({ step, error }: CronFinalizeContext) {
+  override async onFinalize({ step, error }: CronFinalizeContext) {
     await step.do('log result', async () => {
       console.log(error ? 'cleanup failed' : 'cleanup finished')
     })
