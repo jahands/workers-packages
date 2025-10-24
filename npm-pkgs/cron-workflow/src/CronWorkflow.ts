@@ -6,10 +6,6 @@ import { CronExpressionParser } from 'cron-parser'
 import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
 
 export type CronContext = {
-	/**
-	 * Name of the Cron job
-	 */
-	name: string
 	step: WorkflowStep
 	// TODO: maybe add schedule info?
 }
@@ -97,8 +93,6 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 	 * Use {@link onTick()} instead
 	 */
 	override async run(event: WorkflowEvent<CronWorkflowParams>, step: WorkflowStep): Promise<void> {
-		const name = this.constructor.name
-
 		const getWorkflowBinding = (): Workflow => {
 			const env = this.env as Record<string, unknown>
 
@@ -140,7 +134,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 				if (this.onInit !== CronWorkflow.prototype.onInit) {
 					const res = await step.do<StepResult>('run-on-init', async () => {
 						try {
-							await this.onInit({ name, step })
+							await this.onInit({ step })
 						} catch (e) {
 							if (e instanceof Error) {
 								return { success: false, error: e }
@@ -164,7 +158,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 				if (!error) {
 					const res = await step.do<StepResult>('run-on-tick', async () => {
 						try {
-							await this.onTick({ name, step })
+							await this.onTick({ step })
 						} catch (e) {
 							if (e instanceof Error) {
 								return { error: e, success: false }
@@ -188,7 +182,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 					const err = await step.do<StepResult>('run-on-finalize', async () => {
 						// bubble up errors thrown in onFinalize()
 						try {
-							await this.onFinalize({ name, step, error })
+							await this.onFinalize({ step, error })
 						} catch (e) {
 							if (e instanceof Error) {
 								return { success: false, error: e }
