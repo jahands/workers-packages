@@ -1,5 +1,14 @@
 # @repo/cron-worker-example
 
+## 0.1.7
+
+### Patch Changes
+
+- ff47590: chore: add override keyword
+- Updated dependencies [7eff5e8]
+- Updated dependencies [9f5e8a3]
+  - cron-workflow@0.4.0
+
 ## 0.1.6
 
 ### Patch Changes

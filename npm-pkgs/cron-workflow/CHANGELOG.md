@@ -1,5 +1,15 @@
 # cron-workflow
 
+## 0.4.0
+
+### Minor Changes
+
+- 7eff5e8: feat: add name to CronWorkflow props
+
+### Patch Changes
+
+- 9f5e8a3: chore: update readme
+
 ## 0.3.4
 
 ### Patch Changes
