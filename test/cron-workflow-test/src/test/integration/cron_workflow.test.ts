@@ -29,25 +29,19 @@ describe('BasicCron', async () => {
 			instance.waitForStepResult({
 				name: steps.runOnInit,
 			})
-		).resolves.toStrictEqual({ success: true })
-
-		await expect(
-			instance.waitForStepResult({
-				name: steps.runOnInit,
-			})
-		).resolves.toStrictEqual({ success: true })
+		).resolves.toStrictEqual({ success: true, output: undefined })
 
 		await expect(
 			instance.waitForStepResult({
 				name: steps.runOnTick,
 			})
-		).resolves.toStrictEqual({ success: true })
+		).resolves.toStrictEqual({ success: true, output: undefined })
 
 		await expect(
 			instance.waitForStepResult({
 				name: steps.runOnFinalize,
 			})
-		).resolves.toStrictEqual({ success: true })
+		).resolves.toStrictEqual({ success: true, output: undefined })
 
 		await expect(
 			instance.waitForStepResult({
