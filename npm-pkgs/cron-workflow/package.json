@@ -1,6 +1,6 @@
 {
 	"name": "cron-workflow",
-	"version": "0.5.1",
+	"version": "0.6.0",
 	"private": false,
 	"description": "Build Cron Jobs with Cloudflare Workflows",
 	"keywords": [

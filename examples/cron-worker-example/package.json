@@ -1,6 +1,6 @@
 {
 	"name": "@repo/cron-worker-example",
-	"version": "0.1.11",
+	"version": "0.1.12",
 	"private": true,
 	"sideEffects": false,
 	"type": "module",
