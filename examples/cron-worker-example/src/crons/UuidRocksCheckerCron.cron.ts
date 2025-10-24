@@ -5,7 +5,7 @@ import type { CronContext, CronFinalizeContext } from 'cron-workflow'
 import type { Env } from '../context'
 
 export class UuidRocksCheckerCron extends CronWorkflow<Env> {
-	schedule = '* * * * *'
+	override schedule = '* * * * *'
 
 	override async onInit({ step }: CronContext) {
 		await step.do('send sentry checkin', async () => {
