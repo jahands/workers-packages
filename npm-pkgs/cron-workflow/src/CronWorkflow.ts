@@ -242,20 +242,23 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 		} finally {
 			// TODO: handle the case where userSteps() exhausts subrequest limit
 
-			const timeToNextRun = await step.do('calculate-next-run-time', async () => {
+			const nextRunTime = await step.do('calculate-next-run-time', async () => {
 				const interval = CronExpressionParser.parse(this.schedule)
 				return interval.next().toDate().getTime()
 			})
 
-			await step.do<StepResult & { id: string }>('create-next-instance', async () => {
+			await step.do<StepResult>('create-next-instance', async () => {
 				const workflow = getWorkflowBinding()
 				const instance = await workflow.create({
-					params: { nextRunTime: timeToNextRun },
+					params: { nextRunTime: nextRunTime },
 				})
 
 				return {
 					success: true,
-					id: instance.id,
+					output: {
+						nextRunTime,
+						nextInstanceId: instance.id,
+					},
 				}
 			})
 		}
