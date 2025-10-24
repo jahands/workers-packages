@@ -63,7 +63,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 	 *
 	 * @param step The Workflows step
 	 */
-	protected async onInit<R extends Rpc.Serializable<R>>({ step }: CronContext): Promise<R | void> {
+	protected async onInit({ step }: CronContext): Promise<Rpc.Serializable<unknown>> {
 		// do nothing if user doesn't override - this is not mandatory
 	}
 
@@ -73,7 +73,7 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 	 * Override this to implement your cron Workflow (required)
 	 * @param step The Workflows step
 	 */
-	protected abstract onTick<R extends Rpc.Serializable<R>>({ step }: CronContext): Promise<R | void>
+	protected abstract onTick({ step }: CronContext): Promise<Rpc.Serializable<unknown>>
 
 	/**
 	 * Lifecycle hook that is run after the Workflow completes and the
@@ -83,10 +83,10 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 	 * @param step The Workflows step
 	 * @param error Optional error that was thrown if the Workflow failed
 	 */
-	protected async onFinalize<R extends Rpc.Serializable<R>>({
+	protected async onFinalize({
 		step,
 		error,
-	}: CronFinalizeContext): Promise<R | void> {
+	}: CronFinalizeContext): Promise<Rpc.Serializable<unknown>> {
 		// do nothing if user doesn't override - this is not mandatory
 	}
 
