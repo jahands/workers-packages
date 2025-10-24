@@ -1,5 +1,11 @@
 # cron-workflow
 
+## 0.4.1
+
+### Patch Changes
+
+- 9127dc6: fix: make props readonly
+
 ## 0.4.0
 
 ### Minor Changes
