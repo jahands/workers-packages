@@ -1,5 +1,11 @@
 # cron-workflow
 
+## 0.6.0
+
+### Minor Changes
+
+- 283c216: feat: add add nextRunTime to step output
+
 ## 0.5.1
 
 ### Patch Changes
