@@ -1,5 +1,11 @@
 # @repo/workspace-dependencies
 
+## 0.1.4
+
+### Patch Changes
+
+- 53aa10f: chore: remove unused dependencies
+
 ## 0.1.3
 
 ### Patch Changes
