@@ -14,6 +14,7 @@ const projectIncludes: string[] = [
 	'packages/',
 	'examples/',
 	'test/',
+	'turbo/',
 
 	// files
 	'.editorconfig',
