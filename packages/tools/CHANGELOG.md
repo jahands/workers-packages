@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.12.2
+
+### Patch Changes
+
+- 53aa10f: chore: remove run-turbo-gen (not needed anymore)
+
 ## 0.12.1
 
 ### Patch Changes
