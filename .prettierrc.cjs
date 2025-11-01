@@ -40,7 +40,12 @@ const config = {
 		'@babel/plugin-proposal-explicit-resource-management',
 	],
 	importOrder: [...codeImports, ...typeImports],
-	importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
+	importOrderParserPlugins: [
+		'typescript',
+		'jsx',
+		'decorators-legacy',
+		'explicitResourceManagement',
+	],
 	importOrderTypeScriptVersion: '5.8.2',
 	overrides: [
 		{

@@ -3,9 +3,14 @@ import { defineConfig } from 'vitest/config'
 import { glob } from '@repo/workspace-dependencies/zx'
 
 export default defineConfig(async () => {
-	// All vitest projects
+	const cfgTS = 'vitest.config{,.node}.ts'
+
+	// all vitest projects
 	const projects = (
-		await glob(['{npm-apps,npm-pkgs,apps,packages,examples,test}/*/vitest.config{,.node}.ts'])
+		await glob([
+			`{npm-apps,npm-pkgs,apps,packages,examples,test}/*/${cfgTS}`,
+			`turbo/generators/${cfgTS}`,
+		])
 	).filter((p) => !p.includes('node_modules'))
 
 	const isolated: string[] = [

@@ -1,6 +1,7 @@
-import { describe, it, expect } from 'vitest'
-import { steps } from './steps'
+import { describe, expect, it } from 'vitest'
+
 import { setupTest } from './harness'
+import { steps } from './steps'
 
 describe('BasicCron', async () => {
 	it('should get start time', async () => {
