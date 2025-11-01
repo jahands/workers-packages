@@ -35,9 +35,9 @@ const config = {
 	singleQuote: true,
 	printWidth: 100,
 	plugins: [
+		'@babel/plugin-proposal-explicit-resource-management',
 		'@ianvs/prettier-plugin-sort-imports',
 		'prettier-plugin-packagejson',
-		'@babel/plugin-proposal-explicit-resource-management',
 	],
 	importOrder: [...codeImports, ...typeImports],
 	importOrderParserPlugins: [
