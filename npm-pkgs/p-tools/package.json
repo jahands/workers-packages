@@ -1,0 +1,62 @@
+{
+	"name": "p-tools",
+	"version": "0.1.0",
+	"private": false,
+	"description": "Tools for working with promises",
+	"keywords": [
+		"promise",
+		"promises"
+	],
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/p-tools",
+	"bugs": "https://github.com/jahands/workers-packages/issues",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jahands/workers-packages.git",
+		"directory": "npm-pkgs/p-tools"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Jacob Hands",
+		"url": "https://github.com/jahands"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"node": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		}
+	},
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "runx build tsc ./src/index.ts",
+		"check:exports": "runx check --exports",
+		"check:lint": "run-eslint",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "0.9.13",
+		"@cloudflare/workers-types": "4.20251011.0",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"@types/node": "22.15.27",
+		"typescript": "5.8.2",
+		"vitest": "3.2.4",
+		"zod": "4.1.12"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}
