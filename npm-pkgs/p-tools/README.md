@@ -1,4 +1,4 @@
-# yaplib
+# yaplib - Yet Another Promise Library
 
 **Tiny promise utilities for modern JS.**
 
