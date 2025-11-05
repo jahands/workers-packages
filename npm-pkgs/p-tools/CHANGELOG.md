@@ -1,5 +1,11 @@
 # yaplib
 
+## 0.2.2
+
+### Patch Changes
+
+- 4a81f0b: chore: update readme
+
 ## 0.2.1
 
 ### Patch Changes
