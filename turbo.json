@@ -97,11 +97,11 @@
 				"notion-schemas#build",
 				"opencode-plugin-cloudflare#build",
 				"@jahands/otel-cf-workers#build",
-				"yaplib#build",
 				"prefixed-nanoid#build",
 				"turbo-config#build",
 				"@jahands/typeid#build",
 				"workers-tagged-logger#build",
+				"yaplib#build",
 				"@repo/workspace-dependencies#build"
 			],
 			"outputLogs": "new-only"
@@ -173,11 +173,11 @@
 				"notion-schemas#build",
 				"opencode-plugin-cloudflare#build",
 				"@jahands/otel-cf-workers#build",
-				"yaplib#build",
 				"prefixed-nanoid#build",
 				"turbo-config#build",
 				"@jahands/typeid#build",
 				"workers-tagged-logger#build",
+				"yaplib#build",
 				"@repo/workspace-dependencies#build"
 			],
 			"env": [
