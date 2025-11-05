@@ -1,18 +1,21 @@
 {
-	"name": "p-tools",
+	"name": "yaplib",
 	"version": "0.2.1",
 	"private": false,
-	"description": "Tools for working with promises",
+	"description": "yaplib - Yet Another Promise Library for working with promises",
 	"keywords": [
 		"promise",
-		"promises"
+		"promises",
+		"yaplib",
+		"yap-lib",
+		"yet another promise library"
 	],
-	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/p-tools",
+	"homepage": "https://github.com/jahands/workers-packages/tree/main/npm-pkgs/yaplib",
 	"bugs": "https://github.com/jahands/workers-packages/issues",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jahands/workers-packages.git",
-		"directory": "npm-pkgs/p-tools"
+		"directory": "npm-pkgs/yaplib"
 	},
 	"license": "MIT",
 	"author": {

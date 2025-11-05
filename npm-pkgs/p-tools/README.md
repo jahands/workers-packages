@@ -1,4 +1,4 @@
-# p-tools
+# yaplib
 
 **Tiny promise utilities for modern JS.**
 
@@ -7,7 +7,7 @@ I find myself writing various promise helpers over time and decided to publish t
 ## Install
 
 ```sh
-npm i p-tools
+npm i yaplib
 ```
 
 ## Quick start
@@ -15,7 +15,7 @@ npm i p-tools
 **Async cleanup (`await using`)**
 
 ```ts
-import { defer } from 'p-tools'
+import { defer } from 'yaplib'
 
 async function run() {
   await using _cleanup = defer(async () => {
@@ -29,7 +29,7 @@ await run()
 **Sync cleanup (`using`)**
 
 ```ts
-import { deferSync } from 'p-tools'
+import { deferSync } from 'yaplib'
 
 function run() {
   using _cleanup = deferSync(() => lock.release())
