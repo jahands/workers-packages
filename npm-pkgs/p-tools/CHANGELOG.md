@@ -1,5 +1,11 @@
 # p-tools
 
+## 0.2.1
+
+### Patch Changes
+
+- 10927ad: fix: export deferSync in index.ts
+
 ## 0.2.0
 
 ### Minor Changes
