@@ -1,1 +1,1 @@
-export { defer } from './defer.js'
+export { defer, deferSync } from './defer.js'
