@@ -1,0 +1,100 @@
+{
+	"folders": [
+		{
+			"name": "Config",
+			"path": "."
+		},
+		{
+			"name": "NPM Apps",
+			"path": "npm-apps"
+		},
+		{
+			"name": "NPM Packages",
+			"path": "npm-pkgs"
+		},
+		{
+			"name": "Test",
+			"path": "test"
+		},
+		{
+			"name": "Examples",
+			"path": "examples"
+		},
+		{
+			"name": "Packages",
+			"path": "packages"
+		},
+		{
+			"name": "Play",
+			"path": "play"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"npm-apps/": true,
+			"npm-pkgs/": true,
+			"test/": true,
+			"examples/": true,
+			"packages/": true,
+			"play/": true
+		},
+
+		"typescript.preferences.autoImportFileExcludePatterns": ["**/vitest/dist/**"],
+
+		"github-actions.workflows.pinned.workflows": [
+			".github/workflows/release.yml",
+			".github/workflows/branches.yml"
+		],
+		"github-actions.workflows.pinned.refresh.enabled": true,
+		"github-actions.workflows.pinned.refresh.interval": 30,
+
+		"files.associations": {
+			"**/packages/tools/bin/*": "shellscript",
+			"**/*.css": "tailwindcss",
+			"turbo.json": "jsonc",
+			"**/packages/typescript-config/*.json": "jsonc",
+			"**/snippets/stylus/**/*.css": "stylus"
+		},
+		"eslint.options": {
+			"flags": ["v10_config_lookup_from_file"]
+		},
+		"explorer.fileNesting.enabled": true,
+		"explorer.fileNesting.patterns": {
+			"*.ts": "$(capture).js, $(capture).d.ts",
+			"*.js": "$(capture).js.map, $(capture).min.js, $(capture).d.ts",
+			"*.jsx": "$(capture).js",
+			"*.tsx": "$(capture).ts",
+			"tsconfig.json": "tsconfig.*.json",
+			"package.json": ".*, eslint.config.ts, *.config.ts, *.code-workspace, turbo.json, wrangler.toml, CLAUDE.md, AGENTS.md, bun.lock, docker-compose.yml, docker-compose.yaml, dagger.json, env.d.ts, postcss.config.ts, vitest.config.*.ts, Dockerfile, railway.json, vitest.config.*.ts, uuid-rocks.code-workspace, astro.config.ts, ndstories.code-workspace, wrangler.jsonc, workflows.code-workspace, astroblog.code-workspace, astro.config.mjs, drizzle.config.ts, Earthfile, workers.code-workspace, Justfile, CHANGELOG.md, vitest.config.ts, vitest.workspace.ts, postcss.config.mjs, vite.config.ts, worker-configuration.d.ts, README.md, package-lock.json, yarn.lock, postcss.config.js, remix.config.js, remix.env.d.ts, tailwind.config.js, tsconfig.json, server.ts, tailwind.config.ts, turbo.jsonc, LICENSE, pnpm-lock.yaml, pnpm-workspace.yaml"
+		},
+		"json.schemaDownload.enable": true,
+		"augment.advanced": {
+			"mcpServers": [
+				{
+					"name": "rules",
+					"command": "${workspaceFolder}/.vscode/bin/bun",
+					"args": ["x", "llm-rules@latest", "--dir", "${workspaceFolder}"]
+				},
+				{
+					"name": "cloudflare-docs",
+					"command": "${workspaceFolder}/.vscode/bin/bun",
+					"args": ["x", "mcp-remote@latest", "https://docs.mcp.cloudflare.com/sse"]
+				}
+			]
+		},
+		"amp.mcpServers": {
+			"rules": {
+				"command": "bun",
+				"args": ["x", "llm-rules@latest"]
+			},
+			"cloudflare-docs": {
+				"url": "https://docs.mcp.cloudflare.com/mcp"
+			},
+			"context7": {
+				"url": "https://mcp.context7.com/mcp"
+			}
+		},
+		"typescript.preferences.autoImportSpecifierExcludeRegexes": ["^(node:)?os$"],
+		"typescript.preferences.importModuleSpecifier": "non-relative"
+	}
+}
