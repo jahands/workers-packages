@@ -18,13 +18,7 @@ type StepResult = {
 	error?: Error
 }
 
-type CronWorkflowParams = {
-	/**
-	 * The absolute timestamp (in milliseconds) of when this workflow instance should run.
-	 * If not provided, the next run time will be calculated from the cron schedule.
-	 */
-	nextRunTime?: number
-}
+type CronWorkflowParams = {}
 
 export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env> {
 	// TODO: add type to validate schedule pattern
@@ -123,10 +117,6 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 
 		// get the next run time from params or calculate it from the cron schedule
 		const nextRunTime = await step.do('get-next-run-time', async () => {
-			if (event.payload.nextRunTime) {
-				return event.payload.nextRunTime
-			}
-
 			// first instance - calculate the next run time from the cron schedule
 			const interval = CronExpressionParser.parse(this.schedule)
 			return interval.next().toDate().getTime()
@@ -247,20 +237,23 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 				return interval.next().toDate().getTime()
 			})
 
-			await step.do<StepResult>('create-next-instance', async () => {
-				const workflow = getWorkflowBinding()
-				const instance = await workflow.create({
-					params: { nextRunTime: nextRunTime },
-				})
+			let shouldSleep = Date.now() < nextRunTime
+			while (shouldSleep) {
+				try {
+					await step.sleepUntil('sleep-until-next-run-time', nextRunTime)
+					shouldSleep = false
+				} catch (e) {
+					const isTimeTravelErr =
+						e instanceof Error &&
+						e.message.includes(`You can't sleep until a time in the past, time-traveler`)
 
-				return {
-					success: true,
-					output: {
-						nextRunTime,
-						nextInstanceId: instance.id,
-					},
+					shouldSleep = !isTimeTravelErr && Date.now() < nextRunTime
 				}
-			})
+			}
+
+			const workflow = getWorkflowBinding()
+			const me = await workflow.get(event.instanceId)
+			await me.restart()
 		}
 	}
 }
