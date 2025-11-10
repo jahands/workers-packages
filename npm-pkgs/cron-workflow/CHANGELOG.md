@@ -1,5 +1,11 @@
 # cron-workflow
 
+## 0.6.1
+
+### Patch Changes
+
+- 6b7d796: fix: add env generic to CronController class
+
 ## 0.6.0
 
 ### Minor Changes
