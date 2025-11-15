@@ -250,6 +250,9 @@ export abstract class CronWorkflow<Env = unknown> extends WorkflowEntrypoint<Env
 			await step.do<StepResult>('create-next-instance', async () => {
 				const workflow = getWorkflowBinding()
 				const instance = await workflow.create({
+					// using the next run time in the id ensures that we don't create
+					// duplicate instances (which we occasionally saw happen)
+					id: `tick-${nextRunTime}`,
 					params: { nextRunTime: nextRunTime },
 				})
 
