@@ -1,5 +1,11 @@
 # @repo/cron-worker-example
 
+## 0.1.15
+
+### Patch Changes
+
+- 33fc511: fix: specify checkin id when capturing sentry checkins
+
 ## 0.1.14
 
 ### Patch Changes
