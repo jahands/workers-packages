@@ -7,11 +7,13 @@ import type { Env } from '../context'
 export class UuidRocksCheckerCron extends CronWorkflow<Env> {
 	override schedule = '* * * * *'
 
+	private sentryCheckinId: string | undefined
+
 	override async onInit({ step }: CronContext) {
-		await step.do('send sentry checkin', async () => {
+		this.sentryCheckinId = await step.do<string>('send sentry checkin', async () => {
 			console.log('cron_on_init')
 			await fetch('https://api.echoback.dev/cron-example/cron_on_init')
-			Sentry.captureCheckIn({ monitorSlug: 'uuid-rocks-checker', status: 'in_progress' })
+			return Sentry.captureCheckIn({ monitorSlug: 'uuid-rocks-checker', status: 'in_progress' })
 		})
 	}
 
@@ -32,11 +34,19 @@ export class UuidRocksCheckerCron extends CronWorkflow<Env> {
 			if (error) {
 				console.error(`cron_on_finalize_error ${String(error)}`)
 				await fetch('https://api.echoback.dev/cron-example/cron_on_finalize_error')
-				Sentry.captureCheckIn({ monitorSlug: 'uuid-rocks-checker', status: 'error' })
+				Sentry.captureCheckIn({
+					monitorSlug: 'uuid-rocks-checker',
+					checkInId: this.sentryCheckinId,
+					status: 'error',
+				})
 			} else {
 				console.log('cron_on_finalize')
 				await fetch('https://api.echoback.dev/cron-example/cron_on_finalize')
-				Sentry.captureCheckIn({ monitorSlug: 'uuid-rocks-checker', status: 'ok' })
+				Sentry.captureCheckIn({
+					monitorSlug: 'uuid-rocks-checker',
+					checkInId: this.sentryCheckinId,
+					status: 'ok',
+				})
 			}
 		})
 	}
