@@ -1,5 +1,13 @@
 # cron-workflow
 
+## 0.6.2
+
+### Patch Changes
+
+- 8a5c5fa: fix: use next run time in workflows instance id
+
+  ensures we don't create duplicate instances (which we occasionally saw happen)
+
 ## 0.6.1
 
 ### Patch Changes
