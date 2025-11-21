@@ -1,5 +1,13 @@
 # @repo/cron-worker-test
 
+## 0.1.16
+
+### Patch Changes
+
+- Updated dependencies [3214542]
+  - workers-tagged-logger@0.15.0
+  - @repo/hono-helpers@0.1.6
+
 ## 0.1.15
 
 ### Patch Changes

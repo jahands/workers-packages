@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.15.0
+
+### Minor Changes
+
+- 3214542: feat: log custom fields when logging errors
+
 ## 0.14.0
 
 ### Minor Changes
