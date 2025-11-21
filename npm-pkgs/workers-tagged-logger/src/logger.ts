@@ -360,16 +360,6 @@ export function stringifyMessage(msg: any): string {
 	if (msg instanceof Error) {
 		let result = msg.stack ?? `${msg.name}: ${msg.message}`
 
-		if (msg.cause !== undefined) {
-			const causeStr = stringifyMessage(msg.cause)
-			const indentedCause = causeStr
-				.split('\n')
-				.map((line) => `  ${line}`)
-				.join('\n')
-			result += `\n  [cause]: ${indentedCause.slice(2)}`
-		}
-
-		// Capture custom fields
 		const customFields: Record<string, unknown> = {}
 		let customFieldsCount = 0
 		for (const [key, value] of Object.entries(msg)) {
@@ -385,6 +375,15 @@ export function stringifyMessage(msg: any): string {
 			} catch {
 				result += `\n  [fields]: [unserializable]`
 			}
+		}
+
+		if (msg.cause !== undefined) {
+			const causeStr = stringifyMessage(msg.cause)
+			const indentedCause = causeStr
+				.split('\n')
+				.map((line) => `  ${line}`)
+				.join('\n')
+			result += `\n  [cause]: ${indentedCause.slice(2)}`
 		}
 
 		return result

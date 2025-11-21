@@ -959,9 +959,9 @@ describe('stringifyMessage()', () => {
 		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
 			"Error: main error
 			    at <STACK>
+			  [fields]: {"code":"WRAPPED_ERROR","retryCount":2}
 			  [cause]: Error: root cause
-			    at <STACK>
-			  [fields]: {"code":"WRAPPED_ERROR","retryCount":2}"
+			    at <STACK>"
 		`)
 	})
 
@@ -1004,10 +1004,10 @@ describe('stringifyMessage()', () => {
 		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
 			"Error: Request failed
 			    at <STACK>
+			  [fields]: {"code":"REQUEST_FAILED","retryable":false}
 			  [cause]: Error: Timeout
 			    at <STACK>
-			    [fields]: {"code":"TIMEOUT","retryable":true}
-			  [fields]: {"code":"REQUEST_FAILED","retryable":false}"
+			    [fields]: {"code":"TIMEOUT","retryable":true}"
 		`)
 	})
 
