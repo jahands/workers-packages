@@ -1,5 +1,14 @@
 # @repo/cron-worker-example
 
+## 0.1.15
+
+### Patch Changes
+
+- 33fc511: fix: specify checkin id when capturing sentry checkins
+- Updated dependencies [fc29367]
+  - workers-tagged-logger@0.14.0
+  - @repo/hono-helpers@0.1.5
+
 ## 0.1.14
 
 ### Patch Changes

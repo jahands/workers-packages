@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 0.14.0
+
+### Minor Changes
+
+- fc29367: feat: include cause when stringifying errors
+
 ## 0.13.7
 
 ### Patch Changes
