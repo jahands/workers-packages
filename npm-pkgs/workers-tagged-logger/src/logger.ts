@@ -342,6 +342,8 @@ export function stringifyMessages(...msgs: any[]): string {
 	return msgs.map(stringifyMessage).join(' ')
 }
 
+const standardProps = new Set(['name', 'message', 'stack', 'cause'])
+
 export function stringifyMessage(msg: any): string {
 	if (msg === undefined || msg === null) {
 		return `${msg}`
@@ -365,6 +367,24 @@ export function stringifyMessage(msg: any): string {
 				.map((line) => `  ${line}`)
 				.join('\n')
 			result += `\n  [cause]: ${indentedCause.slice(2)}`
+		}
+
+		// Capture custom fields
+		const customFields: Record<string, unknown> = {}
+		let customFieldsCount = 0
+		for (const [key, value] of Object.entries(msg)) {
+			if (!standardProps.has(key)) {
+				customFields[key] = value
+				customFieldsCount++
+			}
+		}
+
+		if (customFieldsCount > 0) {
+			try {
+				result += `\n  [fields]: ${JSON.stringify(customFields)}`
+			} catch {
+				result += `\n  [fields]: [unserializable]`
+			}
 		}
 
 		return result

@@ -867,6 +867,160 @@ describe('stringifyMessage()', () => {
 			    at <STACK>"
 		`)
 	})
+
+	it('stringifies error with custom string field', () => {
+		class CustomError extends Error {
+			constructor(
+				message: string,
+				public code: string
+			) {
+				super(message)
+			}
+		}
+		const error = new CustomError('main error', 'ERR_CUSTOM')
+
+		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
+			"Error: main error
+			    at <STACK>
+			  [fields]: {"code":"ERR_CUSTOM"}"
+		`)
+	})
+
+	it('stringifies error with custom numeric field', () => {
+		class HttpError extends Error {
+			constructor(
+				message: string,
+				public statusCode: number
+			) {
+				super(message)
+			}
+		}
+		const error = new HttpError('main error', 404)
+
+		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
+			"Error: main error
+			    at <STACK>
+			  [fields]: {"statusCode":404}"
+		`)
+	})
+
+	it('stringifies error with custom object field', () => {
+		class MetadataError extends Error {
+			constructor(
+				message: string,
+				public metadata: { userId: string; requestId: string }
+			) {
+				super(message)
+			}
+		}
+		const error = new MetadataError('main error', { userId: 'usr-123', requestId: 'req-456' })
+
+		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
+			"Error: main error
+			    at <STACK>
+			  [fields]: {"metadata":{"userId":"usr-123","requestId":"req-456"}}"
+		`)
+	})
+
+	it('stringifies error with multiple custom fields', () => {
+		class AuthError extends Error {
+			constructor(
+				message: string,
+				public code: string,
+				public userId: string,
+				public attemptCount: number
+			) {
+				super(message)
+			}
+		}
+		const error = new AuthError('main error', 'AUTH_FAILED', 'usr-123', 3)
+
+		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
+			"Error: main error
+			    at <STACK>
+			  [fields]: {"code":"AUTH_FAILED","userId":"usr-123","attemptCount":3}"
+		`)
+	})
+
+	it('stringifies error with custom fields and cause', () => {
+		class WrappedError extends Error {
+			constructor(
+				message: string,
+				public code: string,
+				public retryCount: number,
+				cause?: Error
+			) {
+				super(message, { cause })
+			}
+		}
+		const cause = new Error('root cause')
+		const error = new WrappedError('main error', 'WRAPPED_ERROR', 2, cause)
+
+		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
+			"Error: main error
+			    at <STACK>
+			  [cause]: Error: root cause
+			    at <STACK>
+			  [fields]: {"code":"WRAPPED_ERROR","retryCount":2}"
+		`)
+	})
+
+	it('stringifies error with custom fields in cause', () => {
+		class NetworkError extends Error {
+			constructor(
+				message: string,
+				public statusCode: number,
+				public endpoint: string
+			) {
+				super(message)
+			}
+		}
+		const cause = new NetworkError('Connection failed', 503, '/api/users')
+		const error = new Error('Failed to fetch users', { cause })
+
+		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
+			"Error: Failed to fetch users
+			    at <STACK>
+			  [cause]: Error: Connection failed
+			    at <STACK>
+			    [fields]: {"statusCode":503,"endpoint":"/api/users"}"
+		`)
+	})
+
+	it('stringifies error with custom fields in both error and cause', () => {
+		class ApiError extends Error {
+			constructor(
+				message: string,
+				public code: string,
+				public retryable: boolean,
+				cause?: Error
+			) {
+				super(message, { cause })
+			}
+		}
+		const cause = new ApiError('Timeout', 'TIMEOUT', true)
+		const error = new ApiError('Request failed', 'REQUEST_FAILED', false, cause)
+
+		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
+			"Error: Request failed
+			    at <STACK>
+			  [cause]: Error: Timeout
+			    at <STACK>
+			    [fields]: {"code":"TIMEOUT","retryable":true}
+			  [fields]: {"code":"REQUEST_FAILED","retryable":false}"
+		`)
+	})
+
+	it('stringifies error without custom fields', () => {
+		const error = new Error('standard error')
+
+		const result = normalizeStackTrace(stringifyMessage(error))
+		expect(result).not.toContain('[fields]')
+		expect(result).toMatchInlineSnapshot(`
+			"Error: standard error
+			    at <STACK>"
+		`)
+	})
 })
 
 describe('stringifyMessages()', () => {
