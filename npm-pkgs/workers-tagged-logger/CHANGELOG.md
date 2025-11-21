@@ -1,5 +1,13 @@
 # workers-tagged-logger
 
+## 1.0.0
+
+### Major Changes
+
+- 057e7f7: chore: move fields above cause
+
+  should make it easier to read custom fields when a cause is present
+
 ## 0.15.0
 
 ### Minor Changes
