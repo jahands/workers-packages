@@ -356,7 +356,18 @@ export function stringifyMessage(msg: any): string {
 		return `[function${msg.name ? `: ${msg.name}` : ''}()]`
 	}
 	if (msg instanceof Error) {
-		return `${msg.name}: ${msg.message}${msg.stack !== undefined ? `\n${msg.stack}` : ''}`
+		let result = msg.stack ?? `${msg.name}: ${msg.message}`
+
+		if (msg.cause !== undefined) {
+			const causeStr = stringifyMessage(msg.cause)
+			const indentedCause = causeStr
+				.split('\n')
+				.map((line) => `  ${line}`)
+				.join('\n')
+			result += `\n  [cause]: ${indentedCause.slice(2)}`
+		}
+
+		return result
 	}
 	try {
 		return JSON.stringify(msg)

@@ -94,10 +94,9 @@ describe('WorkersLogger', () => {
 				const h = setupTest()
 				await withLogTags({ source: 'worker-a' }, async () => {
 					h.log.info(new Error('boom!'))
-					expect(h.oneLog().message?.split('\n').slice(0, 2).join('\n')).toMatchInlineSnapshot(`
-						"Error: boom!
-						Error: boom!"
-					`)
+					expect(h.oneLog().message?.split('\n').slice(0, 1).join('\n')).toMatchInlineSnapshot(
+						`"Error: boom!"`
+					)
 				})
 			})
 
@@ -764,6 +763,12 @@ describe('withLogTags', () => {
 })
 
 describe('stringifyMessage()', () => {
+	const normalizeStackTrace = (msg: string): string => {
+		// replace all consecutive "at ..." lines with a single "at <STACK>" placeholder
+		return msg.replace(/(\n\s+at .+)+/g, '\n    at <STACK>')
+		// return msg
+	}
+
 	it('stringifies basic types', () => {
 		expect(stringifyMessage('abc')).toMatchInlineSnapshot(`"abc"`)
 		expect(stringifyMessage(123)).toMatchInlineSnapshot(`"123"`)
@@ -791,6 +796,76 @@ describe('stringifyMessage()', () => {
 		const msg = stringifyMessage(new Error('boom!')).split('\n')
 		expect(msg.length).toBeGreaterThan(1)
 		expect(msg[0]).toMatchInlineSnapshot(`"Error: boom!"`)
+	})
+
+	it('stringifies error with error cause', () => {
+		const cause = new Error('root cause')
+		const error = new Error('main error', { cause })
+
+		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
+			"Error: main error
+			    at <STACK>
+			  [cause]: Error: root cause
+			    at <STACK>"
+		`)
+	})
+
+	it('stringifies error with string cause', () => {
+		const error = new Error('main error', { cause: 'something went wrong' })
+
+		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
+			"Error: main error
+			    at <STACK>
+			  [cause]: something went wrong"
+		`)
+	})
+
+	it('stringifies error with nested causes', () => {
+		const rootCause = new Error('root cause')
+		const middleCause = new Error('middle cause', { cause: rootCause })
+		const error = new Error('main error', { cause: middleCause })
+
+		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
+			"Error: main error
+			    at <STACK>
+			  [cause]: Error: middle cause
+			    at <STACK>
+			    [cause]: Error: root cause
+			    at <STACK>"
+		`)
+	})
+
+	it('stringifies error with object cause', () => {
+		const error = new Error('main error', { cause: { code: 500, message: 'server error' } })
+
+		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
+			"Error: main error
+			    at <STACK>
+			  [cause]: {"code":500,"message":"server error"}"
+		`)
+	})
+
+	it('stringifies error with null cause', () => {
+		const error = new Error('main error', { cause: null })
+
+		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
+			"Error: main error
+			    at <STACK>
+			  [cause]: null"
+		`)
+	})
+
+	it('stringifies error without stack but with cause', () => {
+		const cause = new Error('root cause')
+		const error = new Error('main error', { cause })
+		// Remove stack to test fallback
+		error.stack = undefined
+
+		expect(normalizeStackTrace(stringifyMessage(error))).toMatchInlineSnapshot(`
+			"Error: main error
+			  [cause]: Error: root cause
+			    at <STACK>"
+		`)
 	})
 })
 
