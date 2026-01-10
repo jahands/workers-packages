@@ -1,5 +1,11 @@
 # dagger-env
 
+## 0.6.6
+
+### Patch Changes
+
+- 80ff81c: chore: bump @dagger.io/dagger to 0.19.9 in dev deps
+
 ## 0.6.5
 
 ### Patch Changes
