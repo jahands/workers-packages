@@ -1,5 +1,12 @@
 # @repo/tools
 
+## 0.12.3
+
+### Patch Changes
+
+- 245e31d: chore: disable shfmt (having issues in CI)
+- 0d58d5a: fix: properly resolve tsconfigs and stop needlessly reading tsconfig.json
+
 ## 0.12.2
 
 ### Patch Changes

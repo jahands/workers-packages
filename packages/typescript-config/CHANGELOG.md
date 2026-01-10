@@ -1,5 +1,12 @@
 # @repo/typescript-config
 
+## 0.3.10
+
+### Patch Changes
+
+- 4f1ecc9: fix: correctly set outDir and rootDir in lib-emit.json
+- 215cc7b: fix: remove rootDir from tsconfig.json
+
 ## 0.3.9
 
 ### Patch Changes
