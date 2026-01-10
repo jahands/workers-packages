@@ -25,7 +25,7 @@
 		"module": "ES2022",
 		"moduleResolution": "bundler",
 		"outDir": "${configDir}/dist",
-		"rootDir": "${configDir}/src",
+		// "rootDir": "${configDir}/src",
 		"sourceMap": true,
 
 		// AND if you're building for a library:
