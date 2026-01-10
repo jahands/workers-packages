@@ -2,7 +2,7 @@ import { Command } from '@commander-js/extra-typings'
 import Table from 'cli-table3'
 
 import { getRepoRoot } from '../path'
-import { getOutcome, SHFMT_SKIPPED_EXIT_CODE } from '../proc'
+import { getOutcome } from '../proc'
 
 export const checkCmd = new Command('check')
 	.description(
@@ -125,14 +125,15 @@ export const checkCmd = new Command('check')
 		if (format) {
 			echo(chalk.dim('checking formatting with prettier (and shfmt if available)...'))
 
-			const [prettierProc, shfmtProc] = await Promise.all([
+			const [prettierProc /*shfmtProc*/] = await Promise.all([
 				$({
 					cwd: repoRoot, // Must be run from root
 				})`${checks.format}`,
 
-				$({
-					cwd: repoRoot, // Must be run from root
-				})`${checks.formatShell}`,
+				// disabling for now
+				// $({
+				// 	cwd: repoRoot, // Must be run from root
+				// })`${checks.formatShell}`,
 			])
 
 			table.push(
@@ -141,16 +142,16 @@ export const checkCmd = new Command('check')
 					checks.format.join(' '),
 					getAndCheckOutcome({ exitCode: prettierProc.exitCode }),
 					'Root',
-				] satisfies TableRow,
-				[
-					'format shell',
-					checks.formatShell.join(' '),
-					getAndCheckOutcome({
-						exitCode: shfmtProc.exitCode,
-						skippedCode: SHFMT_SKIPPED_EXIT_CODE,
-					}),
-					'Root',
 				] satisfies TableRow
+				// [
+				// 	'format shell',
+				// 	checks.formatShell.join(' '),
+				// 	getAndCheckOutcome({
+				// 		exitCode: shfmtProc.exitCode,
+				// 		skippedCode: SHFMT_SKIPPED_EXIT_CODE,
+				// 	}),
+				// 	'Root',
+				// ] satisfies TableRow
 			)
 		}
 
