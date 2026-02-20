@@ -1,8 +1,10 @@
 import path from 'node:path'
-import { Result } from 'better-result'
+import { matchError, Result } from 'better-result'
 import * as z from 'zod'
 
 import { getRepoRoot } from './path'
+
+const defaultTurboSchemaUrl = 'https://turborepo.dev/schema.json'
 
 export async function getTurboSchemaUrl(packageJsonPath?: string): Promise<string> {
 	const pkgJsonPathResult = packageJsonPath
@@ -25,7 +27,12 @@ export async function getTurboSchemaUrl(packageJsonPath?: string): Promise<strin
 
 	return schemaUrlResult.match({
 		ok: (turboSchemaUrl) => turboSchemaUrl,
-		err: () => 'https://turborepo.dev/schema.json',
+		err: (e) =>
+			matchError(e, {
+				RepoRootLookupError: () => defaultTurboSchemaUrl,
+				RepoRootNotFoundError: () => defaultTurboSchemaUrl,
+				UnhandledException: () => defaultTurboSchemaUrl,
+			}),
 	})
 }
 
