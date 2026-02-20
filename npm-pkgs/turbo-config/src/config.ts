@@ -4,6 +4,7 @@ import { z } from 'zod'
 
 import { getTurboConfigPath } from './path'
 import { TurboConfig } from './schema'
+import { getTurboSchemaUrl } from './turbo'
 
 export type DefineConfigFn = () => Promise<TurboConfig>
 
@@ -12,7 +13,7 @@ export async function defineConfig(fn: DefineConfigFn): Promise<TurboConfig> {
 		const cfg = TurboConfig.decode(await fn())
 
 		if (!cfg.$schema) {
-			cfg.$schema = 'https://turbo.build/schema.json'
+			cfg.$schema = await getTurboSchemaUrl()
 		}
 
 		return cfg

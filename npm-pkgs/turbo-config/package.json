@@ -26,9 +26,9 @@
 	"type": "module",
 	"exports": {
 		".": {
+			"types": "./dist/index.d.ts",
 			"import": "./dist/esm/index.mjs",
-			"default": "./dist/cjs/index.cjs",
-			"types": "./dist/index.d.ts"
+			"default": "./dist/cjs/index.cjs"
 		}
 	},
 	"main": "./dist/esm/index.mjs",
@@ -52,6 +52,7 @@
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
+		"better-result": "2.7.0",
 		"empathic": "2.0.0",
 		"esbuild": "0.25.10",
 		"memoize-one": "6.0.0",
