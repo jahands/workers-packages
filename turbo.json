@@ -193,7 +193,9 @@
 			"outputLogs": "new-only"
 		},
 		"fix:workers-types": {
-			"dependsOn": ["topo"],
+			"dependsOn": [
+				"topo"
+			],
 			"outputLogs": "new-only",
 			"outputs": [
 				"worker-configuration.d.ts"

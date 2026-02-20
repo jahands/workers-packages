@@ -120,7 +120,8 @@ export default defineConfig(async () => {
 				outputLogs: 'new-only',
 			},
 			'fix:workers-types': {
-				outputs: ['worker-configuration.d.ts', 'topo'],
+				dependsOn: ['topo'],
+				outputs: ['worker-configuration.d.ts'],
 				outputLogs: 'new-only',
 			},
 			'//#build': {
