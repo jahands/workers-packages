@@ -1,5 +1,11 @@
 # turbo-config
 
+## 0.4.0
+
+### Minor Changes
+
+- 819b28c: feat: use versioned schema url by default
+
 ## 0.3.3
 
 ### Patch Changes
