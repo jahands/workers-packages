@@ -57,7 +57,7 @@
 		"zx": "8.8.4"
 	},
 	"devDependencies": {
-		"@dagger.io/dagger": "0.19.9",
+		"@dagger.io/dagger": "0.20.0",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"typescript": "5.8.2",
