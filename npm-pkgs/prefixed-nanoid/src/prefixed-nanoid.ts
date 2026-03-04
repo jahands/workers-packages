@@ -105,6 +105,20 @@ export class PrefixedNanoIds<T extends Record<string, PrefixConfigInput>> {
 	}
 }
 
+type ConfigFromIds<TPrefixedNanoIds extends PrefixedNanoIds<Record<string, PrefixConfigInput>>> =
+	TPrefixedNanoIds extends PrefixedNanoIds<infer TConfig> ? TConfig : never
+
+/**
+ * Infers ID types from a {@link PrefixedNanoIds} instance.
+ *
+ * Pass a key for a specific ID type, or omit the key to get a union of all
+ * generated ID types for the instance.
+ */
+export type InferId<
+	TPrefixedNanoIds extends PrefixedNanoIds<Record<string, PrefixConfigInput>>,
+	TPrefix extends keyof ConfigFromIds<TPrefixedNanoIds> = keyof ConfigFromIds<TPrefixedNanoIds>,
+> = IdOf<ConfigFromIds<TPrefixedNanoIds>[TPrefix]>
+
 /**
  * Creates a type-safe {@link PrefixedNanoIds} generator from a configuration map.
  *

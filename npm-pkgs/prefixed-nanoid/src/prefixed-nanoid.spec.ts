@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { createPrefixedNanoIds, PrefixedNanoIds } from './prefixed-nanoid.js'
 import { ConfigurationError, InvalidPrefixError, validatePrefixesConfig } from './types.js'
 
+import type { InferId } from './prefixed-nanoid.js'
 import type { PrefixesConfig } from './types.js'
 
 const testConfig = {
@@ -564,5 +565,27 @@ describe('createPrefixedNanoIds factory function', () => {
 		const id = ids.generate('test')
 		expect(id).toMatch(/^tst_[A-Za-z0-9]{24}$/) // Default len is 24
 		expect(ids.is('test', id)).toBe(true)
+	})
+})
+
+describe('InferId helper types', () => {
+	const ids = createPrefixedNanoIds(testConfig)
+
+	it('infers a specific ID type by key', () => {
+		const projectId: InferId<typeof ids, 'project'> = ids.generate('project')
+		expect(projectId.startsWith('prj_')).toBe(true)
+	})
+
+	it('infers a union of all ID types when key is omitted', () => {
+		const anyId: InferId<typeof ids> =
+			Math.random() > 0.5 ? ids.generate('project') : ids.generate('user')
+		expect(typeof anyId).toBe('string')
+	})
+
+	it('rejects incompatible inferred types at compile time', () => {
+		const userId = ids.generate('user')
+		// @ts-expect-error user IDs should not be assignable to project IDs
+		const invalidProjectId: InferId<typeof ids, 'project'> = userId
+		expect(invalidProjectId).toBe(userId)
 	})
 })

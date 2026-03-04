@@ -162,6 +162,25 @@ ids.generate('user') // ✅ Valid
 ids.generate('invalid') // ❌ TypeScript error
 ```
 
+### InferId helper
+
+Use `InferId` to derive ID types directly from an instance:
+
+```typescript
+import { createPrefixedNanoIds } from 'prefixed-nanoid'
+
+import type { InferId } from 'prefixed-nanoid'
+
+const ids = createPrefixedNanoIds({
+  project: { prefix: 'prj', len: 24 },
+  user: { prefix: 'usr', len: 16 }
+})
+
+type ProjectId = InferId<typeof ids, 'project'>
+type UserId = InferId<typeof ids, 'user'>
+type AnyId = InferId<typeof ids> // union of all configured ID types
+```
+
 ## Alphabet
 
 The library uses a custom alphabet that excludes potentially confusing characters:
