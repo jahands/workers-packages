@@ -1,5 +1,11 @@
 # dagger-env
 
+## 0.6.7
+
+### Patch Changes
+
+- fc8fec7: chore: update dagger to 0.20.0
+
 ## 0.6.6
 
 ### Patch Changes

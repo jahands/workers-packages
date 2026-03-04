@@ -1,5 +1,11 @@
 # turbo-config
 
+## 0.4.1
+
+### Patch Changes
+
+- ad1456d: chore: explicitly handle errors
+
 ## 0.4.0
 
 ### Minor Changes
