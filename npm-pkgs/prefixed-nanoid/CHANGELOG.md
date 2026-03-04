@@ -1,5 +1,28 @@
 # prefixed-nanoid
 
+## 0.2.0
+
+### Minor Changes
+
+- 654c0a7: feat: add InferId helper for easily creating ID types
+
+  ## Example
+
+  ```typescript
+  import { createPrefixedNanoIds } from 'prefixed-nanoid'
+
+  import type { InferId } from 'prefixed-nanoid'
+
+  const ids = createPrefixedNanoIds({
+    project: { prefix: 'prj', len: 24 },
+    user: { prefix: 'usr', len: 16 }
+  })
+
+  type ProjectId = InferId<typeof ids, 'project'>
+  type UserId = InferId<typeof ids, 'user'>
+  type AnyId = InferId<typeof ids> // union of all configured ID types
+  ```
+
 ## 0.1.10
 
 ### Patch Changes
