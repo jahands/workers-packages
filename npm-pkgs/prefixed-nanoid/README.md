@@ -39,8 +39,8 @@ import { createPrefixedNanoIds } from 'prefixed-nanoid'
 // Create an instance using the factory function
 // Note: len defaults to 24 if not specified
 const ids = createPrefixedNanoIds({
-  project: { prefix: 'prj' }, // len = 24 (default)
-  user: { prefix: 'usr', len: 16 }
+	project: { prefix: 'prj' }, // len = 24 (default)
+	user: { prefix: 'usr', len: 16 },
 })
 
 // Generate IDs
@@ -54,8 +54,8 @@ ids.is('user', projectId) // false
 // Type guard usage in TypeScript:
 const unknownValue: unknown = getIdFromSomewhere()
 if (ids.is('project', unknownValue)) {
-  // TypeScript now knows unknownValue is a valid project ID
-  console.log(unknownValue.startsWith('prj_')) // ✅ Type-safe
+	// TypeScript now knows unknownValue is a valid project ID
+	console.log(unknownValue.startsWith('prj_')) // ✅ Type-safe
 }
 ```
 
@@ -77,8 +77,8 @@ Creates a new prefixed nanoid generator with the given configuration.
 
 ```typescript
 interface PrefixConfig {
-  prefix: string // The prefix string (e.g., "prj", "file") - only letters, numbers, underscores, and dashes
-  len?: number // Length of the random nanoid portion (1-255, defaults to 24 if not specified)
+	prefix: string // The prefix string (e.g., "prj", "file") - only letters, numbers, underscores, and dashes
+	len?: number // Length of the random nanoid portion (1-255, defaults to 24 if not specified)
 }
 ```
 
@@ -136,13 +136,13 @@ You can create multiple instances for different contexts:
 
 ```typescript
 const userIds = createPrefixedNanoIds({
-  admin: { prefix: 'adm', len: 20 },
-  member: { prefix: 'mbr', len: 16 }
+	admin: { prefix: 'adm', len: 20 },
+	member: { prefix: 'mbr', len: 16 },
 })
 
 const resourceIds = createPrefixedNanoIds({
-  file: { prefix: 'file', len: 24 },
-  folder: { prefix: 'dir', len: 20 }
+	file: { prefix: 'file', len: 24 },
+	folder: { prefix: 'dir', len: 20 },
 })
 ```
 
@@ -152,8 +152,8 @@ The library provides full TypeScript support with proper type inference:
 
 ```typescript
 const ids = createPrefixedNanoIds({
-  project: { prefix: 'prj', len: 24 },
-  user: { prefix: 'usr', len: 16 }
+	project: { prefix: 'prj', len: 24 },
+	user: { prefix: 'usr', len: 16 },
 })
 
 // TypeScript will only allow 'project' or 'user' as valid prefixes
@@ -172,9 +172,9 @@ import { createPrefixedNanoIds } from 'prefixed-nanoid'
 import type { InferId } from 'prefixed-nanoid'
 
 const ids = createPrefixedNanoIds({
-  project: { prefix: 'prj', len: 24 },
-  user: { prefix: 'usr', len: 16 }
-})
+	project: { prefix: 'prj', len: 24 },
+	user: { prefix: 'usr', len: 16 },
+} as const)
 
 type ProjectId = InferId<typeof ids, 'project'>
 type UserId = InferId<typeof ids, 'user'>
