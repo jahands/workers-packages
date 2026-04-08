@@ -108,6 +108,10 @@ export class WorkersPackages {
 					'**/package.json',
 					'.npmrc',
 					'packages/tools/bin',
+
+					// needed for turbo-config post-install hook
+					'turbo.config.ts',
+					'turbo.json',
 				],
 			})
 
