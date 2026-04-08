@@ -14,13 +14,14 @@ node_modules
 .eslintcache
 
 # Local env files
-.env
+# .env # keep for dagger, which doesn't include actual secrets
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 .secret
 *.env
+!.env
 
 # Testing
 coverage

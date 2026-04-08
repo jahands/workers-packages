@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { argument, Container, dag, Directory, func, object, Secret } from '@dagger.io/dagger'
+import { argument, check, Container, dag, Directory, func, object, Secret } from '@dagger.io/dagger'
 import { shell } from '@jahands/dagger-helpers'
 
 import { dagEnv } from './dagger-env'
@@ -126,7 +125,11 @@ export class WorkersPackages {
 	}
 
 	@func()
-	async test(options: Secret): Promise<void> {
+	@check()
+	async test(options?: Secret): Promise<void> {
+		if (!options) {
+			throw new Error('Options are required')
+		}
 		const { withEnv } = await dagEnv.getWithEnv(options, ['turbo'])
 
 		const con = withEnv(await this.installDeps(options))
