@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { argument, Container, dag, Directory, func, object, Secret } from '@dagger.io/dagger'
-import { envStorage, ParamsToEnv, shell } from '@jahands/dagger-helpers'
+import { shell } from '@jahands/dagger-helpers'
 
 import { dagEnv } from './dagger-env'
 
@@ -126,7 +126,6 @@ export class WorkersPackages {
 	}
 
 	@func()
-	@ParamsToEnv()
 	async test(options: Secret): Promise<void> {
 		const { withEnv } = await dagEnv.getWithEnv(options, ['turbo'])
 
