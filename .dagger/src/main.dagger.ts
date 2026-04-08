@@ -108,17 +108,14 @@ export class WorkersPackages {
 					'**/package.json',
 					'.npmrc',
 					'packages/tools/bin',
-
-					// needed for turbo-config post-install hook
-					'turbo.config.ts',
-					'turbo.json',
 				],
 			})
 
 			// install pnpm deps
 			.withMountedCache('/pnpm-store', dag.cacheVolume(`pnpm-store`))
 			.withExec(sh('pnpm config set store-dir /pnpm-store'))
-			.withExec(sh('FORCE_COLOR=1 pnpm install --frozen-lockfile --child-concurrency=10'))
+			// add CI=1 to skip turbo-config post-install hook
+			.withExec(sh('FORCE_COLOR=1 CI=1 pnpm install --frozen-lockfile --child-concurrency=10'))
 
 			// copy over the rest of the project
 			.withDirectory('/work', this.source.directory('/'), { include: projectIncludes })
