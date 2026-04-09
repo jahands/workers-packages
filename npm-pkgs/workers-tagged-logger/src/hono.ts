@@ -34,9 +34,9 @@ export function useWorkersLogger<T extends LogTags>(
 				}
 			}
 
-			const colo = getCfFromRequest(c.req.raw)
-			if (colo !== null) {
-				log.setTags({ colo })
+			const cfProps = getCfFromRequest(c.req.raw)
+			if (cfProps !== null) {
+				log.setTags({ colo: cfProps.colo })
 			}
 
 			if (tags !== undefined) {

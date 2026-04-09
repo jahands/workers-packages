@@ -322,7 +322,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			} else if (msgs.length === 1) {
 				message = stringifyMessage(msgs[0])
 			} else {
-				message = stringifyMessages(msgs)
+				message = stringifyMessages(...msgs)
 			}
 		}
 

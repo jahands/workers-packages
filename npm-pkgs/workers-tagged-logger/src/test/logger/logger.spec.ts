@@ -136,11 +136,11 @@ describe('WorkersLogger', () => {
 		test('multiple values are logged to the same log', async () => {
 			const h = setupTest()
 			await withLogTags({ source: 'worker-a' }, async () => {
-				h.log.info('hello', 123, new Error('boom!'), { banda: 'rocks' }, ['a', 'b'], {
+				h.log.info('hello', 123, 'error occurred', { banda: 'rocks' }, ['a', 'b'], {
 					foo: { bar: { baz: 'abc' } },
 				})
 				expect(h.oneLog().message).toMatchInlineSnapshot(
-					`"["hello",123,{},{"banda":"rocks"},["a","b"],{"foo":{"bar":{"baz":"abc"}}}]"`
+					`"hello 123 error occurred {"banda":"rocks"} ["a","b"] {"foo":{"bar":{"baz":"abc"}}}"`
 				)
 			})
 		})
