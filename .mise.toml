@@ -1,11 +1,11 @@
 [tools]
-pnpm  = "10.14.0"
-node  = "22"
-bun   = "1.3.0"
-just  = "1.42.4"
-rg    = "latest"
-shfmt = "3.13.1"
-dagger = "0.20.3"
+pnpm = '10.33.0'
+node = '22'
+bun = '1.3.0'
+just = '1.42.4'
+rg = 'latest'
+shfmt = '3.13.1'
+dagger = '0.20.3'
 
 [settings]
 idiomatic_version_file_enable_tools = []
