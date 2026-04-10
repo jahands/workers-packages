@@ -466,8 +466,8 @@ importers:
         version: 8.8.4
     devDependencies:
       '@dagger.io/dagger':
-        specifier: 0.20.4
-        version: 0.20.4
+        specifier: 0.20.5
+        version: 0.20.5
       '@repo/tools':
         specifier: workspace:*
         version: link:../../packages/tools
@@ -1385,8 +1385,8 @@ packages:
     resolution: {integrity: sha512-CTZVddyqccC+oKhOMvUVmvH/s98apbG5kv3+EVCSuCP8lktsMcdcBtM7V/FqAe8VPDUT+P7ngPA9UqFYmwqGTg==}
     engines: {node: '>=18'}
 
-  '@dagger.io/dagger@0.20.4':
-    resolution: {integrity: sha512-P+CzwPOTuuaqTfKr1ixCliCEeshN4ifD+3F7iNcGqy15lxruvey/D3Trq6UNIT8PsyAELalkuXsltHp5V9qHcg==}
+  '@dagger.io/dagger@0.20.5':
+    resolution: {integrity: sha512-PhpylU6gyDXRfXK6PbaclZ10X5VHFi0RtgYY0hUszFS4pyqWxDG4WVeWHUAnnzmVScSCVTUzSjqlCC7wiSD2jg==}
     engines: {node: '>=20'}
 
   '@emnapi/core@1.4.3':
@@ -7164,7 +7164,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@dagger.io/dagger@0.20.4':
+  '@dagger.io/dagger@0.20.5':
     dependencies:
       '@grpc/grpc-js': 1.14.3
       '@lifeomic/axios-fetch': 3.1.0
