@@ -1,6 +1,6 @@
 {
 	"name": "yaplib",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"private": false,
 	"description": "yaplib - Yet Another Promise Library for working with promises",
 	"keywords": [
