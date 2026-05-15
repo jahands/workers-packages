@@ -1,0 +1,9 @@
+# Exclude test files from the published src/ tree.
+# The src/ folder is shipped so that the .d.ts.map files
+# bundled in dist/ can resolve their original TypeScript
+# sources for editor "Go to Definition".
+*.spec.ts
+*.test.ts
+test/
+__tests__/
+examples/
