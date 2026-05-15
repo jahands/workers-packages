@@ -32,7 +32,8 @@
 	"main": "./dist/index.mjs",
 	"module": "./dist/index.mjs",
 	"files": [
-		"dist"
+		"dist",
+		"src"
 	],
 	"scripts": {
 		"build": "runx build bundle-lib ./src/index.ts --format esm --platform node",

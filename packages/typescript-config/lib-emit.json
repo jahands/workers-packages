@@ -27,6 +27,7 @@
 		"outDir": "${configDir}/dist",
 		// "rootDir": "${configDir}/src",
 		"sourceMap": true,
+		"inlineSources": true,
 
 		// AND if you're building for a library:
 		"declaration": true,

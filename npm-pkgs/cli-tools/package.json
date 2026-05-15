@@ -111,7 +111,8 @@
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
 	"files": [
-		"dist"
+		"dist",
+		"src"
 	],
 	"scripts": {
 		"build": "runx build tsc ./src/index.ts",
