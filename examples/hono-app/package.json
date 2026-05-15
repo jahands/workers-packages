@@ -1,6 +1,6 @@
 {
 	"name": "@repo/hono-app",
-	"version": "0.3.50",
+	"version": "0.3.51",
 	"private": true,
 	"sideEffects": false,
 	"scripts": {
