@@ -48,7 +48,8 @@
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"files": [
-		"dist"
+		"dist",
+		"src"
 	],
 	"scripts": {
 		"build": "runx build tsc ./src/index.ts ./src/ts5-decorator.ts",

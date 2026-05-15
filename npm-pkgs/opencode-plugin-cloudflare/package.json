@@ -19,7 +19,8 @@
 	"type": "module",
 	"main": "./dist/cloudflare.js",
 	"files": [
-		"dist"
+		"dist",
+		"src"
 	],
 	"scripts": {
 		"build": "runx build tsc ./src/cloudflare.ts",
