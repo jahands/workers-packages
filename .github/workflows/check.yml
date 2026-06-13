@@ -9,9 +9,7 @@ env:
 jobs:
   check:
     name: Check
-    runs-on:
-      - self-hosted
-      - X64
+    runs-on: ubicloud-standard-8
     timeout-minutes: 5
     steps:
       - name: Checkout Repo
