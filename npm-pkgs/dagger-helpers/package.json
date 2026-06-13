@@ -53,7 +53,7 @@
 		"vitest": "3.2.4"
 	},
 	"peerDependencies": {
-		"@dagger.io/dagger": "^0.18.4"
+		"@dagger.io/dagger": "^0.21.6"
 	},
 	"publishConfig": {
 		"access": "public"
