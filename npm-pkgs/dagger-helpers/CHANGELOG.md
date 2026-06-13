@@ -1,5 +1,11 @@
 # @jahands/dagger-helpers
 
+## 0.7.5
+
+### Patch Changes
+
+- fb210cc: chore: bump dagger version to ^0.21.6
+
 ## 0.7.4
 
 ### Patch Changes
