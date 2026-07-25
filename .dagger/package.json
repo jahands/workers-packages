@@ -4,7 +4,7 @@
 	"main": "src/main.dagger.ts",
 	"dependencies": {
 		"@jahands/dagger-helpers": "0.7.1",
-		"dagger-env": "0.6.1",
+		"dagger-env": "1.0.0",
 		"p-map": "7.0.3",
 		"typescript": "5.9.3",
 		"zod": "4.1.12"

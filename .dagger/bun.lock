@@ -1,10 +1,11 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "dependencies": {
         "@jahands/dagger-helpers": "0.7.1",
-        "dagger-env": "0.6.1",
+        "dagger-env": "1.0.0",
         "p-map": "7.0.3",
         "typescript": "5.9.3",
         "zod": "4.1.12",
@@ -142,7 +143,7 @@
 
     "cross-spawn": ["cross-spawn@7.0.6", "", { "dependencies": { "path-key": "^3.1.0", "shebang-command": "^2.0.0", "which": "^2.0.1" } }, "sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA=="],
 
-    "dagger-env": ["dagger-env@0.6.1", "", { "dependencies": { "zx": "8.8.4" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.1" } }, "sha512-BpJRS60a1WogR/4eIMNrNN3sysqoXo2xGBpXGv2XkIbyLt1AWusArsZT72C9QxkvwuhG0JZYg8Rk8DnKFh2Q1A=="],
+    "dagger-env": ["dagger-env@1.0.0", "", { "dependencies": { "zx": "8.8.4" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.12" } }, "sha512-nmoa7XRahtfkoO7I8JnVVtq0RAxcXuYImvaQRD9gmVk2aYLdjVkSSejL+3B1XFG8sWxM3CuM49OadO6VbtjdNg=="],
 
     "data-uri-to-buffer": ["data-uri-to-buffer@4.0.1", "", {}, "sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A=="],
 

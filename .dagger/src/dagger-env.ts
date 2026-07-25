@@ -27,13 +27,8 @@ export const dagEnv = createDaggerEnv({
 })
 
 export const runDaggerCommand = createDaggerCommandRunner({
-	opVault: 'xxcrgwtyu2wmeh2jdcnee2eqda',
-	opItem: 'dzxntwosd46ykwyz7qjdijfr2m',
-	opSections: [
-		{
-			id: 'cpbkdydzyexdubry5g4rofcpny',
-			label: 'Shared',
-		},
-	],
+	projectId: 'dbda99b7-04e5-4f6c-b668-128f91633888',
+	env: 'prod',
+	path: '/ci/workers-packages',
 	daggerEnv: dagEnv,
 })
