@@ -29,13 +29,12 @@ jobs:
           sudo mv /tmp/infisical /usr/local/bin/infisical
           infisical --version
       - name: Authenticate with Infisical
-        run: |
-          JWT=$(curl -fsSL -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=https://github.com/jahands" | jq -r .value)
-          INFISICAL_TOKEN=$(infisical login --method=oidc-auth --machine-identity-id=$INFISICAL_IDENTITY_ID --jwt="$JWT" --plain --silent)
-          echo "::add-mask::$INFISICAL_TOKEN"
-          echo "INFISICAL_TOKEN=$INFISICAL_TOKEN" >> "$GITHUB_ENV"
-        env:
-          INFISICAL_IDENTITY_ID: ${{ vars.INFISICAL_IDENTITY_ID }}
+        uses: Infisical/auth-action@v1.0.0
+        with:
+          method: oidc
+          identity-id: ${{ vars.INFISICAL_IDENTITY_ID }}
+          oidc-audience: https://github.com/jahands
+          output-env-credential: true
       - name: Install Dagger
         uses: dagger/dagger-for-github@v8.2.0
         with:
