@@ -1,6 +1,6 @@
 # dagger-env
 
-A type-safe, reusable environment configuration abstraction for Dagger modules with full Zod v4 validation and 1Password integration.
+A type-safe, reusable environment configuration abstraction for Dagger modules with full Zod v4 validation and Infisical integration.
 
 ## Features
 
@@ -9,7 +9,7 @@ A type-safe, reusable environment configuration abstraction for Dagger modules w
 - 🎯 **Consistent**: Standardized API across all Dagger modules
 - 🛡️ **Validated**: Runtime validation of arguments, environment variables, and secrets
 - 📦 **Modular**: Secret presets and derived environment variables
-- 🔐 **1Password Integration**: Built-in command runner with `op run` support
+- 🔐 **Infisical Integration**: Built-in command runner backed by `infisical export`
 - 🚀 **Easy to use**: Simple configuration-based setup
 
 ## Installation
@@ -18,7 +18,7 @@ A type-safe, reusable environment configuration abstraction for Dagger modules w
 npm install dagger-env zod
 ```
 
-**Note:** The command runner functionality (`dagger-env/run`) requires the 1Password CLI (`op`) to be installed.
+**Note:** The command runner functionality (`dagger-env/run`) requires the Infisical CLI (`infisical`) to be installed and authenticated.
 
 ## Quick Start
 
@@ -73,9 +73,9 @@ export class MyModule {
 }
 ```
 
-## Command Runner (1Password Integration)
+## Command Runner (Infisical Integration)
 
-For projects using 1Password for secret management, `dagger-env` provides a convenient command runner that integrates with `op run`:
+For projects using Infisical for secret management, `dagger-env` provides a convenient command runner that fetches secrets with `infisical export` and passes them to `dagger call` via the `DAGGER_OPTIONS` environment variable:
 
 ```typescript
 import { createDaggerEnv } from 'dagger-env'
@@ -102,14 +102,9 @@ const myDaggerEnv = createDaggerEnv({
 
 // Create a command runner - simply pass your DaggerEnv instance
 const runDaggerCommand = createDaggerCommandRunner({
-  opVault: 'your-vault-id',
-  opItem: 'your-item-id',
-  opSections: [
-    {
-      id: 'your-section-id',
-      label: 'Shared'
-    }
-  ],
+  projectId: 'your-project-id',
+  env: 'prod',
+  path: '/ci/my-repo',
   dockerCommands: ['build', 'deploy', 'test'],
   daggerEnv: myDaggerEnv
 })
@@ -124,14 +119,11 @@ await runDaggerCommand('test', {
 ### Advanced Configuration
 
 ```typescript
-// Advanced configuration with multiple sections and pre-command setup
+// Advanced configuration with pre-command setup
 const runDaggerCommand = createDaggerCommandRunner({
-  opVault: 'your-vault-id',
-  opItem: 'your-item-id',
-  opSections: [
-    { id: 'shared-section-id', label: 'Shared' },
-    { id: 'project-section-id', label: 'Project Specific' }
-  ],
+  projectId: 'your-project-id',
+  env: 'prod',
+  path: '/ci/my-repo',
   dockerCommands: ['build', 'deploy', 'test'],
   beforeCommand: async () => {
     // Setup vendor files, modules, etc.
@@ -208,13 +200,13 @@ Returns array of secret names for a specific preset.
 
 #### `createDaggerCommandRunner(config)`
 
-Creates a function to run Dagger commands with 1Password integration.
+Creates a function to run Dagger commands with Infisical integration.
 
 **Parameters:**
 
-- `config.opVault`: 1Password vault ID
-- `config.opItem`: 1Password item ID
-- `config.opSections`: Array of 1Password sections to include for secrets
+- `config.projectId`: Infisical project ID
+- `config.env`: Infisical environment slug (e.g. `prod`)
+- `config.path`: Infisical folder path to fetch secrets from (e.g. `/ci/my-repo`)
 - `config.dockerCommands`: Optional array of command names that should include Docker socket
 - `config.beforeCommand`: Optional async function to run before executing the command
 - `config.daggerEnv`: DaggerEnv instance for schema validation and type safety

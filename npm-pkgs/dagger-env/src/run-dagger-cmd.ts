@@ -1,19 +1,27 @@
+import { z } from 'zod/v4'
 import { $, fs } from 'zx'
-
-import { OPItem, OPSection } from './op.js'
 
 import type { DaggerEnv, DaggerEnvConfig } from './dagger-env.js'
 
 /**
- * Configuration for running Dagger commands with 1Password integration
+ * A single secret returned by `infisical export --format=json`
+ */
+export type InfisicalSecret = z.infer<typeof InfisicalSecret>
+export const InfisicalSecret = z.object({
+	key: z.string(),
+	value: z.string(),
+})
+
+/**
+ * Configuration for running Dagger commands with Infisical integration
  */
 export interface RunDaggerCommandConfig<T extends DaggerEnvConfig = DaggerEnvConfig> {
-	/** 1Password vault ID */
-	opVault: string
-	/** 1Password item ID */
-	opItem: string
-	/** 1Password sections to include for secrets */
-	opSections: Array<{ label: string; id: string }>
+	/** Infisical project ID */
+	projectId: string
+	/** Infisical environment slug (e.g. `prod`) */
+	env: string
+	/** Infisical folder path to fetch secrets from (e.g. `/ci/my-repo`) */
+	path: string
 	/** Commands that should include Docker socket if available */
 	dockerCommands?: string[]
 	/** Hook to run before executing the command (e.g., vendor file setup) */
@@ -35,15 +43,13 @@ export interface RunDaggerCommandOptions {
 }
 
 /**
- * Creates a function to run Dagger commands with 1Password integration
+ * Creates a function to run Dagger commands with Infisical integration
  * @param config Configuration for the command runner
  * @returns Function to execute Dagger commands
  */
 export function createDaggerCommandRunner<T extends DaggerEnvConfig>(
 	config: RunDaggerCommandConfig<T>
 ) {
-	const opItemUri = `op://${config.opVault}/${config.opItem}`
-
 	return async function runDaggerCommand(
 		commandName: string,
 		options?: RunDaggerCommandOptions
@@ -55,13 +61,8 @@ export function createDaggerCommandRunner<T extends DaggerEnvConfig>(
 			await config.beforeCommand()
 		}
 
-		// Environment variables to pass to the `op run` command
+		// Environment variables to pass to the `dagger` command
 		const envVars: Record<string, string> = {}
-
-		// Pass dagger cloud token in CI because we don't have user auth
-		if (process.env.CI !== undefined) {
-			envVars.DAGGER_CLOUD_TOKEN = `${opItemUri}/DAGGER_CLOUD_TOKEN`
-		}
 
 		const commandArgs: string[] = [...extraArgs]
 
@@ -76,24 +77,24 @@ export function createDaggerCommandRunner<T extends DaggerEnvConfig>(
 			}
 		}
 
-		// Fetch 1Password item
-		const opItem = OPItem.parse(
-			await $`op item get ${config.opItem} --vault ${config.opVault} --format json`.json()
+		// Fetch secrets from Infisical
+		const exportedSecrets = InfisicalSecret.array().parse(
+			await $`infisical export --silent --format=json --projectId ${config.projectId} --env ${config.env} --path ${config.path}`.json()
 		)
 
-		// Parse sections to include
-		const sectionsToInclude = OPSection.array().parse(config.opSections)
+		// Extract secrets into a key/value map
+		const secrets = exportedSecrets.reduce(
+			(acc, s) => {
+				acc[s.key] = s.value
+				return acc
+			},
+			{} as Record<string, string>
+		)
 
-		// Extract secrets from specified sections
-		const secrets = opItem.fields
-			.filter((f) => sectionsToInclude.some((s) => s.id === f.section?.id))
-			.reduce(
-				(acc, f) => {
-					acc[f.label] = f.value
-					return acc
-				},
-				{} as Record<string, string>
-			)
+		// Pass dagger cloud token in CI because we don't have user auth
+		if (process.env.CI !== undefined && secrets.DAGGER_CLOUD_TOKEN !== undefined) {
+			envVars.DAGGER_CLOUD_TOKEN = secrets.DAGGER_CLOUD_TOKEN
+		}
 
 		// Build environment variables for Dagger
 		const daggerEnv: Record<string, string> = { ...env }
@@ -114,10 +115,6 @@ export function createDaggerCommandRunner<T extends DaggerEnvConfig>(
 
 		// Construct the command
 		const cmd: string[] = [
-			'op',
-			'run',
-			'--no-masking',
-			'--',
 			'dagger',
 			'call',
 			commandName,
