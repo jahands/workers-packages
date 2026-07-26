@@ -4,13 +4,14 @@ import { z } from 'zod/v4'
 import { createDaggerEnv } from './dagger-env'
 import { createDaggerCommandRunner } from './run-dagger-cmd'
 
+import type { OPItem } from './op'
 import type { RunDaggerCommandConfig } from './run-dagger-cmd'
 
 const mocks = vi.hoisted(() => ({
-	/** Resolves the JSON payload returned by `infisical export` */
-	exportJson: vi.fn(),
-	/** Records the rendered `infisical export` command string */
-	exportCmd: vi.fn(),
+	/** Resolves the JSON payload returned by the secrets CLI (`infisical export` / `op item get`) */
+	fetchJson: vi.fn(),
+	/** Records the rendered secrets fetch command string */
+	fetchCmd: vi.fn(),
 	/** Records the final command execution: (options, argv) */
 	spawn: vi.fn(
 		async (_opts: { env: Record<string, string | undefined> }, _argv: string[]) => undefined
@@ -22,14 +23,14 @@ const mocks = vi.hoisted(() => ({
 vi.mock('zx', () => {
 	const $ = (firstArg: unknown, ...vals: unknown[]) => {
 		if (Array.isArray(firstArg)) {
-			// Direct template call: $`infisical export ...`
+			// Direct template call: $`infisical export ...` / $`op item get ...`
 			const pieces = firstArg as readonly string[]
 			const cmd = pieces.reduce(
 				(acc, piece, i) => acc + piece + (i < vals.length ? String(vals[i]) : ''),
 				''
 			)
-			mocks.exportCmd(cmd)
-			return { json: mocks.exportJson }
+			mocks.fetchCmd(cmd)
+			return { json: mocks.fetchJson }
 		}
 		// Options call: $({ env, stdio }) returns a template executor
 		return (_pieces: TemplateStringsArray, ...templateVals: unknown[]) =>
@@ -56,8 +57,8 @@ function getSpawnCall(): { env: SpawnEnv; argv: string[] } {
 	return { env: opts.env, argv }
 }
 
-function createRunner(overrides?: Partial<Pick<RunDaggerCommandConfig, 'dockerCommands'>>) {
-	const daggerEnv = createDaggerEnv({
+function createTestDaggerEnv() {
+	return createDaggerEnv({
 		args: z.object({
 			push: z.string().optional(),
 		}),
@@ -74,14 +75,67 @@ function createRunner(overrides?: Partial<Pick<RunDaggerCommandConfig, 'dockerCo
 		},
 		derivedEnvVars: {},
 	})
+}
 
+function createRunner(overrides?: Partial<Pick<RunDaggerCommandConfig, 'dockerCommands'>>) {
 	return createDaggerCommandRunner({
 		projectId: 'test-project-id',
 		env: 'prod',
 		path: '/ci/test',
-		daggerEnv,
+		daggerEnv: createTestDaggerEnv(),
 		...overrides,
 	})
+}
+
+function createOnePasswordRunner(
+	overrides?: Partial<Pick<RunDaggerCommandConfig, 'dockerCommands'>>
+) {
+	return createDaggerCommandRunner({
+		opVault: 'test-vault-id',
+		opItem: 'test-item-id',
+		opSections: [{ id: 'shared-section-id', label: 'Shared' }],
+		daggerEnv: createTestDaggerEnv(),
+		...overrides,
+	})
+}
+
+/**
+ * A realistic `op item get --format json` payload with one field in the
+ * configured section and one field in an excluded section
+ */
+const testOPItem: OPItem = {
+	id: 'test-item-id',
+	title: 'Test Item',
+	favorite: false,
+	version: 1,
+	vault: { id: 'test-vault-id', name: 'Test Vault' },
+	category: 'SECURE_NOTE',
+	last_edited_by: 'test-user',
+	created_at: '2024-01-01T00:00:00Z',
+	updated_at: '2024-01-01T00:00:00Z',
+	additional_information: '',
+	sections: [
+		{ id: 'shared-section-id', label: 'Shared' },
+		{ id: 'other-section-id', label: 'Other' },
+	],
+	fields: [
+		{
+			id: 'field-1',
+			section: { id: 'shared-section-id', label: 'Shared' },
+			type: 'CONCEALED',
+			label: 'API_TOKEN',
+			value: 'test-api-token',
+			reference: 'op://test-vault-id/test-item-id/API_TOKEN',
+		},
+		{
+			id: 'field-2',
+			section: { id: 'other-section-id', label: 'Other' },
+			type: 'CONCEALED',
+			label: 'EXCLUDED_SECRET',
+			value: 'excluded-value',
+			reference: 'op://test-vault-id/test-item-id/EXCLUDED_SECRET',
+		},
+	],
 }
 
 describe('createDaggerCommandRunner()', () => {
@@ -90,67 +144,138 @@ describe('createDaggerCommandRunner()', () => {
 		vi.stubEnv('CI', undefined)
 		vi.stubEnv('GITHUB_ACTIONS', undefined)
 		vi.stubEnv('DAGGER_CLOUD_TOKEN', undefined)
-		mocks.exportJson.mockResolvedValue([
-			{ key: 'API_TOKEN', value: 'test-api-token', comment: '' },
-			{ key: 'DAGGER_CLOUD_TOKEN', value: 'test-dagger-cloud-token', comment: '' },
-		])
 	})
 
 	afterEach(() => {
 		vi.unstubAllEnvs()
 	})
 
-	it('builds the expected DAGGER_OPTIONS payload from the infisical export', async () => {
-		const runDaggerCommand = createRunner()
-		await runDaggerCommand('test-cmd', {
-			args: { push: 'true' },
-			env: { NODE_ENV: 'production' },
+	describe('infisical', () => {
+		beforeEach(() => {
+			mocks.fetchJson.mockResolvedValue([
+				{ key: 'API_TOKEN', value: 'test-api-token', comment: '' },
+				{ key: 'DAGGER_CLOUD_TOKEN', value: 'test-dagger-cloud-token', comment: '' },
+			])
 		})
 
-		expect(mocks.exportCmd).toHaveBeenCalledWith(
-			'infisical export --silent --format=json --projectId test-project-id --env prod --path /ci/test'
-		)
+		it('builds the expected DAGGER_OPTIONS payload from the infisical export', async () => {
+			const runDaggerCommand = createRunner()
+			await runDaggerCommand('test-cmd', {
+				args: { push: 'true' },
+				env: { NODE_ENV: 'production' },
+			})
 
-		const { env } = getSpawnCall()
-		expect(JSON.parse(env.DAGGER_OPTIONS as string)).toStrictEqual({
-			args: { push: 'true' },
-			env: { NODE_ENV: 'production' },
-			secrets: { API_TOKEN: 'test-api-token' },
+			expect(mocks.fetchCmd).toHaveBeenCalledWith(
+				'infisical export --silent --format=json --projectId test-project-id --env prod --path /ci/test'
+			)
+
+			const { env } = getSpawnCall()
+			expect(JSON.parse(env.DAGGER_OPTIONS as string)).toStrictEqual({
+				args: { push: 'true' },
+				env: { NODE_ENV: 'production' },
+				secrets: { API_TOKEN: 'test-api-token' },
+			})
+			expect(env.DAGGER_CLOUD_TOKEN).toBeUndefined()
 		})
-		expect(env.DAGGER_CLOUD_TOKEN).toBeUndefined()
+
+		it('passes DAGGER_CLOUD_TOKEN to the runner env (but not DAGGER_OPTIONS) in CI', async () => {
+			vi.stubEnv('CI', 'true')
+			vi.stubEnv('GITHUB_ACTIONS', 'true')
+
+			const runDaggerCommand = createRunner()
+			await runDaggerCommand('test-cmd')
+
+			const { env } = getSpawnCall()
+			const daggerOptions = JSON.parse(env.DAGGER_OPTIONS as string)
+			expect(daggerOptions.secrets).not.toHaveProperty('DAGGER_CLOUD_TOKEN')
+			expect(daggerOptions.env).toStrictEqual({ CI: 'true', GITHUB_ACTIONS: 'true' })
+			expect(env.DAGGER_CLOUD_TOKEN).toBe('test-dagger-cloud-token')
+		})
+
+		it('spawns dagger directly without an op wrapper', async () => {
+			const runDaggerCommand = createRunner()
+			await runDaggerCommand('test-cmd', { extraArgs: ['--verbose'] })
+
+			const { argv } = getSpawnCall()
+			expect(argv[0]).toBe('dagger')
+			expect(argv).not.toContain('op')
+			expect(argv).toStrictEqual([
+				'dagger',
+				'call',
+				'test-cmd',
+				'--verbose',
+				'--options=env://DAGGER_OPTIONS',
+			])
+		})
 	})
 
-	it('passes DAGGER_CLOUD_TOKEN to the runner env (but not DAGGER_OPTIONS) in CI', async () => {
-		vi.stubEnv('CI', 'true')
-		vi.stubEnv('GITHUB_ACTIONS', 'true')
+	describe('1password', () => {
+		beforeEach(() => {
+			mocks.fetchJson.mockResolvedValue(testOPItem)
+		})
 
-		const runDaggerCommand = createRunner()
-		await runDaggerCommand('test-cmd')
+		it('builds the expected DAGGER_OPTIONS payload from the op item sections', async () => {
+			const runDaggerCommand = createOnePasswordRunner()
+			await runDaggerCommand('test-cmd', {
+				args: { push: 'true' },
+				env: { NODE_ENV: 'production' },
+			})
 
-		const { env } = getSpawnCall()
-		const daggerOptions = JSON.parse(env.DAGGER_OPTIONS as string)
-		expect(daggerOptions.secrets).not.toHaveProperty('DAGGER_CLOUD_TOKEN')
-		expect(daggerOptions.env).toStrictEqual({ CI: 'true', GITHUB_ACTIONS: 'true' })
-		expect(env.DAGGER_CLOUD_TOKEN).toBe('test-dagger-cloud-token')
-	})
+			expect(mocks.fetchCmd).toHaveBeenCalledWith(
+				'op item get test-item-id --vault test-vault-id --format json'
+			)
 
-	it('spawns dagger directly without an op wrapper', async () => {
-		const runDaggerCommand = createRunner()
-		await runDaggerCommand('test-cmd', { extraArgs: ['--verbose'] })
+			const { env } = getSpawnCall()
+			expect(JSON.parse(env.DAGGER_OPTIONS as string)).toStrictEqual({
+				args: { push: 'true' },
+				env: { NODE_ENV: 'production' },
+				secrets: { API_TOKEN: 'test-api-token' },
+			})
+			expect(env.DAGGER_CLOUD_TOKEN).toBeUndefined()
+		})
 
-		const { argv } = getSpawnCall()
-		expect(argv[0]).toBe('dagger')
-		expect(argv).not.toContain('op')
-		expect(argv).toStrictEqual([
-			'dagger',
-			'call',
-			'test-cmd',
-			'--verbose',
-			'--options=env://DAGGER_OPTIONS',
-		])
+		it('wraps dagger call in op run --no-masking', async () => {
+			const runDaggerCommand = createOnePasswordRunner()
+			await runDaggerCommand('test-cmd', { extraArgs: ['--verbose'] })
+
+			const { argv } = getSpawnCall()
+			expect(argv).toStrictEqual([
+				'op',
+				'run',
+				'--no-masking',
+				'--',
+				'dagger',
+				'call',
+				'test-cmd',
+				'--verbose',
+				'--options=env://DAGGER_OPTIONS',
+			])
+		})
+
+		it('passes DAGGER_CLOUD_TOKEN as an op:// reference in CI', async () => {
+			vi.stubEnv('CI', 'true')
+			vi.stubEnv('GITHUB_ACTIONS', 'true')
+
+			const runDaggerCommand = createOnePasswordRunner()
+			await runDaggerCommand('test-cmd')
+
+			const { env } = getSpawnCall()
+			const daggerOptions = JSON.parse(env.DAGGER_OPTIONS as string)
+			expect(daggerOptions.secrets).not.toHaveProperty('DAGGER_CLOUD_TOKEN')
+			expect(daggerOptions.env).toStrictEqual({ CI: 'true', GITHUB_ACTIONS: 'true' })
+			expect(env.DAGGER_CLOUD_TOKEN).toBe(
+				'op://test-vault-id/test-item-id/DAGGER_CLOUD_TOKEN'
+			)
+		})
 	})
 
 	describe('docker socket', () => {
+		beforeEach(() => {
+			mocks.fetchJson.mockResolvedValue([
+				{ key: 'API_TOKEN', value: 'test-api-token', comment: '' },
+			])
+		})
+
 		it('appends --docker-socket for dockerCommands when the socket exists', async () => {
 			mocks.exists.mockResolvedValue(true)
 

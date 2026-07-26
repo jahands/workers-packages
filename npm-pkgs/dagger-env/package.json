@@ -28,6 +28,12 @@
 				"default": "./dist/index.js"
 			}
 		},
+		"./op": {
+			"import": {
+				"types": "./dist/op.d.ts",
+				"default": "./dist/op.js"
+			}
+		},
 		"./run": {
 			"import": {
 				"types": "./dist/run-dagger-cmd.d.ts",
@@ -42,7 +48,7 @@
 		"src"
 	],
 	"scripts": {
-		"build": "runx build tsc ./src/index.ts ./src/run-dagger-cmd.ts",
+		"build": "runx build tsc ./src/index.ts ./src/op.ts ./src/run-dagger-cmd.ts",
 		"check:exports": "runx check --exports",
 		"check:lint": "run-eslint",
 		"check:types": "run-tsc",

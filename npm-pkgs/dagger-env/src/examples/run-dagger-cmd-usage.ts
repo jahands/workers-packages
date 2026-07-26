@@ -2,7 +2,7 @@
  * Example usage of the runDaggerCommand abstraction
  *
  * This example shows a realistic configuration for a project that uses Dagger
- * with Infisical integration for secret management.
+ * with Infisical or 1Password integration for secret management.
  *
  * Import pattern:
  * - Main DaggerEnv functionality: import { createDaggerEnv } from 'dagger-env'
@@ -71,6 +71,27 @@ export const runDaggerCommand = createDaggerCommandRunner({
 		// const modules = await getDaggerModules()
 		// await setupDaggerVendorFiles(modules)
 	},
+	// Pass the DaggerEnv instance directly
+	daggerEnv,
+})
+
+// Alternatively, create a command runner with 1Password configuration
+export const runDaggerCommandWithOnePassword = createDaggerCommandRunner({
+	// 1Password configuration
+	opVault: 'your-vault-id', // Replace with your actual vault ID
+	opItem: 'your-item-id', // Replace with your actual item ID
+	opSections: [
+		{
+			id: 'shared-section-id',
+			label: 'Shared',
+		},
+		{
+			id: 'production-section-id',
+			label: 'Production',
+		},
+	],
+	// Commands that need Docker socket access
+	dockerCommands: ['build', 'test', 'deploy', 'migrate', 'seed'],
 	// Pass the DaggerEnv instance directly
 	daggerEnv,
 })
