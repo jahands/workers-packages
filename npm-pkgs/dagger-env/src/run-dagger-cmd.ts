@@ -48,6 +48,13 @@ export interface RunDaggerCommandBaseConfig<T extends DaggerEnvConfig = DaggerEn
 	beforeCommand?: () => Promise<void>
 	/** DaggerEnv instance for schema validation and type safety */
 	daggerEnv: DaggerEnv<T>
+	/**
+	 * Secrets to pass to Dagger alongside the ones fetched from the provider,
+	 * taking precedence on conflict. Entries with an undefined value are
+	 * skipped, so short-lived credentials that only exist in some environments
+	 * (e.g. a CI-issued token) can be forwarded without a separate config path.
+	 */
+	additionalSecrets?: Record<string, string | undefined>
 }
 
 /**
@@ -167,6 +174,12 @@ export function createDaggerCommandRunner<T extends DaggerEnvConfig>(
 			// Pass dagger cloud token in CI because we don't have user auth
 			if (process.env.CI !== undefined && secrets.DAGGER_CLOUD_TOKEN !== undefined) {
 				envVars.DAGGER_CLOUD_TOKEN = secrets.DAGGER_CLOUD_TOKEN
+			}
+		}
+
+		for (const [name, value] of Object.entries(config.additionalSecrets ?? {})) {
+			if (value !== undefined) {
+				secrets[name] = value
 			}
 		}
 

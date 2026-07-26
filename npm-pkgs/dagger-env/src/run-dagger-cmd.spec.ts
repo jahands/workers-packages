@@ -69,6 +69,7 @@ function createTestDaggerEnv() {
 		}),
 		secrets: z.object({
 			API_TOKEN: z.string(),
+			FORWARDED_TOKEN: z.string().optional(),
 		}),
 		secretPresets: {
 			api: ['API_TOKEN'],
@@ -77,7 +78,9 @@ function createTestDaggerEnv() {
 	})
 }
 
-function createRunner(overrides?: Partial<Pick<RunDaggerCommandConfig, 'dockerCommands'>>) {
+function createRunner(
+	overrides?: Partial<Pick<RunDaggerCommandConfig, 'dockerCommands' | 'additionalSecrets'>>
+) {
 	return createDaggerCommandRunner({
 		projectId: 'test-project-id',
 		env: 'prod',
@@ -88,7 +91,7 @@ function createRunner(overrides?: Partial<Pick<RunDaggerCommandConfig, 'dockerCo
 }
 
 function createOnePasswordRunner(
-	overrides?: Partial<Pick<RunDaggerCommandConfig, 'dockerCommands'>>
+	overrides?: Partial<Pick<RunDaggerCommandConfig, 'dockerCommands' | 'additionalSecrets'>>
 ) {
 	return createDaggerCommandRunner({
 		opVault: 'test-vault-id',
@@ -264,6 +267,66 @@ describe('createDaggerCommandRunner()', () => {
 			expect(daggerOptions.secrets).not.toHaveProperty('DAGGER_CLOUD_TOKEN')
 			expect(daggerOptions.env).toStrictEqual({ CI: 'true', GITHUB_ACTIONS: 'true' })
 			expect(env.DAGGER_CLOUD_TOKEN).toBe('op://test-vault-id/test-item-id/DAGGER_CLOUD_TOKEN')
+		})
+	})
+
+	describe('additionalSecrets', () => {
+		beforeEach(() => {
+			mocks.fetchJson.mockResolvedValue([
+				{ key: 'API_TOKEN', value: 'test-api-token', comment: '' },
+			])
+		})
+
+		it('merges additional secrets into the provider secrets', async () => {
+			const runDaggerCommand = createRunner({
+				additionalSecrets: { FORWARDED_TOKEN: 'test-forwarded-token' },
+			})
+			await runDaggerCommand('test-cmd')
+
+			const { env } = getSpawnCall()
+			expect(JSON.parse(env.DAGGER_OPTIONS as string).secrets).toStrictEqual({
+				API_TOKEN: 'test-api-token',
+				FORWARDED_TOKEN: 'test-forwarded-token',
+			})
+		})
+
+		it('skips additional secrets with an undefined value', async () => {
+			const runDaggerCommand = createRunner({
+				additionalSecrets: { FORWARDED_TOKEN: undefined },
+			})
+			await runDaggerCommand('test-cmd')
+
+			const { env } = getSpawnCall()
+			expect(JSON.parse(env.DAGGER_OPTIONS as string).secrets).toStrictEqual({
+				API_TOKEN: 'test-api-token',
+			})
+		})
+
+		it('takes precedence over a provider secret of the same name', async () => {
+			const runDaggerCommand = createRunner({
+				additionalSecrets: { API_TOKEN: 'test-override-token' },
+			})
+			await runDaggerCommand('test-cmd')
+
+			const { env } = getSpawnCall()
+			expect(JSON.parse(env.DAGGER_OPTIONS as string).secrets).toStrictEqual({
+				API_TOKEN: 'test-override-token',
+			})
+		})
+
+		it('merges additional secrets for the 1password provider', async () => {
+			mocks.fetchJson.mockResolvedValue(testOPItem)
+
+			const runDaggerCommand = createOnePasswordRunner({
+				additionalSecrets: { FORWARDED_TOKEN: 'test-forwarded-token' },
+			})
+			await runDaggerCommand('test-cmd')
+
+			const { env } = getSpawnCall()
+			expect(JSON.parse(env.DAGGER_OPTIONS as string).secrets).toStrictEqual({
+				API_TOKEN: 'test-api-token',
+				FORWARDED_TOKEN: 'test-forwarded-token',
+			})
 		})
 	})
 
