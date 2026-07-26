@@ -71,7 +71,9 @@ export interface RunDaggerCommandOptions {
 /**
  * Fetches secrets from Infisical via `infisical export`
  */
-async function fetchInfisicalSecrets(config: InfisicalProviderConfig): Promise<Record<string, string>> {
+async function fetchInfisicalSecrets(
+	config: InfisicalProviderConfig
+): Promise<Record<string, string>> {
 	const exportedSecrets = InfisicalSecret.array().parse(
 		await $`infisical export --silent --format=json --projectId ${config.projectId} --env ${config.env} --path ${config.path}`.json()
 	)

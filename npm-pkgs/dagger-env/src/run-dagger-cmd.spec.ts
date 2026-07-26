@@ -263,9 +263,7 @@ describe('createDaggerCommandRunner()', () => {
 			const daggerOptions = JSON.parse(env.DAGGER_OPTIONS as string)
 			expect(daggerOptions.secrets).not.toHaveProperty('DAGGER_CLOUD_TOKEN')
 			expect(daggerOptions.env).toStrictEqual({ CI: 'true', GITHUB_ACTIONS: 'true' })
-			expect(env.DAGGER_CLOUD_TOKEN).toBe(
-				'op://test-vault-id/test-item-id/DAGGER_CLOUD_TOKEN'
-			)
+			expect(env.DAGGER_CLOUD_TOKEN).toBe('op://test-vault-id/test-item-id/DAGGER_CLOUD_TOKEN')
 		})
 	})
 
