@@ -3,13 +3,6 @@ import pFilter from 'p-filter'
 
 export type AIEditorCommand = 'cursor' | 'code' | 'windsurf'
 
-/**
- * Note: AmpCode has a 'amp' command, but it may or may not be installed
- * when users are using the VSCode extension.
- */
-export type AIAssistantCommand = 'claude' | 'amp'
-export type AIAssistant = AIEditorCommand | AIAssistantCommand
-
 interface Editor {
 	name: string
 	command: AIEditorCommand
@@ -32,8 +25,4 @@ export const getAvailableEditors = memoizeOne(async () => {
 
 export const claudeExists = memoizeOne(async (): Promise<boolean> => {
 	return Boolean(await which('claude', { nothrow: true }))
-})
-
-export const ampExists = memoizeOne(async (): Promise<boolean> => {
-	return Boolean(await which('amp', { nothrow: true }))
 })

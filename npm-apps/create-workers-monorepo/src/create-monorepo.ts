@@ -1,15 +1,13 @@
 import path from 'node:path'
-import { checkbox, confirm, input, select } from '@inquirer/prompts'
+import { confirm, input, select } from '@inquirer/prompts'
 import { cliError } from '@jahands/cli-tools/errors'
 import pMap from 'p-map'
 import { z } from 'zod/v4'
 
-import { ampExists, claudeExists, getAvailableEditors } from './editor'
+import { claudeExists, getAvailableEditors } from './editor'
 import { isDirEmpty } from './fs'
 import { checkAndInstallJust } from './just-installer'
 import { ensurePnpmInstalled } from './pnpm-installer'
-
-import type { AIAssistant } from './editor'
 
 export async function ensurePrerequisites() {
 	if (!(await which('git', { nothrow: true }))) {
@@ -90,22 +88,10 @@ async function promptInstallDependencies(): Promise<boolean> {
 	})
 }
 
-async function promptAIAssistantRules(): Promise<AIAssistant[]> {
-	const [availableEditors, hasClaude, hasAmp] = await Promise.all([
-		getAvailableEditors(),
-		claudeExists(),
-		ampExists(),
-	])
-	const editorCommands = availableEditors.map((e) => e.command)
-
-	return checkbox({
-		message: 'Add AI coding assistant rules?',
-		choices: [
-			{ name: 'Claude', value: 'claude', checked: hasClaude },
-			{ name: 'Cursor', value: 'cursor', checked: editorCommands.includes('cursor') },
-			{ name: 'WindSurf', value: 'windsurf', checked: editorCommands.includes('windsurf') },
-			{ name: 'AmpCode', value: 'amp', checked: hasAmp },
-		] satisfies Array<{ name: string; value: AIAssistant; checked: boolean }>,
+async function promptIncludeClaudeRules(): Promise<boolean> {
+	return confirm({
+		message: 'Include Claude Code instructions (CLAUDE.md)? AGENTS.md is always included.',
+		default: await claudeExists(),
 	})
 }
 
@@ -114,7 +100,7 @@ export async function createMonorepo(opts: CreateMonorepoOptions) {
 
 	const name = opts.name ?? (await promptRepoName())
 	const useGitHubActions = await promptUseGitHubActions()
-	const selectedRules = await promptAIAssistantRules()
+	const includeClaudeRules = await promptIncludeClaudeRules()
 
 	echo(chalk.blue(`Creating monorepo with name: ${chalk.white(name)}`))
 
@@ -156,29 +142,12 @@ export async function createMonorepo(opts: CreateMonorepoOptions) {
 		}
 	}
 
-	// add AI assistant rules
-	if (selectedRules.length > 0) {
-		echo(chalk.dim(`Adding AI assistant rules: ${selectedRules.join(', ')}`))
+	// AGENTS.md is always kept - CLAUDE.md is the only optional agent file
+	if (!includeClaudeRules) {
+		echo(chalk.dim(`Removing Claude-specific agent files...`))
+		await fs.rm(path.join(targetDir, 'CLAUDE.md'), { force: true })
+		await fs.rm(path.join(targetDir, '.claude'), { recursive: true, force: true })
 	}
-
-	// remove unwanted AI assistant rules
-	const allRules = ['claude', 'cursor', 'windsurf', 'amp'] as const satisfies AIAssistant[]
-	const rulesToRemove = allRules.filter((rule) => !selectedRules.includes(rule))
-	const ruleFiles = {
-		claude: [path.join(targetDir, 'CLAUDE.md'), path.join(targetDir, '.claude')],
-		cursor: [path.join(targetDir, '.cursor')],
-		windsurf: [path.join(targetDir, '.windsurf')],
-		amp: [path.join(targetDir, 'AGENTS.md')],
-	} as const satisfies Partial<Record<AIAssistant, string[]>>
-
-	await pMap(rulesToRemove, async (rule) => {
-		const files = ruleFiles[rule]
-		if (files) {
-			await pMap(files, async (filePath) => {
-				await fs.rm(filePath, { recursive: true, force: true })
-			})
-		}
-	})
 
 	echo(chalk.dim(`Initializing git repository...`))
 	cd(targetDir)
