@@ -27,7 +27,7 @@ export const dagEnv = createDaggerEnv({
 })
 
 export const runDaggerCommand = createDaggerCommandRunner({
-	projectId: '5f77cfd0-cc2b-42bd-870d-ee43439c74ab',
+	projectId: '74ab7e52-6c48-479b-818e-8992db6a154a',
 	env: 'prod',
 	path: '/',
 	daggerEnv: dagEnv,

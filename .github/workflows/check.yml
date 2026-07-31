@@ -32,6 +32,7 @@ jobs:
         uses: Infisical/auth-action@v1.0.0
         with:
           method: oidc
+          domain: https://infisical.jhands.dev
           identity-id: ${{ vars.INFISICAL_IDENTITY_ID }}
           oidc-audience: https://github.com/jahands
           output-env-credential: true
@@ -40,4 +41,7 @@ jobs:
         with:
           version: '0.20.6'
       - name: Check & Test (Dagger)
+        env:
+          # `infisical export` in dagger-env resolves the instance URL from this env var
+          INFISICAL_API_URL: https://infisical.jhands.dev
         run: ./.dagger/bin/daggerx test
