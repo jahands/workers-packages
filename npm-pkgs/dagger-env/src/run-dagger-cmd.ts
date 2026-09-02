@@ -73,6 +73,11 @@ export interface RunDaggerCommandOptions {
 	env?: Record<string, string>
 	/** Additional command-line arguments */
 	extraArgs?: string[]
+	/**
+	 * Module constructor flags (e.g. `--source=.`). Placed before the command
+	 * name, which is where `dagger call` requires them.
+	 */
+	constructorArgs?: string[]
 }
 
 /**
@@ -135,7 +140,7 @@ export function createDaggerCommandRunner<T extends DaggerEnvConfig>(
 		commandName: string,
 		options?: RunDaggerCommandOptions
 	): Promise<void> {
-		const { args = {}, env = {}, extraArgs = [] } = options ?? {}
+		const { args = {}, env = {}, extraArgs = [], constructorArgs = [] } = options ?? {}
 
 		// Run any pre-command setup
 		if (config.beforeCommand) {
@@ -206,6 +211,7 @@ export function createDaggerCommandRunner<T extends DaggerEnvConfig>(
 			...('opVault' in config ? ['op', 'run', '--no-masking', '--'] : []),
 			'dagger',
 			'call',
+			...constructorArgs,
 			commandName,
 			...commandArgs,
 			'--options=env://DAGGER_OPTIONS',
