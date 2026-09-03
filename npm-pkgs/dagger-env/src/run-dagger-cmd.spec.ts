@@ -210,6 +210,24 @@ describe('createDaggerCommandRunner()', () => {
 				'--options=env://DAGGER_OPTIONS',
 			])
 		})
+
+		it('places constructorArgs before the command name', async () => {
+			const runDaggerCommand = createRunner()
+			await runDaggerCommand('test-cmd', {
+				constructorArgs: ['--source=.'],
+				extraArgs: ['--verbose'],
+			})
+
+			const { argv } = getSpawnCall()
+			expect(argv).toStrictEqual([
+				'dagger',
+				'call',
+				'--source=.',
+				'test-cmd',
+				'--verbose',
+				'--options=env://DAGGER_OPTIONS',
+			])
+		})
 	})
 
 	describe('1password', () => {

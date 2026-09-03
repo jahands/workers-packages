@@ -248,6 +248,7 @@ Options for individual command execution:
 - `args`: Optional record of arguments to pass to the Dagger command
 - `env`: Optional record of additional environment variables
 - `extraArgs`: Optional array of additional command-line arguments
+- `constructorArgs`: Optional array of module constructor flags, placed before the command name (e.g. `['--source=.']`)
 
 ## Configuration Examples
 
