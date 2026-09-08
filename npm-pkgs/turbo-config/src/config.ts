@@ -1,6 +1,6 @@
 import { pathToFileURL } from 'node:url'
 import { cliError } from '@jahands/cli-tools'
-import { z } from 'zod'
+import * as z from 'zod'
 
 import { getTurboConfigPath } from './path'
 import { TurboConfig } from './schema'

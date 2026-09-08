@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { z } from 'zod/v4'
+import * as z from 'zod/v4'
 
 import { createDaggerEnv } from './dagger-env'
 import { createDaggerCommandRunner } from './run-dagger-cmd'

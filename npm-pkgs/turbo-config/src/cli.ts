@@ -1,5 +1,5 @@
 import { cliError } from '@jahands/cli-tools/errors'
-import { z } from 'zod'
+import * as z from 'zod'
 
 import { getTurboConfig } from './config'
 import { fileExists, readJsonFile } from './fs'

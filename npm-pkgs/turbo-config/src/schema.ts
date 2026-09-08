@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 
 // this schema is generated from https://turbo.build/schema.json
 

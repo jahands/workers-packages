@@ -1,6 +1,6 @@
 import 'zx/globals'
 
-import { z } from 'zod/v4'
+import * as z from 'zod'
 
 /**
  * Supported package managers

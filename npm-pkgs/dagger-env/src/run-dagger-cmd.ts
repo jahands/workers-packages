@@ -1,4 +1,4 @@
-import { z } from 'zod/v4'
+import * as z from 'zod/v4'
 import { $, fs } from 'zx'
 
 import { OPItem, OPSection } from './op.js'

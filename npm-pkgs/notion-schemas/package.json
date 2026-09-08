@@ -47,10 +47,10 @@
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"vitest": "3.2.4",
-		"zod": "^4.1.11"
+		"zod": "^4.5.4"
 	},
 	"peerDependencies": {
-		"zod": "^4.1.11"
+		"zod": "^4.5.4"
 	},
 	"publishConfig": {
 		"access": "public"

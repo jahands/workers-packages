@@ -11,7 +11,7 @@
 
 import { createDaggerEnv } from 'dagger-env'
 import { createDaggerCommandRunner } from 'dagger-env/run'
-import { z } from 'zod/v4'
+import * as z from 'zod/v4'
 
 // Create a DaggerEnv instance with your project's specific configuration
 const daggerEnv = createDaggerEnv({

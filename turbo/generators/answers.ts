@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 
 export type Paths = z.infer<typeof Paths>
 export const Paths = z.object({

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { z } from 'zod/v4'
+import * as z from 'zod'
 
 import { httpStatus } from './combined.js'
 

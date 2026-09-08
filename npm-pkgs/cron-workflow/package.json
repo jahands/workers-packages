@@ -50,7 +50,7 @@
 	},
 	"dependencies": {
 		"cron-parser": "5.4.0",
-		"zod": "^4.1.12"
+		"zod": "^4.5.4"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "0.9.13",

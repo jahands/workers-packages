@@ -46,7 +46,7 @@
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"zod": "4.1.12"
+		"zod": "4.5.4"
 	},
 	"publishConfig": {
 		"access": "public"

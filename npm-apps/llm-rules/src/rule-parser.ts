@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import matter from 'gray-matter'
-import z, { z as z3 } from 'zod/v3'
+import * as z3 from 'zod/v3'
 import { glob } from 'zx'
 
 export type RuleFrontmatter = z3.infer<typeof RuleFrontmatter>
@@ -103,7 +103,7 @@ export async function parseRuleFile(filePath: string): Promise<ParsedRule | null
 
 		// Filter out "manual" rules that don't have a description
 		// These rules should never be auto-added by the LLM
-		const hasDescription = z.string().min(10).safeParse(frontmatter.description).success
+		const hasDescription = z3.string().min(10).safeParse(frontmatter.description).success
 
 		if (!hasDescription) {
 			console.warn(
