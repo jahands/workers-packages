@@ -1,5 +1,11 @@
 # cron-workflow
 
+## 0.6.3
+
+### Patch Changes
+
+- 60a24b2: chore: update zod to 4.5.4
+
 ## 0.6.2
 
 ### Patch Changes

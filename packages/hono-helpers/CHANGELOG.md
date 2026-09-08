@@ -1,5 +1,12 @@
 # @repo/hono-helpers
 
+## 0.1.9
+
+### Patch Changes
+
+- Updated dependencies [60a24b2]
+  - workers-tagged-logger@1.0.2
+
 ## 0.1.8
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # workers-tagged-logger
 
+## 1.0.2
+
+### Patch Changes
+
+- 60a24b2: chore: update zod to 4.5.4
+
 ## 1.0.1
 
 ### Patch Changes

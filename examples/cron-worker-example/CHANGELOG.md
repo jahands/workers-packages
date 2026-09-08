@@ -1,5 +1,14 @@
 # @repo/cron-worker-example
 
+## 0.1.19
+
+### Patch Changes
+
+- Updated dependencies [60a24b2]
+  - workers-tagged-logger@1.0.2
+  - cron-workflow@0.6.3
+  - @repo/hono-helpers@0.1.9
+
 ## 0.1.18
 
 ### Patch Changes

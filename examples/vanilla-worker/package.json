@@ -1,6 +1,6 @@
 {
 	"name": "@repo/vanilla-worker",
-	"version": "0.2.58",
+	"version": "0.2.59",
 	"private": true,
 	"sideEffects": false,
 	"scripts": {

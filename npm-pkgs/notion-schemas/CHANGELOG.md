@@ -1,5 +1,11 @@
 # notion-schemas
 
+## 0.3.7
+
+### Patch Changes
+
+- 60a24b2: chore: update zod to 4.5.4
+
 ## 0.3.6
 
 ### Patch Changes
