@@ -10,7 +10,7 @@ const config = {
 			label: 'use zod v4 for some packages',
 			dependencies: ['zod'],
 			packages: ['notion-schemas'],
-			pinVersion: '^4.1.11',
+			pinVersion: '^4.5.4',
 		},
 		{
 			label: 'use remote @jahands/cli-tools to avoid circular dependency',

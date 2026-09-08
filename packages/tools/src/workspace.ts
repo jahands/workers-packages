@@ -1,7 +1,7 @@
 import { dirExists } from '@jahands/cli-tools'
 import pMap from 'p-map'
 import { parse as parseYaml } from 'yaml'
-import { z } from 'zod/v4'
+import * as z from 'zod'
 
 import { getDeployTypeFromPackageJson, PackageJson } from './package-json'
 import { getRepoRoot } from './path'

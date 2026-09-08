@@ -1,6 +1,6 @@
 import { createDaggerEnv } from 'dagger-env'
 import { createDaggerCommandRunner } from 'dagger-env/run'
-import { z } from 'zod/v4'
+import * as z from 'zod'
 
 export const dagEnv = createDaggerEnv({
 	args: z.object({}),

@@ -126,7 +126,7 @@
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"vitest": "3.2.4",
-		"zod": "4.1.12"
+		"zod": "4.5.4"
 	},
 	"peerDependencies": {
 		"@commander-js/extra-typings": "^13.0.0 || ^14.0.0",

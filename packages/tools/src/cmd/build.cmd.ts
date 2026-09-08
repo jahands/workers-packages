@@ -3,7 +3,7 @@ import { validateArg } from '@jahands/cli-tools/args'
 import * as esbuild from 'esbuild'
 import pMap from 'p-map'
 import { match } from 'ts-pattern'
-import { z } from 'zod'
+import * as z from 'zod'
 
 import { TSHelpers } from '../tsconfig'
 

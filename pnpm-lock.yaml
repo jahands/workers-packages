@@ -75,8 +75,8 @@ importers:
         specifier: 14.0.1
         version: 14.0.1
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
       zx:
         specifier: 8.8.4
         version: 8.8.4
@@ -152,8 +152,8 @@ importers:
         specifier: workspace:*
         version: link:../../npm-pkgs/workers-tagged-logger
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.9.13
@@ -183,8 +183,8 @@ importers:
         specifier: 4.9.11
         version: 4.9.11
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.9.13
@@ -281,8 +281,8 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
       zx:
         specifier: 8.8.4
         version: 8.8.4
@@ -339,8 +339,8 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
       zx:
         specifier: 8.8.4
         version: 8.8.4
@@ -378,8 +378,8 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
       zx:
         specifier: 8.8.4
         version: 8.8.4
@@ -412,8 +412,8 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
 
   npm-pkgs/cron-workflow:
     dependencies:
@@ -421,8 +421,8 @@ importers:
         specifier: 5.4.0
         version: 5.4.0
       zod:
-        specifier: ^4.1.12
-        version: 4.1.12
+        specifier: ^4.5.4
+        version: 4.5.4
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.9.13
@@ -481,8 +481,8 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
 
   npm-pkgs/dagger-helpers:
     dependencies:
@@ -545,8 +545,8 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
       zx:
         specifier: 8.8.4
         version: 8.8.4
@@ -588,8 +588,8 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
       zod:
-        specifier: ^4.1.11
-        version: 4.1.12
+        specifier: ^4.5.4
+        version: 4.5.4
 
   npm-pkgs/opencode-plugin-cloudflare:
     devDependencies:
@@ -719,8 +719,8 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
       zx:
         specifier: 8.8.4
         version: 8.8.4
@@ -741,14 +741,14 @@ importers:
         specifier: workspace:*
         version: link:../../packages/typescript-config
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
 
   npm-pkgs/workers-tagged-logger:
     dependencies:
       zod:
-        specifier: ^4.1.12
-        version: 4.1.12
+        specifier: ^4.5.4
+        version: 4.5.4
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.9.13
@@ -812,8 +812,8 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
 
   packages/eslint-config:
     devDependencies:
@@ -899,8 +899,8 @@ importers:
         specifier: workspace:*
         version: link:../../npm-pkgs/workers-tagged-logger
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.9.13
@@ -928,7 +928,7 @@ importers:
         version: 14.0.0(commander@14.0.1)
       '@jahands/cli-tools':
         specifier: npm:@jahands/cli-tools@0.11.1
-        version: 0.11.1(@commander-js/extra-typings@14.0.0(commander@14.0.1))(commander@14.0.1)(typescript@6.0.3)(zod@4.1.12)(zx@8.8.4)
+        version: 0.11.1(@commander-js/extra-typings@14.0.0(commander@14.0.1))(commander@14.0.1)(typescript@6.0.3)(zod@4.5.4)(zx@8.8.4)
       '@types/fs-extra':
         specifier: 11.0.4
         version: 11.0.4
@@ -966,8 +966,8 @@ importers:
         specifier: 2.8.1
         version: 2.8.1
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
       zx:
         specifier: 8.8.4
         version: 8.8.4
@@ -999,8 +999,8 @@ importers:
         specifier: 2.8.1
         version: 2.8.1
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
       zx:
         specifier: 8.8.4
         version: 8.8.4
@@ -1079,8 +1079,8 @@ importers:
         specifier: workspace:*
         version: link:../../npm-pkgs/workers-tagged-logger
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
 
   turbo/generators:
     dependencies:
@@ -1091,8 +1091,8 @@ importers:
         specifier: 1.6.6
         version: 1.6.6
       zod:
-        specifier: 4.1.12
-        version: 4.1.12
+        specifier: 4.5.4
+        version: 4.5.4
       zx:
         specifier: 8.8.4
         version: 8.8.4
@@ -6717,8 +6717,8 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
-  zod@4.1.12:
-    resolution: {integrity: sha512-JInaHOamG8pt5+Ey8kGmdcAcg3OL9reK8ltczgHTAwNhMys/6ThXHityHxVV2p3fkw/c+MAvBHFVYHFZDmjMCQ==}
+  zod@4.5.4:
+    resolution: {integrity: sha512-sC95tT5iHHH9gtpj6A81kh+NEaRAUFN+qlUPDUbRfOMvNf5QCBqsb3WgvnpVtK5Y+4UfA6KqufotuTvMGiTlsA==}
 
   zx@8.8.4:
     resolution: {integrity: sha512-44GcD+ZlM/v1OQtbwnSxLPcoE1ZEUICmR+RSbJZLAqfIixNLuMjLyh0DcS75OyfJ/sWYAwCWDmDvJ4hdnANAPQ==}
@@ -7688,12 +7688,12 @@ snapshots:
     dependencies:
       minipass: 7.1.2
 
-  '@jahands/cli-tools@0.11.1(@commander-js/extra-typings@14.0.0(commander@14.0.1))(commander@14.0.1)(typescript@6.0.3)(zod@4.1.12)(zx@8.8.4)':
+  '@jahands/cli-tools@0.11.1(@commander-js/extra-typings@14.0.0(commander@14.0.1))(commander@14.0.1)(typescript@6.0.3)(zod@4.5.4)(zx@8.8.4)':
     dependencies:
       '@commander-js/extra-typings': 14.0.0(commander@14.0.1)
       commander: 14.0.1
       typescript: 6.0.3
-      zod: 4.1.12
+      zod: 4.5.4
       zx: 8.8.4
 
   '@jridgewell/gen-mapping@0.3.13':
@@ -13015,6 +13015,6 @@ snapshots:
 
   zod@3.25.76: {}
 
-  zod@4.1.12: {}
+  zod@4.5.4: {}
 
   zx@8.8.4: {}

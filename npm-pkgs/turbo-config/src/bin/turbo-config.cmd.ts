@@ -4,7 +4,7 @@ import 'zx/globals'
 
 import { Command } from '@commander-js/extra-typings'
 import { catchProcessError } from '@jahands/cli-tools'
-import { z } from 'zod'
+import * as z from 'zod'
 
 import { checkTurboJson, generateTurboJson } from '../cli'
 

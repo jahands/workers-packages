@@ -1,6 +1,6 @@
 import { dirExistsSync } from '@jahands/cli-tools/fs'
 import pMap from 'p-map'
-import { z } from 'zod/v4'
+import * as z from 'zod'
 
 import { getRepoRoot } from './path'
 

@@ -1,9 +1,8 @@
 import { program } from '@commander-js/extra-typings'
-import z, { ZodError } from 'zod/v4'
+import * as z from 'zod/v4'
 import { chalk } from 'zx'
 
 import type { Command } from '@commander-js/extra-typings'
-import type { ZodType } from 'zod/v4'
 
 /**
  * Parses an argument using a zod validator. If it fails,
@@ -12,7 +11,7 @@ import type { ZodType } from 'zod/v4'
  * @param cmd Optional commander Command to use when throwing an error. Defaults to `program`
  * @returns The zod type specified
  */
-export function validateArg<T extends ZodType>(validator: T, cmd?: Command) {
+export function validateArg<T extends z.ZodType>(validator: T, cmd?: Command) {
 	return (s: string) => parseArg(s, validator, cmd)
 }
 
@@ -24,11 +23,15 @@ export function validateArg<T extends ZodType>(validator: T, cmd?: Command) {
  * @param cmd Optional commander Command to use when throwing an error. Defaults to `program`
  * @returns The zod type specified
  */
-export function parseArg<T extends ZodType>(s: string, validator: T, cmd?: Command): T['_output'] {
+export function parseArg<T extends z.ZodType>(
+	s: string,
+	validator: T,
+	cmd?: Command
+): T['_output'] {
 	try {
 		return validator.parse(s)
 	} catch (err) {
-		if (err instanceof ZodError && err.issues.length > 0) {
+		if (err instanceof z.ZodError && err.issues.length > 0) {
 			throw (cmd ?? program).error(
 				`${chalk.redBright('error')}${chalk.grey(':')} ${z.prettifyError(err)}`
 			)

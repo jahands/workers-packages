@@ -1,5 +1,5 @@
 import { dag } from '@dagger.io/dagger'
-import { z } from 'zod/v4'
+import * as z from 'zod/v4'
 
 import type { Container, Secret } from '@dagger.io/dagger'
 

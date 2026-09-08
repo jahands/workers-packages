@@ -1,4 +1,4 @@
-import { z } from 'zod/v4'
+import * as z from 'zod'
 
 type DeepPartial<T> = T extends object
 	? {

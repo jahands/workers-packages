@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import * as pkg from 'empathic/package'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import z from 'zod/v4'
+import * as z from 'zod'
 
 import { buildWranglerConfig, formatWranglerConfig } from './config-builder.js'
 import { hasExistingWranglerConfig, writeWranglerConfig } from './fs.js'

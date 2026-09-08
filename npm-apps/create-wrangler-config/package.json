@@ -55,7 +55,7 @@
 		"commander": "14.0.1",
 		"empathic": "2.0.0",
 		"vitest": "3.2.4",
-		"zod": "4.1.12",
+		"zod": "4.5.4",
 		"zx": "8.8.4"
 	},
 	"publishConfig": {

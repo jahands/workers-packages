@@ -24,7 +24,7 @@ npm install dagger-env zod
 
 ```typescript
 import { createDaggerEnv } from 'dagger-env'
-import { z } from 'zod/v4'
+import * as z from 'zod/v4'
 
 // Define your environment configuration
 const myDaggerEnv = createDaggerEnv({
@@ -80,7 +80,7 @@ export class MyModule {
 ```typescript
 import { createDaggerEnv } from 'dagger-env'
 import { createDaggerCommandRunner } from 'dagger-env/run'
-import { z } from 'zod/v4'
+import * as z from 'zod/v4'
 
 // Create your DaggerEnv configuration
 const myDaggerEnv = createDaggerEnv({
@@ -311,7 +311,7 @@ const multiEnvDaggerEnv = createDaggerEnv({
 For advanced use cases where you need to extract TypeScript types:
 
 ```typescript
-import { z } from 'zod/v4'
+import * as z from 'zod/v4'
 
 import type { DaggerOptionsFromConfig } from 'dagger-env'
 

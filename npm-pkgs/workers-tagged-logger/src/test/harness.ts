@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { z } from 'zod/v4'
+import * as z from 'zod'
 
 import { WorkersLogger } from '../logger.js'
 import { ConsoleLog, LogTags } from './logger/types.js'
