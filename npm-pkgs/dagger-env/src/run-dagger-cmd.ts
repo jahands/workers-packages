@@ -1,3 +1,4 @@
+import { Result } from 'better-result'
 import * as z from 'zod/v4'
 import { $, fs } from 'zx'
 
@@ -86,17 +87,18 @@ export interface RunDaggerCommandOptions {
 async function fetchInfisicalSecrets(
 	config: InfisicalProviderConfig
 ): Promise<Record<string, string>> {
-	const exportedSecrets = InfisicalSecret.array().parse(
-		await $`infisical export --silent --format=json --projectId ${config.projectId} --env ${config.env} --path ${config.path}`.json()
+	const exportResult = await Result.tryPromise(
+		() =>
+			$({
+				quiet: true,
+				nothrow: false,
+				timeout: 5000,
+				timeoutSignal: 'SIGKILL',
+			})`infisical export --silent --format=json --projectId ${config.projectId} --env ${config.env} --path ${config.path}`,
+		{ retry: { times: 2, delayMs: 1000, backoff: 'exponential' } }
 	)
-
-	return exportedSecrets.reduce(
-		(acc, s) => {
-			acc[s.key] = s.value
-			return acc
-		},
-		{} as Record<string, string>
-	)
+	const secrets = InfisicalSecret.array().parse(JSON.parse(exportResult.unwrap().stdout))
+	return Object.fromEntries(secrets.map((secret) => [secret.key, secret.value]))
 }
 
 /**

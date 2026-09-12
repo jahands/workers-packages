@@ -55,6 +55,7 @@
 		"test": "run-vitest"
 	},
 	"dependencies": {
+		"better-result": "2.7.0",
 		"zx": "8.8.4"
 	},
 	"devDependencies": {

@@ -32,6 +32,18 @@ vi.mock('zx', () => {
 			mocks.fetchCmd(cmd)
 			return { json: mocks.fetchJson }
 		}
+		if (typeof firstArg === 'object' && firstArg !== null && 'timeout' in firstArg) {
+			return async (pieces: TemplateStringsArray, ...templateVals: unknown[]) => {
+				mocks.fetchCmd(
+					pieces.reduce(
+						(acc, piece, i) =>
+							acc + piece + (i < templateVals.length ? String(templateVals[i]) : ''),
+						''
+					)
+				)
+				return { exitCode: 0, stdout: JSON.stringify(await mocks.fetchJson()) }
+			}
+		}
 		// Options call: $({ env, stdio }) returns a template executor
 		return (_pieces: TemplateStringsArray, ...templateVals: unknown[]) =>
 			mocks.spawn(
