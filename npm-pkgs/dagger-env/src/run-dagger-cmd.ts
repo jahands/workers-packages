@@ -1,3 +1,4 @@
+import { Result } from 'better-result'
 import * as z from 'zod/v4'
 import { $, fs } from 'zx'
 
@@ -86,34 +87,18 @@ export interface RunDaggerCommandOptions {
 async function fetchInfisicalSecrets(
 	config: InfisicalProviderConfig
 ): Promise<Record<string, string>> {
-	for (let attempt = 0; attempt < 3; attempt++) {
-		const commandResult = await $({
-			quiet: true,
-			nothrow: true,
-			timeout: 5000,
-			timeoutSignal: 'SIGKILL',
-		})`infisical export --silent --format=json --projectId ${config.projectId} --env ${config.env} --path ${config.path}`
-		if (commandResult.exitCode === 0) {
-			const secrets = InfisicalSecret.array().parse(JSON.parse(commandResult.stdout))
-			return Object.fromEntries(secrets.map((secret) => [secret.key, secret.value]))
-		}
-		const status = commandResult.stderr.match(/(?:\[status-code=|Response Code:\s*)(\d{3})/)?.[1]
-		const retryable =
-			status !== undefined
-				? Number(status) === 429 || Number(status) >= 500
-				: commandResult.signal === 'SIGKILL' ||
-					commandResult.exitCode === 137 ||
-					/ETIMEDOUT|ECONNRESET|ECONNREFUSED|EAI_AGAIN|connection reset|connection refused|i\/o timeout|TLS handshake timeout|unexpected EOF/i.test(
-						commandResult.stderr
-					)
-		if (!retryable || attempt === 2) {
-			throw new Error(
-				`Infisical export failed${status ? ` (HTTP ${status})` : ''} after ${attempt + 1} attempt(s)`
-			)
-		}
-		await new Promise((resolve) => setTimeout(resolve, 1000 * (attempt + 1)))
-	}
-	throw new Error('Infisical export retries exhausted')
+	const exportResult = await Result.tryPromise(
+		() =>
+			$({
+				quiet: true,
+				nothrow: false,
+				timeout: 5000,
+				timeoutSignal: 'SIGKILL',
+			})`infisical export --silent --format=json --projectId ${config.projectId} --env ${config.env} --path ${config.path}`,
+		{ retry: { times: 2, delayMs: 1000, backoff: 'exponential' } }
+	)
+	const secrets = InfisicalSecret.array().parse(JSON.parse(exportResult.unwrap().stdout))
+	return Object.fromEntries(secrets.map((secret) => [secret.key, secret.value]))
 }
 
 /**

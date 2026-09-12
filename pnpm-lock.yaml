@@ -461,6 +461,9 @@ importers:
 
   npm-pkgs/dagger-env:
     dependencies:
+      better-result:
+        specifier: 2.7.0
+        version: 2.7.0
       zx:
         specifier: 8.8.4
         version: 8.8.4
