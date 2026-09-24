@@ -1,18 +1,18 @@
 ---
-description: ALWAYS read this guide when running inline python scripts. This should be used when the user says "use inline python" or "run inline python"
-globs:
-alwaysApply: false
+name: python-inline-scripts
+description: Guide for running inline Python scripts with uv. This should be used when the user says "use inline python"
 ---
-<python-inline-scripts>
 
-<title>Python Inline Scripts with uv</title>
+## Python Inline Scripts with uv
 
-<IMPORTANT>
+### IMPORTANT
+
 - NEVER add stdlib modules like json, os, re, etc. to dependencies OR THE SCRIPT WILL FAIL
 - ALWAYS assume Python 3.12+
-</IMPORTANT>
 
-<example>
+### Example
+
+```bash
 uv run --no-project -q --script - < <(cat <<'EOF'
 # /// script
 # # ONLY add dependencies array if you need PyPi packages
@@ -26,6 +26,4 @@ import httpx
 print(httpx.get("https://api.github.com/zen").text)
 EOF
 )
-</example>
-
-</python-inline-scripts>
+```

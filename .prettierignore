@@ -18,3 +18,4 @@ turbo.json
 vite.config.ts.timestamp*
 vitest.config.ts.timestamp*
 worker-configuration.d.ts
+/.agents/

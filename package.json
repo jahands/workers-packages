@@ -31,6 +31,7 @@
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@repo/workspace-dependencies": "workspace:*",
+		"@sentry/dotagents": "3.0.1",
 		"@turbo/gen": "2.5.8",
 		"npm-run-all2": "8.0.4",
 		"prettier": "3.6.2",
