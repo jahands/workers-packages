@@ -108,6 +108,12 @@ update *flags:
 runx *flags:
   bun runx {{flags}}
 
+# Manage agent skills (see agents.toml). Use `just update skills` to install and commit them.
+[group('4. utility')]
+[positional-arguments]
+dotagents *args:
+  bun dotagents --project "$@"
+
 # Generate turbo.json
 [group('4. Maintenance')]
 generate-turbo-config:

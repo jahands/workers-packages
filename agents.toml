@@ -1,0 +1,25 @@
+version = 1
+agents = ["opencode", "cursor", "codex"]
+
+[trust]
+allow_all = true
+
+[[skills]]
+name = "auto-commit"
+source = "jahands/prompts"
+
+[[skills]]
+name = "python-inline-scripts"
+source = "jahands/prompts"
+
+[[skills]]
+name = "typescript-inline-scripts"
+source = "jahands/prompts"
+
+[[skills]]
+name = "zod-v4"
+source = "jahands/prompts"
+
+[[skills]]
+name = "babysit"
+source = "jahands/prompts"
