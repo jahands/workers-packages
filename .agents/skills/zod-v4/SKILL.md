@@ -5,6 +5,16 @@ description: Zod v4 coding guidelines and migration reference. ALWAYS read this 
 
 ## Zod v4 Guidelines
 
+### Imports
+
+```typescript
+import * as z from 'zod'
+```
+
+**Requirements:**
+- ALWAYS import Zod as a namespace
+- NEVER use `import { z } from 'zod'` or a default import
+
 ### Type Inference
 
 Every schema MUST have inferred type above it:

@@ -15,7 +15,7 @@ description: Guide for running inline TypeScript scripts with Bun. This should b
 
 ```bash
 bun run --install=fallback - < <(cat <<'EOF'
-import { z } from 'zod'
+import * as z from 'zod'
 
 console.log(z.coerce.number().parse('5'))
 EOF
