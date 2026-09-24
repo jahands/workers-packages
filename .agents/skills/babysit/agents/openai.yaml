@@ -1,0 +1,7 @@
+interface:
+  display_name: "Babysit"
+  short_description: "Finish, publish, and verify coding tasks"
+  default_prompt: "Use $babysit to complete this task through a green, reviewed, ready-to-merge PR."
+
+policy:
+  allow_implicit_invocation: false
