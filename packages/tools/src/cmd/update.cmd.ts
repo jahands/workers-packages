@@ -59,7 +59,7 @@ updateCmd
 		)
 
 		const $$ = $({ stdio: 'pipe', verbose: false })
-		await $$`git add -A .agents/skills`
+		await $$`git add -A .agents/skills agents.lock`
 		const changedFiles = (await $$`git diff --cached --name-only -- .agents/skills`.text()).trim()
 		if (!changedFiles) {
 			echo(chalk.yellow('Skills are up to date'))
@@ -70,5 +70,5 @@ updateCmd
 		const message = ['chore: update skills', '', ...[...skills].sort().map((s) => `- ${s}`)].join(
 			'\n'
 		)
-		await $`git commit -m ${message} -- .agents/skills`
+		await $`git commit -m ${message} -- .agents/skills agents.lock`
 	})
