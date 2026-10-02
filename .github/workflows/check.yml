@@ -39,7 +39,7 @@ jobs:
       - name: Install Dagger
         uses: dagger/dagger-for-github@v8.2.0
         with:
-          version: '0.20.6'
+          version: '0.21.9'
       - name: Check & Test (Dagger)
         env:
           # `infisical export` in dagger-env resolves the instance URL from this env var
