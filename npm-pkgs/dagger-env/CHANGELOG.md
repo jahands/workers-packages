@@ -1,5 +1,11 @@
 # dagger-env
 
+## 1.3.2
+
+### Patch Changes
+
+- 14b642b: chore: update dagger to 0.21.9
+
 ## 1.3.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @repo/tools
 
+## 0.13.0
+
+### Minor Changes
+
+- f534307: feat: add `runx update skills` to install skills with dotagents and commit them
+
 ## 0.12.3
 
 ### Patch Changes

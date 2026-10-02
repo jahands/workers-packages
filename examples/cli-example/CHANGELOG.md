@@ -1,5 +1,12 @@
 # @repo/cli-example
 
+## 0.1.49
+
+### Patch Changes
+
+- Updated dependencies [d02bdf3]
+  - @jahands/cli-tools@0.11.6
+
 ## 0.1.48
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @jahands/cli-tools
 
+## 0.11.6
+
+### Patch Changes
+
+- d02bdf3: fix: report subprocesses killed by a signal in catchProcessError
+
 ## 0.11.5
 
 ### Patch Changes
