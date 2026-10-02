@@ -1,3 +1,5 @@
+import * as os from 'node:os'
+
 import type { Writable } from 'node:stream'
 
 /**
@@ -354,7 +356,7 @@ export async function prefixStderr(
 export interface CatchProcessErrorOptions {
 	/**
 	 * Exit with the same exit code as the `ProcessOutput` error
-	 * (if available) instead of `1`
+	 * (128 + the signal number for a signal kill) instead of `1`
 	 *
 	 * @default false
 	 */
@@ -388,15 +390,20 @@ export interface CatchProcessErrorOptions {
  */
 export function catchProcessError({ useProcessExitCode }: CatchProcessErrorOptions = {}) {
 	return (err: unknown): never => {
-		// Don't show giant stacktrace for process errors
-		if (err instanceof ProcessOutput) {
-			if (useProcessExitCode) {
-				process.exit(err.exitCode ?? 1)
-			} else {
-				process.exit(1)
-			}
-		} else {
+		if (!(err instanceof ProcessOutput)) {
 			throw err
 		}
+
+		// a signal kill (e.g. the OOM killer) leaves no stderr from the subprocess
+		if (err.signal !== null) {
+			console.error(chalk.red(`subprocess killed by ${err.signal}`))
+		}
+
+		if (!useProcessExitCode) {
+			process.exit(1)
+		}
+
+		const signalNumber = err.signal === null ? undefined : os.constants.signals[err.signal]
+		process.exit(err.exitCode ?? (signalNumber === undefined ? 1 : 128 + signalNumber))
 	}
 }
