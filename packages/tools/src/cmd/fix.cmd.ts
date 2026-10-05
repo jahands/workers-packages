@@ -1,5 +1,6 @@
 import { Command } from '@commander-js/extra-typings'
 import Table from 'cli-table3'
+import { $, cd, chalk, echo, path } from 'zx'
 
 import { getRepoRoot } from '../path'
 import { getOutcome, SHFMT_SKIPPED_EXIT_CODE } from '../proc'

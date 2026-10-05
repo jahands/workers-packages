@@ -1,8 +1,7 @@
-import 'zx/globals'
-
 import { program } from '@commander-js/extra-typings'
 import { validateArg } from '@jahands/cli-tools/args'
 import { catchProcessError } from '@jahands/cli-tools/proc'
+import { chalk, echo } from 'zx'
 
 import { version } from '../package.json'
 import { createMonorepo, RepoName } from './create-monorepo'

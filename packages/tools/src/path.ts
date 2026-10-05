@@ -3,6 +3,7 @@ import * as find from 'empathic/find'
 import * as pkg from 'empathic/package'
 import memoizeOne from 'memoize-one'
 import * as z from 'zod'
+import { fs, path } from 'zx'
 
 export const getRepoRoot = memoizeOne(() => {
 	const pnpmLock = z

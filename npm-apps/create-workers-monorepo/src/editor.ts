@@ -1,5 +1,6 @@
 import memoizeOne from 'memoize-one'
 import pFilter from 'p-filter'
+import { which } from 'zx'
 
 export type AIEditorCommand = 'cursor' | 'code' | 'windsurf'
 

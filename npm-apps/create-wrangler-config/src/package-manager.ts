@@ -1,6 +1,5 @@
-import 'zx/globals'
-
 import * as z from 'zod'
+import { $, chalk, echo, fs } from 'zx'
 
 /**
  * Supported package managers

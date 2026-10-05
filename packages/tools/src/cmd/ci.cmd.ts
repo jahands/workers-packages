@@ -1,4 +1,5 @@
 import { Command } from '@commander-js/extra-typings'
+import { $ } from 'zx'
 
 import type { Options as ZXOptions } from 'zx'
 

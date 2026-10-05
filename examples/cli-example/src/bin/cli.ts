@@ -1,6 +1,5 @@
-import 'zx/globals'
-
 import { program } from '@commander-js/extra-typings'
+import { ProcessOutput } from 'zx'
 
 import { exampleCmd } from '../cmd/example'
 

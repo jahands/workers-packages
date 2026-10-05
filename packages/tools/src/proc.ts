@@ -1,3 +1,5 @@
+import { chalk } from 'zx'
+
 export function getOutcome({
 	exitCode,
 	skippedCode,

@@ -2,6 +2,7 @@ import { dirExists } from '@jahands/cli-tools'
 import pMap from 'p-map'
 import { parse as parseYaml } from 'yaml'
 import * as z from 'zod'
+import { $, fs, glob, path } from 'zx'
 
 import { getDeployTypeFromPackageJson, PackageJson } from './package-json'
 import { getRepoRoot } from './path'

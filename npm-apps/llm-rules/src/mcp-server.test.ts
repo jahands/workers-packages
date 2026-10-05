@@ -1,8 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-
-import 'zx/globals'
+import { $ } from 'zx'
 
 describe('MCP Server', () => {
 	const fixturesDir = join(__dirname, 'test', 'fixtures')

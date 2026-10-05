@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { $ } from 'zx'
 
 import { catchProcessError } from './proc.js'
 

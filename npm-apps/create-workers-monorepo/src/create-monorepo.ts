@@ -3,6 +3,7 @@ import { confirm, input, select } from '@inquirer/prompts'
 import { cliError } from '@jahands/cli-tools/errors'
 import pMap from 'p-map'
 import * as z from 'zod'
+import { $, cd, chalk, echo, fs, glob, which } from 'zx'
 
 import { claudeExists, getAvailableEditors } from './editor'
 import { isDirEmpty } from './fs'

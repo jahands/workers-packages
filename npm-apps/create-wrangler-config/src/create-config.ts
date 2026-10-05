@@ -1,6 +1,5 @@
-import 'zx/globals'
-
 import { cliError } from '@jahands/cli-tools/errors'
+import { chalk, echo, fs } from 'zx'
 
 import { buildWranglerConfig, formatWranglerConfig } from './config-builder.js'
 import { hasExistingWranglerConfig, writeWranglerConfig } from './fs.js'

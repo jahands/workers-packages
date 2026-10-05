@@ -4,6 +4,7 @@ import * as esbuild from 'esbuild'
 import pMap from 'p-map'
 import { match } from 'ts-pattern'
 import * as z from 'zod'
+import { $, fs, glob, path } from 'zx'
 
 import { TSHelpers } from '../tsconfig'
 

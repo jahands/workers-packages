@@ -1,6 +1,8 @@
 import * as os from 'node:os'
+import { chalk, ProcessOutput } from 'zx'
 
 import type { Writable } from 'node:stream'
+import type { ProcessPromise } from 'zx'
 
 /**
  * Logs ProcessOutput error and then throws it. Useful

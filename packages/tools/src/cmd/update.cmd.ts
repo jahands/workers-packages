@@ -1,4 +1,5 @@
 import { Command } from '@commander-js/extra-typings'
+import { $, cd, chalk, echo, fs } from 'zx'
 
 import { getRepoRoot } from '../path'
 import { updatePnpm } from '../update-pnpm'
