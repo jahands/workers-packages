@@ -5,17 +5,15 @@ description: Guide for running inline Python scripts with uv. This should be use
 
 ## Python Inline Scripts with uv
 
-### IMPORTANT
-
-- NEVER add stdlib modules like json, os, re, etc. to dependencies OR THE SCRIPT WILL FAIL
-- ALWAYS assume Python 3.12+
+- List only PyPI packages in `dependencies`. Stdlib modules (`json`, `os`, `re`) are not on PyPI, so uv fails to resolve the script.
+- Target Python 3.12+.
 
 ### Example
 
 ```bash
 uv run --no-project -q --script - < <(cat <<'EOF'
 # /// script
-# # ONLY add dependencies array if you need PyPi packages
+# # omit dependencies when the script only uses the stdlib
 # dependencies = [
 #   "httpx"
 # ]
