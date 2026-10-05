@@ -1,6 +1,6 @@
 {
 	"name": "@repo/cli-example",
-	"version": "0.1.49",
+	"version": "0.1.50",
 	"private": true,
 	"sideEffects": false,
 	"scripts": {
