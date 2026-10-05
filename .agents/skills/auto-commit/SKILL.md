@@ -45,6 +45,8 @@ When making changes to code, commit your changes incrementally as you work.
 - Commit after each logical unit of change
 - Each commit should represent one coherent change
 - Don't bundle unrelated changes
+- Stage only the files you changed (`git add <paths>`), not `git add -A`; the working tree may hold the user's own changes
+- If `git log` shows a different commit style (e.g. scopes), follow the repo's style
 
 ## Examples
 

@@ -5,11 +5,9 @@ description: Guide for running inline TypeScript scripts with Bun. This should b
 
 ## TypeScript Inline Scripts with Bun
 
-### IMPORTANT
-
-- ALWAYS assume Bun runtime with modern TypeScript features
-- Imported npm packages will be automatically installed by Bun
-- ALWAYS prefer Bun APIs where possible
+- Scripts run on Bun with modern TypeScript.
+- `--install=fallback` installs imported npm packages automatically.
+- Prefer Bun APIs over Node equivalents.
 
 ### Example
 
@@ -30,7 +28,7 @@ EOF
 - `Bun.file()` - File system operations and reading
 - `Bun.write()` - File writing operations
 - `fetch()` - HTTP requests (Web API standard)
-- `Bun.preconnect()` - URL preconnection for performance
+- `fetch.preconnect()` - URL preconnection for performance
 
 ### File System
 

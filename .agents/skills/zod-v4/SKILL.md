@@ -1,6 +1,6 @@
 ---
 name: zod-v4
-description: Zod v4 coding guidelines and migration reference. ALWAYS read this when using Zod validation library
+description: Zod v4 coding guidelines and v3 migration reference. Use when writing, reviewing, or migrating code that uses Zod.
 ---
 
 ## Zod v4 Guidelines
@@ -11,25 +11,20 @@ description: Zod v4 coding guidelines and migration reference. ALWAYS read this 
 import * as z from 'zod'
 ```
 
-**Requirements:**
-- ALWAYS import Zod as a namespace
-- NEVER use `import { z } from 'zod'` or a default import
+Import Zod as a namespace, not `import { z } from 'zod'` or a default import.
 
 ### Type Inference
 
-Every schema MUST have inferred type above it:
+Every schema has its inferred type directly above it:
 
 ```typescript
 export type User = z.infer<typeof User>
 export const User = z.object({...})
 ```
 
-**Requirements:**
-- ALWAYS place type above schema
-- ALWAYS use same name for type & schema
-- NEVER use "Schema" suffix
-- ALWAYS use JSDoc (`/** */`), never `//`
-- NO EXCEPTIONS - even for internal/helper schemas
+- Type above schema, with the same name and no `Schema` suffix
+- Document with JSDoc (`/** */`), not `//`
+- This applies to internal and helper schemas too
 
 ### String Validation
 
@@ -71,7 +66,7 @@ z.string().refine((val) => /[A-Z]/.test(val), {
 Use `.check()` for advanced validation, `.refine()` for simple validation:
 
 **Migration steps:**
-- `.superRefine()` → `.check()` for advanced validation with multiple issues
+- Prefer `.check()` over `.superRefine()` (still supported) for advanced validation with multiple issues
 - In `.check()`: `val` → `ctx.value`, `ctx.addIssue()` → `ctx.issues.push()`
 - `z.ZodIssueCode.custom` → `'custom'` string
 - Add `input: ctx.value` to issue object
@@ -108,8 +103,8 @@ z.record(keyType, valueType)
 
 - **Default:** `.default()` applies to output; use `.prefault()` for v3 behavior
 - **File validation:** `z.file().min(1024).max(5*1024*1024).mime(['image/jpeg'])`
-- **Pipe:** `z.pipe(z.string(), z.number())` for transformations
-- **Async:** Use `.check(async (val) => {...})` for async validation
+- **Pipe:** `z.string().pipe(z.coerce.number())` feeds one schema's output into the next
+- **Async:** `.refine(async (val) => ...)` or `.check(async (ctx) => ...)`, parsed with `.parseAsync()`
 - **Arrays:** `z.array(z.email())` or `z.email().array()`
 - **Optional:** `.optional()`, `.nullable()`, `.nullish()`
 
@@ -123,7 +118,7 @@ z.record(keyType, valueType)
 | .format()               | z.treeifyError()            |
 | z.string().datetime()   | z.iso.datetime()            |
 | .args().returns()       | {input:[...], output:...}   |
-| .superRefine()          | .check()                    |
+| .superRefine()          | .check() (preferred)        |
 | ctx.addIssue()          | ctx.issues.push()           |
 | z.ZodIssueCode.custom   | 'custom'                    |
 
