@@ -1,4 +1,4 @@
-import { argument, check, Container, dag, Directory, func, object, Secret } from '@dagger.io/dagger'
+import { argument, Container, dag, Directory, func, object, Secret } from '@dagger.io/dagger'
 import { shell } from '@jahands/dagger-helpers'
 
 import { dagEnv } from './dagger-env'
@@ -125,7 +125,6 @@ export class WorkersPackages {
 	}
 
 	@func()
-	@check()
 	async test(options?: Secret): Promise<void> {
 		if (!options) {
 			throw new Error('Options are required')
