@@ -15,6 +15,7 @@ export const User = z.object({...})
 ```
 
 - Pass `error` only for business-logic messages; Zod's default messages are good
+- Format errors for display with `z.prettifyError()`
 - Use `.refine()` for a simple check with one error and `.check()` for multiple issues, pushing `{ code: 'custom', message, input: ctx.value }` to `ctx.issues`
 - `.default()` applies to the output; `.prefault()` gives v3's behavior
 - `z.record()` requires both key and value schemas
@@ -27,7 +28,7 @@ export const User = z.object({...})
 | `z.number().int()`                        | `z.int()` (also `z.int32()`, `z.float64()`) |
 | `{ message: '...' }`                      | `{ error: '...' }`                          |
 | `.strict()`, `.passthrough()`             | `z.strictObject()`, `z.looseObject()`       |
-| `.format()`, `.flatten()`                 | `z.treeifyError()`, or `z.prettifyError()`  |
+| `.format()`, `.flatten()`                 | `z.treeifyError()`, `z.flattenError()`      |
 | `z.function().args(...).returns(...)`     | `z.function({ input: [...], output })`      |
 | `.superRefine()`, `ctx.addIssue()`        | `.check()`, `ctx.issues.push()`             |
 | `z.ZodIssueCode.custom`                   | `'custom'`                                  |
