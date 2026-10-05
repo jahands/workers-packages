@@ -1,5 +1,6 @@
 import { cliError } from '@jahands/cli-tools/errors'
 import * as z from 'zod'
+import { chalk, echo, fs } from 'zx'
 
 import { getTurboConfig } from './config'
 import { fileExists, readJsonFile } from './fs'

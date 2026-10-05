@@ -1,6 +1,7 @@
 import path from 'node:path'
 import { matchError, Result } from 'better-result'
 import * as z from 'zod'
+import { fs } from 'zx'
 
 import { getRepoRoot } from './path'
 

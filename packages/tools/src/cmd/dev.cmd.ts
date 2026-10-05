@@ -1,4 +1,5 @@
 import { Command } from '@commander-js/extra-typings'
+import { $, fs } from 'zx'
 
 import { getRepoRoot } from '../path'
 

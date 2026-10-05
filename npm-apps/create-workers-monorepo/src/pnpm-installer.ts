@@ -1,4 +1,5 @@
 import { cliError } from '@jahands/cli-tools/errors'
+import { $, chalk, echo, which } from 'zx'
 
 export async function ensurePnpmInstalled(targetDir: string, pnpmVersion: string): Promise<void> {
 	if (await which('pnpm', { nothrow: true })) {

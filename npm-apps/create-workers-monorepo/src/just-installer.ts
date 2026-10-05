@@ -1,5 +1,6 @@
 import { confirm, select } from '@inquirer/prompts'
 import Table from 'cli-table3'
+import { $, chalk, echo, which } from 'zx'
 
 export async function checkAndInstallJust(): Promise<void> {
 	// Check if just is already installed

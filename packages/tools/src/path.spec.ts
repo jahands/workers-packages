@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { path } from 'zx'
 
 import { getRepoRoot } from './path'
 

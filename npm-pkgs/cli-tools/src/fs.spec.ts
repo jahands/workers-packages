@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { fs } from 'zx'
 
 import { isNotFoundError } from './fs.js'
 

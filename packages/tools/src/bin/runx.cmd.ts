@@ -1,5 +1,3 @@
-import 'zx/globals'
-
 import { program } from '@commander-js/extra-typings'
 import { catchProcessError } from '@jahands/cli-tools/proc'
 

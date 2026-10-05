@@ -258,9 +258,9 @@ Documentation: https://developers.cloudflare.com/workers/
 
 **Important Notes**:
 
-- `src/bin/create-wrangler-config.ts` must contain `import 'zx/globals'` to provide global access to fs and other utilities
+- Explicitly import zx utilities where they're used (e.g. `import { fs } from 'zx'`) rather than relying on `zx/globals`
 - Never use 'utils' in file or directory names (use `fs.ts` not `fs-utils.ts`)
-- Use `echo('')` function and `chalk` package for nice log messages (both available as zx globals)
+- Use `echo('')` function and `chalk` package for nice log messages (both exported from `zx`)
 
 ### Error Handling
 

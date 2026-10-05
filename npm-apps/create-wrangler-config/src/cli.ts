@@ -1,7 +1,6 @@
-import 'zx/globals'
-
 import { program } from '@commander-js/extra-typings'
 import { catchProcessError } from '@jahands/cli-tools/proc'
+import { chalk, echo } from 'zx'
 
 import { version } from '../package.json'
 import { createWranglerConfig } from './create-config.js'

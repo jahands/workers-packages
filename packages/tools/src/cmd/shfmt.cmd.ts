@@ -1,4 +1,5 @@
 import { Command } from '@commander-js/extra-typings'
+import { $, chalk, echo, which } from 'zx'
 
 import { SHFMT_SKIPPED_EXIT_CODE } from '../proc'
 

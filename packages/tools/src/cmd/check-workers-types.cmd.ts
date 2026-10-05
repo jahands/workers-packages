@@ -1,4 +1,5 @@
 import { Command } from '@commander-js/extra-typings'
+import { $, chalk } from 'zx'
 
 export const checkWorkersTypesCmd = new Command('check-workers-types')
 	.description('Assert that there are no new or modified worker-configuration.d.ts files')

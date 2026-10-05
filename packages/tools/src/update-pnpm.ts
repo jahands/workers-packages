@@ -3,6 +3,7 @@ import Table from 'cli-table3'
 import * as toml from 'smol-toml'
 import { match } from 'ts-pattern'
 import * as z from 'zod'
+import { $, cd, chalk, echo, glob, which } from 'zx'
 
 import { getRepoRoot } from './path'
 import { PackageJson } from './pkg'

@@ -1,4 +1,4 @@
-import 'zx/globals'
+import { fs, path } from 'zx'
 
 /**
  * Check if any Wrangler configuration files exist in the current directory
