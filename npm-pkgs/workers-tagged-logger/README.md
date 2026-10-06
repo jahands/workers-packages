@@ -12,6 +12,7 @@ A wrapper around `console.log()` for structured logging in Cloudflare Workers, p
 - Can create a sub-context using `withLogTags` or `@WithLogTags` where `setTags()` will apply to that context but not the parent scope (powered by AsyncLocalStorage.)
 - Optional Hono middleware to easily initialize the top-level logger context.
 - Supports passing in custom tag hints to make consistent tagging easy across your application.
+- Observe finalized structured records with `onLog` while preserving normal console output.
 
 ## Usage
 
@@ -72,6 +73,37 @@ const prodLogger = new WorkersLogger<Tags>({ minimumLogLevel: 'warn' })
 // Logger with debug mode enabled (shows internal warnings)
 const debugLogger = new WorkersLogger<Tags>({ debug: true })
 ```
+
+### Observing Emitted Logs
+
+Use `onLog` to synchronously observe the finalized record written to the console. This is useful for
+enqueueing records for a second destination without changing the logger's normal Cloudflare output.
+
+```ts
+import { WorkersLogger } from 'workers-tagged-logger'
+
+import type { EmittedLog } from 'workers-tagged-logger'
+
+const pendingLogs: Readonly<EmittedLog>[] = []
+const logger = new WorkersLogger({
+  onLog: (log) => pendingLogs.push(log)
+})
+
+logger.info('Handling request')
+
+// Flush the batch from an application lifecycle boundary. For example:
+ctx.waitUntil(sendLogBatch(pendingLogs.splice(0)))
+```
+
+The observer runs synchronously after `console.log()` and only for records that pass log-level
+filtering (internal debug warnings are also observed when debug mode is enabled). It is inherited by loggers created with `withTags()`, `withFields()`, and
+`withLogLevel()`. Thrown errors are contained so an observer cannot fail application code; when
+debug mode is enabled, observer failures are written to the console.
+
+`onLog` is not awaited. If it returns a promise that rejects, the rejection is swallowed (and reported
+in debug mode), and work it starts may be cut off when the request ends. Logs emitted from inside
+`onLog` are written to the console but are not passed back to the observer. Keep it inexpensive and use it only to enqueue records; perform network
+requests, batching, retries, and flushing in application code.
 
 ### Debug Mode
 
