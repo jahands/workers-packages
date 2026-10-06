@@ -242,6 +242,144 @@ describe('WorkersLogger', () => {
 		})
 	})
 
+	describe('onLog', () => {
+		it('receives the finalized record while preserving console output', async () => {
+			const onLog = vi.fn()
+			const h = setupTest({ onLog })
+
+			await withLogTags({ source: 'worker-a' }, async () => {
+				h.log.withTags({ component: 'auth' }).withFields({ service: 'api' }).info('hello')
+			})
+
+			expect(onLog).toHaveBeenCalledOnce()
+			expect(onLog).toHaveBeenCalledWith({
+				level: 'info',
+				message: 'hello',
+				service: 'api',
+				tags: {
+					component: 'auth',
+					source: 'worker-a',
+				},
+				time: '2024-10-26T12:30:00.000Z',
+			})
+			expect(h.oneLog()).toEqual(onLog.mock.calls[0]?.[0])
+		})
+
+		it('is inherited by all derived logger variants', async () => {
+			const onLog = vi.fn()
+			const h = setupTest({ onLog })
+
+			await withLogTags({}, async () => {
+				h.log.withTags({ component: 'auth' }).info('tagged')
+				h.log.withFields({ service: 'api' }).info('with fields')
+				h.log.withLogLevel('debug').debug('with log level')
+			})
+
+			expect(onLog).toHaveBeenCalledTimes(3)
+			expect(onLog.mock.calls.map(([log]) => log.message)).toEqual([
+				'tagged',
+				'with fields',
+				'with log level',
+			])
+		})
+
+		it('is not called for records below the minimum log level', () => {
+			const onLog = vi.fn()
+			const h = setupTest({ minimumLogLevel: 'warn', onLog })
+
+			h.log.info('filtered')
+
+			expect(h.logs).toHaveLength(0)
+			expect(onLog).not.toHaveBeenCalled()
+		})
+
+		it('does not allow observer errors to break logging', () => {
+			const h = setupTest({
+				onLog: () => {
+					throw new Error('export failed')
+				},
+			})
+
+			expect(() => h.log.info('hello')).not.toThrow()
+			expect(h.oneLog().message).toBe('hello')
+		})
+
+		it('reports observer errors in debug mode without invoking the observer recursively', async () => {
+			const onLog = vi.fn(() => {
+				throw new Error('export failed')
+			})
+			const h = setupTest({ debug: true, onLog })
+
+			await withLogTags({}, async () => h.log.info('hello'))
+
+			expect(onLog).toHaveBeenCalledOnce()
+			expect(h.logs).toHaveLength(2)
+			expect(h.logAt(1)).toMatchObject({
+				level: 'error',
+				message: expect.stringContaining('onLog callback threw'),
+			})
+		})
+
+		it('does not re-invoke the observer for logs emitted from inside it', async () => {
+			const onLog = vi.fn()
+			const h = setupTest({ onLog })
+			onLog.mockImplementation(() => {
+				h.log.info('from observer')
+				h.log.withTags({ component: 'x' }).info('from derived observer')
+			})
+
+			await withLogTags({}, async () => h.log.info('hello'))
+
+			expect(onLog).toHaveBeenCalledOnce()
+			expect(h.logs.map((l) => l.message)).toEqual([
+				'hello',
+				'from observer',
+				'from derived observer',
+			])
+		})
+
+		it('resets the reentrancy guard after the observer throws', () => {
+			const onLog = vi.fn(() => {
+				throw new Error('boom')
+			})
+			const h = setupTest({ onLog })
+
+			h.log.info('one')
+			h.log.info('two')
+
+			expect(onLog).toHaveBeenCalledTimes(2)
+		})
+
+		it('swallows rejected promises from the observer and reports them in debug mode', async () => {
+			const onLog = vi.fn(async () => {
+				throw new Error('async failure')
+			})
+			const h = setupTest({ debug: true, onLog })
+
+			await withLogTags({}, async () => h.log.info('hello'))
+			await Promise.resolve()
+
+			expect(onLog).toHaveBeenCalledOnce()
+			expect(h.logs.at(-1)).toMatchObject({
+				level: 'error',
+				message: expect.stringContaining('async failure'),
+			})
+		})
+
+		it('observes internal debug warnings', () => {
+			const onLog = vi.fn()
+			const h = setupTest({ debug: true, onLog })
+
+			h.log.setTags({ user_id: 'test' })
+
+			expect(onLog).toHaveBeenCalledOnce()
+			expect(onLog.mock.calls[0]?.[0]).toMatchObject({
+				level: 'debug',
+				message: expect.stringContaining('unable to get log tags from async local storage'),
+			})
+		})
+	})
+
 	describe('withTags()', () => {
 		it('adds tags to new logger but does not affect parent', async () => {
 			const h = setupTest()
