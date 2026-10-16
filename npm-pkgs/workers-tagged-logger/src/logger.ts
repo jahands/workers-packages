@@ -27,6 +27,12 @@ export type ConsoleLog = {
 	tags?: LogTags
 }
 
+/** A finalized structured log record emitted by WorkersLogger. */
+export type EmittedLog = ConsoleLog & Record<string, unknown>
+
+/** Synchronously observes a finalized structured log record. */
+export type LogObserver = (log: Readonly<EmittedLog>) => void
+
 /**
  * Converts a string based log-level into a number. Useful for filtering out for
  * configured log levels.
@@ -86,6 +92,17 @@ export interface WorkersLoggerOptions {
 	 * @default false
 	 */
 	debug?: boolean
+	/**
+	 * Called synchronously after a finalized log record is written to the console.
+	 *
+	 * Keep this callback synchronous and inexpensive. For remote logging, enqueue
+	 * records here and flush them separately at an application lifecycle boundary.
+	 * Errors thrown by the callback are caught so logging cannot break application code.
+	 * The callback is not awaited: a returned promise is not waited on, and if it rejects the
+	 * rejection is swallowed (reported only in debug mode). Logs emitted from inside the callback
+	 * are written to the console but are not passed back to the callback.
+	 */
+	onLog?: LogObserver
 }
 
 /**
@@ -109,17 +126,19 @@ export interface WorkersLoggerOptions {
  * ```
  */
 export class WorkersLogger<T extends LogTags> implements LogLevelFns {
-	private ctx: WorkersLoggerOptions = {}
+	private ctx: Omit<WorkersLoggerOptions, 'minimumLogLevel' | 'debug' | 'onLog'> = {}
 	private constructorLogLevel?: LogLevel
 	private instanceLogLevel?: LogLevel
 	private debugMode: boolean
+	private onLog?: LogObserver
 
 	constructor(opts: WorkersLoggerOptions = {}) {
 		// Store constructor log level separately from instance log level
 		this.constructorLogLevel = opts.minimumLogLevel
 		this.debugMode = opts.debug ?? false
+		this.onLog = opts.onLog
 
-		const ctxOpts: Omit<WorkersLoggerOptions, 'minimumLogLevel' | 'debug'> = {
+		const ctxOpts: Omit<WorkersLoggerOptions, 'minimumLogLevel' | 'debug' | 'onLog'> = {
 			tags: opts.tags,
 			fields: opts.fields,
 		}
@@ -138,6 +157,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			tags: structuredClone(Object.assign({}, this.ctx.tags, tags)),
 			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
 			debug: this.debugMode, // Preserve debug mode
+			onLog: this.onLog, // Preserve log observer
 		})
 		newLogger.instanceLogLevel = this.instanceLogLevel // Preserve instance level
 		return newLogger
@@ -158,6 +178,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			fields: structuredClone(Object.assign({}, this.ctx.fields, fields)),
 			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
 			debug: this.debugMode, // Preserve debug mode
+			onLog: this.onLog, // Preserve log observer
 		})
 		newLogger.instanceLogLevel = this.instanceLogLevel // Preserve instance level
 		return newLogger
@@ -173,12 +194,41 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 	 */
 	private logDebugWarning(message: string): void {
 		if (this.debugMode) {
-			console.log({
+			this.emit({
 				message,
 				level: 'debug',
 				time: new Date().toISOString(),
-			} satisfies ConsoleLog)
+			})
 		}
+	}
+
+	/** Write a finalized record to the console and notify the configured observer. */
+	private emit(log: EmittedLog): void {
+		console.log(log)
+		// Logs emitted from inside the observer reach the console but not the observer.
+		if (!this.onLog || observing) return
+
+		observing = true
+		try {
+			const result: unknown = this.onLog(log)
+			if (isThenable(result)) {
+				result.then(undefined, (error: unknown) => this.reportObserverError(error))
+			}
+		} catch (error) {
+			this.reportObserverError(error)
+		} finally {
+			observing = false
+		}
+	}
+
+	private reportObserverError(error: unknown): void {
+		if (!this.debugMode) return
+		// Write straight to the console, not emit(), so failures never re-enter the observer.
+		console.log({
+			message: `Warning: onLog callback threw: ${stringifyMessage(error)}`,
+			level: 'error',
+			time: new Date().toISOString(),
+		} satisfies ConsoleLog)
 	}
 
 	/**
@@ -238,6 +288,7 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 			...this.ctx,
 			minimumLogLevel: this.constructorLogLevel, // Preserve constructor level
 			debug: this.debugMode, // Preserve debug mode
+			onLog: this.onLog, // Preserve log observer
 		})
 		newLogger.instanceLogLevel = level // Set instance-specific level
 		return newLogger
@@ -334,12 +385,19 @@ export class WorkersLogger<T extends LogTags> implements LogLevelFns {
 		if (Object.keys(enhancedTags).length > 0) {
 			log.tags = enhancedTags
 		}
-		console.log(Object.assign({}, log, this.getFields()))
+		this.emit(Object.assign({}, log, this.getFields()))
 	}
 }
 
 export function stringifyMessages(...msgs: any[]): string {
 	return msgs.map(stringifyMessage).join(' ')
+}
+
+/** True while an onLog observer is running; guards against reentrant observation. */
+let observing = false
+
+function isThenable(value: unknown): value is PromiseLike<unknown> {
+	return typeof (value as PromiseLike<unknown> | undefined)?.then === 'function'
 }
 
 const standardProps = new Set(['name', 'message', 'stack', 'cause'])
