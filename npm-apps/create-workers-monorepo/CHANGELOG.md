@@ -1,5 +1,13 @@
 # create-workers-monorepo
 
+## 0.10.1
+
+### Patch Changes
+
+- 296da54: chore: import zx utilities explicitly instead of relying on `zx/globals`
+
+  `@jahands/cli-tools/proc` previously referenced `ProcessOutput` and `chalk` as globals, so helpers like `catchProcessError()` threw a `ReferenceError` unless the consumer had imported `zx/globals`. They are now imported from `zx` directly.
+
 ## 0.10.0
 
 ### Minor Changes
