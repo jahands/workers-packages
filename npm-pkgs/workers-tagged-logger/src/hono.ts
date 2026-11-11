@@ -1,12 +1,9 @@
-import * as z from 'zod'
-
 import { withLogTags, WorkersLogger } from './logger.js'
 
 import type { Context as HonoContext, Handler as HonoHandler, Next as HonoNext } from 'hono'
 import type { LogTags } from './logger.js'
 
-export type LoggerHonoBindings = z.infer<typeof LoggerHonoBindings>
-export const LoggerHonoBindings = z.object({ ENVIRONMENT: z.string().min(1).optional() })
+export type LoggerHonoBindings = { ENVIRONMENT?: string }
 
 /**
  * Hono middleware to activate the WorkersLogger AsyncLocalStorage context
@@ -27,11 +24,9 @@ export function useWorkersLogger<T extends LogTags>(
 			const log = new WorkersLogger<{ environment: string; handler: string }>()
 			log.setTags({ handler: 'fetch' })
 
-			if (c.env !== undefined) {
-				const env = LoggerHonoBindings.safeParse(c.env)
-				if (env.success && env.data.ENVIRONMENT !== undefined) {
-					log.setTags({ environment: env.data.ENVIRONMENT })
-				}
+			const environment = getEnvironment(c.env)
+			if (environment !== null) {
+				log.setTags({ environment })
 			}
 
 			const colo = getCfFromRequest(c.req.raw)
@@ -48,21 +43,24 @@ export function useWorkersLogger<T extends LogTags>(
 	}
 }
 
-// These come from CfProperties
-type CfProps = z.infer<typeof CfProps>
-const CfProps = z.object({
-	colo: z.string(),
-})
+function getEnvironment(env: unknown): string | null {
+	if (typeof env !== 'object' || env === null || !('ENVIRONMENT' in env)) {
+		return null
+	}
+	const { ENVIRONMENT } = env
+	if (typeof ENVIRONMENT !== 'string' || ENVIRONMENT.length === 0) {
+		return null
+	}
+	return ENVIRONMENT
+}
 
-type RequestWithCF = z.infer<typeof RequestWithCF>
-const RequestWithCF = z.object({
-	cf: CfProps.optional(),
-})
+// These come from CfProperties
+type CfProps = { colo: string }
 
 function getCfFromRequest(request: Request): CfProps | null {
-	const cfProps = RequestWithCF.safeParse(request)
-	if (cfProps.success) {
-		return cfProps.data.cf ?? null
+	const cf: unknown = request.cf
+	if (typeof cf !== 'object' || cf === null || !('colo' in cf) || typeof cf.colo !== 'string') {
+		return null
 	}
-	return null
+	return { colo: cf.colo }
 }

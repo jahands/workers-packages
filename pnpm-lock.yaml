@@ -751,10 +751,6 @@ importers:
         version: 4.5.4
 
   npm-pkgs/workers-tagged-logger:
-    dependencies:
-      zod:
-        specifier: ^4.5.4
-        version: 4.5.4
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: 0.9.13
@@ -786,6 +782,9 @@ importers:
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.9.1)
+      zod:
+        specifier: 4.5.4
+        version: 4.5.4
     optionalDependencies:
       hono:
         specifier: ^4.6.16

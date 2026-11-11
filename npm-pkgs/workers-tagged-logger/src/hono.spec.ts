@@ -71,4 +71,51 @@ describe('useWorkersLogger()', () => {
 			}
 		`)
 	})
+
+	it.for([{ ENVIRONMENT: '' }, { ENVIRONMENT: 42 }])(
+		'does not add environment when it is not a non-empty string (%o)',
+		async (env) => {
+			const h = setupTest()
+			const app = new Hono().use(useWorkersLogger('worker-a')).get(async (c) => {
+				h.log.info('hi')
+				return c.text('hello')
+			})
+
+			await app.fetch(new Request('https://example.com'), env)
+
+			expect(h.oneLog().tags).toStrictEqual({ handler: 'fetch', source: 'worker-a' })
+		}
+	)
+
+	it('adds colo from the request cf properties', async () => {
+		const h = setupTest()
+		const app = new Hono().use(useWorkersLogger('worker-a')).get(async (c) => {
+			h.log.info('hi')
+			return c.text('hello')
+		})
+
+		await app.fetch(new Request('https://example.com', { cf: { colo: 'SJC', country: 'US' } }))
+
+		expect(h.oneLog().tags).toMatchInlineSnapshot(`
+			{
+			  "colo": {
+			    "colo": "SJC",
+			  },
+			  "handler": "fetch",
+			  "source": "worker-a",
+			}
+		`)
+	})
+
+	it('does not add colo when the cf properties have none', async () => {
+		const h = setupTest()
+		const app = new Hono().use(useWorkersLogger('worker-a')).get(async (c) => {
+			h.log.info('hi')
+			return c.text('hello')
+		})
+
+		await app.fetch(new Request('https://example.com', { cf: { country: 'US' } }))
+
+		expect(h.oneLog().tags).toStrictEqual({ handler: 'fetch', source: 'worker-a' })
+	})
 })
