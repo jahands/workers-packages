@@ -1,5 +1,15 @@
 # workers-tagged-logger
 
+## 2.0.0
+
+### Major Changes
+
+- c1c00c2: feat: drop the zod dependency
+
+  `useWorkersLogger` checks `ENVIRONMENT` and `request.cf.colo` with plain type checks, so installing
+  the logger no longer installs zod. `LoggerHonoBindings` is now only a type; the runtime zod schema
+  it used to be is gone.
+
 ## 1.0.2
 
 ### Patch Changes
