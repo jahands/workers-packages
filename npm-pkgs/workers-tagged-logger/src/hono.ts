@@ -3,7 +3,7 @@ import { withLogTags, WorkersLogger } from './logger.js'
 import type { Context as HonoContext, Handler as HonoHandler, Next as HonoNext } from 'hono'
 import type { LogTags } from './logger.js'
 
-export type LoggerHonoBindings = { ENVIRONMENT?: string }
+export type LoggerHonoBindings = { ENVIRONMENT?: string | undefined }
 
 /**
  * Hono middleware to activate the WorkersLogger AsyncLocalStorage context
