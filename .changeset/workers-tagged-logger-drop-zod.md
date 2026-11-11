@@ -1,5 +1,5 @@
 ---
-'workers-tagged-logger': major
+'workers-tagged-logger': minor
 ---
 
 feat: drop the zod dependency
